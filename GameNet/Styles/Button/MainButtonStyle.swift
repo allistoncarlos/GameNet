@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct MainButtonStyle: ButtonStyle {
+    @Environment(\.isEnabled) var isEnabled
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding()
@@ -15,7 +17,7 @@ struct MainButtonStyle: ButtonStyle {
                 minWidth: 0,
                 maxWidth: .infinity
             )
-            .background(Color.main)
+            .background(isEnabled ? Color.main : Color.disabled)
             .foregroundColor(.white)
             .clipShape(RoundedRectangle(cornerRadius: 5))
             .font(.system(size: 18, weight: .bold))

@@ -13,29 +13,46 @@ struct LoginView: View {
     @State var username: String = ""
     @State var password: String = ""
 
+    @ObservedObject var viewModel: LoginViewModel
+
     var body: some View {
-        NavigationView {
-            Form {
-                TextField("Username", text: $username)
-                SecureField("Password", text: $password) {
-                    handleLogin()
+        ZStack {
+            if viewModel.uiState == .success {
+                viewModel.homeView()
+            } else {
+                NavigationView {
+                    Form {
+                        TextField("Username", text: $username)
+                        SecureField("Password", text: $password) {
+                            viewModel.login(email: username, password: password)
+                        }
+
+                        Section(
+                            footer:
+                            Button("Login") {
+                                viewModel.login(email: username, password: password)
+                            }
+                            .disabled(username.isEmpty || password.isEmpty || viewModel.uiState == .loading)
+                            .buttonStyle(MainButtonStyle())
+                        ) {
+                            EmptyView()
+                        }
+                    }
+                    .navigationTitle("Login")
                 }
 
-                Section(footer:
-                    Button("Login") {
-                        handleLogin()
-                    }
-                    .buttonStyle(MainButtonStyle())
-                ) {
-                    EmptyView()
+                if case let LoginUIState.error(error) = viewModel.uiState {
+                    Text("")
+                        .alert(isPresented: .constant(true)) {
+                            Alert(
+                                title: Text("GameNet"),
+                                message: Text(error),
+                                dismissButton: .default(Text("OK"))
+                            )
+                        }
                 }
             }
-            .navigationTitle("Login")
         }
-    }
-
-    func handleLogin() {
-        print("LOGGED IN")
     }
 }
 
@@ -44,7 +61,7 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) {
-            LoginView().preferredColorScheme($0)
+            LoginView(viewModel: LoginViewModel()).preferredColorScheme($0)
         }
     }
 }
