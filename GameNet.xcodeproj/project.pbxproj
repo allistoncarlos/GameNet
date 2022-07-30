@@ -65,15 +65,13 @@
 		A57185C3286793D600655B31 /* GameNet */ = {
 			isa = PBXGroup;
 			children = (
-				A5E489FA28958FFD0037023C /* Home */,
-				A57185D62867983600655B31 /* Styles */,
-				A57185D32867952D00655B31 /* Extensions */,
-				A57185D22867945500655B31 /* Views */,
-				A5E489F128958DF20037023C /* ViewModel */,
-				A5E489F328958ED90037023C /* Model */,
-				A5E489F228958DFC0037023C /* Router */,
+				A5E48A022895ABC60037023C /* DataProviders */,
+				A5E48A0F2895ACD80037023C /* DI */,
+				A5E48A0D2895ACC70037023C /* Domain */,
+				A5E48A052895ABE90037023C /* Presentation */,
+				A5E48A042895ABE20037023C /* Config */,
+				A5E48A032895ABD70037023C /* Resources */,
 				A57185C4286793D600655B31 /* GameNetApp.swift */,
-				A57185C8286793D700655B31 /* Assets.xcassets */,
 				A57185CA286793D700655B31 /* Preview Content */,
 			);
 			path = GameNet;
@@ -87,28 +85,12 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		A57185D22867945500655B31 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				A57185C6286793D600655B31 /* LoginView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		A57185D32867952D00655B31 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				A57185D42867953F00655B31 /* Color.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		A57185D62867983600655B31 /* Styles */ = {
-			isa = PBXGroup;
-			children = (
-				A57185D72867983B00655B31 /* Button */,
-			);
-			path = Styles;
 			sourceTree = "<group>";
 		};
 		A57185D72867983B00655B31 /* Button */ = {
@@ -119,23 +101,60 @@
 			path = Button;
 			sourceTree = "<group>";
 		};
-		A5E489F128958DF20037023C /* ViewModel */ = {
+		A5E48A022895ABC60037023C /* DataProviders */ = {
 			isa = PBXGroup;
 			children = (
-				A5E489F828958F4F0037023C /* LoginViewModel.swift */,
+				A5E48A102895ACEC0037023C /* Repositories */,
 			);
-			path = ViewModel;
+			path = DataProviders;
 			sourceTree = "<group>";
 		};
-		A5E489F228958DFC0037023C /* Router */ = {
+		A5E48A032895ABD70037023C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A5E489F628958F0A0037023C /* LoginRouter.swift */,
+				A57185C8286793D700655B31 /* Assets.xcassets */,
 			);
-			path = Router;
+			path = Resources;
 			sourceTree = "<group>";
 		};
-		A5E489F328958ED90037023C /* Model */ = {
+		A5E48A042895ABE20037023C /* Config */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		A5E48A052895ABE90037023C /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				A5E48A062895ABF40037023C /* Features */,
+				A5E48A142895AD660037023C /* Styles */,
+				A57185D32867952D00655B31 /* Extensions */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		A5E48A062895ABF40037023C /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				A5E48A112895AD4C0037023C /* Home */,
+				A5E48A072895ABFD0037023C /* Login */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		A5E48A072895ABFD0037023C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A5E48A0A2895AC0F0037023C /* View */,
+				A5E48A092895AC0B0037023C /* ViewModel */,
+				A5E48A082895AC060037023C /* Model */,
+				A5E48A0C2895AC170037023C /* Router */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		A5E48A082895AC060037023C /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				A5E489F428958EE80037023C /* LoginUIState.swift */,
@@ -143,16 +162,69 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		A5E489FA28958FFD0037023C /* Home */ = {
+		A5E48A092895AC0B0037023C /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				A5E489FB289590030037023C /* View */,
-				A5E489FC289590070037023C /* ViewModel */,
+				A5E489F828958F4F0037023C /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A5E48A0A2895AC0F0037023C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A57185C6286793D600655B31 /* LoginView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A5E48A0C2895AC170037023C /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				A5E489F628958F0A0037023C /* LoginRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		A5E48A0D2895ACC70037023C /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				A5E48A0E2895ACCE0037023C /* Entities */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		A5E48A0E2895ACCE0037023C /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		A5E48A0F2895ACD80037023C /* DI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		A5E48A102895ACEC0037023C /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		A5E48A112895AD4C0037023C /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A5E48A122895AD520037023C /* View */,
+				A5E48A132895AD580037023C /* ViewModel */,
 			);
 			path = Home;
 			sourceTree = "<group>";
 		};
-		A5E489FB289590030037023C /* View */ = {
+		A5E48A122895AD520037023C /* View */ = {
 			isa = PBXGroup;
 			children = (
 				A5E489FD289590120037023C /* HomeView.swift */,
@@ -160,12 +232,20 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		A5E489FC289590070037023C /* ViewModel */ = {
+		A5E48A132895AD580037023C /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				A5E489FF2895901C0037023C /* HomeViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A5E48A142895AD660037023C /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				A57185D72867983B00655B31 /* Button */,
+			);
+			path = Styles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
