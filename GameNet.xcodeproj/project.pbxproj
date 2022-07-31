@@ -8,17 +8,34 @@
 
 /* Begin PBXBuildFile section */
 		A57185C5286793D600655B31 /* GameNetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185C4286793D600655B31 /* GameNetApp.swift */; };
-		A57185C7286793D600655B31 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185C6286793D600655B31 /* ContentView.swift */; };
+		A57185C7286793D600655B31 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185C6286793D600655B31 /* LoginView.swift */; };
 		A57185C9286793D700655B31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A57185C8286793D700655B31 /* Assets.xcassets */; };
 		A57185CC286793D700655B31 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A57185CB286793D700655B31 /* Preview Assets.xcassets */; };
+		A57185D52867953F00655B31 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185D42867953F00655B31 /* Color.swift */; };
+		A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185D82867984400655B31 /* MainButtonStyle.swift */; };
+		A5E489F528958EE80037023C /* LoginUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F428958EE80037023C /* LoginUIState.swift */; };
+		A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F628958F0A0037023C /* LoginRouter.swift */; };
+		A5E489F928958F4F0037023C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F828958F4F0037023C /* LoginViewModel.swift */; };
+		A5E489FE289590120037023C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489FD289590120037023C /* HomeView.swift */; };
+		A5E48A002895901C0037023C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489FF2895901C0037023C /* HomeViewModel.swift */; };
+		A5E48A1A2895B2450037023C /* GameNet.Network in Frameworks */ = {isa = PBXBuildFile; productRef = A5E48A192895B2450037023C /* GameNet.Network */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A57185C1286793D600655B31 /* GameNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A57185C4286793D600655B31 /* GameNetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNetApp.swift; sourceTree = "<group>"; };
-		A57185C6286793D600655B31 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A57185C6286793D600655B31 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A57185C8286793D700655B31 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A57185CB286793D700655B31 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A57185D42867953F00655B31 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		A57185D82867984400655B31 /* MainButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButtonStyle.swift; sourceTree = "<group>"; };
+		A5D2C23C2896B676007C28AC /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		A5D2C23D2896B823007C28AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A5E489F428958EE80037023C /* LoginUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIState.swift; sourceTree = "<group>"; };
+		A5E489F628958F0A0037023C /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
+		A5E489F828958F4F0037023C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		A5E489FD289590120037023C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		A5E489FF2895901C0037023C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -26,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5E48A1A2895B2450037023C /* GameNet.Network in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,9 +69,14 @@
 		A57185C3286793D600655B31 /* GameNet */ = {
 			isa = PBXGroup;
 			children = (
+				A5D2C23D2896B823007C28AC /* Info.plist */,
+				A5E48A022895ABC60037023C /* DataProviders */,
+				A5E48A0F2895ACD80037023C /* DI */,
+				A5E48A0D2895ACC70037023C /* Domain */,
+				A5E48A052895ABE90037023C /* Presentation */,
+				A5E48A042895ABE20037023C /* Config */,
+				A5E48A032895ABD70037023C /* Resources */,
 				A57185C4286793D600655B31 /* GameNetApp.swift */,
-				A57185C6286793D600655B31 /* ContentView.swift */,
-				A57185C8286793D700655B31 /* Assets.xcassets */,
 				A57185CA286793D700655B31 /* Preview Content */,
 			);
 			path = GameNet;
@@ -65,6 +88,170 @@
 				A57185CB286793D700655B31 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A57185D32867952D00655B31 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A57185D42867953F00655B31 /* Color.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		A57185D72867983B00655B31 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				A57185D82867984400655B31 /* MainButtonStyle.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		A5E48A022895ABC60037023C /* DataProviders */ = {
+			isa = PBXGroup;
+			children = (
+				A5E48A102895ACEC0037023C /* Repositories */,
+			);
+			path = DataProviders;
+			sourceTree = "<group>";
+		};
+		A5E48A032895ABD70037023C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A57185C8286793D700655B31 /* Assets.xcassets */,
+				A5D2C23C2896B676007C28AC /* Config.xcconfig */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A5E48A042895ABE20037023C /* Config */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		A5E48A052895ABE90037023C /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				A5E48A062895ABF40037023C /* Features */,
+				A5E48A142895AD660037023C /* Styles */,
+				A57185D32867952D00655B31 /* Extensions */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		A5E48A062895ABF40037023C /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				A5E48A112895AD4C0037023C /* Home */,
+				A5E48A072895ABFD0037023C /* Login */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		A5E48A072895ABFD0037023C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A5E48A0A2895AC0F0037023C /* View */,
+				A5E48A092895AC0B0037023C /* ViewModel */,
+				A5E48A082895AC060037023C /* Model */,
+				A5E48A0C2895AC170037023C /* Router */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		A5E48A082895AC060037023C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A5E489F428958EE80037023C /* LoginUIState.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A5E48A092895AC0B0037023C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A5E489F828958F4F0037023C /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A5E48A0A2895AC0F0037023C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A57185C6286793D600655B31 /* LoginView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A5E48A0C2895AC170037023C /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				A5E489F628958F0A0037023C /* LoginRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		A5E48A0D2895ACC70037023C /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				A5E48A0E2895ACCE0037023C /* Entities */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		A5E48A0E2895ACCE0037023C /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		A5E48A0F2895ACD80037023C /* DI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DI;
+			sourceTree = "<group>";
+		};
+		A5E48A102895ACEC0037023C /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		A5E48A112895AD4C0037023C /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A5E48A122895AD520037023C /* View */,
+				A5E48A132895AD580037023C /* ViewModel */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		A5E48A122895AD520037023C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A5E489FD289590120037023C /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A5E48A132895AD580037023C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A5E489FF2895901C0037023C /* HomeViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A5E48A142895AD660037023C /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				A57185D72867983B00655B31 /* Button */,
+			);
+			path = Styles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +270,9 @@
 			dependencies = (
 			);
 			name = GameNet;
+			packageProductDependencies = (
+				A5E48A192895B2450037023C /* GameNet.Network */,
+			);
 			productName = GameNet;
 			productReference = A57185C1286793D600655B31 /* GameNet.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +301,9 @@
 				Base,
 			);
 			mainGroup = A57185B8286793D600655B31;
+			packageReferences = (
+				A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */,
+			);
 			productRefGroup = A57185C2286793D600655B31 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -137,8 +330,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A57185C7286793D600655B31 /* ContentView.swift in Sources */,
+				A57185C7286793D600655B31 /* LoginView.swift in Sources */,
+				A5E48A002895901C0037023C /* HomeViewModel.swift in Sources */,
+				A5E489F528958EE80037023C /* LoginUIState.swift in Sources */,
+				A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */,
 				A57185C5286793D600655B31 /* GameNetApp.swift in Sources */,
+				A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */,
+				A5E489FE289590120037023C /* HomeView.swift in Sources */,
+				A57185D52867953F00655B31 /* Color.swift in Sources */,
+				A5E489F928958F4F0037023C /* LoginViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +347,7 @@
 /* Begin XCBuildConfiguration section */
 		A57185CD286793D700655B31 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5D2C23C2896B676007C28AC /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -207,6 +408,7 @@
 		};
 		A57185CE286793D700655B31 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5D2C23C2896B676007C28AC /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -261,6 +463,7 @@
 		};
 		A57185D0286793D700655B31 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5D2C23C2896B676007C28AC /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -270,6 +473,7 @@
 				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GameNet/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -290,6 +494,7 @@
 		};
 		A57185D1286793D700655B31 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5D2C23C2896B676007C28AC /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -299,6 +504,7 @@
 				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GameNet/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -339,6 +545,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/allistoncarlos/GameNet.Network";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A5E48A192895B2450037023C /* GameNet.Network */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */;
+			productName = GameNet.Network;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A57185B9286793D600655B31 /* Project object */;
 }
