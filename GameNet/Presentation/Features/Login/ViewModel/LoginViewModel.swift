@@ -6,7 +6,15 @@
 //
 
 import Combine
+import GameNet_Keychain
+import GameNet_Network
 import SwiftUI
+
+// MARK: - LoginError
+
+enum LoginError: Error {
+    case invalidUsernameOrPassword(String)
+}
 
 // MARK: - LoginViewModel
 
@@ -14,11 +22,20 @@ class LoginViewModel: ObservableObject {
     // MARK: Lifecycle
 
     init() {
-        cancellable = publisher.sink { value in
-            if value {
-                self.uiState = .success
-//                self.uiState = .error("BLA")
+        cancellable = publisher.sink { completion in
+            switch completion {
+            case .finished:
+                print("Received finished")
+            case let .failure(error):
+                switch error {
+                case let .invalidUsernameOrPassword(message):
+                    self.uiState = .error(message)
+                }
             }
+        } receiveValue: { loginResponse in
+            self.saveToken(response: loginResponse)
+
+            self.uiState = .success
         }
     }
 
@@ -30,11 +47,19 @@ class LoginViewModel: ObservableObject {
 
     @Published var uiState: LoginUIState = .idle
 
-    func login(email: String, password: String) {
+    func login(username: String, password: String) async {
         uiState = .loading
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.publisher.send(true)
+        let response = await NetworkManager.shared
+            .performRequest(
+                responseType: LoginResponse.self,
+                endpoint: .login(data: LoginRequest(username: username, password: password))
+            )
+
+        if let response = response {
+            publisher.send(response)
+        } else {
+            publisher.send(completion: .failure(.invalidUsernameOrPassword("Usuário ou senha inválidos")))
         }
     }
 
@@ -42,7 +67,20 @@ class LoginViewModel: ObservableObject {
 
     private var cancellable: AnyCancellable?
 
-    private let publisher = PassthroughSubject<Bool, Never>()
+    private let publisher = PassthroughSubject<LoginResponse?, LoginError>()
+
+    private func saveToken(response: LoginResponse?) {
+        if let session = response {
+            let dateFormatter = ISO8601DateFormatter()
+
+            KeychainDataSource.id.set(session.id)
+            KeychainDataSource.accessToken.set(session.accessToken)
+            KeychainDataSource.refreshToken.set(session.refreshToken)
+            KeychainDataSource.expiresIn.set(dateFormatter.string(from: session.expiresIn))
+        } else {
+            KeychainDataSource.clear()
+        }
+    }
 }
 
 extension LoginViewModel {

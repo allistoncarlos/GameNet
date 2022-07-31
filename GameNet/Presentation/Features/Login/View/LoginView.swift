@@ -23,14 +23,19 @@ struct LoginView: View {
                 NavigationView {
                     Form {
                         TextField("Username", text: $username)
+                            .autocapitalization(.none)
                         SecureField("Password", text: $password) {
-                            viewModel.login(email: username, password: password)
+                            Task {
+                                await viewModel.login(username: username, password: password)
+                            }
                         }
 
                         Section(
                             footer:
                             Button("Login") {
-                                viewModel.login(email: username, password: password)
+                                Task {
+                                    await viewModel.login(username: username, password: password)
+                                }
                             }
                             .disabled(username.isEmpty || password.isEmpty || viewModel.uiState == .loading)
                             .buttonStyle(MainButtonStyle())
