@@ -13,6 +13,11 @@
 		A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6AA289955140081AE4B /* LoginDataSource.swift */; };
 		A51AA6AE289955540081AE4B /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6AD289955540081AE4B /* Login.swift */; };
 		A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661672899678000D52088 /* MockLoginDataSource.swift */; };
+		A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = A536616A2899820700D52088 /* OHHTTPStubs */; };
+		A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A536616C2899820700D52088 /* OHHTTPStubsSwift */; };
+		A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536616F2899828700D52088 /* LoginNetworkTests.swift */; };
+		A53661732899837B00D52088 /* StubRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661722899837B00D52088 /* StubRequests.swift */; };
+		A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5366175289983A600D52088 /* LoginResponseMock.swift */; };
 		A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955B2899576A003C13A3 /* LoginRepository.swift */; };
 		A56D955F289958B2003C13A3 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955E289958B2003C13A3 /* RequestError.swift */; };
 		A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D956828996508003C13A3 /* LoginDataSourceTests.swift */; };
@@ -46,6 +51,9 @@
 		A51AA6AA289955140081AE4B /* LoginDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDataSource.swift; sourceTree = "<group>"; };
 		A51AA6AD289955540081AE4B /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
 		A53661672899678000D52088 /* MockLoginDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginDataSource.swift; sourceTree = "<group>"; };
+		A536616F2899828700D52088 /* LoginNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkTests.swift; sourceTree = "<group>"; };
+		A53661722899837B00D52088 /* StubRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubRequests.swift; sourceTree = "<group>"; };
+		A5366175289983A600D52088 /* LoginResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseMock.swift; sourceTree = "<group>"; };
 		A56D955B2899576A003C13A3 /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
 		A56D955E289958B2003C13A3 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
 		A56D956628996508003C13A3 /* GameNetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameNetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +87,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5E48A1A2895B2450037023C /* GameNet.Network in Frameworks */,
+				A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */,
+				A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */,
 				A51AA6A42899539A0081AE4B /* Factory in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -111,6 +121,30 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		A536616E2899822900D52088 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A536616F2899828700D52088 /* LoginNetworkTests.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		A53661712899836C00D52088 /* Stubs */ = {
+			isa = PBXGroup;
+			children = (
+				A53661722899837B00D52088 /* StubRequests.swift */,
+			);
+			path = Stubs;
+			sourceTree = "<group>";
+		};
+		A53661742899839100D52088 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				A5366175289983A600D52088 /* LoginResponseMock.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		A56D955A28995760003C13A3 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +164,8 @@
 		A56D956728996508003C13A3 /* GameNetTests */ = {
 			isa = PBXGroup;
 			children = (
+				A53661712899836C00D52088 /* Stubs */,
+				A53661742899839100D52088 /* Mocks */,
 				A56D9570289965D4003C13A3 /* Network */,
 				A56D956F28996531003C13A3 /* DataSources */,
 				A56D9571289965D9003C13A3 /* Repositories */,
@@ -148,6 +184,7 @@
 		A56D9570289965D4003C13A3 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				A536616E2899822900D52088 /* Login */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -408,6 +445,8 @@
 			packageProductDependencies = (
 				A5E48A192895B2450037023C /* GameNet.Network */,
 				A51AA6A32899539A0081AE4B /* Factory */,
+				A536616A2899820700D52088 /* OHHTTPStubs */,
+				A536616C2899820700D52088 /* OHHTTPStubsSwift */,
 			);
 			productName = GameNet;
 			productReference = A57185C1286793D600655B31 /* GameNet.app */;
@@ -444,6 +483,7 @@
 			packageReferences = (
 				A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */,
 				A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */,
+				A53661692899820700D52088 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 			);
 			productRefGroup = A57185C2286793D600655B31 /* Products */;
 			projectDirPath = "";
@@ -479,6 +519,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */,
+				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
+				A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */,
 				A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -772,6 +815,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		A53661692899820700D52088 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AliSoftware/OHHTTPStubs.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 		A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/allistoncarlos/GameNet.Network";
@@ -787,6 +838,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */;
 			productName = Factory;
+		};
+		A536616A2899820700D52088 /* OHHTTPStubs */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A53661692899820700D52088 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubs;
+		};
+		A536616C2899820700D52088 /* OHHTTPStubsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A53661692899820700D52088 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubsSwift;
 		};
 		A5E48A192895B2450037023C /* GameNet.Network */ = {
 			isa = XCSwiftPackageProductDependency;
