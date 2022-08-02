@@ -18,6 +18,8 @@
 		A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536616F2899828700D52088 /* LoginNetworkTests.swift */; };
 		A53661732899837B00D52088 /* StubRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661722899837B00D52088 /* StubRequests.swift */; };
 		A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5366175289983A600D52088 /* LoginResponseMock.swift */; };
+		A536617B289987FB00D52088 /* LoginRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617A289987FB00D52088 /* LoginRepositoryTests.swift */; };
+		A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617C2899883B00D52088 /* MockLoginRepository.swift */; };
 		A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955B2899576A003C13A3 /* LoginRepository.swift */; };
 		A56D955F289958B2003C13A3 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955E289958B2003C13A3 /* RequestError.swift */; };
 		A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D956828996508003C13A3 /* LoginDataSourceTests.swift */; };
@@ -54,6 +56,8 @@
 		A536616F2899828700D52088 /* LoginNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkTests.swift; sourceTree = "<group>"; };
 		A53661722899837B00D52088 /* StubRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubRequests.swift; sourceTree = "<group>"; };
 		A5366175289983A600D52088 /* LoginResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseMock.swift; sourceTree = "<group>"; };
+		A536617A289987FB00D52088 /* LoginRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepositoryTests.swift; sourceTree = "<group>"; };
+		A536617C2899883B00D52088 /* MockLoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginRepository.swift; sourceTree = "<group>"; };
 		A56D955B2899576A003C13A3 /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
 		A56D955E289958B2003C13A3 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
 		A56D956628996508003C13A3 /* GameNetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameNetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -140,15 +144,40 @@
 		A53661742899839100D52088 /* Mocks */ = {
 			isa = PBXGroup;
 			children = (
-				A5366175289983A600D52088 /* LoginResponseMock.swift */,
+				A5366179289987EE00D52088 /* Login */,
 			);
 			path = Mocks;
+			sourceTree = "<group>";
+		};
+		A5366177289987E500D52088 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A536617A289987FB00D52088 /* LoginRepositoryTests.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		A5366178289987E900D52088 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A56D956828996508003C13A3 /* LoginDataSourceTests.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		A5366179289987EE00D52088 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A5366175289983A600D52088 /* LoginResponseMock.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		A56D955A28995760003C13A3 /* Login */ = {
 			isa = PBXGroup;
 			children = (
 				A56D955B2899576A003C13A3 /* LoginRepository.swift */,
+				A536617C2899883B00D52088 /* MockLoginRepository.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -176,7 +205,7 @@
 		A56D956F28996531003C13A3 /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				A56D956828996508003C13A3 /* LoginDataSourceTests.swift */,
+				A5366178289987E900D52088 /* Login */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -192,6 +221,7 @@
 		A56D9571289965D9003C13A3 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				A5366177289987E500D52088 /* Login */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -523,6 +553,7 @@
 				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
 				A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */,
 				A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */,
+				A536617B289987FB00D52088 /* LoginRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,6 +570,7 @@
 				A51AA6A62899543F0081AE4B /* GameNetApp+RepositoryInjection.swift in Sources */,
 				A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */,
 				A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */,
+				A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */,
 				A57185C5286793D600655B31 /* GameNetApp.swift in Sources */,
 				A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */,
 				A51AA6A8289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift in Sources */,
