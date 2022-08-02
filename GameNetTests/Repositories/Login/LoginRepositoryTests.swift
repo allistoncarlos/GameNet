@@ -18,28 +18,28 @@ class LoginRepositoryTests: XCTestCase {
     }
 
     func testLogin_ValidData_ShouldReturnAccessToken() async {
-        // Arrange
+        // Given
         let expectedAccessToken = "123"
         let login = Login(username: "teste", password: "teste")
         RepositoryContainer.loginRepository.register(factory: { MockLoginRepository() })
 
-        // Act
+        // When
         let result = await RepositoryContainer.loginRepository().login(login: login)
 
-        // Assert
+        // Then
         XCTAssertNotNil(result)
         XCTAssertEqual(result?.accessToken, expectedAccessToken)
     }
 
     func testLogin_InvalidData_ShouldReturnNil() async {
-        // Arrange
+        // Given
         let login = Login(username: "teste1", password: "teste")
         RepositoryContainer.loginRepository.register(factory: { MockLoginRepository() })
 
-        // Act
+        // When
         let result = await RepositoryContainer.loginRepository().login(login: login)
 
-        // Assert
+        // Then
         XCTAssertNil(result)
         XCTAssertEqual(result?.accessToken, nil)
     }

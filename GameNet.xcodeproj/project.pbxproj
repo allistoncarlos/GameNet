@@ -20,6 +20,7 @@
 		A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5366175289983A600D52088 /* LoginResponseMock.swift */; };
 		A536617B289987FB00D52088 /* LoginRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617A289987FB00D52088 /* LoginRepositoryTests.swift */; };
 		A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617C2899883B00D52088 /* MockLoginRepository.swift */; };
+		A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661802899890300D52088 /* LoginViewModelTests.swift */; };
 		A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955B2899576A003C13A3 /* LoginRepository.swift */; };
 		A56D955F289958B2003C13A3 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955E289958B2003C13A3 /* RequestError.swift */; };
 		A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D956828996508003C13A3 /* LoginDataSourceTests.swift */; };
@@ -58,6 +59,7 @@
 		A5366175289983A600D52088 /* LoginResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseMock.swift; sourceTree = "<group>"; };
 		A536617A289987FB00D52088 /* LoginRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepositoryTests.swift; sourceTree = "<group>"; };
 		A536617C2899883B00D52088 /* MockLoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginRepository.swift; sourceTree = "<group>"; };
+		A53661802899890300D52088 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		A56D955B2899576A003C13A3 /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
 		A56D955E289958B2003C13A3 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
 		A56D956628996508003C13A3 /* GameNetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameNetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +175,22 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		A536617E289988EE00D52088 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A536617F289988F700D52088 /* Login */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A536617F289988F700D52088 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A53661802899890300D52088 /* LoginViewModelTests.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
 		A56D955A28995760003C13A3 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +216,7 @@
 				A56D9570289965D4003C13A3 /* Network */,
 				A56D956F28996531003C13A3 /* DataSources */,
 				A56D9571289965D9003C13A3 /* Repositories */,
+				A536617E289988EE00D52088 /* ViewModel */,
 			);
 			path = GameNetTests;
 			sourceTree = "<group>";
@@ -549,6 +568,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */,
 				A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */,
 				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
 				A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */,

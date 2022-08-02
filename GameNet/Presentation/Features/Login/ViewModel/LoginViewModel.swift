@@ -45,6 +45,10 @@ class LoginViewModel: ObservableObject {
         cancellable?.cancel()
     }
 
+    // MARK: Public
+
+    public let publisher = PassthroughSubject<Login?, LoginError>()
+
     // MARK: Internal
 
     @Published var uiState: LoginUIState = .idle
@@ -66,8 +70,6 @@ class LoginViewModel: ObservableObject {
     @Injected(RepositoryContainer.loginRepository) private var repository
 
     private var cancellable: AnyCancellable?
-
-    private let publisher = PassthroughSubject<Login?, LoginError>()
 
     private func saveToken(response: Login?) {
         if let session = response,

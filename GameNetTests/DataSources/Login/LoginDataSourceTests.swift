@@ -19,28 +19,28 @@ class LoginDataSourceTests: XCTestCase {
     }
 
     func testLogin_ValidData_ShouldReturnAccessToken() async {
-        // Arrange
+        // Given
         let expectedAccessToken = "123"
         let login = LoginRequest(username: "teste", password: "teste")
         DataSourceContainer.loginDataSource.register(factory: { MockLoginDataSource() })
 
-        // Act
+        // When
         let result = await DataSourceContainer.loginDataSource().login(loginRequest: login)
 
-        // Assert
+        // Then
         XCTAssertNotNil(result)
         XCTAssertEqual(result?.accessToken, expectedAccessToken)
     }
 
     func testLogin_InvalidData_ShouldReturnNil() async {
-        // Arrange
+        // Given
         let login = LoginRequest(username: "teste1", password: "teste")
         DataSourceContainer.loginDataSource.register(factory: { MockLoginDataSource() })
 
-        // Act
+        // When
         let result = await DataSourceContainer.loginDataSource().login(loginRequest: login)
 
-        // Assert
+        // Then
         XCTAssertNil(result)
         XCTAssertEqual(result?.accessToken, nil)
     }
