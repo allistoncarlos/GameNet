@@ -6,8 +6,8 @@
 //
 
 import Combine
+import Factory
 import GameNet_Keychain
-import GameNet_Network
 import SwiftUI
 
 // MARK: - LoginError
@@ -22,21 +22,23 @@ class LoginViewModel: ObservableObject {
     // MARK: Lifecycle
 
     init() {
-        cancellable = publisher.sink { completion in
-            switch completion {
-            case .finished:
-                print("Received finished")
-            case let .failure(error):
-                switch error {
-                case let .invalidUsernameOrPassword(message):
-                    self.uiState = .error(message)
+        cancellable = publisher
+            .receive(on: RunLoop.main)
+            .sink { completion in
+                switch completion {
+                case .finished:
+                    print("Received finished")
+                case let .failure(error):
+                    switch error {
+                    case let .invalidUsernameOrPassword(message):
+                        self.uiState = .error(message)
+                    }
                 }
-            }
-        } receiveValue: { loginResponse in
-            self.saveToken(response: loginResponse)
+            } receiveValue: { login in
+                self.saveToken(response: login)
 
-            self.uiState = .success
-        }
+                self.uiState = .success
+            }
     }
 
     deinit {
@@ -50,14 +52,10 @@ class LoginViewModel: ObservableObject {
     func login(username: String, password: String) async {
         uiState = .loading
 
-        let response = await NetworkManager.shared
-            .performRequest(
-                responseType: LoginResponse.self,
-                endpoint: .login(data: LoginRequest(username: username, password: password))
-            )
+        let result = await repository.login(login: Login(username: username, password: password))
 
-        if let response = response {
-            publisher.send(response)
+        if let result = result {
+            publisher.send(result)
         } else {
             publisher.send(completion: .failure(.invalidUsernameOrPassword("Usuário ou senha inválidos")))
         }
@@ -65,18 +63,24 @@ class LoginViewModel: ObservableObject {
 
     // MARK: Private
 
+    @Injected(RepositoryContainer.loginRepository) private var repository
+
     private var cancellable: AnyCancellable?
 
-    private let publisher = PassthroughSubject<LoginResponse?, LoginError>()
+    private let publisher = PassthroughSubject<Login?, LoginError>()
 
-    private func saveToken(response: LoginResponse?) {
-        if let session = response {
+    private func saveToken(response: Login?) {
+        if let session = response,
+           let id = session.id,
+           let accessToken = session.accessToken,
+           let refreshToken = session.refreshToken,
+           let expiresIn = session.expiresIn {
             let dateFormatter = ISO8601DateFormatter()
 
-            KeychainDataSource.id.set(session.id)
-            KeychainDataSource.accessToken.set(session.accessToken)
-            KeychainDataSource.refreshToken.set(session.refreshToken)
-            KeychainDataSource.expiresIn.set(dateFormatter.string(from: session.expiresIn))
+            KeychainDataSource.id.set(id)
+            KeychainDataSource.accessToken.set(accessToken)
+            KeychainDataSource.refreshToken.set(refreshToken)
+            KeychainDataSource.expiresIn.set(dateFormatter.string(from: expiresIn))
         } else {
             KeychainDataSource.clear()
         }
