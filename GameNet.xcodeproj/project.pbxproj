@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A51AA6A42899539A0081AE4B /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = A51AA6A32899539A0081AE4B /* Factory */; };
+		A51AA6A62899543F0081AE4B /* GameNetApp+RepositoryInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6A52899543F0081AE4B /* GameNetApp+RepositoryInjection.swift */; };
+		A51AA6A8289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6A7289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift */; };
+		A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6AA289955140081AE4B /* LoginDataSource.swift */; };
+		A51AA6AE289955540081AE4B /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6AD289955540081AE4B /* Login.swift */; };
+		A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955B2899576A003C13A3 /* LoginRepository.swift */; };
+		A56D955F289958B2003C13A3 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955E289958B2003C13A3 /* RequestError.swift */; };
 		A57185C5286793D600655B31 /* GameNetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185C4286793D600655B31 /* GameNetApp.swift */; };
 		A57185C7286793D600655B31 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185C6286793D600655B31 /* LoginView.swift */; };
 		A57185C9286793D700655B31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A57185C8286793D700655B31 /* Assets.xcassets */; };
@@ -22,6 +29,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A51AA6A52899543F0081AE4B /* GameNetApp+RepositoryInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameNetApp+RepositoryInjection.swift"; sourceTree = "<group>"; };
+		A51AA6A7289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameNetApp+DataSourceInjection.swift"; sourceTree = "<group>"; };
+		A51AA6AA289955140081AE4B /* LoginDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDataSource.swift; sourceTree = "<group>"; };
+		A51AA6AD289955540081AE4B /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		A56D955B2899576A003C13A3 /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
+		A56D955E289958B2003C13A3 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
 		A57185C1286793D600655B31 /* GameNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A57185C4286793D600655B31 /* GameNetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNetApp.swift; sourceTree = "<group>"; };
 		A57185C6286793D600655B31 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -44,12 +57,45 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5E48A1A2895B2450037023C /* GameNet.Network in Frameworks */,
+				A51AA6A42899539A0081AE4B /* Factory in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A51AA6A9289955030081AE4B /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				A51AA6AA289955140081AE4B /* LoginDataSource.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		A51AA6AC289955490081AE4B /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A51AA6AD289955540081AE4B /* Login.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		A56D955A28995760003C13A3 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				A56D955B2899576A003C13A3 /* LoginRepository.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		A56D955D289958A9003C13A3 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				A56D955E289958B2003C13A3 /* RequestError.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
 		A57185B8286793D600655B31 = {
 			isa = PBXGroup;
 			children = (
@@ -109,6 +155,8 @@
 		A5E48A022895ABC60037023C /* DataProviders */ = {
 			isa = PBXGroup;
 			children = (
+				A56D955D289958A9003C13A3 /* Entities */,
+				A51AA6A9289955030081AE4B /* DataSources */,
 				A5E48A102895ACEC0037023C /* Repositories */,
 			);
 			path = DataProviders;
@@ -203,6 +251,7 @@
 		A5E48A0E2895ACCE0037023C /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				A51AA6AC289955490081AE4B /* Login */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -210,6 +259,8 @@
 		A5E48A0F2895ACD80037023C /* DI */ = {
 			isa = PBXGroup;
 			children = (
+				A51AA6A52899543F0081AE4B /* GameNetApp+RepositoryInjection.swift */,
+				A51AA6A7289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift */,
 			);
 			path = DI;
 			sourceTree = "<group>";
@@ -217,6 +268,7 @@
 		A5E48A102895ACEC0037023C /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				A56D955A28995760003C13A3 /* Login */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -272,6 +324,7 @@
 			name = GameNet;
 			packageProductDependencies = (
 				A5E48A192895B2450037023C /* GameNet.Network */,
+				A51AA6A32899539A0081AE4B /* Factory */,
 			);
 			productName = GameNet;
 			productReference = A57185C1286793D600655B31 /* GameNet.app */;
@@ -303,6 +356,7 @@
 			mainGroup = A57185B8286793D600655B31;
 			packageReferences = (
 				A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */,
+				A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */,
 			);
 			productRefGroup = A57185C2286793D600655B31 /* Products */;
 			projectDirPath = "";
@@ -332,10 +386,16 @@
 			files = (
 				A57185C7286793D600655B31 /* LoginView.swift in Sources */,
 				A5E48A002895901C0037023C /* HomeViewModel.swift in Sources */,
+				A51AA6AE289955540081AE4B /* Login.swift in Sources */,
+				A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */,
 				A5E489F528958EE80037023C /* LoginUIState.swift in Sources */,
+				A51AA6A62899543F0081AE4B /* GameNetApp+RepositoryInjection.swift in Sources */,
+				A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */,
 				A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */,
 				A57185C5286793D600655B31 /* GameNetApp.swift in Sources */,
 				A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */,
+				A51AA6A8289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift in Sources */,
+				A56D955F289958B2003C13A3 /* RequestError.swift in Sources */,
 				A5E489FE289590120037023C /* HomeView.swift in Sources */,
 				A57185D52867953F00655B31 /* Color.swift in Sources */,
 				A5E489F928958F4F0037023C /* LoginViewModel.swift in Sources */,
@@ -547,6 +607,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Factory";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/allistoncarlos/GameNet.Network";
@@ -558,6 +626,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A51AA6A32899539A0081AE4B /* Factory */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = Factory;
+		};
 		A5E48A192895B2450037023C /* GameNet.Network */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */;
