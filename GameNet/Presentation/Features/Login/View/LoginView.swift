@@ -45,6 +45,7 @@ struct LoginView: View {
                     }
                     .navigationTitle("Login")
                 }
+                .navigationViewStyle(.stack)
 
                 if case let LoginUIState.error(error) = viewModel.uiState {
                     Text("")
