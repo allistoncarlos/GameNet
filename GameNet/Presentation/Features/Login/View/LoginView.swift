@@ -10,6 +10,8 @@ import SwiftUI
 // MARK: - LoginView
 
 struct LoginView: View {
+    // MARK: Internal
+
     @State var username: String = ""
     @State var password: String = ""
 
@@ -60,6 +62,10 @@ struct LoginView: View {
             }
         }
     }
+
+    // MARK: Private
+
+    @State private var number: Int = 1
 }
 
 // MARK: - LoginView_Previews
