@@ -7,11 +7,19 @@
 
 import SwiftUI
 
+// MARK: - GamesView
+
 struct GamesView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+                .navigationBarTitle("Games")
+                .statusBarStyle(color: .main)
+        }
     }
 }
+
+// MARK: - GamesView_Previews
 
 struct GamesView_Previews: PreviewProvider {
     static var previews: some View {
