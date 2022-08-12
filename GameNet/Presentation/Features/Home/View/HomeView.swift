@@ -28,6 +28,7 @@ struct HomeView: View {
                 .tabItem {
                     Label("Dashboard", systemImage: "display")
                 }
+                .navigationBarTitle("Test", displayMode: .inline)
 
             GamesView()
                 .tabItem {
@@ -45,6 +46,7 @@ struct HomeView: View {
                 }
         }
         .foregroundColor(.accentColor)
+        .navigationViewStyle(.stack)
     }
 }
 
