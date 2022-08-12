@@ -7,14 +7,24 @@
 
 import SwiftUI
 
+// MARK: - DashboardView
+
 struct DashboardView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+                .navigationBarTitle("Dashboard")
+                .statusBarStyle(color: .main)
+        }
     }
 }
 
+// MARK: - DashboardView_Previews
+
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
-        DashboardView()
+        ForEach(ColorScheme.allCases, id: \.self) {
+            DashboardView().preferredColorScheme($0)
+        }
     }
 }
