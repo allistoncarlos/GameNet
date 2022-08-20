@@ -37,13 +37,28 @@ extension DashboardView {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.primaryCardBackground)
 
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 15) {
                 VStack {
                     Text("Jogando")
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                        .font(.cardTitle)
+                }
+
+                VStack(alignment: .leading) {
+                    Text("Doom Troopers")
+                        .font(.dashboardGameTitle)
+                    Text("16/01/2022")
+                        .font(.dashboardGameSubtitle)
+                }
+
+                VStack(alignment: .leading) {
+                    Text("The Legend of Zelda: Breath of the Wild")
+                        .font(.dashboardGameTitle)
+                    Text("11/10/2021")
+                        .font(.dashboardGameSubtitle)
                 }
             }
             .padding()
-            .padding(.trailing, 55)
         }
         .padding()
     }
@@ -55,13 +70,24 @@ extension DashboardView {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.secondaryCardBackground)
 
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 5) {
                 VStack {
                     Text("486 Jogos")
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                        .font(.cardTitle)
+                }
+
+                Text("R$ 9.153,87")
+                    .font(.dashboardGameSubtitle)
+
+                VStack(alignment: .leading) {
+                    Text("271 Digitais")
+                        .font(.dashboardGameTitle)
+                    Text("111 Físicos")
+                        .font(.dashboardGameTitle)
                 }
             }
             .padding()
-            .padding(.trailing, 55)
         }
         .padding()
     }
@@ -73,13 +99,80 @@ extension DashboardView {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.tertiaryCardBackground)
 
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 15) {
                 VStack {
-                    Text("Jogando")
+                    Text("Finalizados por Ano")
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                        .font(.cardTitle)
+                }
+
+                VStack(alignment: .leading) {
+                    HStack(spacing: 20) {
+                        Text("03")
+                            .font(.dashboardGameTitle)
+                        Text("2022")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("03")
+                            .font(.dashboardGameTitle)
+                        Text("2022")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("07")
+                            .font(.dashboardGameTitle)
+                        Text("2021")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("07")
+                            .font(.dashboardGameTitle)
+                        Text("2020")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("04")
+                            .font(.dashboardGameTitle)
+                        Text("2019")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("10")
+                            .font(.dashboardGameTitle)
+                        Text("2018")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("07")
+                            .font(.dashboardGameTitle)
+                        Text("2017")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("14")
+                            .font(.dashboardGameTitle)
+                        Text("2016")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
                 }
             }
             .padding()
-            .padding(.trailing, 55)
         }
         .padding()
     }
@@ -91,13 +184,80 @@ extension DashboardView {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.tertiaryCardBackground)
 
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 15) {
                 VStack {
-                    Text("Jogando")
+                    Text("Comprados por Ano")
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                        .font(.cardTitle)
+                }
+
+                VStack(alignment: .leading) {
+                    HStack(spacing: 20) {
+                        Text("03")
+                            .font(.dashboardGameTitle)
+                        Text("2022")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("03")
+                            .font(.dashboardGameTitle)
+                        Text("2022")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("07")
+                            .font(.dashboardGameTitle)
+                        Text("2021")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("07")
+                            .font(.dashboardGameTitle)
+                        Text("2020")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("04")
+                            .font(.dashboardGameTitle)
+                        Text("2019")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("10")
+                            .font(.dashboardGameTitle)
+                        Text("2018")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("07")
+                            .font(.dashboardGameTitle)
+                        Text("2017")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("14")
+                            .font(.dashboardGameTitle)
+                        Text("2016")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
                 }
             }
             .padding()
-            .padding(.trailing, 55)
         }
         .padding()
     }
@@ -109,13 +269,80 @@ extension DashboardView {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.tertiaryCardBackground)
 
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 15) {
                 VStack {
-                    Text("Jogando")
+                    Text("Jogos por Plataforma")
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                        .font(.cardTitle)
+                }
+
+                VStack(alignment: .leading, spacing: 5) {
+                    HStack(spacing: 20) {
+                        Text("83")
+                            .font(.dashboardGameTitle)
+                        Text("Playstation 4")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("12")
+                            .font(.dashboardGameTitle)
+                        Text("Nintendo WiiU (Virtual Console)")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("18")
+                            .font(.dashboardGameTitle)
+                        Text("Nintendo WiiU")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("47")
+                            .font(.dashboardGameTitle)
+                        Text("PlayStation Vita")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("03")
+                            .font(.dashboardGameTitle)
+                        Text("Nintendo 3DS (3D Classics)")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("18")
+                            .font(.dashboardGameTitle)
+                        Text("Nintendo 3DS")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("08")
+                            .font(.dashboardGameTitle)
+                        Text("Nintendo 3DS (Virtual Console)")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
+
+                    HStack(spacing: 20) {
+                        Text("38")
+                            .font(.dashboardGameTitle)
+                        Text("Nintendo Wii")
+                            .font(.dashboardGameTitle)
+                        Spacer()
+                    }
                 }
             }
             .padding()
-            .padding(.trailing, 55)
         }
         .padding()
     }
