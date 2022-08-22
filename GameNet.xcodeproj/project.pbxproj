@@ -28,6 +28,9 @@
 		A56DB66328B3BAE000614046 /* DashboardDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66228B3BAE000614046 /* DashboardDataSourceTests.swift */; };
 		A56DB66528B3BB2600614046 /* DashboardDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66428B3BB2600614046 /* DashboardDataSource.swift */; };
 		A56DB66728B3BD1600614046 /* MockDashboardDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66628B3BD1600614046 /* MockDashboardDataSource.swift */; };
+		A56DB66A28B3C1AC00614046 /* DashboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66928B3C1AC00614046 /* DashboardRepository.swift */; };
+		A56DB66C28B3C1B700614046 /* MockDashboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66B28B3C1B700614046 /* MockDashboardRepository.swift */; };
+		A56DB66F28B3C2B700614046 /* DashboardRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66E28B3C2B700614046 /* DashboardRepositoryTests.swift */; };
 		A57185C5286793D600655B31 /* GameNetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185C4286793D600655B31 /* GameNetApp.swift */; };
 		A57185C7286793D600655B31 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185C6286793D600655B31 /* LoginView.swift */; };
 		A57185C9286793D700655B31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A57185C8286793D700655B31 /* Assets.xcassets */; };
@@ -79,6 +82,9 @@
 		A56DB66228B3BAE000614046 /* DashboardDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDataSourceTests.swift; sourceTree = "<group>"; };
 		A56DB66428B3BB2600614046 /* DashboardDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDataSource.swift; sourceTree = "<group>"; };
 		A56DB66628B3BD1600614046 /* MockDashboardDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDashboardDataSource.swift; sourceTree = "<group>"; };
+		A56DB66928B3C1AC00614046 /* DashboardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRepository.swift; sourceTree = "<group>"; };
+		A56DB66B28B3C1B700614046 /* MockDashboardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDashboardRepository.swift; sourceTree = "<group>"; };
+		A56DB66E28B3C2B700614046 /* DashboardRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRepositoryTests.swift; sourceTree = "<group>"; };
 		A57185C1286793D600655B31 /* GameNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A57185C4286793D600655B31 /* GameNetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNetApp.swift; sourceTree = "<group>"; };
 		A57185C6286793D600655B31 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -265,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				A5366177289987E500D52088 /* Login */,
+				A56DB66D28B3C2A100614046 /* Dashboard */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -312,6 +319,23 @@
 			isa = PBXGroup;
 			children = (
 				A56DB66228B3BAE000614046 /* DashboardDataSourceTests.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		A56DB66828B3C18C00614046 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				A56DB66928B3C1AC00614046 /* DashboardRepository.swift */,
+				A56DB66B28B3C1B700614046 /* MockDashboardRepository.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		A56DB66D28B3C2A100614046 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				A56DB66E28B3C2B700614046 /* DashboardRepositoryTests.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -541,6 +565,7 @@
 			isa = PBXGroup;
 			children = (
 				A56D955A28995760003C13A3 /* Login */,
+				A56DB66828B3C18C00614046 /* Dashboard */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -693,6 +718,7 @@
 				A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */,
 				A56DB66328B3BAE000614046 /* DashboardDataSourceTests.swift in Sources */,
 				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
+				A56DB66F28B3C2B700614046 /* DashboardRepositoryTests.swift in Sources */,
 				A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */,
 				A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */,
 				A536617B289987FB00D52088 /* LoginRepositoryTests.swift in Sources */,
@@ -711,6 +737,7 @@
 				A5B5D3DA289B091C004096F4 /* StatusBarStyleModifier.swift in Sources */,
 				A51AA6AE289955540081AE4B /* Login.swift in Sources */,
 				A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */,
+				A56DB66A28B3C1AC00614046 /* DashboardRepository.swift in Sources */,
 				A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */,
 				A5B5D3DC289B0933004096F4 /* View+Extensions.swift in Sources */,
 				A5E489F528958EE80037023C /* LoginUIState.swift in Sources */,
@@ -729,6 +756,7 @@
 				A5E489FE289590120037023C /* HomeView.swift in Sources */,
 				A57185D52867953F00655B31 /* Color.swift in Sources */,
 				A5E489F928958F4F0037023C /* LoginViewModel.swift in Sources */,
+				A56DB66C28B3C1B700614046 /* MockDashboardRepository.swift in Sources */,
 				A56DB66528B3BB2600614046 /* DashboardDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
