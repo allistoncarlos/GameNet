@@ -9,8 +9,13 @@ import SwiftUI
 
 enum LoginRouter {
     static func makeHomeView() -> some View {
-        let viewModel = HomeViewModel()
-        return HomeView(viewModel: viewModel)
+        let homeViewModel = HomeViewModel()
+        let dashboardViewModel = DashboardViewModel()
+
+        return HomeView(
+            homeViewModel: homeViewModel,
+            dashboardViewModel: dashboardViewModel
+        )
     }
 //    static func makeHomeView() -> some View {
 //        let viewModel = HomeViewModel()
