@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 03/08/22.
 //
 
+import Factory
 import SwiftUI
 
 // MARK: - DashboardView
@@ -16,19 +17,31 @@ struct DashboardView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: -20) {
-                    playingCard
+                    if viewModel.dashboard?.playingGames != nil {
+                        playingCard
+                    }
 
-                    physicalDigitalCard
+                    if viewModel.dashboard?.totalGames != nil {
+                        physicalDigitalCard
+                    }
 
-                    finishedByYearCard
+                    if viewModel.dashboard?.finishedByYear != nil {
+                        finishedByYearCard
+                    }
 
-                    boughtByYearCard
+                    if viewModel.dashboard?.boughtByYear != nil {
+                        boughtByYearCard
+                    }
 
-                    gamesByPlatformCard
+                    if viewModel.dashboard?.gamesByPlatform != nil {
+                        gamesByPlatformCard
+                    }
                 }
             }
             .navigationBarTitle("Dashboard")
             .statusBarStyle(color: .main)
+        }.task {
+            await viewModel.fetchData()
         }
     }
 }
@@ -46,18 +59,15 @@ extension DashboardView {
                         .font(.cardTitle)
                 }
 
-                VStack(alignment: .leading) {
-                    Text("Doom Troopers")
-                        .font(.dashboardGameTitle)
-                    Text("16/01/2022")
-                        .font(.dashboardGameSubtitle)
-                }
-
-                VStack(alignment: .leading) {
-                    Text("The Legend of Zelda: Breath of the Wild")
-                        .font(.dashboardGameTitle)
-                    Text("11/10/2021")
-                        .font(.dashboardGameSubtitle)
+                if let playingGames = viewModel.dashboard?.playingGames {
+                    ForEach(playingGames, id: \.id) { playingGame in
+                        VStack(alignment: .leading) {
+                            Text(playingGame.name)
+                                .font(.dashboardGameTitle)
+                            Text(playingGame.latestGameplaySession?.start.toFormattedString() ?? "")
+                                .font(.dashboardGameSubtitle)
+                        }
+                    }
                 }
             }
             .padding()
@@ -74,19 +84,25 @@ extension DashboardView {
 
             VStack(alignment: .leading, spacing: 5) {
                 VStack {
-                    Text("486 Jogos")
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                        .font(.cardTitle)
+                    if let totalGames = viewModel.dashboard?.totalGames {
+                        Text("\(totalGames) Jogos")
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                            .font(.cardTitle)
+                    }
                 }
 
-                Text("R$ 9.153,87")
-                    .font(.dashboardGameSubtitle)
+                if let formattedTotalPrice = viewModel.dashboard?.totalPrice?.toCurrencyString() {
+                    Text(formattedTotalPrice)
+                        .font(.dashboardGameSubtitle)
+                }
 
                 VStack(alignment: .leading) {
-                    Text("271 Digitais")
-                        .font(.dashboardGameTitle)
-                    Text("111 Físicos")
-                        .font(.dashboardGameTitle)
+                    if let digital = viewModel.dashboard?.physicalDigital?.digital, let physical = viewModel.dashboard?.physicalDigital?.physical {
+                        Text("\(digital) Digitais")
+                            .font(.dashboardGameTitle)
+                        Text("\(physical) Físicos")
+                            .font(.dashboardGameTitle)
+                    }
                 }
             }
             .padding()
@@ -109,68 +125,16 @@ extension DashboardView {
                 }
 
                 VStack(alignment: .leading) {
-                    HStack(spacing: 20) {
-                        Text("03")
-                            .font(.dashboardGameTitle)
-                        Text("2022")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("03")
-                            .font(.dashboardGameTitle)
-                        Text("2022")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("07")
-                            .font(.dashboardGameTitle)
-                        Text("2021")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("07")
-                            .font(.dashboardGameTitle)
-                        Text("2020")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("04")
-                            .font(.dashboardGameTitle)
-                        Text("2019")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("10")
-                            .font(.dashboardGameTitle)
-                        Text("2018")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("07")
-                            .font(.dashboardGameTitle)
-                        Text("2017")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("14")
-                            .font(.dashboardGameTitle)
-                        Text("2016")
-                            .font(.dashboardGameTitle)
-                        Spacer()
+                    if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
+                        ForEach(finishedGamesByYear, id: \.year) { finishedGame in
+                            HStack(spacing: 20) {
+                                Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
+                                    .font(.dashboardGameTitle)
+                                Text(String(finishedGame.year))
+                                    .font(.dashboardGameTitle)
+                                Spacer()
+                            }
+                        }
                     }
                 }
             }
@@ -194,68 +158,21 @@ extension DashboardView {
                 }
 
                 VStack(alignment: .leading) {
-                    HStack(spacing: 20) {
-                        Text("03")
-                            .font(.dashboardGameTitle)
-                        Text("2022")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
+                    VStack(alignment: .leading) {
+                        if let boughtByYear = viewModel.dashboard?.boughtByYear {
+                            ForEach(boughtByYear, id: \.year) { boughtGame in
+                                HStack(spacing: 20) {
+                                    if let boughtGameQuantity = boughtGame.quantity.toLeadingZerosString(decimalPlaces: 2) {
+                                        Text(boughtGameQuantity)
+                                            .font(.dashboardGameTitle)
+                                    }
 
-                    HStack(spacing: 20) {
-                        Text("03")
-                            .font(.dashboardGameTitle)
-                        Text("2022")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("07")
-                            .font(.dashboardGameTitle)
-                        Text("2021")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("07")
-                            .font(.dashboardGameTitle)
-                        Text("2020")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("04")
-                            .font(.dashboardGameTitle)
-                        Text("2019")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("10")
-                            .font(.dashboardGameTitle)
-                        Text("2018")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("07")
-                            .font(.dashboardGameTitle)
-                        Text("2017")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("14")
-                            .font(.dashboardGameTitle)
-                        Text("2016")
-                            .font(.dashboardGameTitle)
-                        Spacer()
+                                    Text(String(boughtGame.year))
+                                        .font(.dashboardGameTitle)
+                                    Spacer()
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -279,68 +196,16 @@ extension DashboardView {
                 }
 
                 VStack(alignment: .leading, spacing: 5) {
-                    HStack(spacing: 20) {
-                        Text("83")
-                            .font(.dashboardGameTitle)
-                        Text("Playstation 4")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("12")
-                            .font(.dashboardGameTitle)
-                        Text("Nintendo WiiU (Virtual Console)")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("18")
-                            .font(.dashboardGameTitle)
-                        Text("Nintendo WiiU")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("47")
-                            .font(.dashboardGameTitle)
-                        Text("PlayStation Vita")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("03")
-                            .font(.dashboardGameTitle)
-                        Text("Nintendo 3DS (3D Classics)")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("18")
-                            .font(.dashboardGameTitle)
-                        Text("Nintendo 3DS")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("08")
-                            .font(.dashboardGameTitle)
-                        Text("Nintendo 3DS (Virtual Console)")
-                            .font(.dashboardGameTitle)
-                        Spacer()
-                    }
-
-                    HStack(spacing: 20) {
-                        Text("38")
-                            .font(.dashboardGameTitle)
-                        Text("Nintendo Wii")
-                            .font(.dashboardGameTitle)
-                        Spacer()
+                    if let gamesByPlatform = viewModel.dashboard?.gamesByPlatform?.platforms {
+                        ForEach(gamesByPlatform, id: \.id) { gameByPlatform in
+                            HStack(spacing: 20) {
+                                Text(gameByPlatform.platformGamesTotal.toLeadingZerosString(decimalPlaces: 3))
+                                    .font(.dashboardGameTitle)
+                                Text(gameByPlatform.name)
+                                    .font(.dashboardGameTitle)
+                                Spacer()
+                            }
+                        }
                     }
                 }
             }
@@ -354,6 +219,8 @@ extension DashboardView {
 
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
+        let _ = RepositoryContainer.dashboardRepository.register(factory: { MockDashboardRepository() })
+
         ForEach(ColorScheme.allCases, id: \.self) {
             DashboardView(viewModel: DashboardViewModel()).preferredColorScheme($0)
         }
