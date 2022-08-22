@@ -21,6 +21,9 @@
 		A536617B289987FB00D52088 /* LoginRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617A289987FB00D52088 /* LoginRepositoryTests.swift */; };
 		A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617C2899883B00D52088 /* MockLoginRepository.swift */; };
 		A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661802899890300D52088 /* LoginViewModelTests.swift */; };
+		A56A95EE28B3E5E000CAAFFF /* DashboardResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95ED28B3E5E000CAAFFF /* DashboardResponseMock.swift */; };
+		A56A95F028B3FBD300CAAFFF /* DashboardUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95EF28B3FBD300CAAFFF /* DashboardUIState.swift */; };
+		A56A95F428B3FDAE00CAAFFF /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95F328B3FDAE00CAAFFF /* APIError.swift */; };
 		A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955B2899576A003C13A3 /* LoginRepository.swift */; };
 		A56D955F289958B2003C13A3 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955E289958B2003C13A3 /* RequestError.swift */; };
 		A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D956828996508003C13A3 /* LoginDataSourceTests.swift */; };
@@ -31,6 +34,7 @@
 		A56DB66A28B3C1AC00614046 /* DashboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66928B3C1AC00614046 /* DashboardRepository.swift */; };
 		A56DB66C28B3C1B700614046 /* MockDashboardRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66B28B3C1B700614046 /* MockDashboardRepository.swift */; };
 		A56DB66F28B3C2B700614046 /* DashboardRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66E28B3C2B700614046 /* DashboardRepositoryTests.swift */; };
+		A56DB67228B3C37200614046 /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB67128B3C37200614046 /* DashboardViewModelTests.swift */; };
 		A57185C5286793D600655B31 /* GameNetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185C4286793D600655B31 /* GameNetApp.swift */; };
 		A57185C7286793D600655B31 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185C6286793D600655B31 /* LoginView.swift */; };
 		A57185C9286793D700655B31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A57185C8286793D700655B31 /* Assets.xcassets */; };
@@ -74,6 +78,9 @@
 		A536617A289987FB00D52088 /* LoginRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepositoryTests.swift; sourceTree = "<group>"; };
 		A536617C2899883B00D52088 /* MockLoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginRepository.swift; sourceTree = "<group>"; };
 		A53661802899890300D52088 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
+		A56A95ED28B3E5E000CAAFFF /* DashboardResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardResponseMock.swift; sourceTree = "<group>"; };
+		A56A95EF28B3FBD300CAAFFF /* DashboardUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardUIState.swift; sourceTree = "<group>"; };
+		A56A95F328B3FDAE00CAAFFF /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		A56D955B2899576A003C13A3 /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
 		A56D955E289958B2003C13A3 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
 		A56D956628996508003C13A3 /* GameNetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameNetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +92,7 @@
 		A56DB66928B3C1AC00614046 /* DashboardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRepository.swift; sourceTree = "<group>"; };
 		A56DB66B28B3C1B700614046 /* MockDashboardRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDashboardRepository.swift; sourceTree = "<group>"; };
 		A56DB66E28B3C2B700614046 /* DashboardRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRepositoryTests.swift; sourceTree = "<group>"; };
+		A56DB67128B3C37200614046 /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
 		A57185C1286793D600655B31 /* GameNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A57185C4286793D600655B31 /* GameNetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNetApp.swift; sourceTree = "<group>"; };
 		A57185C6286793D600655B31 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -176,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				A5366179289987EE00D52088 /* Login */,
+				A56A95EC28B3E5D100CAAFFF /* Dashboard */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -208,6 +217,7 @@
 			isa = PBXGroup;
 			children = (
 				A536617F289988F700D52088 /* Login */,
+				A56DB67028B3C36700614046 /* Dashboard */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -218,6 +228,30 @@
 				A53661802899890300D52088 /* LoginViewModelTests.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		A56A95EC28B3E5D100CAAFFF /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				A56A95ED28B3E5E000CAAFFF /* DashboardResponseMock.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		A56A95F128B3FDA100CAAFFF /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A56A95F228B3FDA700CAAFFF /* Errors */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A56A95F228B3FDA700CAAFFF /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				A56A95F328B3FDAE00CAAFFF /* APIError.swift */,
+			);
+			path = Errors;
 			sourceTree = "<group>";
 		};
 		A56D955A28995760003C13A3 /* Login */ = {
@@ -286,6 +320,7 @@
 		A56DB65B28B3B93D00614046 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A56A95EF28B3FBD300CAAFFF /* DashboardUIState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -336,6 +371,14 @@
 			isa = PBXGroup;
 			children = (
 				A56DB66E28B3C2B700614046 /* DashboardRepositoryTests.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		A56DB67028B3C36700614046 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				A56DB67128B3C37200614046 /* DashboardViewModelTests.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -540,6 +583,7 @@
 			isa = PBXGroup;
 			children = (
 				A5E48A0E2895ACCE0037023C /* Entities */,
+				A56A95F128B3FDA100CAAFFF /* Shared */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -717,6 +761,8 @@
 				A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */,
 				A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */,
 				A56DB66328B3BAE000614046 /* DashboardDataSourceTests.swift in Sources */,
+				A56A95EE28B3E5E000CAAFFF /* DashboardResponseMock.swift in Sources */,
+				A56DB67228B3C37200614046 /* DashboardViewModelTests.swift in Sources */,
 				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
 				A56DB66F28B3C2B700614046 /* DashboardRepositoryTests.swift in Sources */,
 				A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */,
@@ -737,6 +783,8 @@
 				A5B5D3DA289B091C004096F4 /* StatusBarStyleModifier.swift in Sources */,
 				A51AA6AE289955540081AE4B /* Login.swift in Sources */,
 				A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */,
+				A56A95F428B3FDAE00CAAFFF /* APIError.swift in Sources */,
+				A56A95F028B3FBD300CAAFFF /* DashboardUIState.swift in Sources */,
 				A56DB66A28B3C1AC00614046 /* DashboardRepository.swift in Sources */,
 				A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */,
 				A5B5D3DC289B0933004096F4 /* View+Extensions.swift in Sources */,
