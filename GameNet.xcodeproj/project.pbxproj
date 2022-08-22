@@ -24,6 +24,10 @@
 		A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955B2899576A003C13A3 /* LoginRepository.swift */; };
 		A56D955F289958B2003C13A3 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955E289958B2003C13A3 /* RequestError.swift */; };
 		A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D956828996508003C13A3 /* LoginDataSourceTests.swift */; };
+		A56DB65F28B3B95900614046 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB65E28B3B95900614046 /* DashboardViewModel.swift */; };
+		A56DB66328B3BAE000614046 /* DashboardDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66228B3BAE000614046 /* DashboardDataSourceTests.swift */; };
+		A56DB66528B3BB2600614046 /* DashboardDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66428B3BB2600614046 /* DashboardDataSource.swift */; };
+		A56DB66728B3BD1600614046 /* MockDashboardDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66628B3BD1600614046 /* MockDashboardDataSource.swift */; };
 		A57185C5286793D600655B31 /* GameNetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185C4286793D600655B31 /* GameNetApp.swift */; };
 		A57185C7286793D600655B31 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185C6286793D600655B31 /* LoginView.swift */; };
 		A57185C9286793D700655B31 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A57185C8286793D700655B31 /* Assets.xcassets */; };
@@ -71,6 +75,10 @@
 		A56D955E289958B2003C13A3 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
 		A56D956628996508003C13A3 /* GameNetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameNetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A56D956828996508003C13A3 /* LoginDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDataSourceTests.swift; sourceTree = "<group>"; };
+		A56DB65E28B3B95900614046 /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
+		A56DB66228B3BAE000614046 /* DashboardDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDataSourceTests.swift; sourceTree = "<group>"; };
+		A56DB66428B3BB2600614046 /* DashboardDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDataSource.swift; sourceTree = "<group>"; };
+		A56DB66628B3BD1600614046 /* MockDashboardDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDashboardDataSource.swift; sourceTree = "<group>"; };
 		A57185C1286793D600655B31 /* GameNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A57185C4286793D600655B31 /* GameNetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNetApp.swift; sourceTree = "<group>"; };
 		A57185C6286793D600655B31 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -120,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				A53661662899677700D52088 /* Login */,
+				A56DB66028B3BAB200614046 /* Dashboard */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -239,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				A5366178289987E900D52088 /* Login */,
+				A56DB66128B3BACC00614046 /* Dashboard */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -257,6 +267,53 @@
 				A5366177289987E500D52088 /* Login */,
 			);
 			path = Repositories;
+			sourceTree = "<group>";
+		};
+		A56DB65A28B3B93600614046 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		A56DB65B28B3B93D00614046 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A56DB65C28B3B94000614046 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A56DB65E28B3B95900614046 /* DashboardViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A56DB65D28B3B94B00614046 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A5B5D3D1289AE2C4004096F4 /* DashboardView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A56DB66028B3BAB200614046 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				A56DB66428B3BB2600614046 /* DashboardDataSource.swift */,
+				A56DB66628B3BD1600614046 /* MockDashboardDataSource.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		A56DB66128B3BACC00614046 /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				A56DB66228B3BAE000614046 /* DashboardDataSourceTests.swift */,
+			);
+			path = Dashboard;
 			sourceTree = "<group>";
 		};
 		A57185B8286793D600655B31 = {
@@ -323,7 +380,10 @@
 		A5B5D3CD289AE1FD004096F4 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
-				A5B5D3D1289AE2C4004096F4 /* DashboardView.swift */,
+				A56DB65D28B3B94B00614046 /* View */,
+				A56DB65C28B3B94000614046 /* ViewModel */,
+				A56DB65B28B3B93D00614046 /* Model */,
+				A56DB65A28B3B93600614046 /* Router */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -631,6 +691,7 @@
 			files = (
 				A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */,
 				A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */,
+				A56DB66328B3BAE000614046 /* DashboardDataSourceTests.swift in Sources */,
 				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
 				A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */,
 				A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */,
@@ -643,6 +704,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A57185C7286793D600655B31 /* LoginView.swift in Sources */,
+				A56DB65F28B3B95900614046 /* DashboardViewModel.swift in Sources */,
 				A5B5D3D8289AE2E6004096F4 /* ListsView.swift in Sources */,
 				A5E48A002895901C0037023C /* HomeViewModel.swift in Sources */,
 				A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */,
@@ -656,6 +718,7 @@
 				A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */,
 				A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */,
 				A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */,
+				A56DB66728B3BD1600614046 /* MockDashboardDataSource.swift in Sources */,
 				A57185C5286793D600655B31 /* GameNetApp.swift in Sources */,
 				A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */,
 				A51AA6A8289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift in Sources */,
@@ -666,6 +729,7 @@
 				A5E489FE289590120037023C /* HomeView.swift in Sources */,
 				A57185D52867953F00655B31 /* Color.swift in Sources */,
 				A5E489F928958F4F0037023C /* LoginViewModel.swift in Sources */,
+				A56DB66528B3BB2600614046 /* DashboardDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

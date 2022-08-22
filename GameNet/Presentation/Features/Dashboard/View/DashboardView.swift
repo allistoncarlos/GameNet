@@ -10,6 +10,8 @@ import SwiftUI
 // MARK: - DashboardView
 
 struct DashboardView: View {
+    @ObservedObject var viewModel: DashboardViewModel
+
     var body: some View {
         NavigationView {
             ScrollView {
@@ -353,7 +355,7 @@ extension DashboardView {
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) {
-            DashboardView().preferredColorScheme($0)
+            DashboardView(viewModel: DashboardViewModel()).preferredColorScheme($0)
         }
     }
 }

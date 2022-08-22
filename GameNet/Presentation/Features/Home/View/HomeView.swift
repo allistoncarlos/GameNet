@@ -12,19 +12,24 @@ import SwiftUI
 struct HomeView: View {
     // MARK: Lifecycle
 
-    init(viewModel: HomeViewModel) {
-        self.viewModel = viewModel
+    init(
+        homeViewModel: HomeViewModel,
+        dashboardViewModel: DashboardViewModel
+    ) {
+        self.homeViewModel = homeViewModel
+        self.dashboardViewModel = dashboardViewModel
 
         UITabBar.appearance().backgroundColor = UIColor(.main)
     }
 
     // MARK: Internal
 
-    @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var homeViewModel: HomeViewModel
+    @ObservedObject var dashboardViewModel: DashboardViewModel
 
     var body: some View {
         TabView {
-            DashboardView()
+            DashboardView(viewModel: dashboardViewModel)
                 .tabItem {
                     Label("Dashboard", systemImage: "display")
                 }
@@ -55,7 +60,13 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) {
-            HomeView(viewModel: HomeViewModel()).preferredColorScheme($0)
+            let homeViewModel = HomeViewModel()
+            let dashboardViewModel = DashboardViewModel()
+
+            HomeView(
+                homeViewModel: homeViewModel,
+                dashboardViewModel: dashboardViewModel
+            ).preferredColorScheme($0)
         }
     }
 }
