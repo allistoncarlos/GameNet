@@ -1,8 +1,8 @@
 //
-//  DashboardViewModelTests.swift
+//  PlatformsViewModelTests.swift
 //  GameNetTests
 //
-//  Created by Alliston Aleixo on 22/08/22.
+//  Created by Alliston Aleixo on 23/08/22.
 //
 
 import Combine
@@ -11,7 +11,7 @@ import Factory
 import GameNet_Keychain
 import XCTest
 
-class DashboardViewModelTests: XCTestCase {
+class PlatformsViewModelTests: XCTestCase {
     // MARK: Internal
 
     override func setUp() async throws {
@@ -25,23 +25,23 @@ class DashboardViewModelTests: XCTestCase {
         KeychainDataSource.clear()
     }
 
-    func testDashboard_ValidData_ShouldReturnData() async {
+    func testPlatforms_ValidData_ShouldReturnAccessToken() async {
         // Given
-        let dashboardLoadedExpectation = expectation(description: "Dashboard Loaded")
-        let fakeJSONResponse = mock.fakeSuccessDashboardResponse
+        let platformsLoadedExpectation = expectation(description: "Platforms Loaded")
+        let fakeJSONResponse = mock.fakeSuccessPlatformsResponse
 
         stubRequests.stubJSONResponse(jsonObject: fakeJSONResponse, header: nil, statusCode: 200, absoluteStringWord: "gamenet.azurewebsites.net")
 
-        RepositoryContainer.dashboardRepository.register(factory: { MockDashboardRepository() })
+        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
         let cancellable = viewModel.$uiState
             .receive(on: RunLoop.main)
             .sink(receiveValue: { [weak self] uiState in
                 // Then
                 if self?.viewModel.uiState == .success {
-                    dashboardLoadedExpectation.fulfill()
+                    platformsLoadedExpectation.fulfill()
 
-                    XCTAssertNotNil(self?.viewModel.dashboard)
+                    XCTAssertNotNil(self?.viewModel.platforms)
                 }
             })
 
@@ -54,7 +54,7 @@ class DashboardViewModelTests: XCTestCase {
 
     // MARK: Private
 
-    private let mock = DashboardResponseMock()
+    private let mock = PlatformResponseMock()
     private let stubRequests = StubRequests()
-    private var viewModel = DashboardViewModel()
+    private var viewModel = PlatformsViewModel()
 }

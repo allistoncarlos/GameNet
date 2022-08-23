@@ -11,10 +11,12 @@ enum LoginRouter {
     static func makeHomeView() -> some View {
         let homeViewModel = HomeViewModel()
         let dashboardViewModel = DashboardViewModel()
+        let platformsViewModel = PlatformsViewModel()
 
         return HomeView(
             homeViewModel: homeViewModel,
-            dashboardViewModel: dashboardViewModel
+            dashboardViewModel: dashboardViewModel,
+            platformsViewModel: platformsViewModel
         )
     }
 //    static func makeHomeView() -> some View {

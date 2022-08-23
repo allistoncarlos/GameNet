@@ -18,6 +18,11 @@
 		A524F52528B5064C00A91627 /* PlatformRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52428B5064C00A91627 /* PlatformRepositoryTests.swift */; };
 		A524F52828B506E800A91627 /* PlatformRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52728B506E800A91627 /* PlatformRepository.swift */; };
 		A524F52A28B506F300A91627 /* MockPlatformRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52928B506F300A91627 /* MockPlatformRepository.swift */; };
+		A524F52D28B50BD300A91627 /* PlatformsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */; };
+		A524F53028B50D3C00A91627 /* PlatformResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52F28B50D3C00A91627 /* PlatformResponseMock.swift */; };
+		A524F53628B5105000A91627 /* PlatformsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53528B5105000A91627 /* PlatformsUIState.swift */; };
+		A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53728B5106B00A91627 /* PlatformsViewModel.swift */; };
+		A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53928B5484600A91627 /* NavigationViewModifier.swift */; };
 		A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661672899678000D52088 /* MockLoginDataSource.swift */; };
 		A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = A536616A2899820700D52088 /* OHHTTPStubs */; };
 		A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A536616C2899820700D52088 /* OHHTTPStubsSwift */; };
@@ -54,7 +59,6 @@
 		A5B5D3D4289AE2D5004096F4 /* GamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D3289AE2D5004096F4 /* GamesView.swift */; };
 		A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */; };
 		A5B5D3D8289AE2E6004096F4 /* ListsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D7289AE2E5004096F4 /* ListsView.swift */; };
-		A5B5D3DA289B091C004096F4 /* StatusBarStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D9289B091C004096F4 /* StatusBarStyleModifier.swift */; };
 		A5B5D3DC289B0933004096F4 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3DB289B0933004096F4 /* View+Extensions.swift */; };
 		A5E489F528958EE80037023C /* LoginUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F428958EE80037023C /* LoginUIState.swift */; };
 		A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F628958F0A0037023C /* LoginRouter.swift */; };
@@ -85,6 +89,11 @@
 		A524F52428B5064C00A91627 /* PlatformRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformRepositoryTests.swift; sourceTree = "<group>"; };
 		A524F52728B506E800A91627 /* PlatformRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformRepository.swift; sourceTree = "<group>"; };
 		A524F52928B506F300A91627 /* MockPlatformRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPlatformRepository.swift; sourceTree = "<group>"; };
+		A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsViewModelTests.swift; sourceTree = "<group>"; };
+		A524F52F28B50D3C00A91627 /* PlatformResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformResponseMock.swift; sourceTree = "<group>"; };
+		A524F53528B5105000A91627 /* PlatformsUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsUIState.swift; sourceTree = "<group>"; };
+		A524F53728B5106B00A91627 /* PlatformsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsViewModel.swift; sourceTree = "<group>"; };
+		A524F53928B5484600A91627 /* NavigationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewModifier.swift; sourceTree = "<group>"; };
 		A53661672899678000D52088 /* MockLoginDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginDataSource.swift; sourceTree = "<group>"; };
 		A536616F2899828700D52088 /* LoginNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkTests.swift; sourceTree = "<group>"; };
 		A53661722899837B00D52088 /* StubRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubRequests.swift; sourceTree = "<group>"; };
@@ -121,7 +130,6 @@
 		A5B5D3D3289AE2D5004096F4 /* GamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesView.swift; sourceTree = "<group>"; };
 		A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsView.swift; sourceTree = "<group>"; };
 		A5B5D3D7289AE2E5004096F4 /* ListsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsView.swift; sourceTree = "<group>"; };
-		A5B5D3D9289B091C004096F4 /* StatusBarStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarStyleModifier.swift; sourceTree = "<group>"; };
 		A5B5D3DB289B0933004096F4 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		A5D2C23C2896B676007C28AC /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A5D2C23D2896B823007C28AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -206,6 +214,53 @@
 			path = Platform;
 			sourceTree = "<group>";
 		};
+		A524F52B28B50BC100A91627 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */,
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		A524F52E28B50D2D00A91627 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A524F52F28B50D3C00A91627 /* PlatformResponseMock.swift */,
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		A524F53128B50FED00A91627 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		A524F53228B5101A00A91627 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A524F53528B5105000A91627 /* PlatformsUIState.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A524F53328B5101E00A91627 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A524F53728B5106B00A91627 /* PlatformsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A524F53428B5102500A91627 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		A53661662899677700D52088 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -236,6 +291,7 @@
 			children = (
 				A5366179289987EE00D52088 /* Login */,
 				A56A95EC28B3E5D100CAAFFF /* Dashboard */,
+				A524F52E28B50D2D00A91627 /* Platform */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -269,6 +325,7 @@
 			children = (
 				A536617F289988F700D52088 /* Login */,
 				A56DB67028B3C36700614046 /* Dashboard */,
+				A524F52B28B50BC100A91627 /* Platform */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -521,7 +578,10 @@
 		A5B5D3CF289AE27F004096F4 /* Platforms */ = {
 			isa = PBXGroup;
 			children = (
-				A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */,
+				A524F53428B5102500A91627 /* View */,
+				A524F53328B5101E00A91627 /* ViewModel */,
+				A524F53228B5101A00A91627 /* Model */,
+				A524F53128B50FED00A91627 /* Router */,
 			);
 			path = Platforms;
 			sourceTree = "<group>";
@@ -537,7 +597,7 @@
 		A5B5D3DD289B0ACF004096F4 /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
-				A5B5D3D9289B091C004096F4 /* StatusBarStyleModifier.swift */,
+				A524F53928B5484600A91627 /* NavigationViewModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -822,6 +882,8 @@
 				A56A95EE28B3E5E000CAAFFF /* DashboardResponseMock.swift in Sources */,
 				A56DB67228B3C37200614046 /* DashboardViewModelTests.swift in Sources */,
 				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
+				A524F52D28B50BD300A91627 /* PlatformsViewModelTests.swift in Sources */,
+				A524F53028B50D3C00A91627 /* PlatformResponseMock.swift in Sources */,
 				A56DB66F28B3C2B700614046 /* DashboardRepositoryTests.swift in Sources */,
 				A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */,
 				A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */,
@@ -839,7 +901,8 @@
 				A5B5D3D8289AE2E6004096F4 /* ListsView.swift in Sources */,
 				A5E48A002895901C0037023C /* HomeViewModel.swift in Sources */,
 				A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */,
-				A5B5D3DA289B091C004096F4 /* StatusBarStyleModifier.swift in Sources */,
+				A524F53628B5105000A91627 /* PlatformsUIState.swift in Sources */,
+				A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */,
 				A51AA6AE289955540081AE4B /* Login.swift in Sources */,
 				A524F52228B4FC1100A91627 /* MockPlatformDataSource.swift in Sources */,
 				A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */,
@@ -856,6 +919,7 @@
 				A524F52828B506E800A91627 /* PlatformRepository.swift in Sources */,
 				A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */,
 				A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */,
+				A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */,
 				A524F52A28B506F300A91627 /* MockPlatformRepository.swift in Sources */,
 				A56DB66728B3BD1600614046 /* MockDashboardDataSource.swift in Sources */,
 				A57185C5286793D600655B31 /* GameNetApp.swift in Sources */,

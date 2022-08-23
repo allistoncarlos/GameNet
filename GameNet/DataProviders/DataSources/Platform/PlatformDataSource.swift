@@ -22,11 +22,13 @@ class PlatformDataSource: PlatformDataSourceProtocol {
     func fetchData() async -> [Platform]? {
         if let apiResult = await NetworkManager.shared
             .performRequest(
-                responseType: APIResult<[PlatformResponse]>.self,
+                responseType: APIResult<PagedResult<PlatformResponse>>.self,
                 endpoint: .platforms
             ) {
             if apiResult.ok {
-                return apiResult.data.map { $0.toPlatform() }
+                return apiResult.data.result
+                    .compactMap { $0.toPlatform() }
+                    .sorted(by: { $1.name.uppercased() > $0.name.uppercased() })
             }
         }
 
