@@ -11,8 +11,6 @@ import GameNet_Network
 import XCTest
 
 class LoginDataSourceTests: XCTestCase {
-    var repository = DataSourceContainer.loginDataSource()
-
     override func setUp() async throws {
         Container.Registrations.reset()
         Container.Scope.reset()
