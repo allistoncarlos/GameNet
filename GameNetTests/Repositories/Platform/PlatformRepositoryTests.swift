@@ -1,5 +1,5 @@
 //
-//  PlatformDataSourceTest.swift
+//  PlatformRepositoryTests.swift
 //  GameNetTests
 //
 //  Created by Alliston Aleixo on 23/08/22.
@@ -10,20 +10,20 @@ import Factory
 import GameNet_Network
 import XCTest
 
-class PlatformDataSourceTests: XCTestCase {
+class PlatformRepositoryTests: XCTestCase {
     override func setUp() async throws {
         Container.Registrations.reset()
         Container.Scope.reset()
 
-        MockPlatformDataSource.reset()
+        MockPlatformRepository.reset()
     }
 
-    func testPlatform_FetchData_ShouldReturnValidData() async {
+    func testPlatform_ValidData_ShouldFetchValidData() async {
         // Given
-        DataSourceContainer.platformDataSource.register(factory: { MockPlatformDataSource() })
+        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
         // When
-        let result = await DataSourceContainer.platformDataSource().fetchData()
+        let result = await RepositoryContainer.platformRepository().fetchData()
 
         // Then
         XCTAssertNotNil(result)
@@ -33,10 +33,10 @@ class PlatformDataSourceTests: XCTestCase {
     func testPlatform_FetchByValidId_ShouldReturnValidData() async {
         // Given
         let platformId = "1"
-        DataSourceContainer.platformDataSource.register(factory: { MockPlatformDataSource() })
+        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
         // When
-        let result = await DataSourceContainer.platformDataSource().fetchData(id: platformId)
+        let result = await RepositoryContainer.platformRepository().fetchData(id: platformId)
 
         // Then
         XCTAssertNotNil(result)
@@ -45,10 +45,10 @@ class PlatformDataSourceTests: XCTestCase {
     func testPlatform_FetchByInvalidId_ShouldntReturnData() async {
         // Given
         let platformId = "3"
-        DataSourceContainer.platformDataSource.register(factory: { MockPlatformDataSource() })
+        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
         // When
-        let result = await DataSourceContainer.platformDataSource().fetchData(id: platformId)
+        let result = await RepositoryContainer.platformRepository().fetchData(id: platformId)
 
         // Then
         XCTAssertNil(result)
@@ -56,31 +56,31 @@ class PlatformDataSourceTests: XCTestCase {
 
     func testPlatform_SaveNewData_ShouldSave() async {
         // Given
-        DataSourceContainer.platformDataSource.register(factory: { MockPlatformDataSource() })
+        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
         let platformName = "PlayStation 4"
-        let dataSourceContainer = DataSourceContainer.platformDataSource()
+        let repositoryContainer = RepositoryContainer.platformRepository()
 
         // When
-        let result = await dataSourceContainer.savePlatform(id: nil, platform: Platform(id: nil, name: platformName))
+        let result = await repositoryContainer.savePlatform(id: nil, platform: Platform(id: nil, name: platformName))
 
         // Then
         XCTAssertNotNil(result)
 
         if let id = result?.id {
-            let fetchedPlatformResult = await dataSourceContainer.fetchData(id: id)
+            let fetchedPlatformResult = await repositoryContainer.fetchData(id: id)
             XCTAssertNotNil(fetchedPlatformResult)
         }
     }
 
     func testPlatform_SaveExistingData_ShouldSave() async {
         // Given
-        DataSourceContainer.platformDataSource.register(factory: { MockPlatformDataSource() })
+        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
         let platformId = "1"
         let platformNewName = "Super Nintendo"
-        let dataSourceContainer = DataSourceContainer.platformDataSource()
-        let existingPlatform = await dataSourceContainer.fetchData(id: platformId)
+        let repositoryContainer = RepositoryContainer.platformRepository()
+        let existingPlatform = await repositoryContainer.fetchData(id: platformId)
 
         guard let existingPlatform = existingPlatform else {
             XCTFail()
@@ -89,13 +89,13 @@ class PlatformDataSourceTests: XCTestCase {
 
         // When
         let editedExistingPlatform = Platform(id: existingPlatform.id, name: platformNewName)
-        let result = await dataSourceContainer.savePlatform(id: platformId, platform: editedExistingPlatform)
+        let result = await repositoryContainer.savePlatform(id: platformId, platform: editedExistingPlatform)
 
         // Then
         XCTAssertNotNil(result)
 
         if let id = result?.id {
-            let fetchedPlatformResult = await DataSourceContainer.platformDataSource().fetchData(id: id)
+            let fetchedPlatformResult = await repositoryContainer.fetchData(id: id)
             XCTAssertNotNil(fetchedPlatformResult)
             XCTAssertEqual(platformNewName, fetchedPlatformResult?.name)
         }
