@@ -55,6 +55,11 @@
 		A57185D52867953F00655B31 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185D42867953F00655B31 /* Color.swift */; };
 		A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185D82867984400655B31 /* MainButtonStyle.swift */; };
 		A59DB73228B114EE009B7641 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59DB73128B114EE009B7641 /* Font.swift */; };
+		A59E763528B6ABD4003CBA3E /* EditPlatformViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763428B6ABD4003CBA3E /* EditPlatformViewModelTests.swift */; };
+		A59E763728B6AC65003CBA3E /* EditPlatformViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763628B6AC65003CBA3E /* EditPlatformViewModel.swift */; };
+		A59E763928B6AD46003CBA3E /* PlatformRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763828B6AD46003CBA3E /* PlatformRouter.swift */; };
+		A59E763B28B6AE1F003CBA3E /* EditPlatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763A28B6AE1F003CBA3E /* EditPlatformView.swift */; };
+		A59E763D28B6B331003CBA3E /* EditPlatformUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763C28B6B331003CBA3E /* EditPlatformUIState.swift */; };
 		A5B5D3D2289AE2C4004096F4 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D1289AE2C4004096F4 /* DashboardView.swift */; };
 		A5B5D3D4289AE2D5004096F4 /* GamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D3289AE2D5004096F4 /* GamesView.swift */; };
 		A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */; };
@@ -126,6 +131,11 @@
 		A57185D42867953F00655B31 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		A57185D82867984400655B31 /* MainButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButtonStyle.swift; sourceTree = "<group>"; };
 		A59DB73128B114EE009B7641 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		A59E763428B6ABD4003CBA3E /* EditPlatformViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformViewModelTests.swift; sourceTree = "<group>"; };
+		A59E763628B6AC65003CBA3E /* EditPlatformViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformViewModel.swift; sourceTree = "<group>"; };
+		A59E763828B6AD46003CBA3E /* PlatformRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformRouter.swift; sourceTree = "<group>"; };
+		A59E763A28B6AE1F003CBA3E /* EditPlatformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformView.swift; sourceTree = "<group>"; };
+		A59E763C28B6B331003CBA3E /* EditPlatformUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformUIState.swift; sourceTree = "<group>"; };
 		A5B5D3D1289AE2C4004096F4 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		A5B5D3D3289AE2D5004096F4 /* GamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesView.swift; sourceTree = "<group>"; };
 		A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsView.swift; sourceTree = "<group>"; };
@@ -218,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */,
+				A59E763428B6ABD4003CBA3E /* EditPlatformViewModelTests.swift */,
 			);
 			path = Platform;
 			sourceTree = "<group>";
@@ -233,6 +244,7 @@
 		A524F53128B50FED00A91627 /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				A59E763828B6AD46003CBA3E /* PlatformRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -241,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				A524F53528B5105000A91627 /* PlatformsUIState.swift */,
+				A59E763C28B6B331003CBA3E /* EditPlatformUIState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -249,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				A524F53728B5106B00A91627 /* PlatformsViewModel.swift */,
+				A59E763628B6AC65003CBA3E /* EditPlatformViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -257,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */,
+				A59E763A28B6AE1F003CBA3E /* EditPlatformView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -884,6 +899,7 @@
 				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
 				A524F52D28B50BD300A91627 /* PlatformsViewModelTests.swift in Sources */,
 				A524F53028B50D3C00A91627 /* PlatformResponseMock.swift in Sources */,
+				A59E763528B6ABD4003CBA3E /* EditPlatformViewModelTests.swift in Sources */,
 				A56DB66F28B3C2B700614046 /* DashboardRepositoryTests.swift in Sources */,
 				A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */,
 				A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */,
@@ -900,6 +916,7 @@
 				A56DB65F28B3B95900614046 /* DashboardViewModel.swift in Sources */,
 				A5B5D3D8289AE2E6004096F4 /* ListsView.swift in Sources */,
 				A5E48A002895901C0037023C /* HomeViewModel.swift in Sources */,
+				A59E763728B6AC65003CBA3E /* EditPlatformViewModel.swift in Sources */,
 				A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */,
 				A524F53628B5105000A91627 /* PlatformsUIState.swift in Sources */,
 				A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */,
@@ -917,14 +934,17 @@
 				A51AA6A62899543F0081AE4B /* GameNetApp+RepositoryInjection.swift in Sources */,
 				A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */,
 				A524F52828B506E800A91627 /* PlatformRepository.swift in Sources */,
+				A59E763D28B6B331003CBA3E /* EditPlatformUIState.swift in Sources */,
 				A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */,
 				A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */,
 				A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */,
 				A524F52A28B506F300A91627 /* MockPlatformRepository.swift in Sources */,
+				A59E763B28B6AE1F003CBA3E /* EditPlatformView.swift in Sources */,
 				A56DB66728B3BD1600614046 /* MockDashboardDataSource.swift in Sources */,
 				A57185C5286793D600655B31 /* GameNetApp.swift in Sources */,
 				A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */,
 				A51AA6A8289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift in Sources */,
+				A59E763928B6AD46003CBA3E /* PlatformRouter.swift in Sources */,
 				A5B5D3D2289AE2C4004096F4 /* DashboardView.swift in Sources */,
 				A5B5D3D4289AE2D5004096F4 /* GamesView.swift in Sources */,
 				A56D955F289958B2003C13A3 /* RequestError.swift in Sources */,

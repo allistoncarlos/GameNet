@@ -20,7 +20,9 @@ struct PlatformsView: View {
                 } else {
                     if let platforms = viewModel.platforms {
                         List(platforms, id: \.id) { platform in
-                            Text(platform.name)
+                            NavigationLink(destination: viewModel.editPlatformView(platform: platform)) {
+                                Text(platform.name)
+                            }
                         }
                     }
                 }
@@ -28,7 +30,9 @@ struct PlatformsView: View {
             .navigationView(title: "Platforms")
             .toolbar {
                 Button(action: {}) {
-                    Image(systemName: "plus")
+                    NavigationLink(destination: viewModel.editPlatformView()) {
+                        Image(systemName: "plus")
+                    }
                 }
             }
         }

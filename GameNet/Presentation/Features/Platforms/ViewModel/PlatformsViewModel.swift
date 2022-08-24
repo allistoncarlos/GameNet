@@ -9,6 +9,9 @@ import Combine
 import Factory
 import Foundation
 import GameNet_Network
+import SwiftUI
+
+// MARK: - PlatformsViewModel
 
 class PlatformsViewModel: ObservableObject {
     // MARK: Lifecycle
@@ -62,4 +65,10 @@ class PlatformsViewModel: ObservableObject {
 
     @Injected(RepositoryContainer.platformRepository) private var repository
     private var cancellable: AnyCancellable?
+}
+
+extension PlatformsViewModel {
+    func editPlatformView(platform: Platform? = nil) -> some View {
+        return PlatformRouter.makeEditPlatformView(platform: platform)
+    }
 }
