@@ -14,7 +14,7 @@ struct GamesView: View {
         NavigationView {
             VStack {
                 Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-                    .statusBarStyle(title: "Games", color: .main)
+                    .navigationView(title: "Games")
 
                 Spacer()
             }

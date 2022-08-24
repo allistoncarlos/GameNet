@@ -7,27 +7,31 @@
 
 import SwiftUI
 
+// MARK: - NewNavigationViewModifier
+
 // TODO: iOS 16 - https://sarunw.com/posts/swiftui-navigation-bar-color/
 struct NavigationViewModifier: ViewModifier {
     let title: String?
     let color: Color
 
     func body(content: Content) -> some View {
-        content
-            .safeAreaInset(edge: .top) {
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        if let title = title {
-                            Text(title)
-                                .font(.largeTitle.weight(.bold))
-                        }
-                        Spacer()
-                    }
-                }
-                .padding(.top, 28)
-                .padding()
-                .background(color)
+        ZStack {
+            VStack {
+                color
+                    .frame(height: 148)
+                    .ignoresSafeArea(.container, edges: .top)
+
+                Spacer()
             }
-            .navigationBarHidden(true)
+
+            VStack {
+                Rectangle()
+                    .frame(height: 0)
+                    .background(color)
+
+                content
+            }
+            .navigationTitle(title ?? "")
+        }
     }
 }

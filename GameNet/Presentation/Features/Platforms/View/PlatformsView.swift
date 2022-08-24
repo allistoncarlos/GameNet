@@ -14,35 +14,21 @@ struct PlatformsView: View {
 
     var body: some View {
         NavigationView {
-            ZStack {
-                VStack {
-                    Color.main
-                        .frame(height: 148)
-                        .ignoresSafeArea(.container, edges: .top)
-
-                    Spacer()
-                }
-
-                VStack {
-                    Rectangle()
-                        .frame(height: 0)
-                        .background(Color.main)
-
-                    if viewModel.uiState == .loading {
-                        ProgressView()
-                    } else {
-                        if let platforms = viewModel.platforms {
-                            List(platforms, id: \.id) { platform in
-                                Text(platform.name)
-                            }
+            VStack {
+                if viewModel.uiState == .loading {
+                    ProgressView()
+                } else {
+                    if let platforms = viewModel.platforms {
+                        List(platforms, id: \.id) { platform in
+                            Text(platform.name)
                         }
                     }
                 }
-                .navigationTitle("Platforms")
-                .toolbar {
-                    Button(action: {}) {
-                        Image(systemName: "plus")
-                    }
+            }
+            .navigationView(title: "Platforms")
+            .toolbar {
+                Button(action: {}) {
+                    Image(systemName: "plus")
                 }
             }
         }

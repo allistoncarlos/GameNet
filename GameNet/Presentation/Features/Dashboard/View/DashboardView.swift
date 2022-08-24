@@ -43,7 +43,7 @@ struct DashboardView: View {
                         }
                     }
                 }
-                .statusBarStyle(title: "Dashboard", color: .main)
+                .navigationView(title: "Dashboard")
             }
         }.task {
             await viewModel.fetchData()
