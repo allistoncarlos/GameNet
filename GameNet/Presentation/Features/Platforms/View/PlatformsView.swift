@@ -13,22 +13,41 @@ struct PlatformsView: View {
     @ObservedObject var viewModel: PlatformsViewModel
 
     var body: some View {
-        ZStack {
-            NavigationView {
-                if viewModel.uiState == .loading {
-                    ProgressView()
-                } else {
-                    if let platforms = viewModel.platforms {
-                        List(platforms, id: \.id) { platform in
-                            Text(platform.name)
+        NavigationView {
+            ZStack {
+                VStack {
+                    Color.main
+                        .frame(height: 148)
+                        .ignoresSafeArea(.container, edges: .top)
+
+                    Spacer()
+                }
+
+                VStack {
+                    Rectangle()
+                        .frame(height: 0)
+                        .background(Color.main)
+
+                    if viewModel.uiState == .loading {
+                        ProgressView()
+                    } else {
+                        if let platforms = viewModel.platforms {
+                            List(platforms, id: \.id) { platform in
+                                Text(platform.name)
+                            }
                         }
-                        .statusBarStyle(title: "Platforms", color: .main)
+                    }
+                }
+                .navigationTitle("Platforms")
+                .toolbar {
+                    Button(action: {}) {
+                        Image(systemName: "plus")
                     }
                 }
             }
-            .task {
-                await viewModel.fetchData()
-            }
+        }
+        .task {
+            await viewModel.fetchData()
         }
     }
 }

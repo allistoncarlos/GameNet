@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// TODO: iOS 16 - https://sarunw.com/posts/swiftui-navigation-bar-color/
 struct NavigationViewModifier: ViewModifier {
     let title: String?
     let color: Color
