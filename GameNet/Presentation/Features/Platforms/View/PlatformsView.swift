@@ -27,7 +27,7 @@ struct PlatformsView: View {
                     }
                 }
             }
-            .navigationView(title: "Platforms")
+            .navigationView(title: "Platformas")
             .toolbar {
                 Button(action: {}) {
                     NavigationLink(destination: viewModel.editPlatformView()) {
