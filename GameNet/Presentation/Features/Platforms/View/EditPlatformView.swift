@@ -18,14 +18,16 @@ struct EditPlatformView: View {
             TextField("Plataforma", text: $viewModel.platform.name)
                 .autocapitalization(.none)
                 .onSubmit {
-//                    await viewModel.login(username: username, password: password)
+                    Task {
+                        await viewModel.save()
+                    }
                 }
 
             Section(
                 footer:
                 Button("Salvar") {
                     Task {
-//                        await viewModel.login(username: username, password: password)
+                        await viewModel.save()
                     }
                 }
                 .disabled(viewModel.platform.name.isEmpty || viewModel.uiState == .loading)

@@ -50,6 +50,18 @@ class EditPlatformViewModel: ObservableObject {
     @Published var platform: Platform
     @Published var uiState: EditPlatformUIState = .idle
 
+    func save() async {
+        uiState = .loading
+
+        let result = await repository.savePlatform(id: platform.id, platform: Platform(id: platform.id, name: platform.name))
+
+        if let result = result {
+            publisher.send(result)
+        } else {
+            publisher.send(completion: .failure(.server("")))
+        }
+    }
+
     // MARK: Private
 
     @Injected(RepositoryContainer.platformRepository) private var repository
