@@ -31,7 +31,9 @@ class EditPlatformViewModel: ObservableObject {
                     }
                 }
             } receiveValue: { [weak self] platform in
-//                self?.platforms = platforms
+                if let platform {
+                    self?.platform = platform
+                }
 
                 self?.uiState = .success
             }
