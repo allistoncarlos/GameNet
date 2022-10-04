@@ -12,6 +12,7 @@ import SwiftUI
 
 struct EditPlatformView: View {
     @ObservedObject var viewModel: EditPlatformViewModel
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         Form {
@@ -34,6 +35,11 @@ struct EditPlatformView: View {
                 .buttonStyle(MainButtonStyle())
             ) {
                 EmptyView()
+            }
+        }
+        .onReceive(viewModel.$uiState) { uiState in
+            if uiState == .success {
+                self.presentationMode.wrappedValue.dismiss()
             }
         }
         .navigationView(title: viewModel.platform.name.isEmpty ?
