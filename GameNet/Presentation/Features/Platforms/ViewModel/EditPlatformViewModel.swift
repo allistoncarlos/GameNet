@@ -5,14 +5,16 @@
 //  Created by Alliston Aleixo on 24/08/22.
 //
 
-import Foundation
-
 import Combine
 import Factory
 import Foundation
 import GameNet_Network
+import SwiftUI
+
+// MARK: - EditPlatformViewModel
 
 class EditPlatformViewModel: ObservableObject {
+
     // MARK: Lifecycle
 
     init(platform: Platform) {
@@ -68,4 +70,10 @@ class EditPlatformViewModel: ObservableObject {
 
     @Injected(RepositoryContainer.platformRepository) private var repository
     private var cancellable: AnyCancellable?
+}
+
+extension EditPlatformViewModel {
+    func goBackToPlatforms(navigationPath: Binding<NavigationPath>) {
+        PlatformRouter.goBackToPlatforms(navigationPath: navigationPath)
+    }
 }

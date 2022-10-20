@@ -68,7 +68,9 @@ class PlatformsViewModel: ObservableObject {
 }
 
 extension PlatformsViewModel {
-    func editPlatformView(platform: Platform? = nil) -> some View {
-        return PlatformRouter.makeEditPlatformView(platform: platform)
+    func editPlatformView(navigationPath: Binding<NavigationPath>, platformId: String? = nil) -> some View {
+        let platform = platforms?.first(where: { $0.id == platformId })
+
+        return PlatformRouter.makeEditPlatformView(navigationPath: navigationPath, platform: platform)
     }
 }

@@ -10,29 +10,39 @@ import SwiftUI
 // MARK: - PlatformsView
 
 struct PlatformsView: View {
+    // MARK: Internal
+
     @ObservedObject var viewModel: PlatformsViewModel
 
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $presentedPlatforms) {
             VStack {
                 if viewModel.uiState == .loading {
                     ProgressView()
                 } else {
                     if let platforms = viewModel.platforms {
                         List(platforms, id: \.id) { platform in
-                            NavigationLink(destination: viewModel.editPlatformView(platform: platform)) {
-                                Text(platform.name)
-                            }
+                            NavigationLink(platform.name, value: platform.id)
                         }
                     }
                 }
             }
+            .navigationDestination(for: String.self) { platformId in
+                viewModel.editPlatformView(navigationPath: $presentedPlatforms, platformId: platformId)
+            }
             .navigationView(title: "Platformas")
             .toolbar {
                 Button(action: {}) {
-                    NavigationLink(destination: viewModel.editPlatformView()) {
+                    NavigationLink(value: String()) {
                         Image(systemName: "plus")
                     }
+                }
+            }
+        }
+        .onChange(of: presentedPlatforms) { newValue in
+            if newValue.isEmpty {
+                Task {
+                    await viewModel.fetchData()
                 }
             }
         }
@@ -40,6 +50,10 @@ struct PlatformsView: View {
             await viewModel.fetchData()
         }
     }
+
+    // MARK: Private
+
+    @State private var presentedPlatforms = NavigationPath()
 }
 
 // MARK: - PlatformsView_Previews

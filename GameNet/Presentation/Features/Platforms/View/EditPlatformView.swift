@@ -12,7 +12,7 @@ import SwiftUI
 
 struct EditPlatformView: View {
     @ObservedObject var viewModel: EditPlatformViewModel
-    @Environment(\.presentationMode) var presentationMode
+    @Binding var navigationPath: NavigationPath
 
     var body: some View {
         Form {
@@ -39,7 +39,7 @@ struct EditPlatformView: View {
         }
         .onReceive(viewModel.$uiState) { uiState in
             if uiState == .success {
-                self.presentationMode.wrappedValue.dismiss()
+                viewModel.goBackToPlatforms(navigationPath: $navigationPath)
             }
         }
         .navigationView(title: viewModel.platform.name.isEmpty ?
@@ -56,7 +56,10 @@ struct EditPlatformView_Previews: PreviewProvider {
         let platform = Platform(id: "1", name: "Nintendo Switch")
 
         ForEach(ColorScheme.allCases, id: \.self) {
-            EditPlatformView(viewModel: EditPlatformViewModel(platform: platform)).preferredColorScheme($0)
+            EditPlatformView(
+                viewModel: EditPlatformViewModel(platform: platform),
+                navigationPath: .constant(NavigationPath())
+            ).preferredColorScheme($0)
         }
     }
 }
