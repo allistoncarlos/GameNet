@@ -10,16 +10,19 @@ import SwiftUI
 // MARK: - HomeView
 
 struct HomeView: View {
+
     // MARK: Lifecycle
 
     init(
         homeViewModel: HomeViewModel,
         dashboardViewModel: DashboardViewModel,
-        platformsViewModel: PlatformsViewModel
+        platformsViewModel: PlatformsViewModel,
+        gamesViewModel: GamesViewModel
     ) {
         self.homeViewModel = homeViewModel
         self.dashboardViewModel = dashboardViewModel
         self.platformsViewModel = platformsViewModel
+        self.gamesViewModel = gamesViewModel
 
         UITabBar.appearance().backgroundColor = UIColor(.main)
     }
@@ -29,6 +32,7 @@ struct HomeView: View {
     @ObservedObject var homeViewModel: HomeViewModel
     @ObservedObject var dashboardViewModel: DashboardViewModel
     @ObservedObject var platformsViewModel: PlatformsViewModel
+    @ObservedObject var gamesViewModel: GamesViewModel
 
     var body: some View {
         TabView {
@@ -38,7 +42,7 @@ struct HomeView: View {
                 }
                 .navigationBarTitle("Test", displayMode: .inline)
 
-            GamesView()
+            GamesView(viewModel: gamesViewModel)
                 .tabItem {
                     Label("Games", systemImage: "gamecontroller")
                 }
@@ -66,11 +70,13 @@ struct HomeView_Previews: PreviewProvider {
             let homeViewModel = HomeViewModel()
             let dashboardViewModel = DashboardViewModel()
             let platformsViewModel = PlatformsViewModel()
+            let gamesViewModel = GamesViewModel()
 
             HomeView(
                 homeViewModel: homeViewModel,
                 dashboardViewModel: dashboardViewModel,
-                platformsViewModel: platformsViewModel
+                platformsViewModel: platformsViewModel,
+                gamesViewModel: gamesViewModel
             ).preferredColorScheme($0)
         }
     }

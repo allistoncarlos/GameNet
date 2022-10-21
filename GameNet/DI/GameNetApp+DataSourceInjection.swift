@@ -12,4 +12,5 @@ class DataSourceContainer: SharedContainer {
     static let loginDataSource = Factory<LoginDataSourceProtocol> { LoginDataSource() }
     static let dashboardDataSource = Factory<DashboardDataSourceProtocol> { DashboardDataSource() }
     static let platformDataSource = Factory<PlatformDataSourceProtocol> { PlatformDataSource() }
+    static let gameDataSource = Factory<GameDataSourceProtocol> { GameDataSource() }
 }
