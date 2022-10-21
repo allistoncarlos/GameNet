@@ -21,22 +21,25 @@ struct GamesView: View {
                 if viewModel.uiState == .loading {
                     ProgressView()
                 } else {
-                    if let games = viewModel.games {
-                        ScrollView {
-                            LazyVGrid(columns: adaptiveColumns, spacing: 20) {
-                                ForEach(games.result, id: \.id) { game in
-                                    ZStack(alignment: .bottomTrailing) {
-                                        AsyncImage(url: URL(string: game.coverURL ?? "")) { image in
-                                            image
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fit)
-                                        } placeholder: { ProgressView().progressViewStyle(.circular) }
-                                        Text(game.name)
-                                            .padding(4)
-                                            .background(.black)
-                                            .foregroundColor(.white)
-                                            .offset(x: -5, y: -5)
-                                            .font(.system(size: 10))
+                    ScrollView {
+                        LazyVGrid(columns: adaptiveColumns, spacing: 20) {
+                            ForEach(viewModel.data, id: \.id) { game in
+                                ZStack(alignment: .bottomTrailing) {
+                                    AsyncImage(url: URL(string: game.coverURL ?? "")) { image in
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                    } placeholder: { ProgressView().progressViewStyle(.circular) }
+                                    Text(game.name)
+                                        .padding(4)
+                                        .background(.black)
+                                        .foregroundColor(.white)
+                                        .offset(x: -5, y: -5)
+                                        .font(.system(size: 10))
+                                }
+                                .onAppear {
+                                    Task {
+                                        await viewModel.loadNextPage(currentGame: game)
                                     }
                                 }
                             }

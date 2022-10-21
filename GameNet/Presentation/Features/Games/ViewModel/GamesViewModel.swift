@@ -30,8 +30,12 @@ class GamesViewModel: ObservableObject {
                         self.uiState = .error(message)
                     }
                 }
-            } receiveValue: { [weak self] games in
-                self?.games = games
+            } receiveValue: { [weak self] pagedList in
+                self?.pagedList = pagedList
+
+                if let pagedList = pagedList {
+                    self?.data += pagedList.result
+                }
 
                 self?.uiState = .success
             }
@@ -47,18 +51,29 @@ class GamesViewModel: ObservableObject {
 
     // MARK: Internal
 
-    @Published var games: PagedList<Game>? = nil
+    @Published var pagedList: PagedList<Game>? = nil
+    @Published var data: [Game] = []
+    @Published var searchedGames: [Game] = []
     @Published var uiState: GamesUIState = .idle
 
-    func fetchData() async {
+    func fetchData(search: String? = "", page: Int = 0) async {
         uiState = .loading
 
-        let result = await repository.fetchData(search: "", page: 0, pageSize: 20)
+        let result = await repository.fetchData(search: search, page: page, pageSize: GameNetApp.pageSize)
 
         if let result = result {
             publisher.send(result)
         } else {
             publisher.send(completion: .failure(.server("Erro no carregamento de dados do servidor")))
+        }
+    }
+
+    func loadNextPage(currentGame: Game) async {
+        let thresholdIndex = data.index(data.endIndex, offsetBy: -5)
+
+        if data.firstIndex(where: { $0.id == currentGame.id }) == thresholdIndex {
+            let page = pagedList?.page ?? 0
+            await fetchData(search: pagedList?.search, page: page + 1)
         }
     }
 
