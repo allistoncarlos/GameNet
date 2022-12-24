@@ -90,6 +90,7 @@ class LoginViewModel: ObservableObject {
 }
 
 extension LoginViewModel {
+    @MainActor
     func homeView() -> some View {
         return LoginRouter.makeHomeView()
     }

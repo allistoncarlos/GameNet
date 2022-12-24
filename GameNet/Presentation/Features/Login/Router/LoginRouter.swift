@@ -8,6 +8,7 @@
 import SwiftUI
 
 enum LoginRouter {
+    @MainActor
     static func makeHomeView() -> some View {
         let homeViewModel = HomeViewModel()
         let dashboardViewModel = DashboardViewModel()
