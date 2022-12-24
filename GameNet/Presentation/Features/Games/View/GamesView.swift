@@ -18,9 +18,6 @@ struct GamesView: View {
     var body: some View {
         NavigationStack(path: $presentedGames) {
             Group {
-                if viewModel.uiState == .loading {
-                    ProgressView()
-                } else {
                     ScrollView {
                         LazyVGrid(columns: adaptiveColumns, spacing: 20) {
                             ForEach(viewModel.data, id: \.id) { game in
@@ -45,7 +42,6 @@ struct GamesView: View {
                             }
                         }
                     }
-                }
             }
             .navigationView(title: "Games")
         }
