@@ -38,11 +38,11 @@ class LoginViewModelTests: XCTestCase {
         let password = "teste"
         RepositoryContainer.loginRepository.register(factory: { MockLoginRepository() })
 
-        let cancellable = viewModel.$uiState
+        let cancellable = viewModel.$state
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] uiState in
+            .sink(receiveValue: { [weak self] state in
                 // Then
-                if self?.viewModel.uiState == .success {
+                if self?.viewModel.state == .success {
                     matchAccessTokenExpectation.fulfill()
 
                     let resultAccessToken = KeychainDataSource.accessToken.get()
@@ -71,7 +71,7 @@ class LoginViewModelTests: XCTestCase {
         let expectedError = "Usuário ou senha inválidos"
         RepositoryContainer.loginRepository.register(factory: { MockLoginRepository() })
 
-        let cancellable = viewModel.$uiState
+        let cancellable = viewModel.$state
             .receive(on: RunLoop.main)
             .sink { completion in
                 switch completion {
@@ -80,9 +80,9 @@ class LoginViewModelTests: XCTestCase {
                 case let .failure(error):
                     print(error)
                 }
-            } receiveValue: { [weak self] uiState in
+            } receiveValue: { [weak self] state in
                 // Then
-                if case let .error(error) = self?.viewModel.uiState {
+                if case let .error(error) = self?.viewModel.state {
                     nilAccessTokenExpectation.fulfill()
 
                     let resultAccessToken = KeychainDataSource.accessToken.get()

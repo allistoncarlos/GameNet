@@ -17,7 +17,7 @@ struct DashboardView: View {
         ZStack {
             NavigationView {
                 ScrollView {
-                    if viewModel.uiState == .loading {
+                    if viewModel.state == .loading {
                         ProgressView()
                     } else {
                         VStack(spacing: -20) {

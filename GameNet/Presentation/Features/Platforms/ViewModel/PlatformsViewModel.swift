@@ -26,13 +26,13 @@ class PlatformsViewModel: ObservableObject {
                 case let .failure(error):
                     switch error {
                     case let .server(message):
-                        self.uiState = .error(message)
+                        self.state = .error(message)
                     }
                 }
             } receiveValue: { [weak self] platforms in
                 self?.platforms = platforms
 
-                self?.uiState = .success
+                self?.state = .success
             }
     }
 
@@ -47,10 +47,10 @@ class PlatformsViewModel: ObservableObject {
     // MARK: Internal
 
     @Published var platforms: [Platform]? = nil
-    @Published var uiState: PlatformsUIState = .idle
+    @Published var state: PlatformsUIState = .idle
 
     func fetchData() async {
-        uiState = .loading
+        state = .loading
 
         let result = await repository.fetchData()
 

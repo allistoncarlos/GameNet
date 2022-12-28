@@ -32,7 +32,7 @@ class EditPlatformViewModelTests: XCTestCase {
     func testEditPlatform_NewValidData_ShouldSaveNewPlatform() async {
         // Given
         let matchSavedPlatformExpectation = expectation(description: "Platform are equal")
-        let uiStateExpectation = expectation(description: "Success UIState")
+        let stateExpectation = expectation(description: "Success UIState")
 
         let expectedId: String? = "3"
         let name = "Teste"
@@ -61,12 +61,12 @@ class EditPlatformViewModelTests: XCTestCase {
             })
             .store(in: &cancellables)
 
-        viewModel.$uiState
+        viewModel.$state
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] uiState in
+            .sink(receiveValue: { [weak self] state in
                 // Then
-                if self?.viewModel.uiState == .success {
-                    uiStateExpectation.fulfill()
+                if self?.viewModel.state == .success {
+                    stateExpectation.fulfill()
                 }
             })
             .store(in: &cancellables)

@@ -23,13 +23,13 @@ class DashboardViewModel: ObservableObject {
                 case let .failure(error):
                     switch error {
                     case let .server(message):
-                        self.uiState = .error(message)
+                        self.state = .error(message)
                     }
                 }
             } receiveValue: { [weak self] dashboard in
                 self?.dashboard = dashboard
 
-                self?.uiState = .success
+                self?.state = .success
             }
     }
 
@@ -44,10 +44,10 @@ class DashboardViewModel: ObservableObject {
     // MARK: Internal
 
     @Published var dashboard: Dashboard? = nil
-    @Published var uiState: DashboardUIState = .idle
+    @Published var state: DashboardUIState = .idle
 
     func fetchData() async {
-        uiState = .loading
+        state = .loading
 
         let result = await repository.fetchData()
 

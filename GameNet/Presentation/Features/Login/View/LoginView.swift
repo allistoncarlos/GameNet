@@ -17,7 +17,7 @@ struct LoginView: View {
 
     var body: some View {
         ZStack {
-            if viewModel.uiState == .success {
+            if viewModel.state == .success {
                 viewModel.homeView()
             } else {
                 NavigationView {
@@ -37,7 +37,7 @@ struct LoginView: View {
                                     await viewModel.login(username: username, password: password)
                                 }
                             }
-                            .disabled(username.isEmpty || password.isEmpty || viewModel.uiState == .loading)
+                            .disabled(username.isEmpty || password.isEmpty || viewModel.state == .loading)
                             .buttonStyle(MainButtonStyle())
                         ) {
                             EmptyView()
@@ -47,13 +47,13 @@ struct LoginView: View {
                 }
                 .navigationViewStyle(.stack)
 
-                if case let LoginUIState.error(error) = viewModel.uiState {
+                if case let LoginUIState.error(error) = viewModel.state {
                     Text("")
                         .alert(isPresented: .constant(true)) {
                             Alert(
                                 title: Text("GameNet"),
                                 message: Text(error),
-                                dismissButton: .default(Text("OK"), action: { viewModel.uiState = .idle })
+                                dismissButton: .default(Text("OK"), action: { viewModel.state = .idle })
                             )
                         }
                 }
