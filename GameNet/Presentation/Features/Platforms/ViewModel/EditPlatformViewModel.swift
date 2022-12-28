@@ -29,7 +29,7 @@ class EditPlatformViewModel: ObservableObject {
                 case let .failure(error):
                     switch error {
                     case let .server(message):
-                        self.uiState = .error(message)
+                        self.state = .error(message)
                     }
                 }
             } receiveValue: { [weak self] platform in
@@ -37,7 +37,7 @@ class EditPlatformViewModel: ObservableObject {
                     self?.platform = platform
                 }
 
-                self?.uiState = .success
+                self?.state = .success
             }
     }
 
@@ -52,10 +52,10 @@ class EditPlatformViewModel: ObservableObject {
     // MARK: Internal
 
     @Published var platform: Platform
-    @Published var uiState: EditPlatformUIState = .idle
+    @Published var state: EditPlatformUIState = .idle
 
     func save() async {
-        uiState = .loading
+        state = .loading
 
         let result = await repository.savePlatform(id: platform.id, platform: Platform(id: platform.id, name: platform.name))
 

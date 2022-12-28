@@ -34,11 +34,11 @@ class PlatformsViewModelTests: XCTestCase {
 
         RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
-        let cancellable = viewModel.$uiState
+        let cancellable = viewModel.$state
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] uiState in
+            .sink(receiveValue: { [weak self] state in
                 // Then
-                if self?.viewModel.uiState == .success {
+                if self?.viewModel.state == .success {
                     platformsLoadedExpectation.fulfill()
 
                     XCTAssertNotNil(self?.viewModel.platforms)

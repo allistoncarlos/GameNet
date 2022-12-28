@@ -34,11 +34,11 @@ class DashboardViewModelTests: XCTestCase {
 
         RepositoryContainer.dashboardRepository.register(factory: { MockDashboardRepository() })
 
-        let cancellable = viewModel.$uiState
+        let cancellable = viewModel.$state
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] uiState in
+            .sink(receiveValue: { [weak self] state in
                 // Then
-                if self?.viewModel.uiState == .success {
+                if self?.viewModel.state == .success {
                     dashboardLoadedExpectation.fulfill()
 
                     XCTAssertNotNil(self?.viewModel.dashboard)

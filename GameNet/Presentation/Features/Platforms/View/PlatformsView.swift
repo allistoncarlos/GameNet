@@ -17,7 +17,7 @@ struct PlatformsView: View {
     var body: some View {
         NavigationStack(path: $presentedPlatforms) {
             VStack {
-                if viewModel.uiState == .loading {
+                if viewModel.state == .loading {
                     ProgressView()
                 } else {
                     if let platforms = viewModel.platforms {

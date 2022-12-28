@@ -31,13 +31,13 @@ class LoginViewModel: ObservableObject {
                 case let .failure(error):
                     switch error {
                     case let .invalidUsernameOrPassword(message):
-                        self.uiState = .error(message)
+                        self.state = .error(message)
                     }
                 }
             } receiveValue: { login in
                 self.saveToken(response: login)
 
-                self.uiState = .success
+                self.state = .success
             }
     }
 
@@ -51,10 +51,10 @@ class LoginViewModel: ObservableObject {
 
     // MARK: Internal
 
-    @Published var uiState: LoginUIState = .idle
+    @Published var state: LoginUIState = .idle
 
     func login(username: String, password: String) async {
-        uiState = .loading
+        state = .loading
 
         let result = await repository.login(login: Login(username: username, password: password))
 

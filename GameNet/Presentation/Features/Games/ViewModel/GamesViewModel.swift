@@ -19,7 +19,7 @@ class GamesViewModel: ObservableObject {
     // MARK: Lifecycle
 
     init() {
-        $uiState
+        $state
             .receive(on: DispatchQueue.main)
             .sink { state in
                 switch state {
@@ -40,10 +40,10 @@ class GamesViewModel: ObservableObject {
     @Published var pagedList: PagedList<Game>? = nil
     @Published var data: [Game] = []
     @Published var searchedGames: [Game] = []
-    @Published var uiState: GamesUIState = .idle
+    @Published var state: GamesUIState = .idle
 
     func fetchData(search: String? = "", page: Int = 0) async {
-        uiState = .loading
+        state = .loading
 
         let pagedList = await repository.fetchData(search: search, page: page, pageSize: GameNetApp.pageSize)
 
@@ -51,9 +51,9 @@ class GamesViewModel: ObservableObject {
             self.pagedList = pagedList
             data += pagedList.result
 
-            uiState = .success
+            state = .success
         } else {
-            uiState = .error("Erro no carregamento de dados do servidor")
+            state = .error("Erro no carregamento de dados do servidor")
         }
     }
 
