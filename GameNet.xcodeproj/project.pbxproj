@@ -20,7 +20,7 @@
 		A524F52A28B506F300A91627 /* MockPlatformRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52928B506F300A91627 /* MockPlatformRepository.swift */; };
 		A524F52D28B50BD300A91627 /* PlatformsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */; };
 		A524F53028B50D3C00A91627 /* PlatformResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52F28B50D3C00A91627 /* PlatformResponseMock.swift */; };
-		A524F53628B5105000A91627 /* PlatformsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53528B5105000A91627 /* PlatformsUIState.swift */; };
+		A524F53628B5105000A91627 /* PlatformsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53528B5105000A91627 /* PlatformsState.swift */; };
 		A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53728B5106B00A91627 /* PlatformsViewModel.swift */; };
 		A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53928B5484600A91627 /* NavigationViewModifier.swift */; };
 		A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661672899678000D52088 /* MockLoginDataSource.swift */; };
@@ -132,7 +132,7 @@
 		A524F52928B506F300A91627 /* MockPlatformRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPlatformRepository.swift; sourceTree = "<group>"; };
 		A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsViewModelTests.swift; sourceTree = "<group>"; };
 		A524F52F28B50D3C00A91627 /* PlatformResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformResponseMock.swift; sourceTree = "<group>"; };
-		A524F53528B5105000A91627 /* PlatformsUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsUIState.swift; sourceTree = "<group>"; };
+		A524F53528B5105000A91627 /* PlatformsState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsState.swift; sourceTree = "<group>"; };
 		A524F53728B5106B00A91627 /* PlatformsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsViewModel.swift; sourceTree = "<group>"; };
 		A524F53928B5484600A91627 /* NavigationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewModifier.swift; sourceTree = "<group>"; };
 		A53661672899678000D52088 /* MockLoginDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginDataSource.swift; sourceTree = "<group>"; };
@@ -318,7 +318,7 @@
 		A524F53228B5101A00A91627 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A524F53528B5105000A91627 /* PlatformsUIState.swift */,
+				A524F53528B5105000A91627 /* PlatformsState.swift */,
 				A59E763C28B6B331003CBA3E /* EditPlatformUIState.swift */,
 			);
 			path = Model;
@@ -1206,7 +1206,7 @@
 				A5E48A002895901C0037023C /* HomeViewModel.swift in Sources */,
 				A59E763728B6AC65003CBA3E /* EditPlatformViewModel.swift in Sources */,
 				A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */,
-				A524F53628B5105000A91627 /* PlatformsUIState.swift in Sources */,
+				A524F53628B5105000A91627 /* PlatformsState.swift in Sources */,
 				A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */,
 				A5507EC02901CF9A0040C801 /* MockGameRepository.swift in Sources */,
 				A51AA6AE289955540081AE4B /* Login.swift in Sources */,
