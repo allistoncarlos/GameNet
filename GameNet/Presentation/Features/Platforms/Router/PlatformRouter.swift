@@ -8,6 +8,7 @@
 import GameNet_Network
 import SwiftUI
 
+@MainActor
 enum PlatformRouter {
     static func makeEditPlatformView(navigationPath: Binding<NavigationPath>, platform: Platform?) -> some View {
         let emptyPlatform = Platform(id: nil, name: String())

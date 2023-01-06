@@ -11,7 +11,9 @@ import Factory
 import GameNet_Keychain
 import XCTest
 
+@MainActor
 class PlatformsViewModelTests: XCTestCase {
+
     // MARK: Internal
 
     override func setUp() async throws {
@@ -36,18 +38,18 @@ class PlatformsViewModelTests: XCTestCase {
 
         let cancellable = viewModel.$state
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] state in
+            .sink(receiveValue: { state in
                 // Then
-                if self?.viewModel.state == .success {
+                if case .success(let platforms) = state {
                     platformsLoadedExpectation.fulfill()
 
-                    XCTAssertNotNil(self?.viewModel.platforms)
+                    XCTAssertNotNil(platforms)
                 }
             })
 
         // When
         await viewModel.fetchData()
-        await waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 10)
 
         cancellable.cancel()
     }
