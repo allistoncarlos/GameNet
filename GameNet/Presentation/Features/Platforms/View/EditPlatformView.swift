@@ -38,7 +38,7 @@ struct EditPlatformView: View {
             }
         }
         .onReceive(viewModel.$state) { state in
-            if state == .success {
+            if case .success(_) = state {
                 viewModel.goBackToPlatforms(navigationPath: $navigationPath)
             }
         }

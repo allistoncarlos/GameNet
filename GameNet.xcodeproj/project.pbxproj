@@ -78,7 +78,7 @@
 		A59E763728B6AC65003CBA3E /* EditPlatformViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763628B6AC65003CBA3E /* EditPlatformViewModel.swift */; };
 		A59E763928B6AD46003CBA3E /* PlatformRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763828B6AD46003CBA3E /* PlatformRouter.swift */; };
 		A59E763B28B6AE1F003CBA3E /* EditPlatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763A28B6AE1F003CBA3E /* EditPlatformView.swift */; };
-		A59E763D28B6B331003CBA3E /* EditPlatformUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763C28B6B331003CBA3E /* EditPlatformUIState.swift */; };
+		A59E763D28B6B331003CBA3E /* EditPlatformState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763C28B6B331003CBA3E /* EditPlatformState.swift */; };
 		A5B5D3D2289AE2C4004096F4 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D1289AE2C4004096F4 /* DashboardView.swift */; };
 		A5B5D3D4289AE2D5004096F4 /* GamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D3289AE2D5004096F4 /* GamesView.swift */; };
 		A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */; };
@@ -188,7 +188,7 @@
 		A59E763628B6AC65003CBA3E /* EditPlatformViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformViewModel.swift; sourceTree = "<group>"; };
 		A59E763828B6AD46003CBA3E /* PlatformRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformRouter.swift; sourceTree = "<group>"; };
 		A59E763A28B6AE1F003CBA3E /* EditPlatformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformView.swift; sourceTree = "<group>"; };
-		A59E763C28B6B331003CBA3E /* EditPlatformUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformUIState.swift; sourceTree = "<group>"; };
+		A59E763C28B6B331003CBA3E /* EditPlatformState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformState.swift; sourceTree = "<group>"; };
 		A5B5D3D1289AE2C4004096F4 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		A5B5D3D3289AE2D5004096F4 /* GamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesView.swift; sourceTree = "<group>"; };
 		A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsView.swift; sourceTree = "<group>"; };
@@ -319,7 +319,7 @@
 			isa = PBXGroup;
 			children = (
 				A524F53528B5105000A91627 /* PlatformsState.swift */,
-				A59E763C28B6B331003CBA3E /* EditPlatformUIState.swift */,
+				A59E763C28B6B331003CBA3E /* EditPlatformState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1225,7 +1225,7 @@
 				A51AA6A62899543F0081AE4B /* GameNetApp+RepositoryInjection.swift in Sources */,
 				A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */,
 				A524F52828B506E800A91627 /* PlatformRepository.swift in Sources */,
-				A59E763D28B6B331003CBA3E /* EditPlatformUIState.swift in Sources */,
+				A59E763D28B6B331003CBA3E /* EditPlatformState.swift in Sources */,
 				A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */,
 				A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */,
 				A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */,
@@ -1336,6 +1336,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1357,6 +1358,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

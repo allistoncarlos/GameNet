@@ -12,7 +12,9 @@ import GameNet_Keychain
 import GameNet_Network
 import XCTest
 
+@MainActor
 class EditPlatformViewModelTests: XCTestCase {
+
     // MARK: Internal
 
     override func setUpWithError() throws {
@@ -48,24 +50,16 @@ class EditPlatformViewModelTests: XCTestCase {
 
         RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
-        viewModel.$platform
-            .receive(on: RunLoop.main)
-            .drop(while: { $0.id == nil })
-            .sink(receiveValue: { platform in
-                // Then
-                XCTAssertNotNil(platform)
-                XCTAssertEqual(expectedId, platform.id)
-                XCTAssertEqual(name, platform.name)
-
-                matchSavedPlatformExpectation.fulfill()
-            })
-            .store(in: &cancellables)
-
         viewModel.$state
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] state in
-                // Then
-                if self?.viewModel.state == .success {
+            .sink(receiveValue: { state in
+                if case .success(let platform) = state {
+                    // Then
+                    XCTAssertNotNil(platform)
+                    XCTAssertEqual(expectedId, platform.id)
+                    XCTAssertEqual(name, platform.name)
+
+                    matchSavedPlatformExpectation.fulfill()
                     stateExpectation.fulfill()
                 }
             })
@@ -74,7 +68,7 @@ class EditPlatformViewModelTests: XCTestCase {
         // When
         viewModel.platform.name = name
         await viewModel.save()
-        await waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 10)
     }
 
     // MARK: Private
