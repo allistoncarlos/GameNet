@@ -19,6 +19,7 @@ enum LoginError: Error {
 // MARK: - LoginViewModel
 
 class LoginViewModel: ObservableObject {
+
     // MARK: Lifecycle
 
     init() {
@@ -70,6 +71,7 @@ class LoginViewModel: ObservableObject {
     @Injected(RepositoryContainer.loginRepository) private var repository
 
     private var cancellable: AnyCancellable?
+    private var cancellable2 = Set<AnyCancellable>()
 
     private func saveToken(response: Login?) {
         if let session = response,
@@ -83,10 +85,26 @@ class LoginViewModel: ObservableObject {
             KeychainDataSource.accessToken.set(accessToken)
             KeychainDataSource.refreshToken.set(refreshToken)
             KeychainDataSource.expiresIn.set(dateFormatter.string(from: expiresIn))
+
+//            WatchConnectivityManager.shared.send("Hello World!\n\(Date().ISO8601Format())")
+
+            WatchConnectivityManager.shared.$state
+                .receive(on: DispatchQueue.main)
+                .sink { state in
+                    switch state {
+                    case .activated:
+                        WatchConnectivityManager.shared.send("Hello World!\n\(Date().ISO8601Format())")
+                    default:
+                        break
+                    }
+                }.store(in: &cancellable2)
+
+            WatchConnectivityManager.shared.activateSession()
         } else {
             KeychainDataSource.clear()
         }
     }
+
 }
 
 extension LoginViewModel {
