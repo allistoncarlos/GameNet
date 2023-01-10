@@ -23,19 +23,14 @@ struct PlayingGamesView: View {
                 } else {
                     if let platforms = viewModel.platforms {
                         List(platforms, id: \.id) { platform in
-                            NavigationLink(platform.name, value: platform.id)
-                        }
-                    }
-                }
-            }
-//            .navigationDestination(for: String.self) { platformId in
-//                viewModel.editPlatformView(navigationPath: $presentedPlatforms, platformId: platformId)
-//            }
-//            .navigationView(title: "Platformas")
-            .toolbar {
-                Button(action: {}) {
-                    NavigationLink(value: String()) {
-                        Image(systemName: "plus")
+                            NavigationLink(value: platform.id) {
+                                VStack(alignment: .leading, spacing: 5) {
+                                    Image(systemName: "dpad.down.fill").foregroundColor(.blue).font(.system(size: 30)).padding(.top, 5)
+                                    Text(platform.name).bold().padding(.top, 5)
+                                }.padding()
+                            }
+
+                        }.listStyle(CarouselListStyle())
                     }
                 }
             }
