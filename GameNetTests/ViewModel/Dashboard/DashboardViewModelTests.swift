@@ -11,18 +11,24 @@ import Factory
 import GameNet_Keychain
 import XCTest
 
+@MainActor
 class DashboardViewModelTests: XCTestCase {
+
     // MARK: Internal
 
     override func setUp() async throws {
         Container.Registrations.reset()
         Container.Scope.reset()
+
+        cancellables = Set<AnyCancellable>()
     }
 
     override func tearDown() {
         super.tearDown()
 
         KeychainDataSource.clear()
+
+        cancellables = nil
     }
 
     func testDashboard_ValidData_ShouldReturnData() async {
@@ -34,22 +40,20 @@ class DashboardViewModelTests: XCTestCase {
 
         RepositoryContainer.dashboardRepository.register(factory: { MockDashboardRepository() })
 
-        let cancellable = viewModel.$uiState
+        viewModel.$state
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] uiState in
+            .sink { [weak self] state in
                 // Then
-                if self?.viewModel.uiState == .success {
+                if case .success = state {
                     dashboardLoadedExpectation.fulfill()
 
                     XCTAssertNotNil(self?.viewModel.dashboard)
                 }
-            })
+            }.store(in: &cancellables)
 
         // When
         await viewModel.fetchData()
-        await waitForExpectations(timeout: 10)
-
-        cancellable.cancel()
+        waitForExpectations(timeout: 10)
     }
 
     // MARK: Private
@@ -57,4 +61,5 @@ class DashboardViewModelTests: XCTestCase {
     private let mock = DashboardResponseMock()
     private let stubRequests = StubRequests()
     private var viewModel = DashboardViewModel()
+    private var cancellables: Set<AnyCancellable>!
 }

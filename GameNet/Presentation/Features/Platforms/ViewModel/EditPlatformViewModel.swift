@@ -13,6 +13,7 @@ import SwiftUI
 
 // MARK: - EditPlatformViewModel
 
+@MainActor
 class EditPlatformViewModel: ObservableObject {
 
     // MARK: Lifecycle
@@ -20,56 +21,40 @@ class EditPlatformViewModel: ObservableObject {
     init(platform: Platform) {
         self.platform = platform
 
-        cancellable = publisher
+        $state
             .receive(on: RunLoop.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    print("Received finished")
-                case let .failure(error):
-                    switch error {
-                    case let .server(message):
-                        self.uiState = .error(message)
-                    }
-                }
-            } receiveValue: { [weak self] platform in
-                if let platform {
+            .sink { [weak self] state in
+                switch state {
+                case let .success(platform):
                     self?.platform = platform
+                default:
+                    break
                 }
-
-                self?.uiState = .success
-            }
+            }.store(in: &cancellable)
     }
 
-    deinit {
-        cancellable?.cancel()
-    }
-
-    // MARK: Public
-
-    public let publisher = PassthroughSubject<Platform?, APIError>()
 
     // MARK: Internal
 
     @Published var platform: Platform
-    @Published var uiState: EditPlatformUIState = .idle
+    @Published var state: EditPlatformState = .idle
 
     func save() async {
-        uiState = .loading
+        state = .loading
 
         let result = await repository.savePlatform(id: platform.id, platform: Platform(id: platform.id, name: platform.name))
 
-        if let result = result {
-            publisher.send(result)
+        if let result {
+            state = .success(result)
         } else {
-            publisher.send(completion: .failure(.server("")))
+            state = .error("Erro no salvamento de dados do servidor")
         }
     }
 
     // MARK: Private
 
     @Injected(RepositoryContainer.platformRepository) private var repository
-    private var cancellable: AnyCancellable?
+    private var cancellable = Set<AnyCancellable>()
 }
 
 extension EditPlatformViewModel {

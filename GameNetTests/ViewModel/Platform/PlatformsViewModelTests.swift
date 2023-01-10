@@ -11,18 +11,24 @@ import Factory
 import GameNet_Keychain
 import XCTest
 
+@MainActor
 class PlatformsViewModelTests: XCTestCase {
+
     // MARK: Internal
 
     override func setUp() async throws {
         Container.Registrations.reset()
         Container.Scope.reset()
+
+        cancellables = Set<AnyCancellable>()
     }
 
     override func tearDown() {
         super.tearDown()
 
         KeychainDataSource.clear()
+
+        cancellables = nil
     }
 
     func testPlatforms_ValidData_ShouldReturnAccessToken() async {
@@ -34,22 +40,20 @@ class PlatformsViewModelTests: XCTestCase {
 
         RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
-        let cancellable = viewModel.$uiState
+        viewModel.$state
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] uiState in
+            .sink { state in
                 // Then
-                if self?.viewModel.uiState == .success {
+                if case let .success(platforms) = state {
                     platformsLoadedExpectation.fulfill()
 
-                    XCTAssertNotNil(self?.viewModel.platforms)
+                    XCTAssertNotNil(platforms)
                 }
-            })
+            }.store(in: &cancellables)
 
         // When
         await viewModel.fetchData()
-        await waitForExpectations(timeout: 10)
-
-        cancellable.cancel()
+        waitForExpectations(timeout: 10)
     }
 
     // MARK: Private
@@ -57,4 +61,5 @@ class PlatformsViewModelTests: XCTestCase {
     private let mock = PlatformResponseMock()
     private let stubRequests = StubRequests()
     private var viewModel = PlatformsViewModel()
+    private var cancellables: Set<AnyCancellable>!
 }

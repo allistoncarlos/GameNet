@@ -13,58 +13,45 @@ import SwiftUI
 
 // MARK: - PlatformsViewModel
 
+@MainActor
 class PlatformsViewModel: ObservableObject {
+
     // MARK: Lifecycle
 
     init() {
-        cancellable = publisher
+        $state
             .receive(on: RunLoop.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    print("Received finished")
-                case let .failure(error):
-                    switch error {
-                    case let .server(message):
-                        self.uiState = .error(message)
-                    }
+            .sink { [weak self] state in
+                switch state {
+                case let .success(platforms):
+                    self?.platforms = platforms
+                default:
+                    break
                 }
-            } receiveValue: { [weak self] platforms in
-                self?.platforms = platforms
-
-                self?.uiState = .success
-            }
+            }.store(in: &cancellable)
     }
-
-    deinit {
-        cancellable?.cancel()
-    }
-
-    // MARK: Public
-
-    public let publisher = PassthroughSubject<[Platform]?, APIError>()
 
     // MARK: Internal
 
     @Published var platforms: [Platform]? = nil
-    @Published var uiState: PlatformsUIState = .idle
+    @Published var state: PlatformsState = .idle
 
     func fetchData() async {
-        uiState = .loading
+        state = .loading
 
         let result = await repository.fetchData()
 
-        if let result = result {
-            publisher.send(result)
+        if let result {
+            state = .success(result)
         } else {
-            publisher.send(completion: .failure(.server("Erro no carregamento de dados do servidor")))
+            state = .error("Erro no carregamento de dados do servidor")
         }
     }
 
     // MARK: Private
 
     @Injected(RepositoryContainer.platformRepository) private var repository
-    private var cancellable: AnyCancellable?
+    private var cancellable = Set<AnyCancellable>()
 }
 
 extension PlatformsViewModel {

@@ -12,7 +12,9 @@ import GameNet_Keychain
 import GameNet_Network
 import XCTest
 
+@MainActor
 class EditPlatformViewModelTests: XCTestCase {
+
     // MARK: Internal
 
     override func setUpWithError() throws {
@@ -32,7 +34,7 @@ class EditPlatformViewModelTests: XCTestCase {
     func testEditPlatform_NewValidData_ShouldSaveNewPlatform() async {
         // Given
         let matchSavedPlatformExpectation = expectation(description: "Platform are equal")
-        let uiStateExpectation = expectation(description: "Success UIState")
+        let stateExpectation = expectation(description: "Success UIState")
 
         let expectedId: String? = "3"
         let name = "Teste"
@@ -48,33 +50,25 @@ class EditPlatformViewModelTests: XCTestCase {
 
         RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
-        viewModel.$platform
+        viewModel.$state
             .receive(on: RunLoop.main)
-            .drop(while: { $0.id == nil })
-            .sink(receiveValue: { platform in
-                // Then
-                XCTAssertNotNil(platform)
-                XCTAssertEqual(expectedId, platform.id)
-                XCTAssertEqual(name, platform.name)
+            .sink { state in
+                if case let .success(platform) = state {
+                    // Then
+                    XCTAssertNotNil(platform)
+                    XCTAssertEqual(expectedId, platform.id)
+                    XCTAssertEqual(name, platform.name)
 
-                matchSavedPlatformExpectation.fulfill()
-            })
-            .store(in: &cancellables)
-
-        viewModel.$uiState
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] uiState in
-                // Then
-                if self?.viewModel.uiState == .success {
-                    uiStateExpectation.fulfill()
+                    matchSavedPlatformExpectation.fulfill()
+                    stateExpectation.fulfill()
                 }
-            })
+            }
             .store(in: &cancellables)
 
         // When
         viewModel.platform.name = name
         await viewModel.save()
-        await waitForExpectations(timeout: 10)
+        waitForExpectations(timeout: 10)
     }
 
     // MARK: Private

@@ -31,14 +31,14 @@ struct EditPlatformView: View {
                         await viewModel.save()
                     }
                 }
-                .disabled(viewModel.platform.name.isEmpty || viewModel.uiState == .loading)
+                .disabled(viewModel.platform.name.isEmpty || viewModel.state == .loading)
                 .buttonStyle(MainButtonStyle())
             ) {
                 EmptyView()
             }
         }
-        .onReceive(viewModel.$uiState) { uiState in
-            if uiState == .success {
+        .onReceive(viewModel.$state) { state in
+            if case .success(_) = state {
                 viewModel.goBackToPlatforms(navigationPath: $navigationPath)
             }
         }

@@ -13,58 +13,28 @@ import SwiftUI
 
 // MARK: - PlatformsViewModel
 
+@MainActor
 class GamesViewModel: ObservableObject {
-
-    // MARK: Lifecycle
-
-    init() {
-        cancellable = publisher
-            .receive(on: RunLoop.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    print("Received finished")
-                case let .failure(error):
-                    switch error {
-                    case let .server(message):
-                        self.uiState = .error(message)
-                    }
-                }
-            } receiveValue: { [weak self] pagedList in
-                self?.pagedList = pagedList
-
-                if let pagedList = pagedList {
-                    self?.data += pagedList.result
-                }
-
-                self?.uiState = .success
-            }
-    }
-
-    deinit {
-        cancellable?.cancel()
-    }
-
-    // MARK: Public
-
-    public let publisher = PassthroughSubject<PagedList<Game>?, APIError>()
 
     // MARK: Internal
 
     @Published var pagedList: PagedList<Game>? = nil
     @Published var data: [Game] = []
     @Published var searchedGames: [Game] = []
-    @Published var uiState: GamesUIState = .idle
+    @Published var state: GamesState = .idle
 
     func fetchData(search: String? = "", page: Int = 0) async {
-        uiState = .loading
+        state = .loading
 
-        let result = await repository.fetchData(search: search, page: page, pageSize: GameNetApp.pageSize)
+        let pagedList = await repository.fetchData(search: search, page: page, pageSize: GameNetApp.pageSize)
 
-        if let result = result {
-            publisher.send(result)
+        if let pagedList {
+            self.pagedList = pagedList
+            data += pagedList.result
+
+            state = .success
         } else {
-            publisher.send(completion: .failure(.server("Erro no carregamento de dados do servidor")))
+            state = .error("Erro no carregamento de dados do servidor")
         }
     }
 
@@ -80,7 +50,7 @@ class GamesViewModel: ObservableObject {
     // MARK: Private
 
     @Injected(RepositoryContainer.gameRepository) private var repository
-    private var cancellable: AnyCancellable?
+    private var cancellable = Set<AnyCancellable>()
 }
 
 // extension PlatformsViewModel {
