@@ -17,7 +17,7 @@ struct LoginView: View {
 
     var body: some View {
         ZStack {
-            if viewModel.state == .success {
+            if case .success = viewModel.state {
                 viewModel.homeView()
             } else {
                 NavigationView {
@@ -47,19 +47,32 @@ struct LoginView: View {
                 }
                 .navigationViewStyle(.stack)
 
-                if case let LoginUIState.error(error) = viewModel.state {
-                    Text("")
-                        .alert(isPresented: .constant(true)) {
-                            Alert(
-                                title: Text("GameNet"),
-                                message: Text(error),
-                                dismissButton: .default(Text("OK"), action: { viewModel.state = .idle })
-                            )
-                        }
+                if case let LoginState.error(error) = viewModel.state {
+                    alertView(error)
                 }
             }
         }
     }
+
+    func alertView(_ error: LoginError) -> AnyView {
+        var errorMessage = ""
+
+        switch error {
+        case .invalidUsernameOrPassword:
+            errorMessage = "Usuário ou senha inválidos"
+        }
+
+        return AnyView(Text("")
+            .alert(isPresented: .constant(true)) {
+                Alert(
+                    title: Text("GameNet"),
+                    message: Text(errorMessage),
+                    dismissButton: .default(Text("OK"), action: { viewModel.state = .idle })
+                )
+            }
+        )
+    }
+
 }
 
 // MARK: - LoginView_Previews

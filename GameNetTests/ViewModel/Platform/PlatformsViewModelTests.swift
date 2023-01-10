@@ -19,12 +19,16 @@ class PlatformsViewModelTests: XCTestCase {
     override func setUp() async throws {
         Container.Registrations.reset()
         Container.Scope.reset()
+
+        cancellables = Set<AnyCancellable>()
     }
 
     override func tearDown() {
         super.tearDown()
 
         KeychainDataSource.clear()
+
+        cancellables = nil
     }
 
     func testPlatforms_ValidData_ShouldReturnAccessToken() async {
@@ -36,22 +40,20 @@ class PlatformsViewModelTests: XCTestCase {
 
         RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
-        let cancellable = viewModel.$state
+        viewModel.$state
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { state in
+            .sink { state in
                 // Then
-                if case .success(let platforms) = state {
+                if case let .success(platforms) = state {
                     platformsLoadedExpectation.fulfill()
 
                     XCTAssertNotNil(platforms)
                 }
-            })
+            }.store(in: &cancellables)
 
         // When
         await viewModel.fetchData()
         waitForExpectations(timeout: 10)
-
-        cancellable.cancel()
     }
 
     // MARK: Private
@@ -59,4 +61,5 @@ class PlatformsViewModelTests: XCTestCase {
     private let mock = PlatformResponseMock()
     private let stubRequests = StubRequests()
     private var viewModel = PlatformsViewModel()
+    private var cancellables: Set<AnyCancellable>!
 }

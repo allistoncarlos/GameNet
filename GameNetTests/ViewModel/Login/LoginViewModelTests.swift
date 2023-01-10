@@ -11,18 +11,24 @@ import Factory
 import GameNet_Keychain
 import XCTest
 
+@MainActor
 class LoginViewModelTests: XCTestCase {
+
     // MARK: Internal
 
     override func setUp() async throws {
         Container.Registrations.reset()
         Container.Scope.reset()
+
+        cancellables = Set<AnyCancellable>()
     }
 
     override func tearDown() {
         super.tearDown()
 
         KeychainDataSource.clear()
+
+        cancellables = nil
     }
 
     func testLogin_ValidData_ShouldReturnAccessToken() async {
@@ -38,24 +44,22 @@ class LoginViewModelTests: XCTestCase {
         let password = "teste"
         RepositoryContainer.loginRepository.register(factory: { MockLoginRepository() })
 
-        let cancellable = viewModel.$state
+        viewModel.$state
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] state in
+            .sink { state in
                 // Then
-                if self?.viewModel.state == .success {
+                if case .success = state {
                     matchAccessTokenExpectation.fulfill()
 
                     let resultAccessToken = KeychainDataSource.accessToken.get()
                     XCTAssertNotNil(resultAccessToken)
                     XCTAssertEqual(expectedAccessToken, resultAccessToken)
                 }
-            })
+            }.store(in: &cancellables)
 
         // When
         await viewModel.login(username: username, password: password)
-        await waitForExpectations(timeout: 10)
-
-        cancellable.cancel()
+        waitForExpectations(timeout: 10)
     }
 
     func testLogin_InvalidData_ShouldNotReturnAccessToken() async {
@@ -68,34 +72,46 @@ class LoginViewModelTests: XCTestCase {
 
         let username = "teste"
         let password = "teste"
-        let expectedError = "Usuário ou senha inválidos"
+        let expectedError: LoginError = .invalidUsernameOrPassword
         RepositoryContainer.loginRepository.register(factory: { MockLoginRepository() })
 
-        let cancellable = viewModel.$state
+//        viewModel.$state
+//            .receive(on: RunLoop.main)
+//            .sink { completion in
+//                switch completion {
+//                case .finished:
+//                    print("Received finished")
+//                case let .failure(error):
+//                    print(error)
+//                }
+//            } receiveValue: { [weak self] state in
+//                // Then
+//                if case let .error(error) = self?.viewModel.state {
+//                    nilAccessTokenExpectation.fulfill()
+//
+//                    let resultAccessToken = KeychainDataSource.accessToken.get()
+//                    XCTAssertNil(resultAccessToken)
+//                    XCTAssertEqual(error, expectedError)
+//                }
+//            }
+
+        viewModel.$state
             .receive(on: RunLoop.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    print("Received finished")
-                case let .failure(error):
-                    print(error)
-                }
-            } receiveValue: { [weak self] state in
-                // Then
+            .sink { [weak self] state in
                 if case let .error(error) = self?.viewModel.state {
                     nilAccessTokenExpectation.fulfill()
 
+                    XCTAssertEqual(error, .invalidUsernameOrPassword)
+                    
                     let resultAccessToken = KeychainDataSource.accessToken.get()
                     XCTAssertNil(resultAccessToken)
                     XCTAssertEqual(error, expectedError)
                 }
-            }
+            }.store(in: &cancellables)
 
         // When
         await viewModel.login(username: username, password: password)
-        await waitForExpectations(timeout: 10)
-
-        cancellable.cancel()
+        waitForExpectations(timeout: 10)
     }
 
     // MARK: Private
@@ -103,4 +119,5 @@ class LoginViewModelTests: XCTestCase {
     private let mock = LoginResponseMock()
     private let stubRequests = StubRequests()
     private var viewModel = LoginViewModel()
+    private var cancellables: Set<AnyCancellable>!
 }
