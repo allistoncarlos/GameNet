@@ -7,8 +7,8 @@
 
 import SwiftUI
 
+@MainActor
 enum LoginRouter {
-    @MainActor
     static func makeHomeView() -> some View {
         let homeViewModel = HomeViewModel()
         let dashboardViewModel = DashboardViewModel()
@@ -22,14 +22,8 @@ enum LoginRouter {
             gamesViewModel: gamesViewModel
         )
     }
-//    static func makeHomeView() -> some View {
-//        let viewModel = HomeViewModel()
-//        return HomeView(viewModel: viewModel)
-//    }
-//
-//    static func makeSignUpView(publisher: PassthroughSubject<Bool, Never>) -> some View {
-//        let viewModel = SignUpViewModel()
-//        viewModel.publisher = publisher
-//        return SignUpView(viewModel: viewModel)
-//    }
+
+    static func makeLoginView() -> some View {
+        return LoginView(viewModel: LoginViewModel())
+    }
 }
