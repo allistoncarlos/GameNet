@@ -9,6 +9,7 @@ import Combine
 import Factory
 import GameNet_Keychain
 import SwiftUI
+import WatchConnectivity
 
 // MARK: - LoginError
 
@@ -19,6 +20,7 @@ enum LoginError: Error {
 // MARK: - LoginViewModel
 
 class LoginViewModel: ObservableObject {
+
     // MARK: Lifecycle
 
     init() {
@@ -70,6 +72,7 @@ class LoginViewModel: ObservableObject {
     @Injected(RepositoryContainer.loginRepository) private var repository
 
     private var cancellable: AnyCancellable?
+    private var cancellable2 = Set<AnyCancellable>()
 
     private func saveToken(response: Login?) {
         if let session = response,
@@ -79,14 +82,60 @@ class LoginViewModel: ObservableObject {
            let expiresIn = session.expiresIn {
             let dateFormatter = ISO8601DateFormatter()
 
+            let formattedExpiresIn = dateFormatter.string(from: expiresIn)
+
             KeychainDataSource.id.set(id)
             KeychainDataSource.accessToken.set(accessToken)
             KeychainDataSource.refreshToken.set(refreshToken)
-            KeychainDataSource.expiresIn.set(dateFormatter.string(from: expiresIn))
+            KeychainDataSource.expiresIn.set(formattedExpiresIn)
+
+            WatchConnectivityManager.shared.$state
+                .receive(on: RunLoop.main)
+                .sink { state in
+                    switch state {
+                    case .activated:
+                        do {
+                            try WatchConnectivityManager.shared.send(
+                                message: id,
+                                key: "ID"
+                            )
+
+                            try WatchConnectivityManager.shared.send(
+                                message: accessToken,
+                                key: "ACCESS_TOKEN"
+                            )
+
+                            try WatchConnectivityManager.shared.send(
+                                message: refreshToken,
+                                key: "REFRESH_TOKEN"
+                            )
+
+                            try WatchConnectivityManager.shared.send(
+                                message: formattedExpiresIn,
+                                key: "EXPIRES_IN"
+                            )
+                        } catch WCError.notReachable {
+                            print("NOT REACHABLE")
+                        } catch WCError.companionAppNotInstalled {
+                            print("COMPANION APP NOT INSTALLED")
+                        } catch WCError.watchAppNotInstalled {
+                            print("WATCH APP NOT INSTALLED")
+                        } catch WCError.sessionNotActivated {
+                            print("SESSION NOT ACTIVATED")
+                        } catch {
+                            print("DEFAULT ERROR")
+                        }
+                    default:
+                        break
+                    }
+                }.store(in: &cancellable2)
+
+            WatchConnectivityManager.shared.activateSession()
         } else {
             KeychainDataSource.clear()
         }
     }
+
 }
 
 extension LoginViewModel {
