@@ -9,6 +9,7 @@ import Combine
 import Factory
 import GameNet_Keychain
 import SwiftUI
+import WatchConnectivity
 
 // MARK: - LoginError
 
@@ -81,19 +82,49 @@ class LoginViewModel: ObservableObject {
            let expiresIn = session.expiresIn {
             let dateFormatter = ISO8601DateFormatter()
 
+            let formattedExpiresIn = dateFormatter.string(from: expiresIn)
+
             KeychainDataSource.id.set(id)
             KeychainDataSource.accessToken.set(accessToken)
             KeychainDataSource.refreshToken.set(refreshToken)
-            KeychainDataSource.expiresIn.set(dateFormatter.string(from: expiresIn))
-
-//            WatchConnectivityManager.shared.send("Hello World!\n\(Date().ISO8601Format())")
+            KeychainDataSource.expiresIn.set(formattedExpiresIn)
 
             WatchConnectivityManager.shared.$state
-                .receive(on: DispatchQueue.main)
+                .receive(on: RunLoop.main)
                 .sink { state in
                     switch state {
                     case .activated:
-                        WatchConnectivityManager.shared.send("Hello World!\n\(Date().ISO8601Format())")
+                        do {
+                            try WatchConnectivityManager.shared.send(
+                                message: id,
+                                key: "ID"
+                            )
+
+                            try WatchConnectivityManager.shared.send(
+                                message: accessToken,
+                                key: "ACCESS_TOKEN"
+                            )
+
+                            try WatchConnectivityManager.shared.send(
+                                message: refreshToken,
+                                key: "REFRESH_TOKEN"
+                            )
+
+                            try WatchConnectivityManager.shared.send(
+                                message: formattedExpiresIn,
+                                key: "EXPIRES_IN"
+                            )
+                        } catch WCError.notReachable {
+                            print("NOT REACHABLE")
+                        } catch WCError.companionAppNotInstalled {
+                            print("COMPANION APP NOT INSTALLED")
+                        } catch WCError.watchAppNotInstalled {
+                            print("WATCH APP NOT INSTALLED")
+                        } catch WCError.sessionNotActivated {
+                            print("SESSION NOT ACTIVATED")
+                        } catch {
+                            print("DEFAULT ERROR")
+                        }
                     default:
                         break
                     }

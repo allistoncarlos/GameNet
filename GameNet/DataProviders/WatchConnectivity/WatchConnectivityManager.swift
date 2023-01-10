@@ -8,13 +8,6 @@
 import Foundation
 import WatchConnectivity
 
-// MARK: - NotificationMessage
-
-struct NotificationMessage: Identifiable {
-    let id = UUID()
-    let text: String
-}
-
 // MARK: - WatchConnectivityManager
 
 final class WatchConnectivityManager: NSObject, ObservableObject {
@@ -29,8 +22,7 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
 
     static let shared = WatchConnectivityManager()
 
-    @Published var notificationMessage: NotificationMessage? = nil
-
+    @Published var message: [String: Any] = [:]
     @Published var state: WCSessionActivationState = .notActivated
 
     func activateSession() {
@@ -40,46 +32,36 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
         }
     }
 
-    func send(_ message: Any) {
-        let isReachable = WCSession.default.isReachable
+    func send(message: Any, key: String) throws {
+        guard WCSession.default.activationState == .activated else {
+            throw WCError(.sessionNotActivated)
+        }
 
-//        guard WCSession.default.activationState == .activated else {
-//            return
-//        }
-//        #if os(iOS)
-//            guard WCSession.default.isWatchAppInstalled else {
-//                return
-//            }
-//        #else
-//            guard WCSession.default.isCompanionAppInstalled else {
-//                return
-//            }
-//        #endif
+        #if os(iOS)
+            guard WCSession.default.isWatchAppInstalled else {
+                throw WCError(.watchAppNotInstalled)
+            }
+        #else
+            guard WCSession.default.isCompanionAppInstalled else {
+                throw WCError(.companionAppNotInstalled)
+            }
+        #endif
 
-//        WCSession.default.sendMessage([kMessageKey: message], replyHandler: nil) { error in
-//            print("Cannot send message: \(String(describing: error))")
-//        }
-        do {
-            try WCSession.default.updateApplicationContext([kMessageKey: message])
-        } catch {
+        guard WCSession.default.isReachable else {
+            throw WCError(.notReachable)
+        }
+
+        WCSession.default.sendMessage([key: message], replyHandler: nil) { error in
             print("Cannot send message: \(String(describing: error))")
         }
     }
-
-    // MARK: Private
-
-    private let kMessageKey = "message"
 }
 
 // MARK: WCSessionDelegate
 
 extension WatchConnectivityManager: WCSessionDelegate {
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
-        if let notificationText = message[kMessageKey] as? String {
-            DispatchQueue.main.async { [weak self] in
-                self?.notificationMessage = NotificationMessage(text: notificationText)
-            }
-        }
+        self.message = message
     }
 
     func session(
