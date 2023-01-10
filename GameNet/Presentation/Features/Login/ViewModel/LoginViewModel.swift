@@ -22,8 +22,6 @@ enum LoginError: Error, Equatable {
 @MainActor
 class LoginViewModel: ObservableObject {
 
-    // MARK: Lifecycle
-
     // MARK: Internal
 
     @Published var state: LoginState = .idle
