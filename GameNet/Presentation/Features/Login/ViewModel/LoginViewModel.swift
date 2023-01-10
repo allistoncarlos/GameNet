@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 30/07/22.
 //
 
+import Combine
 import Factory
 import GameNet_Keychain
 import SwiftUI
@@ -44,6 +45,7 @@ class LoginViewModel: ObservableObject {
     // MARK: Private
 
     @Injected(RepositoryContainer.loginRepository) private var repository
+    private var cancellable = Set<AnyCancellable>()
 
     private func saveToken(response: Login?) {
         if let session = response,
@@ -99,7 +101,7 @@ class LoginViewModel: ObservableObject {
                     default:
                         break
                     }
-                }.store(in: &cancellable2)
+                }.store(in: &cancellable)
 
             WatchConnectivityManager.shared.activateSession()
         } else {
