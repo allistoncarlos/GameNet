@@ -75,26 +75,6 @@ class LoginViewModelTests: XCTestCase {
         let expectedError: LoginError = .invalidUsernameOrPassword
         RepositoryContainer.loginRepository.register(factory: { MockLoginRepository() })
 
-//        viewModel.$state
-//            .receive(on: RunLoop.main)
-//            .sink { completion in
-//                switch completion {
-//                case .finished:
-//                    print("Received finished")
-//                case let .failure(error):
-//                    print(error)
-//                }
-//            } receiveValue: { [weak self] state in
-//                // Then
-//                if case let .error(error) = self?.viewModel.state {
-//                    nilAccessTokenExpectation.fulfill()
-//
-//                    let resultAccessToken = KeychainDataSource.accessToken.get()
-//                    XCTAssertNil(resultAccessToken)
-//                    XCTAssertEqual(error, expectedError)
-//                }
-//            }
-
         viewModel.$state
             .receive(on: RunLoop.main)
             .sink { [weak self] state in

@@ -52,8 +52,8 @@ class EditPlatformViewModelTests: XCTestCase {
 
         viewModel.$state
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { state in
-                if case .success(let platform) = state {
+            .sink { state in
+                if case let .success(platform) = state {
                     // Then
                     XCTAssertNotNil(platform)
                     XCTAssertEqual(expectedId, platform.id)
@@ -62,7 +62,7 @@ class EditPlatformViewModelTests: XCTestCase {
                     matchSavedPlatformExpectation.fulfill()
                     stateExpectation.fulfill()
                 }
-            })
+            }
             .store(in: &cancellables)
 
         // When
