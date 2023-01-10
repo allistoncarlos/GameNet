@@ -5,7 +5,6 @@
 //  Created by Alliston Aleixo on 30/07/22.
 //
 
-import Combine
 import Factory
 import GameNet_Keychain
 import SwiftUI
@@ -13,66 +12,36 @@ import WatchConnectivity
 
 // MARK: - LoginError
 
-enum LoginError: Error {
-    case invalidUsernameOrPassword(String)
+enum LoginError: Error, Equatable {
+    case invalidUsernameOrPassword
 }
 
 // MARK: - LoginViewModel
 
+@MainActor
 class LoginViewModel: ObservableObject {
-
-    // MARK: Lifecycle
-
-    init() {
-        cancellable = publisher
-            .receive(on: RunLoop.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    print("Received finished")
-                case let .failure(error):
-                    switch error {
-                    case let .invalidUsernameOrPassword(message):
-                        self.state = .error(message)
-                    }
-                }
-            } receiveValue: { login in
-                self.saveToken(response: login)
-
-                self.state = .success
-            }
-    }
-
-    deinit {
-        cancellable?.cancel()
-    }
-
-    // MARK: Public
-
-    public let publisher = PassthroughSubject<Login?, LoginError>()
 
     // MARK: Internal
 
-    @Published var state: LoginUIState = .idle
+    @Published var state: LoginState = .idle
 
     func login(username: String, password: String) async {
         state = .loading
 
         let result = await repository.login(login: Login(username: username, password: password))
 
-        if let result = result {
-            publisher.send(result)
+        if let result {
+            saveToken(response: result)
+
+            state = .success(result)
         } else {
-            publisher.send(completion: .failure(.invalidUsernameOrPassword("Usuário ou senha inválidos")))
+            state = .error(.invalidUsernameOrPassword)
         }
     }
 
     // MARK: Private
 
     @Injected(RepositoryContainer.loginRepository) private var repository
-
-    private var cancellable: AnyCancellable?
-    private var cancellable2 = Set<AnyCancellable>()
 
     private func saveToken(response: Login?) {
         if let session = response,

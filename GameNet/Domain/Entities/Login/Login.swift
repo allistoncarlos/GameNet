@@ -10,7 +10,7 @@ import GameNet_Network
 
 // MARK: - Login
 
-struct Login {
+struct Login: Equatable {
     // MARK: Lifecycle
 
     init(

@@ -87,7 +87,7 @@
 		A5D2BCDF2968B6710030973B /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A5D2C23C2896B676007C28AC /* Config.xcconfig */; };
 		A5D2BCE02968B6720030973B /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A5D2C23C2896B676007C28AC /* Config.xcconfig */; };
 		A5DCFD4F28E62835003C280C /* EditPlatformResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DCFD4E28E62835003C280C /* EditPlatformResponseMock.swift */; };
-		A5E489F528958EE80037023C /* LoginUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F428958EE80037023C /* LoginUIState.swift */; };
+		A5E489F528958EE80037023C /* LoginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F428958EE80037023C /* LoginState.swift */; };
 		A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F628958F0A0037023C /* LoginRouter.swift */; };
 		A5E489F928958F4F0037023C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F828958F4F0037023C /* LoginViewModel.swift */; };
 		A5E489FE289590120037023C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489FD289590120037023C /* HomeView.swift */; };
@@ -198,7 +198,7 @@
 		A5D2C23C2896B676007C28AC /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A5D2C23D2896B823007C28AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A5DCFD4E28E62835003C280C /* EditPlatformResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformResponseMock.swift; sourceTree = "<group>"; };
-		A5E489F428958EE80037023C /* LoginUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIState.swift; sourceTree = "<group>"; };
+		A5E489F428958EE80037023C /* LoginState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginState.swift; sourceTree = "<group>"; };
 		A5E489F628958F0A0037023C /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
 		A5E489F828958F4F0037023C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		A5E489FD289590120037023C /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -914,7 +914,7 @@
 		A5E48A082895AC060037023C /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A5E489F428958EE80037023C /* LoginUIState.swift */,
+				A5E489F428958EE80037023C /* LoginState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1221,7 +1221,7 @@
 				A524F52028B4FC0700A91627 /* PlatformDataSource.swift in Sources */,
 				A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */,
 				A5B5D3DC289B0933004096F4 /* View+Extensions.swift in Sources */,
-				A5E489F528958EE80037023C /* LoginUIState.swift in Sources */,
+				A5E489F528958EE80037023C /* LoginState.swift in Sources */,
 				A51AA6A62899543F0081AE4B /* GameNetApp+RepositoryInjection.swift in Sources */,
 				A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */,
 				A524F52828B506E800A91627 /* PlatformRepository.swift in Sources */,
