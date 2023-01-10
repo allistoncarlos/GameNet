@@ -14,32 +14,37 @@ struct DashboardView: View {
     @ObservedObject var viewModel: DashboardViewModel
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: -20) {
-                    if viewModel.dashboard?.playingGames != nil {
-                        playingCard
-                    }
+        ZStack {
+            NavigationView {
+                ScrollView {
+                    if viewModel.uiState == .loading {
+                        ProgressView()
+                    } else {
+                        VStack(spacing: -20) {
+                            if viewModel.dashboard?.playingGames != nil {
+                                playingCard
+                            }
 
-                    if viewModel.dashboard?.totalGames != nil {
-                        physicalDigitalCard
-                    }
+                            if viewModel.dashboard?.totalGames != nil {
+                                physicalDigitalCard
+                            }
 
-                    if viewModel.dashboard?.finishedByYear != nil {
-                        finishedByYearCard
-                    }
+                            if viewModel.dashboard?.finishedByYear != nil {
+                                finishedByYearCard
+                            }
 
-                    if viewModel.dashboard?.boughtByYear != nil {
-                        boughtByYearCard
-                    }
+                            if viewModel.dashboard?.boughtByYear != nil {
+                                boughtByYearCard
+                            }
 
-                    if viewModel.dashboard?.gamesByPlatform != nil {
-                        gamesByPlatformCard
+                            if viewModel.dashboard?.gamesByPlatform != nil {
+                                gamesByPlatformCard
+                            }
+                        }
                     }
                 }
+                .navigationView(title: "Dashboard")
             }
-            .navigationBarTitle("Dashboard")
-            .statusBarStyle(color: .main)
         }.task {
             await viewModel.fetchData()
         }

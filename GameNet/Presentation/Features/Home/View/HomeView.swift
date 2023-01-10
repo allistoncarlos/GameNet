@@ -14,10 +14,12 @@ struct HomeView: View {
 
     init(
         homeViewModel: HomeViewModel,
-        dashboardViewModel: DashboardViewModel
+        dashboardViewModel: DashboardViewModel,
+        platformsViewModel: PlatformsViewModel
     ) {
         self.homeViewModel = homeViewModel
         self.dashboardViewModel = dashboardViewModel
+        self.platformsViewModel = platformsViewModel
 
         UITabBar.appearance().backgroundColor = UIColor(.main)
     }
@@ -26,6 +28,7 @@ struct HomeView: View {
 
     @ObservedObject var homeViewModel: HomeViewModel
     @ObservedObject var dashboardViewModel: DashboardViewModel
+    @ObservedObject var platformsViewModel: PlatformsViewModel
 
     var body: some View {
         TabView {
@@ -40,7 +43,7 @@ struct HomeView: View {
                     Label("Games", systemImage: "gamecontroller")
                 }
 
-            PlatformsView()
+            PlatformsView(viewModel: platformsViewModel)
                 .tabItem {
                     Label("Plataformas", systemImage: "laptopcomputer")
                 }
@@ -62,10 +65,12 @@ struct HomeView_Previews: PreviewProvider {
         ForEach(ColorScheme.allCases, id: \.self) {
             let homeViewModel = HomeViewModel()
             let dashboardViewModel = DashboardViewModel()
+            let platformsViewModel = PlatformsViewModel()
 
             HomeView(
                 homeViewModel: homeViewModel,
-                dashboardViewModel: dashboardViewModel
+                dashboardViewModel: dashboardViewModel,
+                platformsViewModel: platformsViewModel
             ).preferredColorScheme($0)
         }
     }

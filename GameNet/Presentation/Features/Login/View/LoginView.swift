@@ -53,7 +53,7 @@ struct LoginView: View {
                             Alert(
                                 title: Text("GameNet"),
                                 message: Text(error),
-                                dismissButton: .default(Text("OK"))
+                                dismissButton: .default(Text("OK"), action: { viewModel.uiState = .idle })
                             )
                         }
                 }

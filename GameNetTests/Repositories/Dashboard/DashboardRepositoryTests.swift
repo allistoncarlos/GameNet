@@ -10,8 +10,6 @@ import Factory
 import XCTest
 
 class DashboardRepositoryTests: XCTestCase {
-    var repository = RepositoryContainer.dashboardRepository()
-
     override func setUp() async throws {
         Container.Registrations.reset()
         Container.Scope.reset()

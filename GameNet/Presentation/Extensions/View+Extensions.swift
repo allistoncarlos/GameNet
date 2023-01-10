@@ -8,15 +8,7 @@
 import SwiftUI
 
 extension View {
-    func statusBarStyle(
-        color: Color = .clear,
-        material: Material = .bar,
-        hidden: Bool = false
-    ) -> some View {
-        modifier(StatusBarStyleModifier(
-            color: color,
-            material: material,
-            hidden: hidden
-        ))
+    func navigationView(title: String?, color: Color = .main) -> some View {
+        modifier(NavigationViewModifier(title: title, color: color))
     }
 }

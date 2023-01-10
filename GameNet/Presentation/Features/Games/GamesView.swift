@@ -12,9 +12,12 @@ import SwiftUI
 struct GamesView: View {
     var body: some View {
         NavigationView {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-                .navigationBarTitle("Games")
-                .statusBarStyle(color: .main)
+            VStack {
+                Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+                    .navigationView(title: "Games")
+
+                Spacer()
+            }
         }
     }
 }

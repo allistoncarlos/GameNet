@@ -12,4 +12,5 @@ import GameNet_Network
 class RepositoryContainer: SharedContainer {
     static let loginRepository = Factory<LoginRepositoryProtocol> { LoginRepository() }
     static let dashboardRepository = Factory<DashboardRepositoryProtocol> { DashboardRepository() }
+    static let platformRepository = Factory<PlatformRepositoryProtocol> { PlatformRepository() }
 }

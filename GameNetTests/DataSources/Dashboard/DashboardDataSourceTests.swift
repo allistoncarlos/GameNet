@@ -11,8 +11,6 @@ import GameNet_Network
 import XCTest
 
 class DashboardDataSourceTests: XCTestCase {
-    var repository = DataSourceContainer.dashboardDataSource()
-
     override func setUp() async throws {
         Container.Registrations.reset()
         Container.Scope.reset()

@@ -10,8 +10,6 @@ import Factory
 import XCTest
 
 class LoginRepositoryTests: XCTestCase {
-    var repository = RepositoryContainer.loginRepository()
-
     override func setUp() async throws {
         Container.Registrations.reset()
         Container.Scope.reset()

@@ -12,6 +12,17 @@
 		A51AA6A8289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6A7289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift */; };
 		A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6AA289955140081AE4B /* LoginDataSource.swift */; };
 		A51AA6AE289955540081AE4B /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6AD289955540081AE4B /* Login.swift */; };
+		A524F51D28B4FB5F00A91627 /* PlatformDataSourceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F51C28B4FB5F00A91627 /* PlatformDataSourceTest.swift */; };
+		A524F52028B4FC0700A91627 /* PlatformDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F51F28B4FC0700A91627 /* PlatformDataSource.swift */; };
+		A524F52228B4FC1100A91627 /* MockPlatformDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52128B4FC1100A91627 /* MockPlatformDataSource.swift */; };
+		A524F52528B5064C00A91627 /* PlatformRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52428B5064C00A91627 /* PlatformRepositoryTests.swift */; };
+		A524F52828B506E800A91627 /* PlatformRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52728B506E800A91627 /* PlatformRepository.swift */; };
+		A524F52A28B506F300A91627 /* MockPlatformRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52928B506F300A91627 /* MockPlatformRepository.swift */; };
+		A524F52D28B50BD300A91627 /* PlatformsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */; };
+		A524F53028B50D3C00A91627 /* PlatformResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52F28B50D3C00A91627 /* PlatformResponseMock.swift */; };
+		A524F53628B5105000A91627 /* PlatformsUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53528B5105000A91627 /* PlatformsUIState.swift */; };
+		A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53728B5106B00A91627 /* PlatformsViewModel.swift */; };
+		A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53928B5484600A91627 /* NavigationViewModifier.swift */; };
 		A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661672899678000D52088 /* MockLoginDataSource.swift */; };
 		A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = A536616A2899820700D52088 /* OHHTTPStubs */; };
 		A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A536616C2899820700D52088 /* OHHTTPStubsSwift */; };
@@ -44,12 +55,17 @@
 		A57185D52867953F00655B31 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185D42867953F00655B31 /* Color.swift */; };
 		A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185D82867984400655B31 /* MainButtonStyle.swift */; };
 		A59DB73228B114EE009B7641 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59DB73128B114EE009B7641 /* Font.swift */; };
+		A59E763528B6ABD4003CBA3E /* EditPlatformViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763428B6ABD4003CBA3E /* EditPlatformViewModelTests.swift */; };
+		A59E763728B6AC65003CBA3E /* EditPlatformViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763628B6AC65003CBA3E /* EditPlatformViewModel.swift */; };
+		A59E763928B6AD46003CBA3E /* PlatformRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763828B6AD46003CBA3E /* PlatformRouter.swift */; };
+		A59E763B28B6AE1F003CBA3E /* EditPlatformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763A28B6AE1F003CBA3E /* EditPlatformView.swift */; };
+		A59E763D28B6B331003CBA3E /* EditPlatformUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763C28B6B331003CBA3E /* EditPlatformUIState.swift */; };
 		A5B5D3D2289AE2C4004096F4 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D1289AE2C4004096F4 /* DashboardView.swift */; };
 		A5B5D3D4289AE2D5004096F4 /* GamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D3289AE2D5004096F4 /* GamesView.swift */; };
 		A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */; };
 		A5B5D3D8289AE2E6004096F4 /* ListsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D7289AE2E5004096F4 /* ListsView.swift */; };
-		A5B5D3DA289B091C004096F4 /* StatusBarStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D9289B091C004096F4 /* StatusBarStyleModifier.swift */; };
 		A5B5D3DC289B0933004096F4 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3DB289B0933004096F4 /* View+Extensions.swift */; };
+		A5DCFD4F28E62835003C280C /* EditPlatformResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DCFD4E28E62835003C280C /* EditPlatformResponseMock.swift */; };
 		A5E489F528958EE80037023C /* LoginUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F428958EE80037023C /* LoginUIState.swift */; };
 		A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F628958F0A0037023C /* LoginRouter.swift */; };
 		A5E489F928958F4F0037023C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F828958F4F0037023C /* LoginViewModel.swift */; };
@@ -73,6 +89,17 @@
 		A51AA6A7289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameNetApp+DataSourceInjection.swift"; sourceTree = "<group>"; };
 		A51AA6AA289955140081AE4B /* LoginDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDataSource.swift; sourceTree = "<group>"; };
 		A51AA6AD289955540081AE4B /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		A524F51C28B4FB5F00A91627 /* PlatformDataSourceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformDataSourceTest.swift; sourceTree = "<group>"; };
+		A524F51F28B4FC0700A91627 /* PlatformDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformDataSource.swift; sourceTree = "<group>"; };
+		A524F52128B4FC1100A91627 /* MockPlatformDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPlatformDataSource.swift; sourceTree = "<group>"; };
+		A524F52428B5064C00A91627 /* PlatformRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformRepositoryTests.swift; sourceTree = "<group>"; };
+		A524F52728B506E800A91627 /* PlatformRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformRepository.swift; sourceTree = "<group>"; };
+		A524F52928B506F300A91627 /* MockPlatformRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPlatformRepository.swift; sourceTree = "<group>"; };
+		A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsViewModelTests.swift; sourceTree = "<group>"; };
+		A524F52F28B50D3C00A91627 /* PlatformResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformResponseMock.swift; sourceTree = "<group>"; };
+		A524F53528B5105000A91627 /* PlatformsUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsUIState.swift; sourceTree = "<group>"; };
+		A524F53728B5106B00A91627 /* PlatformsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsViewModel.swift; sourceTree = "<group>"; };
+		A524F53928B5484600A91627 /* NavigationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewModifier.swift; sourceTree = "<group>"; };
 		A53661672899678000D52088 /* MockLoginDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginDataSource.swift; sourceTree = "<group>"; };
 		A536616F2899828700D52088 /* LoginNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkTests.swift; sourceTree = "<group>"; };
 		A53661722899837B00D52088 /* StubRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubRequests.swift; sourceTree = "<group>"; };
@@ -105,14 +132,19 @@
 		A57185D42867953F00655B31 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		A57185D82867984400655B31 /* MainButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButtonStyle.swift; sourceTree = "<group>"; };
 		A59DB73128B114EE009B7641 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
+		A59E763428B6ABD4003CBA3E /* EditPlatformViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformViewModelTests.swift; sourceTree = "<group>"; };
+		A59E763628B6AC65003CBA3E /* EditPlatformViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformViewModel.swift; sourceTree = "<group>"; };
+		A59E763828B6AD46003CBA3E /* PlatformRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformRouter.swift; sourceTree = "<group>"; };
+		A59E763A28B6AE1F003CBA3E /* EditPlatformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformView.swift; sourceTree = "<group>"; };
+		A59E763C28B6B331003CBA3E /* EditPlatformUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformUIState.swift; sourceTree = "<group>"; };
 		A5B5D3D1289AE2C4004096F4 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		A5B5D3D3289AE2D5004096F4 /* GamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesView.swift; sourceTree = "<group>"; };
 		A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsView.swift; sourceTree = "<group>"; };
 		A5B5D3D7289AE2E5004096F4 /* ListsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsView.swift; sourceTree = "<group>"; };
-		A5B5D3D9289B091C004096F4 /* StatusBarStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarStyleModifier.swift; sourceTree = "<group>"; };
 		A5B5D3DB289B0933004096F4 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		A5D2C23C2896B676007C28AC /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A5D2C23D2896B823007C28AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A5DCFD4E28E62835003C280C /* EditPlatformResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformResponseMock.swift; sourceTree = "<group>"; };
 		A5E489F428958EE80037023C /* LoginUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIState.swift; sourceTree = "<group>"; };
 		A5E489F628958F0A0037023C /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
 		A5E489F828958F4F0037023C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -147,6 +179,7 @@
 			children = (
 				A53661662899677700D52088 /* Login */,
 				A56DB66028B3BAB200614046 /* Dashboard */,
+				A524F51E28B4FBF500A91627 /* Platform */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -157,6 +190,93 @@
 				A51AA6AD289955540081AE4B /* Login.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		A524F51B28B4FB4800A91627 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A524F51C28B4FB5F00A91627 /* PlatformDataSourceTest.swift */,
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		A524F51E28B4FBF500A91627 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A524F51F28B4FC0700A91627 /* PlatformDataSource.swift */,
+				A524F52128B4FC1100A91627 /* MockPlatformDataSource.swift */,
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		A524F52328B5062F00A91627 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A524F52428B5064C00A91627 /* PlatformRepositoryTests.swift */,
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		A524F52628B506DA00A91627 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A524F52728B506E800A91627 /* PlatformRepository.swift */,
+				A524F52928B506F300A91627 /* MockPlatformRepository.swift */,
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		A524F52B28B50BC100A91627 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */,
+				A59E763428B6ABD4003CBA3E /* EditPlatformViewModelTests.swift */,
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		A524F52E28B50D2D00A91627 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A524F52F28B50D3C00A91627 /* PlatformResponseMock.swift */,
+				A5DCFD4E28E62835003C280C /* EditPlatformResponseMock.swift */,
+			);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		A524F53128B50FED00A91627 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				A59E763828B6AD46003CBA3E /* PlatformRouter.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
+		A524F53228B5101A00A91627 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A524F53528B5105000A91627 /* PlatformsUIState.swift */,
+				A59E763C28B6B331003CBA3E /* EditPlatformUIState.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A524F53328B5101E00A91627 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A524F53728B5106B00A91627 /* PlatformsViewModel.swift */,
+				A59E763628B6AC65003CBA3E /* EditPlatformViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A524F53428B5102500A91627 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */,
+				A59E763A28B6AE1F003CBA3E /* EditPlatformView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		A53661662899677700D52088 /* Login */ = {
@@ -189,6 +309,7 @@
 			children = (
 				A5366179289987EE00D52088 /* Login */,
 				A56A95EC28B3E5D100CAAFFF /* Dashboard */,
+				A524F52E28B50D2D00A91627 /* Platform */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -222,6 +343,7 @@
 			children = (
 				A536617F289988F700D52088 /* Login */,
 				A56DB67028B3C36700614046 /* Dashboard */,
+				A524F52B28B50BC100A91627 /* Platform */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -293,6 +415,7 @@
 			children = (
 				A5366178289987E900D52088 /* Login */,
 				A56DB66128B3BACC00614046 /* Dashboard */,
+				A524F51B28B4FB4800A91627 /* Platform */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -310,6 +433,7 @@
 			children = (
 				A5366177289987E500D52088 /* Login */,
 				A56DB66D28B3C2A100614046 /* Dashboard */,
+				A524F52328B5062F00A91627 /* Platform */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -472,7 +596,10 @@
 		A5B5D3CF289AE27F004096F4 /* Platforms */ = {
 			isa = PBXGroup;
 			children = (
-				A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */,
+				A524F53428B5102500A91627 /* View */,
+				A524F53328B5101E00A91627 /* ViewModel */,
+				A524F53228B5101A00A91627 /* Model */,
+				A524F53128B50FED00A91627 /* Router */,
 			);
 			path = Platforms;
 			sourceTree = "<group>";
@@ -488,7 +615,7 @@
 		A5B5D3DD289B0ACF004096F4 /* Modifiers */ = {
 			isa = PBXGroup;
 			children = (
-				A5B5D3D9289B091C004096F4 /* StatusBarStyleModifier.swift */,
+				A524F53928B5484600A91627 /* NavigationViewModifier.swift */,
 			);
 			path = Modifiers;
 			sourceTree = "<group>";
@@ -616,6 +743,7 @@
 			children = (
 				A56D955A28995760003C13A3 /* Login */,
 				A56DB66828B3C18C00614046 /* Dashboard */,
+				A524F52628B506DA00A91627 /* Platform */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -766,12 +894,18 @@
 			files = (
 				A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */,
 				A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */,
+				A524F51D28B4FB5F00A91627 /* PlatformDataSourceTest.swift in Sources */,
 				A56DB66328B3BAE000614046 /* DashboardDataSourceTests.swift in Sources */,
+				A524F52528B5064C00A91627 /* PlatformRepositoryTests.swift in Sources */,
 				A56A95EE28B3E5E000CAAFFF /* DashboardResponseMock.swift in Sources */,
 				A56DB67228B3C37200614046 /* DashboardViewModelTests.swift in Sources */,
 				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
+				A524F52D28B50BD300A91627 /* PlatformsViewModelTests.swift in Sources */,
+				A524F53028B50D3C00A91627 /* PlatformResponseMock.swift in Sources */,
+				A59E763528B6ABD4003CBA3E /* EditPlatformViewModelTests.swift in Sources */,
 				A56DB66F28B3C2B700614046 /* DashboardRepositoryTests.swift in Sources */,
 				A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */,
+				A5DCFD4F28E62835003C280C /* EditPlatformResponseMock.swift in Sources */,
 				A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */,
 				A536617B289987FB00D52088 /* LoginRepositoryTests.swift in Sources */,
 			);
@@ -786,25 +920,35 @@
 				A56DB65F28B3B95900614046 /* DashboardViewModel.swift in Sources */,
 				A5B5D3D8289AE2E6004096F4 /* ListsView.swift in Sources */,
 				A5E48A002895901C0037023C /* HomeViewModel.swift in Sources */,
+				A59E763728B6AC65003CBA3E /* EditPlatformViewModel.swift in Sources */,
 				A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */,
-				A5B5D3DA289B091C004096F4 /* StatusBarStyleModifier.swift in Sources */,
+				A524F53628B5105000A91627 /* PlatformsUIState.swift in Sources */,
+				A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */,
 				A51AA6AE289955540081AE4B /* Login.swift in Sources */,
+				A524F52228B4FC1100A91627 /* MockPlatformDataSource.swift in Sources */,
 				A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */,
 				A56A95F428B3FDAE00CAAFFF /* APIError.swift in Sources */,
 				A56A95F628B4010600CAAFFF /* Date+Extensions.swift in Sources */,
 				A56A95F028B3FBD300CAAFFF /* DashboardUIState.swift in Sources */,
 				A56DB66A28B3C1AC00614046 /* DashboardRepository.swift in Sources */,
+				A524F52028B4FC0700A91627 /* PlatformDataSource.swift in Sources */,
 				A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */,
 				A5B5D3DC289B0933004096F4 /* View+Extensions.swift in Sources */,
 				A5E489F528958EE80037023C /* LoginUIState.swift in Sources */,
 				A51AA6A62899543F0081AE4B /* GameNetApp+RepositoryInjection.swift in Sources */,
 				A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */,
+				A524F52828B506E800A91627 /* PlatformRepository.swift in Sources */,
+				A59E763D28B6B331003CBA3E /* EditPlatformUIState.swift in Sources */,
 				A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */,
 				A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */,
+				A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */,
+				A524F52A28B506F300A91627 /* MockPlatformRepository.swift in Sources */,
+				A59E763B28B6AE1F003CBA3E /* EditPlatformView.swift in Sources */,
 				A56DB66728B3BD1600614046 /* MockDashboardDataSource.swift in Sources */,
 				A57185C5286793D600655B31 /* GameNetApp.swift in Sources */,
 				A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */,
 				A51AA6A8289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift in Sources */,
+				A59E763928B6AD46003CBA3E /* PlatformRouter.swift in Sources */,
 				A5B5D3D2289AE2C4004096F4 /* DashboardView.swift in Sources */,
 				A5B5D3D4289AE2D5004096F4 /* GamesView.swift in Sources */,
 				A56D955F289958B2003C13A3 /* RequestError.swift in Sources */,
@@ -998,6 +1142,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1029,6 +1174,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
