@@ -20,7 +20,7 @@ class PlatformsViewModel: ObservableObject {
 
     init() {
         $state
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] state in
                 switch state {
                 case let .success(platforms):

@@ -1,15 +1,16 @@
 //
-//  DashboardUIState.swift
+//  DashboardState.swift
 //  GameNet
 //
 //  Created by Alliston Aleixo on 22/08/22.
 //
 
 import Foundation
+import GameNet_Network
 
-enum DashboardUIState: Equatable {
+enum DashboardState: Equatable {
     case idle
     case loading
-    case success
+    case success(Dashboard)
     case error(String)
 }
