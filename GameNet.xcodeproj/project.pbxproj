@@ -33,7 +33,7 @@
 		A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617C2899883B00D52088 /* MockLoginRepository.swift */; };
 		A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661802899890300D52088 /* LoginViewModelTests.swift */; };
 		A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EB82901CD260040C801 /* GamesViewModel.swift */; };
-		A5507EBB2901CD930040C801 /* GamesUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EBA2901CD930040C801 /* GamesUIState.swift */; };
+		A5507EBB2901CD930040C801 /* GamesState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EBA2901CD930040C801 /* GamesState.swift */; };
 		A5507EBE2901CEDA0040C801 /* GameRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EBD2901CEDA0040C801 /* GameRepository.swift */; };
 		A5507EC02901CF9A0040C801 /* MockGameRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EBF2901CF9A0040C801 /* MockGameRepository.swift */; };
 		A5507EC32901D0950040C801 /* GameDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EC22901D0950040C801 /* GameDataSource.swift */; };
@@ -113,7 +113,7 @@
 		A536617C2899883B00D52088 /* MockLoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginRepository.swift; sourceTree = "<group>"; };
 		A53661802899890300D52088 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		A5507EB82901CD260040C801 /* GamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesViewModel.swift; sourceTree = "<group>"; };
-		A5507EBA2901CD930040C801 /* GamesUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesUIState.swift; sourceTree = "<group>"; };
+		A5507EBA2901CD930040C801 /* GamesState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesState.swift; sourceTree = "<group>"; };
 		A5507EBD2901CEDA0040C801 /* GameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRepository.swift; sourceTree = "<group>"; };
 		A5507EBF2901CF9A0040C801 /* MockGameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockGameRepository.swift; sourceTree = "<group>"; };
 		A5507EC22901D0950040C801 /* GameDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDataSource.swift; sourceTree = "<group>"; };
@@ -386,7 +386,7 @@
 		A5507EB62901CCC70040C801 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A5507EBA2901CD930040C801 /* GamesUIState.swift */,
+				A5507EBA2901CD930040C801 /* GamesState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1021,7 +1021,7 @@
 				A56D955F289958B2003C13A3 /* RequestError.swift in Sources */,
 				A59DB73228B114EE009B7641 /* Font.swift in Sources */,
 				A5E489FE289590120037023C /* HomeView.swift in Sources */,
-				A5507EBB2901CD930040C801 /* GamesUIState.swift in Sources */,
+				A5507EBB2901CD930040C801 /* GamesState.swift in Sources */,
 				A57185D52867953F00655B31 /* Color.swift in Sources */,
 				A5E489F928958F4F0037023C /* LoginViewModel.swift in Sources */,
 				A56DB66C28B3C1B700614046 /* MockDashboardRepository.swift in Sources */,
