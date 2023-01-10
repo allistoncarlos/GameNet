@@ -16,31 +16,12 @@ import SwiftUI
 @MainActor
 class GamesViewModel: ObservableObject {
 
-    // MARK: Lifecycle
-
-    init() {
-        $state
-            .receive(on: DispatchQueue.main)
-            .sink { state in
-                switch state {
-                case let .error(errorMessage):
-                    print("[ERROR]: \(errorMessage)")
-                default:
-                    break
-                }
-            }.store(in: &cancellable)
-    }
-
-    // MARK: Public
-
-    public let publisher = PassthroughSubject<PagedList<Game>?, APIError>()
-
     // MARK: Internal
 
     @Published var pagedList: PagedList<Game>? = nil
     @Published var data: [Game] = []
     @Published var searchedGames: [Game] = []
-    @Published var state: GamesUIState = .idle
+    @Published var state: GamesState = .idle
 
     func fetchData(search: String? = "", page: Int = 0) async {
         state = .loading

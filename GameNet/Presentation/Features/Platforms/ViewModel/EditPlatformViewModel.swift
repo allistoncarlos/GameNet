@@ -22,7 +22,7 @@ class EditPlatformViewModel: ObservableObject {
         self.platform = platform
 
         $state
-            .receive(on: DispatchQueue.main)
+            .receive(on: RunLoop.main)
             .sink { [weak self] state in
                 switch state {
                 case let .success(platform):
