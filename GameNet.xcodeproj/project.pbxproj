@@ -23,6 +23,12 @@
 		A524F53628B5105000A91627 /* PlatformsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53528B5105000A91627 /* PlatformsState.swift */; };
 		A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53728B5106B00A91627 /* PlatformsViewModel.swift */; };
 		A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F53928B5484600A91627 /* NavigationViewModifier.swift */; };
+		A530E729296EE334000EAB91 /* MockListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E728296EE334000EAB91 /* MockListRepository.swift */; };
+		A530E72C296EE39E000EAB91 /* ListsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E72B296EE39E000EAB91 /* ListsViewModelTests.swift */; };
+		A530E72F296EE3DF000EAB91 /* ListResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E72E296EE3DF000EAB91 /* ListResponseMock.swift */; };
+		A530E732296EE473000EAB91 /* ListRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E731296EE473000EAB91 /* ListRepositoryTests.swift */; };
+		A530E735296EE4C3000EAB91 /* ListDataSourceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E734296EE4C3000EAB91 /* ListDataSourceTest.swift */; };
+		A530E737296EE518000EAB91 /* MockListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E736296EE518000EAB91 /* MockListDataSource.swift */; };
 		A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661672899678000D52088 /* MockLoginDataSource.swift */; };
 		A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = A536616A2899820700D52088 /* OHHTTPStubs */; };
 		A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A536616C2899820700D52088 /* OHHTTPStubsSwift */; };
@@ -140,6 +146,12 @@
 		A524F53528B5105000A91627 /* PlatformsState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsState.swift; sourceTree = "<group>"; };
 		A524F53728B5106B00A91627 /* PlatformsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsViewModel.swift; sourceTree = "<group>"; };
 		A524F53928B5484600A91627 /* NavigationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationViewModifier.swift; sourceTree = "<group>"; };
+		A530E728296EE334000EAB91 /* MockListRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockListRepository.swift; sourceTree = "<group>"; };
+		A530E72B296EE39E000EAB91 /* ListsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsViewModelTests.swift; sourceTree = "<group>"; };
+		A530E72E296EE3DF000EAB91 /* ListResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListResponseMock.swift; sourceTree = "<group>"; };
+		A530E731296EE473000EAB91 /* ListRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRepositoryTests.swift; sourceTree = "<group>"; };
+		A530E734296EE4C3000EAB91 /* ListDataSourceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDataSourceTest.swift; sourceTree = "<group>"; };
+		A530E736296EE518000EAB91 /* MockListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockListDataSource.swift; sourceTree = "<group>"; };
 		A53661672899678000D52088 /* MockLoginDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginDataSource.swift; sourceTree = "<group>"; };
 		A536616F2899828700D52088 /* LoginNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkTests.swift; sourceTree = "<group>"; };
 		A53661722899837B00D52088 /* StubRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubRequests.swift; sourceTree = "<group>"; };
@@ -353,6 +365,38 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		A530E72A296EE385000EAB91 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				A530E72B296EE39E000EAB91 /* ListsViewModelTests.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		A530E72D296EE3CF000EAB91 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				A530E72E296EE3DF000EAB91 /* ListResponseMock.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		A530E730296EE45D000EAB91 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				A530E731296EE473000EAB91 /* ListRepositoryTests.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		A530E733296EE4B2000EAB91 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				A530E734296EE4C3000EAB91 /* ListDataSourceTest.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
 		A53661662899677700D52088 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -384,6 +428,7 @@
 				A5366179289987EE00D52088 /* Login */,
 				A56A95EC28B3E5D100CAAFFF /* Dashboard */,
 				A524F52E28B50D2D00A91627 /* Platform */,
+				A530E72D296EE3CF000EAB91 /* List */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -418,6 +463,7 @@
 				A536617F289988F700D52088 /* Login */,
 				A56DB67028B3C36700614046 /* Dashboard */,
 				A524F52B28B50BC100A91627 /* Platform */,
+				A530E72A296EE385000EAB91 /* List */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -586,6 +632,7 @@
 			isa = PBXGroup;
 			children = (
 				A566D848296E368D00760F01 /* ListRepository.swift */,
+				A530E728296EE334000EAB91 /* MockListRepository.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -594,6 +641,7 @@
 			isa = PBXGroup;
 			children = (
 				A566D84B296E37B800760F01 /* ListDataSource.swift */,
+				A530E736296EE518000EAB91 /* MockListDataSource.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -658,6 +706,7 @@
 				A5366178289987E900D52088 /* Login */,
 				A56DB66128B3BACC00614046 /* Dashboard */,
 				A524F51B28B4FB4800A91627 /* Platform */,
+				A530E733296EE4B2000EAB91 /* List */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -676,6 +725,7 @@
 				A5366177289987E500D52088 /* Login */,
 				A56DB66D28B3C2A100614046 /* Dashboard */,
 				A524F52328B5062F00A91627 /* Platform */,
+				A530E730296EE45D000EAB91 /* List */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -1241,16 +1291,20 @@
 			files = (
 				A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */,
 				A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */,
+				A530E72F296EE3DF000EAB91 /* ListResponseMock.swift in Sources */,
+				A530E72C296EE39E000EAB91 /* ListsViewModelTests.swift in Sources */,
 				A524F51D28B4FB5F00A91627 /* PlatformDataSourceTest.swift in Sources */,
 				A56DB66328B3BAE000614046 /* DashboardDataSourceTests.swift in Sources */,
 				A524F52528B5064C00A91627 /* PlatformRepositoryTests.swift in Sources */,
 				A56A95EE28B3E5E000CAAFFF /* DashboardResponseMock.swift in Sources */,
 				A56DB67228B3C37200614046 /* DashboardViewModelTests.swift in Sources */,
 				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
+				A530E735296EE4C3000EAB91 /* ListDataSourceTest.swift in Sources */,
 				A524F52D28B50BD300A91627 /* PlatformsViewModelTests.swift in Sources */,
 				A524F53028B50D3C00A91627 /* PlatformResponseMock.swift in Sources */,
 				A59E763528B6ABD4003CBA3E /* EditPlatformViewModelTests.swift in Sources */,
 				A56DB66F28B3C2B700614046 /* DashboardRepositoryTests.swift in Sources */,
+				A530E732296EE473000EAB91 /* ListRepositoryTests.swift in Sources */,
 				A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */,
 				A5DCFD4F28E62835003C280C /* EditPlatformResponseMock.swift in Sources */,
 				A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */,
@@ -1270,6 +1324,7 @@
 				A59E763728B6AC65003CBA3E /* EditPlatformViewModel.swift in Sources */,
 				A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */,
 				A524F53628B5105000A91627 /* PlatformsState.swift in Sources */,
+				A530E729296EE334000EAB91 /* MockListRepository.swift in Sources */,
 				A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */,
 				A5507EC02901CF9A0040C801 /* MockGameRepository.swift in Sources */,
 				A566D846296E35B500760F01 /* ListsViewModel.swift in Sources */,
@@ -1297,6 +1352,7 @@
 				A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */,
 				A524F52A28B506F300A91627 /* MockPlatformRepository.swift in Sources */,
 				A59E763B28B6AE1F003CBA3E /* EditPlatformView.swift in Sources */,
+				A530E737296EE518000EAB91 /* MockListDataSource.swift in Sources */,
 				A56DB66728B3BD1600614046 /* MockDashboardDataSource.swift in Sources */,
 				A57185C5286793D600655B31 /* GameNetApp.swift in Sources */,
 				A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */,

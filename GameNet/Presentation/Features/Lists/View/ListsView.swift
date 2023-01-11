@@ -61,14 +61,10 @@ struct ListsView: View {
 
 struct ListsView_Previews: PreviewProvider {
     static var previews: some View {
-        ListsView(viewModel: ListsViewModel())
-    }
+        let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
 
-//    static var previews: some View {
-//        let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
-//
-//        ForEach(ColorScheme.allCases, id: \.self) {
-//            ListsView(viewModel: ListsViewModel()).preferredColorScheme($0)
-//        }
-//    }
+        ForEach(ColorScheme.allCases, id: \.self) {
+            ListsView(viewModel: ListsViewModel()).preferredColorScheme($0)
+        }
+    }
 }
