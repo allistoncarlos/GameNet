@@ -29,7 +29,7 @@ struct ListsView: View {
                 }
             }
             .navigationDestination(for: String.self) { listId in
-//                viewModel.editPlatformView(navigationPath: $presentedPlatforms, platformId: platformId)
+                viewModel.editListView(navigationPath: $presentedLists, listId: listId)
             }
             .navigationView(title: "Listas")
             .toolbar {
@@ -60,6 +60,8 @@ struct ListsView: View {
 // MARK: - ListsView_Previews
 
 struct ListsView_Previews: PreviewProvider {
+    // TODO: FAZER A NAVEGAÇÃO PRA LISTA
+    // TODO: FAZER A CRIAÇÃO DE LISTA
     static var previews: some View {
         let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
 

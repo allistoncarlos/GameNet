@@ -29,6 +29,11 @@
 		A530E732296EE473000EAB91 /* ListRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E731296EE473000EAB91 /* ListRepositoryTests.swift */; };
 		A530E735296EE4C3000EAB91 /* ListDataSourceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E734296EE4C3000EAB91 /* ListDataSourceTest.swift */; };
 		A530E737296EE518000EAB91 /* MockListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E736296EE518000EAB91 /* MockListDataSource.swift */; };
+		A530E739296EE690000EAB91 /* EditListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E738296EE690000EAB91 /* EditListView.swift */; };
+		A530E73B296EE809000EAB91 /* EditListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E73A296EE809000EAB91 /* EditListViewModel.swift */; };
+		A530E73D296EE828000EAB91 /* EditListState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E73C296EE828000EAB91 /* EditListState.swift */; };
+		A530E73F296EE856000EAB91 /* EditListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E73E296EE856000EAB91 /* EditListViewModelTests.swift */; };
+		A530E741296EE88B000EAB91 /* EditListResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E740296EE88B000EAB91 /* EditListResponseMock.swift */; };
 		A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661672899678000D52088 /* MockLoginDataSource.swift */; };
 		A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = A536616A2899820700D52088 /* OHHTTPStubs */; };
 		A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A536616C2899820700D52088 /* OHHTTPStubsSwift */; };
@@ -152,6 +157,11 @@
 		A530E731296EE473000EAB91 /* ListRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRepositoryTests.swift; sourceTree = "<group>"; };
 		A530E734296EE4C3000EAB91 /* ListDataSourceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDataSourceTest.swift; sourceTree = "<group>"; };
 		A530E736296EE518000EAB91 /* MockListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockListDataSource.swift; sourceTree = "<group>"; };
+		A530E738296EE690000EAB91 /* EditListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListView.swift; sourceTree = "<group>"; };
+		A530E73A296EE809000EAB91 /* EditListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListViewModel.swift; sourceTree = "<group>"; };
+		A530E73C296EE828000EAB91 /* EditListState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListState.swift; sourceTree = "<group>"; };
+		A530E73E296EE856000EAB91 /* EditListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListViewModelTests.swift; sourceTree = "<group>"; };
+		A530E740296EE88B000EAB91 /* EditListResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListResponseMock.swift; sourceTree = "<group>"; };
 		A53661672899678000D52088 /* MockLoginDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginDataSource.swift; sourceTree = "<group>"; };
 		A536616F2899828700D52088 /* LoginNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkTests.swift; sourceTree = "<group>"; };
 		A53661722899837B00D52088 /* StubRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubRequests.swift; sourceTree = "<group>"; };
@@ -369,6 +379,7 @@
 			isa = PBXGroup;
 			children = (
 				A530E72B296EE39E000EAB91 /* ListsViewModelTests.swift */,
+				A530E73E296EE856000EAB91 /* EditListViewModelTests.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -377,6 +388,7 @@
 			isa = PBXGroup;
 			children = (
 				A530E72E296EE3DF000EAB91 /* ListResponseMock.swift */,
+				A530E740296EE88B000EAB91 /* EditListResponseMock.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -600,6 +612,7 @@
 			isa = PBXGroup;
 			children = (
 				A5B5D3D7289AE2E5004096F4 /* ListsView.swift */,
+				A530E738296EE690000EAB91 /* EditListView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -608,6 +621,7 @@
 			isa = PBXGroup;
 			children = (
 				A566D845296E35B500760F01 /* ListsViewModel.swift */,
+				A530E73A296EE809000EAB91 /* EditListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -624,6 +638,7 @@
 			isa = PBXGroup;
 			children = (
 				A566D841296E352C00760F01 /* ListsState.swift */,
+				A530E73C296EE828000EAB91 /* EditListState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1291,12 +1306,14 @@
 			files = (
 				A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */,
 				A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */,
+				A530E741296EE88B000EAB91 /* EditListResponseMock.swift in Sources */,
 				A530E72F296EE3DF000EAB91 /* ListResponseMock.swift in Sources */,
 				A530E72C296EE39E000EAB91 /* ListsViewModelTests.swift in Sources */,
 				A524F51D28B4FB5F00A91627 /* PlatformDataSourceTest.swift in Sources */,
 				A56DB66328B3BAE000614046 /* DashboardDataSourceTests.swift in Sources */,
 				A524F52528B5064C00A91627 /* PlatformRepositoryTests.swift in Sources */,
 				A56A95EE28B3E5E000CAAFFF /* DashboardResponseMock.swift in Sources */,
+				A530E73F296EE856000EAB91 /* EditListViewModelTests.swift in Sources */,
 				A56DB67228B3C37200614046 /* DashboardViewModelTests.swift in Sources */,
 				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
 				A530E735296EE4C3000EAB91 /* ListDataSourceTest.swift in Sources */,
@@ -1330,7 +1347,9 @@
 				A566D846296E35B500760F01 /* ListsViewModel.swift in Sources */,
 				A51AA6AE289955540081AE4B /* Login.swift in Sources */,
 				A524F52228B4FC1100A91627 /* MockPlatformDataSource.swift in Sources */,
+				A530E73B296EE809000EAB91 /* EditListViewModel.swift in Sources */,
 				A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */,
+				A530E73D296EE828000EAB91 /* EditListState.swift in Sources */,
 				A56A95F428B3FDAE00CAAFFF /* APIError.swift in Sources */,
 				A56A95F628B4010600CAAFFF /* Date+Extensions.swift in Sources */,
 				A56A95F028B3FBD300CAAFFF /* DashboardState.swift in Sources */,
@@ -1338,6 +1357,7 @@
 				A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */,
 				A566D844296E355300760F01 /* ListRouter.swift in Sources */,
 				A5507EBE2901CEDA0040C801 /* GameRepository.swift in Sources */,
+				A530E739296EE690000EAB91 /* EditListView.swift in Sources */,
 				A524F52028B4FC0700A91627 /* PlatformDataSource.swift in Sources */,
 				A566D84C296E37B800760F01 /* ListDataSource.swift in Sources */,
 				A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */,

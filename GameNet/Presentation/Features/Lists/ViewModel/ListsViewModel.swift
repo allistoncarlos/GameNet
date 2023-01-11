@@ -54,10 +54,10 @@ class ListsViewModel: ObservableObject {
     private var cancellable = Set<AnyCancellable>()
 }
 
-//extension ListsViewModel {
-//    func editListView(navigationPath: Binding<NavigationPath>, listId: String? = nil) -> some View {
-//        let platform = platforms?.first(where: { $0.id == listId })
-//
-//        return ListRouter.makeEditListView(navigationPath: navigationPath, list: list)
-//    }
-//}
+extension ListsViewModel {
+    func editListView(navigationPath: Binding<NavigationPath>, listId: String? = nil) -> some View {
+        let list = lists?.first(where: { $0.id == listId })
+
+        return ListRouter.makeEditListView(navigationPath: navigationPath, list: list)
+    }
+}
