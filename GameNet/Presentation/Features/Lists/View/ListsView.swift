@@ -60,8 +60,7 @@ struct ListsView: View {
 // MARK: - ListsView_Previews
 
 struct ListsView_Previews: PreviewProvider {
-    // TODO: FAZER A NAVEGAÇÃO PRA LISTA
-    // TODO: FAZER A CRIAÇÃO DE LISTA
+    // TODO: CRIAR TELA DE DETALHE DE LISTA, E COLOCAR NO DASHBOARD
     static var previews: some View {
         let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
 

@@ -167,7 +167,6 @@ class PlayingGamesViewModel: ObservableObject {
     func fetchData() async {
         uiState = .loading
 
-        // TODO: Tá dando 401 (TRAFEGAR O TOKEN)
         let result = await repository.fetchData()
 
         if let result = result {
