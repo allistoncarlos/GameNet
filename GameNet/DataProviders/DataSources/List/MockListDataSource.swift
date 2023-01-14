@@ -27,6 +27,14 @@ class MockListDataSource: ListDataSourceProtocol {
         }
     }
 
+    func fetchFinishedByYearData(id: Int) async -> [ListItem]? {
+        return MockListDataSource.listsGames.first?.games?.filter { $0.year == id }
+    }
+
+    func fetchBoughtByYearData(id: Int) async -> [ListItem]? {
+        return MockListDataSource.listsGames.first?.games?.filter { $0.year == id }
+    }
+
     func saveList(id: String?, list: List) async -> List? {
         if let id = id,
            let index = MockListDataSource.lists.firstIndex(where: { $0.id == id }) {

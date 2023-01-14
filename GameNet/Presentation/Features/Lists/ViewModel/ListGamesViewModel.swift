@@ -18,8 +18,9 @@ class ListGamesViewModel: ObservableObject {
 
     // MARK: Lifecycle
 
-    init(listId: String) {
+    init(listId: String? = nil, originFlow: ListOriginFlow? = nil) {
         self.listId = listId
+        self.originFlow = originFlow
 
         $state
             .receive(on: RunLoop.main)
@@ -35,19 +36,44 @@ class ListGamesViewModel: ObservableObject {
 
     // MARK: Internal
 
-    var listId: String
+    var listId: String?
+    var originFlow: ListOriginFlow?
+
     @Published var listGame: ListGame? = nil
     @Published var state: ListGamesState = .idle
 
     func fetchData() async {
         state = .loading
 
-        let result = await repository.fetchData(id: listId)
+        if let listId {
+            let result = await repository.fetchData(id: listId)
 
-        if let result {
-            state = .success(result)
-        } else {
-            state = .error("Erro no carregamento de dados do servidor")
+            if let result {
+                state = .success(result)
+            } else {
+                state = .error("Erro no carregamento de dados do servidor")
+            }
+        } else if let originFlow {
+            switch originFlow {
+            case let .finishedByYear(year):
+                let result = await repository.fetchFinishedByYearData(id: year)
+
+                if let result {
+                    let listGame = ListGame(id: String(year), name: String(year), games: result)
+                    state = .success(listGame)
+                } else {
+                    state = .error("Erro no carregamento de dados do servidor")
+                }
+            case let .boughtByYear(year):
+                let result = await repository.fetchBoughtByYearData(id: year)
+
+                if let result {
+                    let listGame = ListGame(id: String(year), name: String(year), games: result)
+                    state = .success(listGame)
+                } else {
+                    state = .error("Erro no carregamento de dados do servidor")
+                }
+            }
         }
     }
 

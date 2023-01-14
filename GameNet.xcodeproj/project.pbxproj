@@ -105,7 +105,8 @@
 		A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */; };
 		A5B5D3D8289AE2E6004096F4 /* ListsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3D7289AE2E5004096F4 /* ListsView.swift */; };
 		A5B5D3DC289B0933004096F4 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3DB289B0933004096F4 /* View+Extensions.swift */; };
-		A5D2BCDF2968B6710030973B /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A5D2C23C2896B676007C28AC /* Config.xcconfig */; };
+		A5C13EF92972E90800EB5A25 /* DashboardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C13EF82972E90800EB5A25 /* DashboardRouter.swift */; };
+		A5C13EFD2973187500EB5A25 /* ListOriginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C13EFC2973187500EB5A25 /* ListOriginFlow.swift */; };
 		A5D2BCE02968B6720030973B /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A5D2C23C2896B676007C28AC /* Config.xcconfig */; };
 		A5DCFD4F28E62835003C280C /* EditPlatformResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DCFD4E28E62835003C280C /* EditPlatformResponseMock.swift */; };
 		A5E489F528958EE80037023C /* LoginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F428958EE80037023C /* LoginState.swift */; };
@@ -236,6 +237,8 @@
 		A5B5D3D5289AE2DD004096F4 /* PlatformsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsView.swift; sourceTree = "<group>"; };
 		A5B5D3D7289AE2E5004096F4 /* ListsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsView.swift; sourceTree = "<group>"; };
 		A5B5D3DB289B0933004096F4 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		A5C13EF82972E90800EB5A25 /* DashboardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRouter.swift; sourceTree = "<group>"; };
+		A5C13EFC2973187500EB5A25 /* ListOriginFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOriginFlow.swift; sourceTree = "<group>"; };
 		A5D2BCDE2968B64E0030973B /* GameNet-Watch-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GameNet-Watch-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		A5D2C23C2896B676007C28AC /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A5D2C23D2896B823007C28AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -654,6 +657,7 @@
 				A566D841296E352C00760F01 /* ListsState.swift */,
 				A530E73C296EE828000EAB91 /* EditListState.swift */,
 				A582ABAB296F4B6A000A0435 /* ListGamesState.swift */,
+				A5C13EFC2973187500EB5A25 /* ListOriginFlow.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -763,6 +767,7 @@
 		A56DB65A28B3B93600614046 /* Router */ = {
 			isa = PBXGroup;
 			children = (
+				A5C13EF82972E90800EB5A25 /* DashboardRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1360,6 +1365,7 @@
 				A530E729296EE334000EAB91 /* MockListRepository.swift in Sources */,
 				A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */,
 				A5507EC02901CF9A0040C801 /* MockGameRepository.swift in Sources */,
+				A5C13EF92972E90800EB5A25 /* DashboardRouter.swift in Sources */,
 				A566D846296E35B500760F01 /* ListsViewModel.swift in Sources */,
 				A51AA6AE289955540081AE4B /* Login.swift in Sources */,
 				A524F52228B4FC1100A91627 /* MockPlatformDataSource.swift in Sources */,

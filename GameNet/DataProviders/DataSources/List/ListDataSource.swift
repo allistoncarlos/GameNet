@@ -13,6 +13,8 @@ import GameNet_Network
 protocol ListDataSourceProtocol {
     func fetchData() async -> [List]?
     func fetchData(id: String) async -> ListGame?
+    func fetchFinishedByYearData(id: Int) async -> [ListItem]?
+    func fetchBoughtByYearData(id: Int) async -> [ListItem]?
     func saveList(id: String?, list: List) async -> List?
 }
 
@@ -43,6 +45,34 @@ class ListDataSource: ListDataSourceProtocol {
             ) {
             if apiResult.ok {
                 return apiResult.data.toListGame()
+            }
+        }
+
+        return nil
+    }
+
+    func fetchFinishedByYearData(id: Int) async -> [ListItem]? {
+        if let apiResult = await NetworkManager.shared
+            .performRequest(
+                responseType: APIResult<[ListItemResponse]>.self,
+                endpoint: .finishedByYearList(id: String(id))
+            ) {
+            if apiResult.ok {
+                return apiResult.data.compactMap { $0.toListItem() }
+            }
+        }
+
+        return nil
+    }
+
+    func fetchBoughtByYearData(id: Int) async -> [ListItem]? {
+        if let apiResult = await NetworkManager.shared
+            .performRequest(
+                responseType: APIResult<[ListItemResponse]>.self,
+                endpoint: .boughtByYearList(id: String(id))
+            ) {
+            if apiResult.ok {
+                return apiResult.data.compactMap { $0.toListItem() }
             }
         }
 
