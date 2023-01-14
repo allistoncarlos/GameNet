@@ -14,23 +14,22 @@ struct GamesListView: View {
 
     // MARK: Internal
 
-    var games: [Game]? = nil
+    var games: [ListItem]? = nil
 
     var body: some View {
-        NavigationStack(path: $presentedGames) {
-            VStack {
-                if let games {
-                    List(games, id: \.id) { game in
-                        // TODO: PROVAVELMENTE, COLOCAR AQUI A CÉLULA
-                        NavigationLink(game.name, value: game.id)
-                    }
-                } else {
-                    Text("EMPTY")
+//        NavigationStack(path: $presentedGames) {
+        VStack {
+            if let games {
+                List(games, id: \.userGameId) { game in
+                    GamesListItemView(game: game)
                 }
+            } else {
+                Text("EMPTY")
             }
-            .navigationDestination(for: String.self) { listId in
-//                viewModel.editListView(navigationPath: $presentedGames, listId: listId)
-            }
+//            }
+//            .navigationDestination(for: String.self) { listId in
+            ////                viewModel.editListView(navigationPath: $presentedGames, listId: listId)
+//            }
         }
     }
 
@@ -43,6 +42,10 @@ struct GamesListView: View {
 
 struct GamesListView_Previews: PreviewProvider {
     static var previews: some View {
-        GamesListView()
+        let listGame = MockListRepository().fetchData(id: "1")
+
+        GamesListView(
+            games: listGame?.games
+        )
     }
 }

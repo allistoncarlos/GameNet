@@ -11,6 +11,6 @@ import GameNet_Network
 enum ListGamesState: Equatable {
     case idle
     case loading
-    case success(GameNet_Network.List)
+    case success(ListGame)
     case error(String)
 }

@@ -16,13 +16,21 @@ struct EditListView: View {
 
     var body: some View {
         Form {
-            TextField("Lista", text: $viewModel.list.name)
-                .autocapitalization(.none)
-                .onSubmit {
-                    Task {
-                        await viewModel.save()
+            Section(header: Text("Título")) {
+                TextField("Lista", text: $viewModel.list.name)
+                    .autocapitalization(.none)
+                    .onSubmit {
+                        Task {
+                            await viewModel.save()
+                        }
                     }
+            }
+
+            if let listId = viewModel.list.id {
+                Section(header: Text("Jogos")) {
+                    ListGamesView(viewModel: ListGamesViewModel(listId: listId))
                 }
+            }
 
             Section(
                 footer:
@@ -37,8 +45,9 @@ struct EditListView: View {
                 EmptyView()
             }
         }
+        .scrollIndicators(.hidden)
         .onReceive(viewModel.$state) { state in
-            if case .success(_) = state {
+            if case .success = state {
                 viewModel.goBackToLists(navigationPath: $navigationPath)
             }
         }
@@ -54,7 +63,7 @@ struct EditListView_Previews: PreviewProvider {
         let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
 
         let list = GameNet_Network.List(id: "1", name: "Próximos Jogos")
-        
+
         ForEach(ColorScheme.allCases, id: \.self) {
             EditListView(
                 viewModel: EditListViewModel(list: list),

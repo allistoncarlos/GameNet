@@ -5,29 +5,45 @@
 //  Created by Alliston Aleixo on 11/01/23.
 //
 
+import GameNet_Network
 import SwiftUI
 
 // MARK: - GamesListItemView
 
 struct GamesListItemView: View {
+    var game: ListItem? = nil
+    var itemDetail: String? = nil
+
+    // MARK: - Constants
+
+    let fixedHeight: CGFloat = 100
+    let fixedWidth: CGFloat = 60
+
     var body: some View {
-        HStack {
-            AsyncImage(url: URL(string: "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg")) { image in
+        HStack(spacing: 20) {
+            AsyncImage(url: URL(string: game?.cover ?? "")) { image in
                 image
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-            } placeholder: { ProgressView().progressViewStyle(.circular) }
-            VStack {
-                Text("The Legend of Zelda: Breath of the Wild")
-                    .padding(4)
-                    .background(.black)
-                    .foregroundColor(.white)
-                    .offset(x: -5, y: -5)
-                    .font(.system(size: 10))
-                Text("Nintendo Switch")
-                Text("01/01/2019")
+                    .frame(width: fixedWidth, height: fixedHeight, alignment: .trailing)
+                    .listRowInsets(EdgeInsets())
+            } placeholder: {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .frame(width: fixedWidth, height: fixedHeight, alignment: .trailing)
             }
-        }
+            VStack(alignment: .leading, spacing: 8) {
+                Text(game?.name ?? "")
+                    .font(.system(size: 20).bold())
+                Text(game?.platform ?? "")
+                    .font(.system(size: 16).bold())
+
+                if let itemDetail {
+                    Text(itemDetail)
+                }
+            }
+            Spacer()
+        }.frame(height: fixedHeight)
     }
 }
 
@@ -35,6 +51,10 @@ struct GamesListItemView: View {
 
 struct GamesListItemView_Previews: PreviewProvider {
     static var previews: some View {
-        GamesListItemView()
+        let listGame = MockListRepository().fetchData(id: "1")
+
+        GamesListItemView(
+            game: listGame?.games?[0]
+        )
     }
 }

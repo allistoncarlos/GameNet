@@ -12,7 +12,7 @@ import GameNet_Network
 
 protocol ListDataSourceProtocol {
     func fetchData() async -> [List]?
-    func fetchData(id: String) async -> List?
+    func fetchData(id: String) async -> ListGame?
     func saveList(id: String?, list: List) async -> List?
 }
 
@@ -35,14 +35,14 @@ class ListDataSource: ListDataSourceProtocol {
         return nil
     }
 
-    func fetchData(id: String) async -> List? {
+    func fetchData(id: String) async -> ListGame? {
         if let apiResult = await NetworkManager.shared
             .performRequest(
-                responseType: APIResult<ListResponse>.self,
+                responseType: APIResult<ListGameResponse>.self,
                 endpoint: .list(id: id)
             ) {
             if apiResult.ok {
-                return apiResult.data.toList()
+                return apiResult.data.toListGame()
             }
         }
 

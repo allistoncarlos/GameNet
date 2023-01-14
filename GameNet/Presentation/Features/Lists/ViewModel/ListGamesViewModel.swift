@@ -18,15 +18,15 @@ class ListGamesViewModel: ObservableObject {
 
     // MARK: Lifecycle
 
-    init(list: GameNet_Network.List) {
-        self.list = list
+    init(listId: String) {
+        self.listId = listId
 
         $state
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
                 switch state {
-                case let .success(list):
-                    self?.list = list
+                case let .success(listGame):
+                    self?.listGame = listGame
                 default:
                     break
                 }
@@ -35,17 +35,17 @@ class ListGamesViewModel: ObservableObject {
 
     // MARK: Internal
 
-    @Published var list: GameNet_Network.List
+    var listId: String
+    @Published var listGame: ListGame? = nil
     @Published var state: ListGamesState = .idle
 
     func fetchData() async {
         state = .loading
 
-        let result = await repository.fetchData()
+        let result = await repository.fetchData(id: listId)
 
         if let result {
-            // TODO: ORGANIZAR ISSO AQUI
-            state = .success(result.first!)
+            state = .success(result)
         } else {
             state = .error("Erro no carregamento de dados do servidor")
         }
