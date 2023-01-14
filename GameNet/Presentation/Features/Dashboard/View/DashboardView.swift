@@ -18,7 +18,7 @@ struct DashboardView: View {
     @ObservedObject var viewModel: DashboardViewModel
 
     var body: some View {
-        NavigationStack(path: $presentedFinishedGames) {
+        NavigationStack(path: $presentedViews) {
             ZStack {
                 ScrollView {
                     if viewModel.state == .loading {
@@ -51,13 +51,13 @@ struct DashboardView: View {
             }
             .navigationDestination(for: FinishedGameByYearTotal.self) { finishedGame in
                 viewModel.showFinishedGamesView(
-                    navigationPath: $presentedFinishedGames,
+                    navigationPath: $presentedViews,
                     year: finishedGame.year
                 )
             }
             .navigationDestination(for: BoughtGamesByYearTotal.self) { boughtGame in
                 viewModel.showBoughtGamesView(
-                    navigationPath: $presentedFinishedGames,
+                    navigationPath: $presentedViews,
                     year: boughtGame.year
                 )
             }
@@ -69,7 +69,7 @@ struct DashboardView: View {
 
     // MARK: Private
 
-    @State private var presentedFinishedGames = NavigationPath()
+    @State private var presentedViews = NavigationPath()
 
 }
 
@@ -166,13 +166,6 @@ extension DashboardView {
                                 }
                             }
                         }
-//                        .onChange(of: presentedFinishedGames) { newValue in
-//                            if newValue.isEmpty {
-//                                Task {
-//                                    await viewModel.fetchData()
-//                                }
-//                            }
-//                        }
                     }
                 }
             }

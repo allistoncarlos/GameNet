@@ -83,8 +83,8 @@ class ListGamesViewModel: ObservableObject {
     private var cancellable = Set<AnyCancellable>()
 }
 
-// extension EditListViewModel {
-//    func goBackToLists(navigationPath: Binding<NavigationPath>) {
-//        ListRouter.goBackToLists(navigationPath: navigationPath)
-//    }
-// }
+extension ListGamesViewModel {
+    func goBackToLists(navigationPath: Binding<NavigationPath>) {
+        ListRouter.goBackToLists(navigationPath: navigationPath)
+    }
+}

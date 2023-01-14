@@ -60,7 +60,6 @@ struct ListsView: View {
 // MARK: - ListsView_Previews
 
 struct ListsView_Previews: PreviewProvider {
-    // TODO: CRIAR TELA DE DETALHE DE LISTA, E COLOCAR NO DASHBOARD
     static var previews: some View {
         let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
 

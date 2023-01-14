@@ -17,23 +17,14 @@ struct ListGamesView: View {
     @ObservedObject var viewModel: ListGamesViewModel
 
     var body: some View {
-        NavigationStack(path: $presentedLists) {
-            VStack {
-                if viewModel.state == .loading {
-                    ProgressView()
-                } else {
-                    if let listGame = viewModel.listGame {
-                        if let games = listGame.games {
-                            GamesListView(games: games)
-                        }
+        VStack {
+            if viewModel.state == .loading {
+                ProgressView()
+            } else {
+                if let listGame = viewModel.listGame {
+                    if let games = listGame.games {
+                        GamesListView(games: games)
                     }
-                }
-            }
-        }
-        .onChange(of: presentedLists) { newValue in
-            if newValue.isEmpty {
-                Task {
-                    await viewModel.fetchData()
                 }
             }
         }

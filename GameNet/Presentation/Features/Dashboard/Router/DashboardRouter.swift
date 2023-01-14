@@ -11,11 +11,11 @@ import SwiftUI
 @MainActor
 enum DashboardRouter {
     static func makeFinishedGamesView(navigationPath: Binding<NavigationPath>, year: Int) -> some View {
-        return ListGamesView(viewModel: ListGamesViewModel(originFlow: .finishedByYear(year)))
+        return ListRouter.makeListDetailsView(navigationPath: navigationPath, originFlow: .finishedByYear(year))
     }
 
     static func makeBoughtGamesView(navigationPath: Binding<NavigationPath>, year: Int) -> some View {
-        return ListGamesView(viewModel: ListGamesViewModel(originFlow: .boughtByYear(year)))
+        return ListRouter.makeListDetailsView(navigationPath: navigationPath, originFlow: .boughtByYear(year))
     }
 
     static func goBackToDashboard(navigationPath: Binding<NavigationPath>) {

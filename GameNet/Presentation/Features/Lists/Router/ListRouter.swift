@@ -18,6 +18,10 @@ enum ListRouter {
         return EditListView(viewModel: editListViewModel, navigationPath: navigationPath)
     }
 
+    static func makeListDetailsView(navigationPath: Binding<NavigationPath>, originFlow: ListOriginFlow) -> some View {
+        return ListDetailsView(viewModel: ListDetailsViewModel(originFlow: originFlow), navigationPath: navigationPath)
+    }
+
     static func goBackToLists(navigationPath: Binding<NavigationPath>) {
         navigationPath.wrappedValue.removeLast(navigationPath.wrappedValue.count - 1)
     }
