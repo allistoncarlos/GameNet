@@ -28,7 +28,7 @@ struct EditListView: View {
 
             if let listId = viewModel.list.id {
                 Section(header: Text("Jogos")) {
-                    ListGamesView(viewModel: ListGamesViewModel(listId: listId))
+//                    ListGamesView(viewModel: ListGamesViewModel(listId: listId))
                 }
             }
 

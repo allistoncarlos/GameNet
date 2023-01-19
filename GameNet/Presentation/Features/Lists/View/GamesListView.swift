@@ -17,7 +17,6 @@ struct GamesListView: View {
     var games: [ListItem]? = nil
 
     var body: some View {
-//        NavigationStack(path: $presentedGames) {
         VStack {
             if let games {
                 List(games, id: \.userGameId) { game in
@@ -26,16 +25,8 @@ struct GamesListView: View {
             } else {
                 Text("EMPTY")
             }
-//            }
-//            .navigationDestination(for: String.self) { listId in
-            ////                viewModel.editListView(navigationPath: $presentedGames, listId: listId)
-//            }
         }
     }
-
-    // MARK: Private
-
-    @State private var presentedGames = NavigationPath()
 }
 
 // MARK: - GamesListView_Previews

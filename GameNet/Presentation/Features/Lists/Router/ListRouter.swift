@@ -22,6 +22,12 @@ enum ListRouter {
         return ListDetailsView(viewModel: ListDetailsViewModel(originFlow: originFlow), navigationPath: navigationPath)
     }
 
+    static func makeListGamesView(navigationPath: Binding<NavigationPath>, listGame: ListGame) -> some View {
+        let viewModel = ListGamesViewModel(listGame: listGame)
+
+        return ListGamesView(viewModel: viewModel)
+    }
+
     static func goBackToLists(navigationPath: Binding<NavigationPath>) {
         navigationPath.wrappedValue.removeLast(navigationPath.wrappedValue.count - 1)
     }
