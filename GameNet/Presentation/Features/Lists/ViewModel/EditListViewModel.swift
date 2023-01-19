@@ -25,6 +25,8 @@ class EditListViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] state in
                 switch state {
+                case let .loadedGames(listGame):
+                    self?.listGame = listGame
                 case let .success(list):
                     self?.list = list
                 default:
@@ -33,11 +35,25 @@ class EditListViewModel: ObservableObject {
             }.store(in: &cancellable)
     }
 
-
     // MARK: Internal
 
     @Published var list: GameNet_Network.List
+    @Published var listGame: ListGame?
     @Published var state: EditListState = .idle
+
+    func fetchGames() async {
+        if let listId = list.id {
+            state = .loading
+
+            let result = await repository.fetchData(id: listId)
+
+            if let result {
+                state = .loadedGames(result)
+            } else {
+                state = .error("Erro no carregamento de dados do servidor")
+            }
+        }
+    }
 
     func save() async {
         state = .loading
@@ -58,6 +74,10 @@ class EditListViewModel: ObservableObject {
 }
 
 extension EditListViewModel {
+    func showListGamesView(navigationPath: Binding<NavigationPath>, listGame: ListGame) -> some View {
+        return ListRouter.makeListGamesView(navigationPath: navigationPath, listGame: listGame)
+    }
+
     func goBackToLists(navigationPath: Binding<NavigationPath>) {
         ListRouter.goBackToLists(navigationPath: navigationPath)
     }

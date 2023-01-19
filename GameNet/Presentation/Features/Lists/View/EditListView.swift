@@ -11,7 +11,7 @@ import SwiftUI
 // MARK: - EditListView
 
 struct EditListView: View {
-    @ObservedObject var viewModel: EditListViewModel
+    @StateObject var viewModel: EditListViewModel
     @Binding var navigationPath: NavigationPath
 
     var body: some View {
@@ -26,9 +26,14 @@ struct EditListView: View {
                     }
             }
 
-            if let listId = viewModel.list.id {
-                Section(header: Text("Jogos")) {
-//                    ListGamesView(viewModel: ListGamesViewModel(listId: listId))
+            Section(header: Text("Jogos")) {
+                if let listGame = viewModel.listGame {
+                    viewModel.showListGamesView(
+                        navigationPath: $navigationPath,
+                        listGame: listGame
+                    )
+                } else {
+                    ProgressView()
                 }
             }
 
@@ -53,6 +58,9 @@ struct EditListView: View {
         }
         .navigationView(title: viewModel.list.name.isEmpty ?
             "Nova Lista" : viewModel.list.name)
+        .task {
+            await viewModel.fetchGames()
+        }
     }
 }
 
