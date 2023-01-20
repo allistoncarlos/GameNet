@@ -29,7 +29,10 @@ struct ListsView: View {
                 }
             }
             .navigationDestination(for: String.self) { listId in
-                viewModel.editListView(navigationPath: $presentedLists, listId: listId)
+                viewModel.editListView(
+                    navigationPath: $presentedLists,
+                    listId: listId
+                )
             }
             .navigationView(title: "Listas")
             .toolbar {
