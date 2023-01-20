@@ -66,25 +66,14 @@ class LoginViewModel: ObservableObject {
                     switch state {
                     case .activated:
                         do {
-                            try WatchConnectivityManager.shared.send(
-                                message: id,
-                                key: "ID"
-                            )
+                            let context = [
+                                id,
+                                accessToken,
+                                refreshToken,
+                                formattedExpiresIn
+                            ]
 
-                            try WatchConnectivityManager.shared.send(
-                                message: accessToken,
-                                key: "ACCESS_TOKEN"
-                            )
-
-                            try WatchConnectivityManager.shared.send(
-                                message: refreshToken,
-                                key: "REFRESH_TOKEN"
-                            )
-
-                            try WatchConnectivityManager.shared.send(
-                                message: formattedExpiresIn,
-                                key: "EXPIRES_IN"
-                            )
+                            try WatchConnectivityManager.shared.updateApplicationContext(message: context, key: "AUTH_INFO")
                         } catch WCError.notReachable {
                             print("NOT REACHABLE")
                         } catch WCError.companionAppNotInstalled {

@@ -15,29 +15,19 @@ struct GameNet_Watch_Watch_AppApp: App {
     // MARK: Lifecycle
 
     init() {
-        WatchConnectivityManager.shared.$message
+        WatchConnectivityManager.shared.$context
             .receive(on: RunLoop.main)
-            .sink(receiveValue: { message in
-                if let id = message["ID"] as? String {
+            .sink(receiveValue: { context in
+                if let authInfo = context["AUTH_INFO"] as? [String] {
                     DispatchQueue.main.async {
+                        let id = authInfo[0]
+                        let accessToken = authInfo[1]
+                        let refreshToken = authInfo[2]
+                        let expiresIn = authInfo[3]
+
                         KeychainDataSource.id.set(id)
-                    }
-                }
-
-                if let accessToken = message["ACCESS_TOKEN"] as? String {
-                    DispatchQueue.main.async {
                         KeychainDataSource.accessToken.set(accessToken)
-                    }
-                }
-
-                if let refreshToken = message["REFRESH_TOKEN"] as? String {
-                    DispatchQueue.main.async {
                         KeychainDataSource.refreshToken.set(refreshToken)
-                    }
-                }
-
-                if let expiresIn = message["EXPIRES_IN"] as? String {
-                    DispatchQueue.main.async {
                         KeychainDataSource.expiresIn.set(expiresIn)
                     }
                 }

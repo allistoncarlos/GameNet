@@ -27,8 +27,6 @@ struct GameNetApp: App {
 
     @MainActor
     private func resultView() -> AnyView {
-        return KeychainDataSource.hasValidToken() ?
-            AnyView(LoginRouter.makeHomeView()) :
-            AnyView(LoginRouter.makeLoginView())
+        return AnyView(LoginRouter.makeLoginView())
     }
 }
