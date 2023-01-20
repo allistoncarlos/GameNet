@@ -6,16 +6,20 @@
 //
 
 import Factory
+import GameNet_Network
 import SwiftUI
 
 // MARK: - DashboardView
 
 struct DashboardView: View {
+
+    // MARK: Internal
+
     @ObservedObject var viewModel: DashboardViewModel
 
     var body: some View {
-        ZStack {
-            NavigationView {
+        NavigationStack(path: $presentedViews) {
+            ZStack {
                 ScrollView {
                     if viewModel.state == .loading {
                         ProgressView()
@@ -45,10 +49,28 @@ struct DashboardView: View {
                 }
                 .navigationView(title: "Dashboard")
             }
-        }.task {
+            .navigationDestination(for: FinishedGameByYearTotal.self) { finishedGame in
+                viewModel.showFinishedGamesView(
+                    navigationPath: $presentedViews,
+                    year: finishedGame.year
+                )
+            }
+            .navigationDestination(for: BoughtGamesByYearTotal.self) { boughtGame in
+                viewModel.showBoughtGamesView(
+                    navigationPath: $presentedViews,
+                    year: boughtGame.year
+                )
+            }
+        }
+        .task {
             await viewModel.fetchData()
         }
     }
+
+    // MARK: Private
+
+    @State private var presentedViews = NavigationPath()
+
 }
 
 extension DashboardView {
@@ -131,13 +153,17 @@ extension DashboardView {
 
                 VStack(alignment: .leading) {
                     if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
-                        ForEach(finishedGamesByYear, id: \.year) { finishedGame in
-                            HStack(spacing: 20) {
-                                Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
-                                    .font(.dashboardGameTitle)
-                                Text(String(finishedGame.year))
-                                    .font(.dashboardGameTitle)
-                                Spacer()
+                        Group {
+                            ForEach(finishedGamesByYear, id: \.year) { finishedGame in
+                                NavigationLink(value: finishedGame) {
+                                    HStack(spacing: 20) {
+                                        Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
+                                            .font(.dashboardGameTitle)
+                                        Text(String(finishedGame.year))
+                                            .font(.dashboardGameTitle)
+                                        Spacer()
+                                    }
+                                }
                             }
                         }
                     }
@@ -166,15 +192,17 @@ extension DashboardView {
                     VStack(alignment: .leading) {
                         if let boughtByYear = viewModel.dashboard?.boughtByYear {
                             ForEach(boughtByYear, id: \.year) { boughtGame in
-                                HStack(spacing: 20) {
-                                    if let boughtGameQuantity = boughtGame.quantity.toLeadingZerosString(decimalPlaces: 2) {
-                                        Text(boughtGameQuantity)
-                                            .font(.dashboardGameTitle)
-                                    }
+                                NavigationLink(value: boughtGame) {
+                                    HStack(spacing: 20) {
+                                        if let boughtGameQuantity = boughtGame.quantity.toLeadingZerosString(decimalPlaces: 2) {
+                                            Text(boughtGameQuantity)
+                                                .font(.dashboardGameTitle)
+                                        }
 
-                                    Text(String(boughtGame.year))
-                                        .font(.dashboardGameTitle)
-                                    Spacer()
+                                        Text(String(boughtGame.year))
+                                            .font(.dashboardGameTitle)
+                                        Spacer()
+                                    }
                                 }
                             }
                         }

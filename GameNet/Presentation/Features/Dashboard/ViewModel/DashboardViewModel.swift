@@ -9,6 +9,9 @@ import Combine
 import Factory
 import Foundation
 import GameNet_Network
+import SwiftUI
+
+// MARK: - DashboardViewModel
 
 @MainActor
 class DashboardViewModel: ObservableObject {
@@ -49,4 +52,14 @@ class DashboardViewModel: ObservableObject {
 
     @Injected(RepositoryContainer.dashboardRepository) private var repository
     private var cancellable = Set<AnyCancellable>()
+}
+
+extension DashboardViewModel {
+    func showFinishedGamesView(navigationPath: Binding<NavigationPath>, year: Int) -> some View {
+        return DashboardRouter.makeFinishedGamesView(navigationPath: navigationPath, year: year)
+    }
+
+    func showBoughtGamesView(navigationPath: Binding<NavigationPath>, year: Int) -> some View {
+        return DashboardRouter.makeBoughtGamesView(navigationPath: navigationPath, year: year)
+    }
 }

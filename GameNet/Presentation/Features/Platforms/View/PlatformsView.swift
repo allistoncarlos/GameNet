@@ -10,6 +10,7 @@ import SwiftUI
 // MARK: - PlatformsView
 
 struct PlatformsView: View {
+
     // MARK: Internal
 
     @ObservedObject var viewModel: PlatformsViewModel
@@ -28,7 +29,10 @@ struct PlatformsView: View {
                 }
             }
             .navigationDestination(for: String.self) { platformId in
-                viewModel.editPlatformView(navigationPath: $presentedPlatforms, platformId: platformId)
+                viewModel.editPlatformView(
+                    navigationPath: $presentedPlatforms,
+                    platformId: platformId
+                )
             }
             .navigationView(title: "Platformas")
             .toolbar {
