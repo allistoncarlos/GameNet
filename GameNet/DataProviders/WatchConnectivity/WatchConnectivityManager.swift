@@ -33,17 +33,47 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
         }
     }
 
-    func sendMessage(message: Any, key: String) throws {
-        try validateSession()
+    func sendMessage(
+        message: Any,
+        key: String
+    ) {
+        do {
+            try validateSession()
 
-        WCSession.default.sendMessage([key: message], replyHandler: nil) { error in
-            print("Cannot send message: \(String(describing: error))")
+            WCSession.default.sendMessage(
+                [key: message],
+                replyHandler: nil
+            ) { error in
+                print("Cannot send message: \(String(describing: error))")
+            }
+        } catch WCError.notReachable {
+            print("[WATCH SESSION] - Error: NOT REACHABLE")
+        } catch WCError.companionAppNotInstalled {
+            print("[WATCH SESSION] - Error: COMPANION APP NOT INSTALLED")
+        } catch WCError.watchAppNotInstalled {
+            print("[WATCH SESSION] - Error: WATCH APP NOT INSTALLED")
+        } catch WCError.sessionNotActivated {
+            print("[WATCH SESSION] - Error: SESSION NOT ACTIVATED")
+        } catch {
+            print("[WATCH SESSION] - Error: \(error.localizedDescription)")
         }
     }
 
-    func updateApplicationContext(message: Any, key: String) throws {
-        try validateSession()
-        try WCSession.default.updateApplicationContext([key: message])
+    func updateApplicationContext(message: Any, key: String) {
+        do {
+            try validateSession()
+            try WCSession.default.updateApplicationContext([key: message])
+        } catch WCError.notReachable {
+            print("[WATCH SESSION] - Error: NOT REACHABLE")
+        } catch WCError.companionAppNotInstalled {
+            print("[WATCH SESSION] - Error: COMPANION APP NOT INSTALLED")
+        } catch WCError.watchAppNotInstalled {
+            print("[WATCH SESSION] - Error: WATCH APP NOT INSTALLED")
+        } catch WCError.sessionNotActivated {
+            print("[WATCH SESSION] - Error: SESSION NOT ACTIVATED")
+        } catch {
+            print("[WATCH SESSION] - Error: \(error.localizedDescription)")
+        }
     }
 
     // MARK: Private
@@ -82,6 +112,7 @@ extension WatchConnectivityManager: WCSessionDelegate {
         error: Error?
     ) {
         state = activationState
+        print("[WATCH SESSION] - State: \(activationState)")
     }
 
     func session(
