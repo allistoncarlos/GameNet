@@ -15,9 +15,6 @@ struct GameNetApp: App {
     // MARK: Lifecycle
 
     init() {
-        // TODO: RETIRAR
-        KeychainDataSource.clear()
-
         WatchConnectivityManager.shared.$message
             .receive(on: RunLoop.main)
             .sink(receiveValue: { message in
