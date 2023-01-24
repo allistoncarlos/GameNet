@@ -13,10 +13,18 @@ struct HomeView: View {
     @ObservedObject var viewModel: HomeViewModel
 
     var body: some View {
-        if viewModel.hasValidAccessToken {
-            PlayingGamesView(viewModel: PlayingGamesViewModel())
-        } else {
+        switch viewModel.state {
+        case .idle:
             NotLoggedView()
+                .onAppear {
+                    viewModel.askForCredentials()
+                }
+        case .askingForCredentials:
+            Text("PEDINDO CREDENCIAIS")
+        case .notLogged:
+            Text("PRECISA LOGAR NO IPHONE")
+        case .logged:
+            PlayingGamesView(viewModel: PlayingGamesViewModel())
         }
     }
 }

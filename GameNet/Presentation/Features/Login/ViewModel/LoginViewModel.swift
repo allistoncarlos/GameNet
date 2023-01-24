@@ -60,48 +60,19 @@ class LoginViewModel: ObservableObject {
             KeychainDataSource.refreshToken.set(refreshToken)
             KeychainDataSource.expiresIn.set(formattedExpiresIn)
 
-            WatchConnectivityManager.shared.$state
-                .receive(on: RunLoop.main)
-                .sink { state in
-                    switch state {
-                    case .activated:
-                        do {
-                            try WatchConnectivityManager.shared.send(
-                                message: id,
-                                key: "ID"
-                            )
+            DispatchQueue.main.async {
+                let message = [
+                    id,
+                    accessToken,
+                    refreshToken,
+                    formattedExpiresIn
+                ]
 
-                            try WatchConnectivityManager.shared.send(
-                                message: accessToken,
-                                key: "ACCESS_TOKEN"
-                            )
-
-                            try WatchConnectivityManager.shared.send(
-                                message: refreshToken,
-                                key: "REFRESH_TOKEN"
-                            )
-
-                            try WatchConnectivityManager.shared.send(
-                                message: formattedExpiresIn,
-                                key: "EXPIRES_IN"
-                            )
-                        } catch WCError.notReachable {
-                            print("NOT REACHABLE")
-                        } catch WCError.companionAppNotInstalled {
-                            print("COMPANION APP NOT INSTALLED")
-                        } catch WCError.watchAppNotInstalled {
-                            print("WATCH APP NOT INSTALLED")
-                        } catch WCError.sessionNotActivated {
-                            print("SESSION NOT ACTIVATED")
-                        } catch {
-                            print("DEFAULT ERROR")
-                        }
-                    default:
-                        break
-                    }
-                }.store(in: &cancellable)
-
-            WatchConnectivityManager.shared.activateSession()
+                WatchConnectivityManager.shared.sendMessage(
+                    message: message,
+                    key: "AUTH_INFO"
+                )
+            }
         } else {
             KeychainDataSource.clear()
         }

@@ -22,6 +22,7 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
 
     static let shared = WatchConnectivityManager()
 
+    @Published var context: [String: Any] = [:]
     @Published var message: [String: Any] = [:]
     @Published var state: WCSessionActivationState = .notActivated
 
@@ -32,7 +33,52 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
         }
     }
 
-    func send(message: Any, key: String) throws {
+    func sendMessage(
+        message: Any,
+        key: String
+    ) {
+        do {
+            try validateSession()
+
+            WCSession.default.sendMessage(
+                [key: message],
+                replyHandler: nil
+            ) { error in
+                print("Cannot send message: \(String(describing: error))")
+            }
+        } catch WCError.notReachable {
+            print("[WATCH SESSION] - Error: NOT REACHABLE")
+        } catch WCError.companionAppNotInstalled {
+            print("[WATCH SESSION] - Error: COMPANION APP NOT INSTALLED")
+        } catch WCError.watchAppNotInstalled {
+            print("[WATCH SESSION] - Error: WATCH APP NOT INSTALLED")
+        } catch WCError.sessionNotActivated {
+            print("[WATCH SESSION] - Error: SESSION NOT ACTIVATED")
+        } catch {
+            print("[WATCH SESSION] - Error: \(error.localizedDescription)")
+        }
+    }
+
+    func updateApplicationContext(message: Any, key: String) {
+        do {
+            try validateSession()
+            try WCSession.default.updateApplicationContext([key: message])
+        } catch WCError.notReachable {
+            print("[WATCH SESSION] - Error: NOT REACHABLE")
+        } catch WCError.companionAppNotInstalled {
+            print("[WATCH SESSION] - Error: COMPANION APP NOT INSTALLED")
+        } catch WCError.watchAppNotInstalled {
+            print("[WATCH SESSION] - Error: WATCH APP NOT INSTALLED")
+        } catch WCError.sessionNotActivated {
+            print("[WATCH SESSION] - Error: SESSION NOT ACTIVATED")
+        } catch {
+            print("[WATCH SESSION] - Error: \(error.localizedDescription)")
+        }
+    }
+
+    // MARK: Private
+
+    private func validateSession() throws {
         guard WCSession.default.activationState == .activated else {
             throw WCError(.sessionNotActivated)
         }
@@ -50,10 +96,6 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
         guard WCSession.default.isReachable else {
             throw WCError(.notReachable)
         }
-
-        WCSession.default.sendMessage([key: message], replyHandler: nil) { error in
-            print("Cannot send message: \(String(describing: error))")
-        }
     }
 }
 
@@ -70,6 +112,14 @@ extension WatchConnectivityManager: WCSessionDelegate {
         error: Error?
     ) {
         state = activationState
+        print("[WATCH SESSION] - State: \(activationState)")
+    }
+
+    func session(
+        _ session: WCSession,
+        didReceiveApplicationContext applicationContext: [String: Any]
+    ) {
+        context = applicationContext
     }
 
     #if os(iOS)

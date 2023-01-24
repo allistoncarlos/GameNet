@@ -12,6 +12,8 @@ import GameNet_Network
 
 protocol GameDataSourceProtocol {
     func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>?
+    func fetchData(id: String) async -> GameDetail?
+    func fetchGameplaySessions(id: String) async -> GameplaySessions?
 }
 
 // MARK: - GameDataSource
@@ -23,10 +25,6 @@ class GameDataSource: GameDataSourceProtocol {
                 responseType: APIResult<PagedResult<GameResponse>>.self,
                 endpoint: .games(search: search, page: page, pageSize: pageSize)
             ) {
-//            if apiResult.ok {
-//                return apiResult.data.toGame()
-//            }
-
             if apiResult.ok {
                 let pagedResult = apiResult.data
 
@@ -45,31 +43,31 @@ class GameDataSource: GameDataSourceProtocol {
         return nil
     }
 
-//    func fetchData(id: String) async -> Platform? {
-//        if let apiResult = await NetworkManager.shared
-//            .performRequest(
-//                responseType: APIResult<PlatformResponse>.self,
-//                endpoint: .platform(id: id)
-//            ) {
-//            if apiResult.ok {
-//                return apiResult.data.toPlatform()
-//            }
-//        }
-//
-//        return nil
-//    }
-//
-//    func savePlatform(id: String?, platform: Platform) async -> Platform? {
-//        if let apiResult = await NetworkManager.shared
-//            .performRequest(
-//                responseType: APIResult<PlatformResponse>.self,
-//                endpoint: .savePlatform(id: id, data: platform.toRequest())
-//            ) {
-//            if apiResult.ok {
-//                return apiResult.data.toPlatform()
-//            }
-//        }
-//
-//        return nil
-//    }
+    func fetchData(id: String) async -> GameDetail? {
+        if let apiResult = await NetworkManager.shared
+            .performRequest(
+                responseType: APIResult<GameDetailResponse>.self,
+                endpoint: .game(id: id)
+            ) {
+            if apiResult.ok {
+                return apiResult.data.toGameDetail()
+            }
+        }
+
+        return nil
+    }
+
+    func fetchGameplaySessions(id: String) async -> GameplaySessions? {
+        if let apiResult = await NetworkManager.shared
+            .performRequest(
+                responseType: APIResult<GameplaySessionsResponse>.self,
+                endpoint: .gameplays(id: id)
+            ) {
+            if apiResult.ok {
+                return apiResult.data.toGameplaySessions()
+            }
+        }
+
+        return nil
+    }
 }

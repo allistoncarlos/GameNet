@@ -15,10 +15,19 @@ struct MockGameRepository: GameRepositoryProtocol {
     static func reset() {
         games = Defaults.games
         pagedGames = Defaults.pagedGames
+        gameDetail = Defaults.gameDetail
     }
 
     func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>? {
         return MockGameRepository.pagedGames
+    }
+
+    func fetchData(id: String) -> GameDetail? {
+        return MockGameRepository.gameDetail
+    }
+
+    func fetchGameplaySessions(id: String) -> GameplaySessions? {
+        return MockGameRepository.gameplaySessions
     }
 
     // MARK: Private
@@ -68,8 +77,33 @@ struct MockGameRepository: GameRepositoryProtocol {
             search: "",
             result: games
         )
+
+        static let gameDetail = GameDetail(
+            id: "1",
+            name: "The Legend of Zelda: Tears of the Kingdom",
+            cover: "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg",
+            platform: "Nintendo Switch",
+            value: 180,
+            boughtDate: Date(),
+            gameplays: [
+                Gameplay(start: Date(), finish: Date()),
+                Gameplay(start: Date(), finish: nil),
+            ]
+        )
+
+        static let gameplaySessions = GameplaySessions(
+            id: "1",
+            sessions: [
+                GameplaySession(id: "1", userGameId: "1", start: Date(), finish: Date(), totalGameplayTime: "01:20"),
+                GameplaySession(id: "2", userGameId: "1", start: Date(), finish: nil, totalGameplayTime: "0:00"),
+            ],
+            totalGameplayTime: "18:20",
+            averageGameplayTime: "01:45"
+        )
     }
 
     private static var games = Defaults.games
     private static var pagedGames = Defaults.pagedGames
+    private static var gameDetail = Defaults.gameDetail
+    private static var gameplaySessions = Defaults.gameplaySessions
 }
