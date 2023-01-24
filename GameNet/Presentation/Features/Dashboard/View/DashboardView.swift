@@ -61,6 +61,14 @@ struct DashboardView: View {
                     year: boughtGame.year
                 )
             }
+            .navigationDestination(for: PlayingGame.self) { playingGame in
+                if let gameId = playingGame.id {
+                    viewModel.showGameDetailView(
+                        navigationPath: $presentedViews,
+                        id: gameId
+                    )
+                }
+            }
         }
         .task {
             await viewModel.fetchData()
@@ -88,11 +96,15 @@ extension DashboardView {
 
                 if let playingGames = viewModel.dashboard?.playingGames {
                     ForEach(playingGames, id: \.id) { playingGame in
-                        VStack(alignment: .leading) {
-                            Text(playingGame.name)
-                                .font(.dashboardGameTitle)
-                            Text(playingGame.latestGameplaySession?.start.toFormattedString() ?? "")
-                                .font(.dashboardGameSubtitle)
+                        NavigationLink(value: playingGame) {
+                            VStack(alignment: .leading) {
+                                Text(playingGame.name)
+                                    .font(.dashboardGameTitle)
+                                    .multilineTextAlignment(.leading)
+                                Text(playingGame.latestGameplaySession?.start.toFormattedString() ?? "")
+                                    .font(.dashboardGameSubtitle)
+                                    .multilineTextAlignment(.leading)
+                            }
                         }
                     }
                 }

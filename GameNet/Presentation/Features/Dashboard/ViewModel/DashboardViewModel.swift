@@ -62,4 +62,8 @@ extension DashboardViewModel {
     func showBoughtGamesView(navigationPath: Binding<NavigationPath>, year: Int) -> some View {
         return DashboardRouter.makeBoughtGamesView(navigationPath: navigationPath, year: year)
     }
+
+    func showGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
+        return DashboardRouter.makeGameDetailView(navigationPath: navigationPath, id: id)
+    }
 }

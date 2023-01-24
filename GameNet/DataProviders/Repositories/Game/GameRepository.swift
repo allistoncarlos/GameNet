@@ -13,6 +13,8 @@ import GameNet_Network
 
 protocol GameRepositoryProtocol {
     func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>?
+    func fetchData(id: String) async -> GameDetail?
+    func fetchGameplaySessions(id: String) async -> GameplaySessions?
 }
 
 // MARK: - GameRepository
@@ -23,6 +25,14 @@ struct GameRepository: GameRepositoryProtocol {
 
     func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>? {
         return await dataSource.fetchData(search: search, page: page, pageSize: pageSize)
+    }
+
+    func fetchData(id: String) async -> GameDetail? {
+        return await dataSource.fetchData(id: id)
+    }
+    
+    func fetchGameplaySessions(id: String) async -> GameplaySessions? {
+        return await dataSource.fetchGameplaySessions(id: id)
     }
 
     // MARK: Private

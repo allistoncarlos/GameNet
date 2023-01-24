@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 03/08/22.
 //
 
+import GameNet_Network
 import SwiftUI
 
 // MARK: - GamesView
@@ -18,9 +19,10 @@ struct GamesView: View {
     var body: some View {
         NavigationStack(path: $presentedGames) {
             Group {
-                    ScrollView {
-                        LazyVGrid(columns: adaptiveColumns, spacing: 20) {
-                            ForEach(viewModel.data, id: \.id) { game in
+                ScrollView {
+                    LazyVGrid(columns: adaptiveColumns, spacing: 20) {
+                        ForEach(viewModel.data, id: \.id) { game in
+                            NavigationLink(value: game) {
                                 ZStack(alignment: .bottomTrailing) {
                                     AsyncImage(url: URL(string: game.coverURL ?? "")) { image in
                                         image
@@ -34,14 +36,23 @@ struct GamesView: View {
                                         .offset(x: -5, y: -5)
                                         .font(.system(size: 10))
                                 }
-                                .onAppear {
-                                    Task {
-                                        await viewModel.loadNextPage(currentGame: game)
-                                    }
+                            }
+                            .onAppear {
+                                Task {
+                                    await viewModel.loadNextPage(currentGame: game)
                                 }
                             }
                         }
                     }
+                }
+                .navigationDestination(for: Game.self) { game in
+                    if let game, let gameId = game.id {
+                        viewModel.showGameDetailView(
+                            navigationPath: $presentedGames,
+                            gameId: gameId
+                        )
+                    }
+                }
             }
             .navigationView(title: "Games")
         }
