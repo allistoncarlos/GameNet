@@ -26,7 +26,7 @@ struct HomeView: View {
         self.gamesViewModel = gamesViewModel
         self.listsViewModel = listsViewModel
 
-        UITabBar.appearance().backgroundColor = UIColor(.main)
+//        UITabBar.appearance().backgroundColor = UIColor(.main)
     }
 
     // MARK: Internal
