@@ -20,30 +20,33 @@ struct GamesListItemView: View {
     let fixedWidth: CGFloat = 60
 
     var body: some View {
-        HStack(spacing: 20) {
-            AsyncImage(url: URL(string: game?.cover ?? "")) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: fixedWidth, height: fixedHeight, alignment: .trailing)
-                    .listRowInsets(EdgeInsets())
-            } placeholder: {
-                ProgressView()
-                    .progressViewStyle(.circular)
-                    .frame(width: fixedWidth, height: fixedHeight, alignment: .trailing)
-            }
-            VStack(alignment: .leading, spacing: 8) {
-                Text(game?.name ?? "")
-                    .font(.system(size: 20).bold())
-                Text(game?.platform ?? "")
-                    .font(.system(size: 16).bold())
-
-                if let itemDetail {
-                    Text(itemDetail)
+        NavigationLink(value: game) {
+            HStack(spacing: 20) {
+                AsyncImage(url: URL(string: game?.cover ?? "")) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: fixedWidth, height: fixedHeight, alignment: .trailing)
+                        .listRowInsets(EdgeInsets())
+                } placeholder: {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .frame(width: fixedWidth, height: fixedHeight, alignment: .trailing)
                 }
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(game?.name ?? "")
+                        .font(.system(size: 20).bold())
+                    Text(game?.platform ?? "")
+                        .font(.system(size: 16).bold())
+
+                    if let itemDetail {
+                        Text(itemDetail)
+                    }
+                }
+                Spacer()
             }
-            Spacer()
-        }.frame(height: fixedHeight)
+        }
+        .frame(height: fixedHeight)
     }
 }
 

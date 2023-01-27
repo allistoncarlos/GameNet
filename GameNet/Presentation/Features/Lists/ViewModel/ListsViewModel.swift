@@ -60,4 +60,8 @@ extension ListsViewModel {
 
         return ListRouter.makeEditListView(navigationPath: navigationPath, list: list)
     }
+    
+    func showGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
+        return ListRouter.makeGameDetailView(navigationPath: navigationPath, id: id)
+    }
 }

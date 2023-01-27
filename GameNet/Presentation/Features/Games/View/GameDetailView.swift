@@ -76,7 +76,7 @@ struct GameDetailView: View {
                                 .bold()
                         }
 
-                        if let sessions = gameplays.sessions {
+                        if let sessions = gameplays.sessions.sorted(by: { $0!.start >= $1!.start }) {
                             VStack(spacing: 5) {
                                 ForEach(sessions, id: \.?.id) { session in
                                     if let session {

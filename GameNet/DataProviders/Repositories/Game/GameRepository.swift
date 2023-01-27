@@ -30,7 +30,7 @@ struct GameRepository: GameRepositoryProtocol {
     func fetchData(id: String) async -> GameDetail? {
         return await dataSource.fetchData(id: id)
     }
-    
+
     func fetchGameplaySessions(id: String) async -> GameplaySessions? {
         return await dataSource.fetchGameplaySessions(id: id)
     }

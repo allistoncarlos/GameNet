@@ -12,8 +12,6 @@ import SwiftUI
 
 struct GamesListView: View {
 
-    // MARK: Internal
-
     var games: [ListItem]? = nil
 
     var body: some View {
