@@ -15,14 +15,12 @@ struct GamesListView: View {
     var games: [ListItem]? = nil
 
     var body: some View {
-        VStack {
-            if let games {
-                List(games, id: \.userGameId) { game in
-                    GamesListItemView(game: game)
-                }
-            } else {
-                Text("EMPTY")
+        if let games {
+            List(games, id: \.userGameId) { game in
+                GamesListItemView(game: game)
             }
+        } else {
+            Text("EMPTY")
         }
     }
 }
