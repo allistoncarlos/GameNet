@@ -17,11 +17,9 @@ struct ListGamesView: View {
     @ObservedObject var viewModel: ListGamesViewModel
 
     var body: some View {
-        VStack {
-            if let listGame = viewModel.listGame {
-                if let games = listGame.games {
-                    GamesListView(games: games)
-                }
+        if let listGame = viewModel.listGame {
+            if let games = listGame.games {
+                GamesListView(games: games)
             }
         }
     }

@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 03/08/22.
 //
 
+import GameNet_Network
 import SwiftUI
 
 // MARK: - ListsView
@@ -33,6 +34,14 @@ struct ListsView: View {
                     navigationPath: $presentedLists,
                     listId: listId
                 )
+            }
+            .navigationDestination(for: ListItem.self) { game in
+                if let gameId = game.userGameId {
+                    viewModel.showGameDetailView(
+                        navigationPath: $presentedLists,
+                        id: gameId
+                    )
+                }
             }
             .navigationView(title: "Listas")
             .toolbar {
