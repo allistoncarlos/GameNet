@@ -69,6 +69,14 @@ struct DashboardView: View {
                     )
                 }
             }
+            .navigationDestination(for: ListItem.self) { game in
+                if let gameId = game.userGameId {
+                    viewModel.showGameDetailView(
+                        navigationPath: $presentedViews,
+                        id: gameId
+                    )
+                }
+            }
         }
         .task {
             await viewModel.fetchData()
