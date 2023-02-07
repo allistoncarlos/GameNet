@@ -55,6 +55,17 @@ struct GamesView: View {
                         )
                     }
                 }
+                .searchable(text: $search)
+                .onChange(of: search) { search in
+                    if search.isEmpty {
+                        Task { await viewModel.fetchData(clear: true) }
+                    }
+                }
+                .onSubmit(of: .search) {
+                    Task {
+                        await viewModel.fetchData(search: search, clear: true)
+                    }
+                }
             }
             .disabled(isLoading)
             .navigationView(title: "Games")
@@ -78,6 +89,8 @@ struct GamesView: View {
     }
 
     // MARK: Private
+
+    @State private var search: String = ""
 
     private let adaptiveColumns = [
         GridItem(.adaptive(minimum: 120))
