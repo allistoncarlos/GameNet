@@ -23,7 +23,11 @@ class GamesViewModel: ObservableObject {
     @Published var searchedGames: [Game] = []
     @Published var state: GamesState = .idle
 
-    func fetchData(search: String? = "", page: Int = 0) async {
+    func fetchData(search: String? = "", page: Int = 0, clear: Bool = false) async {
+        if clear {
+            data = []
+        }
+        
         state = .loading
 
         let pagedList = await repository.fetchData(search: search, page: page, pageSize: GameNetApp.pageSize)
