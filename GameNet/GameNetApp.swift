@@ -8,6 +8,7 @@
 import Combine
 import GameNet_Keychain
 import SwiftUI
+import TTProgressHUD
 
 @main
 struct GameNetApp: App {
@@ -55,6 +56,11 @@ struct GameNetApp: App {
     static let pageSizePad = 30
     static let pageSize = UIDevice.current.userInterfaceIdiom == .phone ? pageSizePhone : pageSizePad
     static let dateFormat = "dd/MM/yyyy HH:mm"
+
+    static let hudConfig = TTProgressHUDConfig(
+        title: "Carregando",
+        caption: "Aguarde enquanto os dados\nsão retornados do servidor"
+    )
 
     var body: some Scene {
         WindowGroup {

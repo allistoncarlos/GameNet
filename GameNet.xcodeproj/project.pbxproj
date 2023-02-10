@@ -44,6 +44,7 @@
 		A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617C2899883B00D52088 /* MockLoginRepository.swift */; };
 		A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661802899890300D52088 /* LoginViewModelTests.swift */; };
 		A53B6FC12968B26500A0F09E /* GameNet.Network in Frameworks */ = {isa = PBXBuildFile; productRef = A53B6FC02968B26500A0F09E /* GameNet.Network */; };
+		A54B83B72993CF5500F5A0E6 /* TTProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = A54B83B62993CF5500F5A0E6 /* TTProgressHUD */; };
 		A54E8548296CA0590079F8D0 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59C4493296A07860097E0F4 /* WatchConnectivityManager.swift */; };
 		A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EB82901CD260040C801 /* GamesViewModel.swift */; };
 		A5507EBB2901CD930040C801 /* GamesState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EBA2901CD930040C801 /* GamesState.swift */; };
@@ -294,6 +295,7 @@
 			files = (
 				A5E48A1A2895B2450037023C /* GameNet.Network in Frameworks */,
 				A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */,
+				A54B83B72993CF5500F5A0E6 /* TTProgressHUD in Frameworks */,
 				A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */,
 				A51AA6A42899539A0081AE4B /* Factory in Frameworks */,
 			);
@@ -1259,6 +1261,7 @@
 				A51AA6A32899539A0081AE4B /* Factory */,
 				A536616A2899820700D52088 /* OHHTTPStubs */,
 				A536616C2899820700D52088 /* OHHTTPStubsSwift */,
+				A54B83B62993CF5500F5A0E6 /* TTProgressHUD */,
 			);
 			productName = GameNet;
 			productReference = A57185C1286793D600655B31 /* GameNet.app */;
@@ -1299,6 +1302,7 @@
 				A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */,
 				A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */,
 				A53661692899820700D52088 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
+				A54B83B52993CF5500F5A0E6 /* XCRemoteSwiftPackageReference "TTProgressHUD" */,
 			);
 			productRefGroup = A57185C2286793D600655B31 /* Products */;
 			projectDirPath = "";
@@ -1831,6 +1835,14 @@
 				minimumVersion = 9.0.0;
 			};
 		};
+		A54B83B52993CF5500F5A0E6 /* XCRemoteSwiftPackageReference "TTProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/honkmaster/TTProgressHUD";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/allistoncarlos/GameNet.Network";
@@ -1861,6 +1873,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */;
 			productName = GameNet.Network;
+		};
+		A54B83B62993CF5500F5A0E6 /* TTProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A54B83B52993CF5500F5A0E6 /* XCRemoteSwiftPackageReference "TTProgressHUD" */;
+			productName = TTProgressHUD;
 		};
 		A550C6F82968AEA40043FE74 /* Factory */ = {
 			isa = XCSwiftPackageProductDependency;
