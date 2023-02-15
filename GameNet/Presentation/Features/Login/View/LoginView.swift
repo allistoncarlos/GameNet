@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import TTProgressHUD
 
 // MARK: - LoginView
 
 struct LoginView: View {
     @State var username: String = ""
     @State var password: String = ""
+    @State var isLoading = false
 
     @ObservedObject var viewModel: LoginViewModel
 
@@ -42,6 +44,12 @@ struct LoginView: View {
                         ) {
                             EmptyView()
                         }
+                    }
+                    .overlay(
+                        TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+                    )
+                    .onChange(of: viewModel.state) { state in
+                        isLoading = state == .loading
                     }
                     .navigationTitle("Login")
                 }
