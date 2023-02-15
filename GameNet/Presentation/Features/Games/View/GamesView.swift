@@ -23,7 +23,7 @@ struct GamesView: View {
             Group {
                 ScrollView {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
-                        ForEach(viewModel.data, id: \.id) { game in
+                        ForEach(search.isEmpty ? viewModel.data : viewModel.searchedGames, id: \.id) { game in
                             NavigationLink(value: game) {
                                 ZStack(alignment: .bottomTrailing) {
                                     AsyncImage(url: URL(string: game.coverURL ?? "")) { image in
@@ -55,6 +55,20 @@ struct GamesView: View {
                         )
                     }
                 }
+                .searchable(
+                    text: $search,
+                    prompt: Text("Buscar")
+                )
+                .onChange(of: search) { search in
+                    if search.isEmpty {
+                        Task { await viewModel.fetchData(clear: true) }
+                    }
+                }
+                .onSubmit(of: .search) {
+                    Task {
+                        await viewModel.fetchData(search: search, clear: true)
+                    }
+                }
             }
             .disabled(isLoading)
             .navigationView(title: "Games")
@@ -78,6 +92,8 @@ struct GamesView: View {
     }
 
     // MARK: Private
+
+    @State private var search: String = ""
 
     private let adaptiveColumns = [
         GridItem(.adaptive(minimum: 120))
