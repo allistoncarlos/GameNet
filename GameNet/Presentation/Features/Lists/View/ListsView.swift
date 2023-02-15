@@ -7,6 +7,7 @@
 
 import GameNet_Network
 import SwiftUI
+import TTProgressHUD
 
 // MARK: - ListsView
 
@@ -15,6 +16,7 @@ struct ListsView: View {
     // MARK: Internal
 
     @ObservedObject var viewModel: ListsViewModel
+    @State var isLoading = true
 
     var body: some View {
         NavigationStack(path: $presentedLists) {
@@ -29,6 +31,7 @@ struct ListsView: View {
                     }
                 }
             }
+            .disabled(isLoading)
             .navigationDestination(for: String.self) { listId in
                 viewModel.editListView(
                     navigationPath: $presentedLists,
@@ -51,6 +54,12 @@ struct ListsView: View {
                     }
                 }
             }
+        }
+        .overlay(
+            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+        )
+        .onChange(of: viewModel.state) { state in
+            isLoading = state == .loading
         }
         .onChange(of: presentedLists) { newValue in
             if newValue.isEmpty {

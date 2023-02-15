@@ -7,6 +7,7 @@
 
 import GameNet_Network
 import SwiftUI
+import TTProgressHUD
 
 // MARK: - GamesView
 
@@ -15,6 +16,7 @@ struct GamesView: View {
     // MARK: Internal
 
     @ObservedObject var viewModel: GamesViewModel
+    @State var isLoading = true
 
     var body: some View {
         NavigationStack(path: $presentedGames) {
@@ -54,7 +56,14 @@ struct GamesView: View {
                     }
                 }
             }
+            .disabled(isLoading)
             .navigationView(title: "Games")
+        }
+        .overlay(
+            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+        )
+        .onChange(of: viewModel.state) { state in
+            isLoading = state == .loading
         }
         .onChange(of: presentedGames) { newValue in
             if newValue.isEmpty {

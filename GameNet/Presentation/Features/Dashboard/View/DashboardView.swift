@@ -8,6 +8,7 @@
 import Factory
 import GameNet_Network
 import SwiftUI
+import TTProgressHUD
 
 // MARK: - DashboardView
 
@@ -16,39 +17,35 @@ struct DashboardView: View {
     // MARK: Internal
 
     @ObservedObject var viewModel: DashboardViewModel
+    @State var isLoading = true
 
     var body: some View {
         NavigationStack(path: $presentedViews) {
-            ZStack {
-                ScrollView {
-                    if viewModel.state == .loading {
-                        ProgressView()
-                    } else {
-                        VStack(spacing: -20) {
-                            if viewModel.dashboard?.playingGames != nil {
-                                playingCard
-                            }
+            ScrollView {
+                VStack(spacing: -20) {
+                    if viewModel.dashboard?.playingGames != nil {
+                        playingCard
+                    }
 
-                            if viewModel.dashboard?.totalGames != nil {
-                                physicalDigitalCard
-                            }
+                    if viewModel.dashboard?.totalGames != nil {
+                        physicalDigitalCard
+                    }
 
-                            if viewModel.dashboard?.finishedByYear != nil {
-                                finishedByYearCard
-                            }
+                    if viewModel.dashboard?.finishedByYear != nil {
+                        finishedByYearCard
+                    }
 
-                            if viewModel.dashboard?.boughtByYear != nil {
-                                boughtByYearCard
-                            }
+                    if viewModel.dashboard?.boughtByYear != nil {
+                        boughtByYearCard
+                    }
 
-                            if viewModel.dashboard?.gamesByPlatform != nil {
-                                gamesByPlatformCard
-                            }
-                        }
+                    if viewModel.dashboard?.gamesByPlatform != nil {
+                        gamesByPlatformCard
                     }
                 }
-                .navigationView(title: "Dashboard")
             }
+            .disabled(isLoading)
+            .navigationView(title: "Dashboard")
             .navigationDestination(for: FinishedGameByYearTotal.self) { finishedGame in
                 viewModel.showFinishedGamesView(
                     navigationPath: $presentedViews,
@@ -77,6 +74,12 @@ struct DashboardView: View {
                     )
                 }
             }
+        }
+        .overlay(
+            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+        )
+        .onChange(of: viewModel.state) { state in
+            isLoading = state == .loading
         }
         .task {
             await viewModel.fetchData()
