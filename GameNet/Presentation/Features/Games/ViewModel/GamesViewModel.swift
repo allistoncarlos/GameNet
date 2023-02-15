@@ -26,6 +26,7 @@ class GamesViewModel: ObservableObject {
     func fetchData(search: String? = "", page: Int = 0, clear: Bool = false) async {
         if clear {
             data = []
+            searchedGames = []
         }
         
         state = .loading
@@ -34,7 +35,12 @@ class GamesViewModel: ObservableObject {
 
         if let pagedList {
             self.pagedList = pagedList
-            data += pagedList.result
+            
+            if let search, !search.isEmpty {
+                searchedGames += pagedList.result
+            } else {
+                data += pagedList.result
+            }
 
             state = .success
         } else {
@@ -43,11 +49,20 @@ class GamesViewModel: ObservableObject {
     }
 
     func loadNextPage(currentGame: Game) async {
-        let thresholdIndex = data.index(data.endIndex, offsetBy: -5)
-
-        if data.firstIndex(where: { $0.id == currentGame.id }) == thresholdIndex {
-            let page = pagedList?.page ?? 0
-            await fetchData(search: pagedList?.search, page: page + 1)
+        if pagedList?.search == nil {
+            let thresholdIndex = data.index(data.endIndex, offsetBy: -5)
+            
+            if data.firstIndex(where: { $0.id == currentGame.id }) == thresholdIndex {
+                let page = pagedList?.page ?? 0
+                await fetchData(search: pagedList?.search, page: page + 1)
+            }
+        } else {
+            let thresholdIndex = searchedGames.index(searchedGames.endIndex, offsetBy: -5)
+            
+            if searchedGames.firstIndex(where: { $0.id == currentGame.id }) == thresholdIndex {
+                let page = pagedList?.page ?? 0
+                await fetchData(search: pagedList?.search, page: page + 1)
+            }
         }
     }
 
