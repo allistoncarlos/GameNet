@@ -6,18 +6,18 @@
 //
 
 import SwiftUI
+import TTProgressHUD
 
 // MARK: - ListDetailsView
 
 struct ListDetailsView: View {
     @StateObject var viewModel: ListDetailsViewModel
     @Binding var navigationPath: NavigationPath
+    @State var isLoading = true
 
     var body: some View {
-        VStack {
-            if viewModel.state == .loading {
-                ProgressView()
-            } else {
+        NavigationView {
+            VStack {
                 if let listGame = viewModel.listGame {
                     viewModel.showListGamesView(
                         navigationPath: $navigationPath,
@@ -25,6 +25,13 @@ struct ListDetailsView: View {
                     )
                 }
             }
+            .disabled(isLoading)
+        }
+        .overlay {
+            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+        }
+        .onChange(of: viewModel.state) { state in
+            isLoading = state == .loading
         }
         .navigationView(title: viewModel.name)
         .task {

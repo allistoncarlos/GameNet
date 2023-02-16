@@ -19,8 +19,6 @@ struct GamesListView: View {
             List(games, id: \.userGameId) { game in
                 GamesListItemView(game: game)
             }
-        } else {
-            Text("EMPTY")
         }
     }
 }
