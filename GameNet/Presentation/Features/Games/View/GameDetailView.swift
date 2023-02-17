@@ -91,9 +91,11 @@ struct GameDetailView: View {
                                                     .font(.system(size: 14))
                                             }
                                         } else {
-                                            Text("Jogando desde \(session.start.toFormattedString())")
+                                            Text("Jogando desde \(session.start.toFormattedString(dateFormat: GameNetApp.dateFormat))")
                                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                                .font(.system(size: 14))
+                                                .font(.system(size: 16))
+                                                .bold()
+                                                .padding(.bottom, 10)
                                         }
                                     }
                                 }
