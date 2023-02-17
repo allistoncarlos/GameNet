@@ -12,5 +12,6 @@ enum DashboardState: Equatable {
     case idle
     case loading
     case success(Dashboard)
+    case successGameplay(Int, GameplaySessions)
     case error(String)
 }

@@ -25,6 +25,9 @@ class DashboardViewModel: ObservableObject {
                 switch state {
                 case let .success(dashboard):
                     self?.dashboard = dashboard
+                    self?.gameplaySessions = [:]
+                case let .successGameplay(year, gameplaySessions):
+                    self?.gameplaySessions?[year] = gameplaySessions
                 default:
                     break
                 }
@@ -34,6 +37,7 @@ class DashboardViewModel: ObservableObject {
     // MARK: Internal
 
     @Published var dashboard: Dashboard? = nil
+    @Published var gameplaySessions: [Int: GameplaySessions]? = nil
     @Published var state: DashboardState = .idle
 
     func fetchData() async {
@@ -43,14 +47,33 @@ class DashboardViewModel: ObservableObject {
 
         if let result {
             state = .success(result)
+            await fetchGameplaySessionsByYear()
         } else {
             state = .error("Erro no carregamento de dados do servidor")
+        }
+    }
+
+    func fetchGameplaySessionsByYear() async {
+        state = .loading
+
+        let initialYear = 2020
+        let lastYear = Calendar.current.component(.year, from: Date())
+
+        for year in initialYear ... lastYear {
+            let result = await gameplaySessionRepository.fetchGameplaySessionsByYear(year: year, month: nil)
+
+            if let result {
+                state = .successGameplay(year, result)
+            } else {
+                state = .error("Erro no carregamento de dados do servidor")
+            }
         }
     }
 
     // MARK: Private
 
     @Injected(RepositoryContainer.dashboardRepository) private var repository
+    @Injected(RepositoryContainer.gameplaySessionRepository) private var gameplaySessionRepository
     private var cancellable = Set<AnyCancellable>()
 }
 

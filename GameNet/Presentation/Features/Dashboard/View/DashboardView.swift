@@ -26,6 +26,10 @@ struct DashboardView: View {
                     if viewModel.dashboard?.playingGames != nil {
                         playingCard
                     }
+                    
+                    if viewModel.gameplaySessions != nil {
+                        gameplaySessions
+                    }
 
                     if viewModel.dashboard?.totalGames != nil {
                         physicalDigitalCard
@@ -258,6 +262,41 @@ extension DashboardView {
                                 Text(gameByPlatform.platformGamesTotal.toLeadingZerosString(decimalPlaces: 3))
                                     .font(.dashboardGameTitle)
                                 Text(gameByPlatform.name)
+                                    .font(.dashboardGameTitle)
+                                Spacer()
+                            }
+                        }
+                    }
+                }
+            }
+            .padding()
+        }
+        .padding()
+    }
+}
+
+// MARK: - DashboardView_Previews
+
+extension DashboardView {
+    var gameplaySessions: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.secondaryCardBackground)
+
+            VStack(alignment: .leading, spacing: 15) {
+                VStack {
+                    Text("Horas Jogadas por Ano")
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                        .font(.cardTitle)
+                }
+
+                VStack(alignment: .leading, spacing: 5) {
+                    if let gameplaySessions = viewModel.gameplaySessions {
+                        ForEach(gameplaySessions.sorted(by: { $0.key >= $1.key }), id: \.key) { key, gameplaySession in
+                            HStack(spacing: 20) {
+                                Text(String(key))
+                                    .font(.dashboardGameTitle)
+                                Text(gameplaySession.totalGameplayTime)
                                     .font(.dashboardGameTitle)
                                 Spacer()
                             }
