@@ -89,4 +89,11 @@ extension DashboardViewModel {
     func showGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
         return DashboardRouter.makeGameDetailView(navigationPath: navigationPath, id: id)
     }
+    
+    func showGameplaySessionDetailView(navigationPath: Binding<NavigationPath>, gameplaySession: GameplaySessionNavigation) -> some View {
+        return DashboardRouter.makeGameplaySessionDetailView(
+            navigationPath: navigationPath,
+            gameplaySession: gameplaySession
+        )
+    }
 }

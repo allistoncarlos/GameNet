@@ -26,7 +26,7 @@ struct DashboardView: View {
                     if viewModel.dashboard?.playingGames != nil {
                         playingCard
                     }
-                    
+
                     if viewModel.gameplaySessions != nil {
                         gameplaySessions
                     }
@@ -77,6 +77,12 @@ struct DashboardView: View {
                         id: gameId
                     )
                 }
+            }
+            .navigationDestination(for: GameplaySessionNavigation.self) { gameplaySession in
+                viewModel.showGameplaySessionDetailView(
+                    navigationPath: $presentedViews,
+                    gameplaySession: gameplaySession
+                )
             }
         }
         .overlay(
@@ -293,12 +299,14 @@ extension DashboardView {
                 VStack(alignment: .leading, spacing: 5) {
                     if let gameplaySessions = viewModel.gameplaySessions {
                         ForEach(gameplaySessions.sorted(by: { $0.key >= $1.key }), id: \.key) { key, gameplaySession in
-                            HStack(spacing: 20) {
-                                Text(String(key))
-                                    .font(.dashboardGameTitle)
-                                Text(gameplaySession.totalGameplayTime)
-                                    .font(.dashboardGameTitle)
-                                Spacer()
+                            NavigationLink(value: GameplaySessionNavigation(key: key, value: gameplaySession)) {
+                                HStack(spacing: 20) {
+                                    Text(String(key))
+                                        .font(.dashboardGameTitle)
+                                    Text(gameplaySession.totalGameplayTime)
+                                        .font(.dashboardGameTitle)
+                                    Spacer()
+                                }
                             }
                         }
                     }
