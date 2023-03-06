@@ -55,7 +55,8 @@ struct GameNetApp: App {
     static let pageSizePhone = 21
     static let pageSizePad = 30
     static let pageSize = UIDevice.current.userInterfaceIdiom == .phone ? pageSizePhone : pageSizePad
-    static let dateFormat = "dd/MM/yyyy HH:mm"
+    static let dateTimeFormat = "dd/MM/yyyy HH:mm"
+    static let dateFormat = "dd/MM/yyyy"
     static let timeFormat = "HH:mm"
 
     static let hudConfig = TTProgressHUDConfig(

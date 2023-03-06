@@ -19,10 +19,16 @@ class GameplaySessionDetailViewModel: ObservableObject {
     // MARK: Lifecycle
 
     init(gameplaySession: GameplaySessionNavigation) {
-        self.gameplaySession = gameplaySession
+        title = String(gameplaySession.key)
+
+        groupedGameplaySession = Dictionary(
+            grouping: gameplaySession.value.sessions,
+            by: { $0!.start.dateOnly() }
+        )
     }
 
     // MARK: Internal
 
-    @Published var gameplaySession: GameplaySessionNavigation
+    @Published var title: String
+    @Published var groupedGameplaySession: [Date: [GameplaySession?]]
 }

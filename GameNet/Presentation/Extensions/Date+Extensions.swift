@@ -21,6 +21,15 @@ extension Date {
 
         return dateFormatter.string(from: self)
     }
+
+    func dateOnly() -> Date {
+        let formattedDate = formatted(date: .numeric, time: .omitted)
+
+        let expectedFormat = Date.FormatStyle()
+            .month().day().year()
+
+        return try! Date(formattedDate, strategy: expectedFormat)
+    }
 }
 
 extension String {

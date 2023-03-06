@@ -43,7 +43,7 @@ struct GameplaySessionCell: View {
                             Text(" até \(finishDate)")
                                 .font(.dashboardGameSubtitle)
                         }
-                        
+
                         if let totalGameplayTime {
                             Text(" (\(totalGameplayTime))")
                                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -72,7 +72,14 @@ struct GameplaySessionDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
-                if let sessions = viewModel.gameplaySession.value.sessions {
+                ForEach(
+                    viewModel.groupedGameplaySession.sorted(by: { $0.key > $1.key }),
+                    id: \.key
+                ) { date, sessions in
+                    Text(date.toFormattedString(dateFormat: GameNetApp.dateFormat))
+                        .font(.dashboardGameTitle)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
                     ForEach(sessions, id: \.?.id) { session in
                         GameplaySessionCell(
                             gameName: session?.userGameId,
@@ -87,7 +94,7 @@ struct GameplaySessionDetailView: View {
             }
             .padding(10)
         }
-        .navigationView(title: String(viewModel.gameplaySession.key))
+        .navigationView(title: viewModel.title)
     }
 
 }
