@@ -94,8 +94,26 @@ struct MockGameRepository: GameRepositoryProtocol {
         static let gameplaySessions = GameplaySessions(
             id: "1",
             sessions: [
-                GameplaySession(id: "1", userGameId: "1", start: Date(), finish: Date(), totalGameplayTime: "01:20"),
-                GameplaySession(id: "2", userGameId: "1", start: Date(), finish: nil, totalGameplayTime: "0:00"),
+                GameplaySession(
+                    id: "1",
+                    userGameId: "1",
+                    start: Date(),
+                    finish: Date(),
+                    gameName: "The Legend of Zelda: Tears of the Kingdom",
+                    gameCover: "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg",
+                    platformName: "Nintendo Switch",
+                    totalGameplayTime: "01:20"
+                ),
+                GameplaySession(
+                    id: "2",
+                    userGameId: "1",
+                    start: Date(),
+                    finish: nil,
+                    gameName: "The Legend of Zelda: Tears of the Kingdom",
+                    gameCover: "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg",
+                    platformName: "Nintendo Switch",
+                    totalGameplayTime: "0:00"
+                ),
             ],
             totalGameplayTime: "18:20",
             averageGameplayTime: "01:45"

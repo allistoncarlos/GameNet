@@ -82,8 +82,8 @@ struct GameplaySessionDetailView: View {
 
                     ForEach(sessions, id: \.?.id) { session in
                         GameplaySessionCell(
-                            gameName: session?.userGameId,
-                            gameCover: "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg",
+                            gameName: session?.gameName,
+                            gameCover: session?.gameCover,
                             startDate: session?.start.toFormattedString(dateFormat: GameNetApp.timeFormat),
                             finishDate: session?.finish?.toFormattedString(dateFormat: GameNetApp.timeFormat),
                             totalGameplayTime: session?.totalGameplayTime
@@ -103,47 +103,11 @@ struct GameplaySessionDetailView: View {
 
 struct GameplaySessionDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        let sessions = [
-            GameplaySession(
-                id: nil,
-                userGameId: "123",
-                start: Date(),
-                finish: Date(),
-                totalGameplayTime: "1:00"
-            ),
-            GameplaySession(
-                id: nil,
-                userGameId: "123",
-                start: Date(),
-                finish: Date(),
-                totalGameplayTime: "1:00"
-            ),
-            GameplaySession(
-                id: nil,
-                userGameId: "123",
-                start: Date(),
-                finish: Date(),
-                totalGameplayTime: "1:00"
-            ),
-            GameplaySession(
-                id: nil,
-                userGameId: "123",
-                start: Date(),
-                finish: Date(),
-                totalGameplayTime: "1:00"
-            ),
-        ]
-
-        let gameplaySessions = GameplaySessions(
-            id: nil,
-            sessions: sessions,
-            totalGameplayTime: "10:00",
-            averageGameplayTime: "1:00"
-        )
+        let sessions = MockGameRepository().fetchGameplaySessions(id: "1")!
 
         let gameplaySessionNavigation = GameplaySessionNavigation(
             key: 2023,
-            value: gameplaySessions
+            value: sessions
         )
 
         let viewModel = GameplaySessionDetailViewModel(gameplaySession: gameplaySessionNavigation)
