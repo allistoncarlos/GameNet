@@ -82,7 +82,7 @@ struct GameDetailView: View {
                                     if let session {
                                         if let finishSession = session.finish {
                                             VStack(spacing: 2) {
-                                                Text("\(session.start.toFormattedString(dateFormat: GameNetApp.dateFormat)) até \(finishSession.toFormattedString(dateFormat: GameNetApp.dateFormat))")
+                                                Text("\(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat)) até \(finishSession.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
                                                     .frame(maxWidth: .infinity, alignment: .leading)
                                                     .font(.system(size: 14))
 
@@ -91,9 +91,11 @@ struct GameDetailView: View {
                                                     .font(.system(size: 14))
                                             }
                                         } else {
-                                            Text("Jogando desde \(session.start.toFormattedString())")
+                                            Text("Jogando desde \(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
                                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                                .font(.system(size: 14))
+                                                .font(.system(size: 16))
+                                                .bold()
+                                                .padding(.bottom, 10)
                                         }
                                     }
                                 }

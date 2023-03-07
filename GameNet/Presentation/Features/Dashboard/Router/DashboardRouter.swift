@@ -8,6 +8,8 @@
 import GameNet_Network
 import SwiftUI
 
+// MARK: - DashboardRouter
+
 @MainActor
 enum DashboardRouter {
     static func makeFinishedGamesView(navigationPath: Binding<NavigationPath>, year: Int) -> some View {
@@ -17,12 +19,28 @@ enum DashboardRouter {
     static func makeBoughtGamesView(navigationPath: Binding<NavigationPath>, year: Int) -> some View {
         return ListRouter.makeListDetailsView(navigationPath: navigationPath, originFlow: .boughtByYear(year))
     }
-    
+
     static func makeGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
         return GameRouter.makeGameDetailView(navigationPath: navigationPath, gameId: id)
+    }
+
+    static func makeGameplaySessionDetailView(
+        navigationPath: Binding<NavigationPath>,
+        gameplaySession: GameplaySessionNavigation
+    ) -> some View {
+        let viewModel = GameplaySessionDetailViewModel(gameplaySession: gameplaySession)
+
+        return GameplaySessionDetailView(viewModel: viewModel, navigationPath: navigationPath)
     }
 
     static func goBackToDashboard(navigationPath: Binding<NavigationPath>) {
         navigationPath.wrappedValue.removeLast(navigationPath.wrappedValue.count - 1)
     }
+}
+
+// MARK: - GameplaySessionNavigation
+
+struct GameplaySessionNavigation: Hashable {
+    var key: Int
+    var value: GameplaySessions
 }
