@@ -81,14 +81,16 @@ struct GameplaySessionDetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     ForEach(sessions, id: \.?.id) { session in
-                        GameplaySessionCell(
-                            gameName: session?.gameName,
-                            gameCover: session?.gameCover,
-                            startDate: session?.start.toFormattedString(dateFormat: GameNetApp.timeFormat),
-                            finishDate: session?.finish?.toFormattedString(dateFormat: GameNetApp.timeFormat),
-                            totalGameplayTime: session?.totalGameplayTime
-                        )
-                        .multilineTextAlignment(.leading)
+                        NavigationLink(value: session) {
+                            GameplaySessionCell(
+                                gameName: session?.gameName,
+                                gameCover: session?.gameCover,
+                                startDate: session?.start.toFormattedString(dateFormat: GameNetApp.timeFormat),
+                                finishDate: session?.finish?.toFormattedString(dateFormat: GameNetApp.timeFormat),
+                                totalGameplayTime: session?.totalGameplayTime
+                            )
+                            .multilineTextAlignment(.leading)
+                        }
                     }
                 }
             }

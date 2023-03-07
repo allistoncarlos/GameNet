@@ -78,10 +78,16 @@ struct DashboardView: View {
                     )
                 }
             }
-            .navigationDestination(for: GameplaySessionNavigation.self) { gameplaySession in
+            .navigationDestination(for: GameplaySessionNavigation.self) { gameplaySessionNavigation in
                 viewModel.showGameplaySessionDetailView(
                     navigationPath: $presentedViews,
-                    gameplaySession: gameplaySession
+                    gameplaySession: gameplaySessionNavigation
+                )
+            }
+            .navigationDestination(for: GameplaySession.self) { gameplaySession in
+                viewModel.showGameDetailView(
+                    navigationPath: $presentedViews,
+                    id: gameplaySession.userGameId
                 )
             }
         }

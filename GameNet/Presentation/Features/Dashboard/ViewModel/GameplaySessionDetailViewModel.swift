@@ -11,7 +11,7 @@ import Foundation
 import GameNet_Network
 import SwiftUI
 
-// MARK: - GameDetailViewModel
+// MARK: - GameplaySessionDetailViewModel
 
 @MainActor
 class GameplaySessionDetailViewModel: ObservableObject {
