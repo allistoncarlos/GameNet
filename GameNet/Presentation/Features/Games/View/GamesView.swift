@@ -72,6 +72,16 @@ struct GamesView: View {
             }
             .disabled(isLoading)
             .navigationView(title: "Games")
+            .toolbar {
+                NavigationLink(
+                    destination: viewModel.showGameEditView(
+                        navigationPath: $presentedGames
+                    ),
+                    label: {
+                        Image(systemName: "plus")
+                    }
+                )
+            }
         }
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
