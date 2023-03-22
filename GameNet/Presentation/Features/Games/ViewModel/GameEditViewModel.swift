@@ -11,6 +11,15 @@ import Foundation
 import GameNet_Network
 import SwiftUI
 
+public extension Binding where Value: Equatable {
+    init(_ source: Binding<Value>, deselectTo value: Value) {
+        self.init(
+            get: { source.wrappedValue },
+            set: { source.wrappedValue = $0 == source.wrappedValue ? value : $0 }
+        )
+    }
+}
+
 // MARK: - GameEditViewModel
 
 @MainActor
@@ -20,48 +29,53 @@ class GameEditViewModel: ObservableObject {
 
     init(gameId: String? = nil) {
         self.gameId = gameId
+        isNewGame = gameId == nil
 
-//        $state
-//            .receive(on: RunLoop.main)
-//            .sink { [weak self] state in
-//                switch state {
-//                case let .successGame(game):
-//                    self?.game = game
-//
-//                    if let gameId = game.id {
-//                        Task {
-//                            await self?.fetchGameplaySessions(id: gameId)
-//                        }
-//                    }
-//                case let .successGameplays(gameplays):
-//                    self?.gameplays = gameplays
-//                default:
-//                    break
-//                }
-//            }.store(in: &cancellable)
+        $state
+            .receive(on: RunLoop.main)
+            .sink { [weak self] state in
+                self?.handleViewModelState(state)
+            }.store(in: &cancellable)
     }
 
+    // MARK: Internal
+
+    @Published var isNewGame: Bool
+    @Published var platforms: [Platform] = []
 //    @Published var game: GameDetail? = nil
 //    @Published var gameplays: GameplaySessions?
-//    @Published var state: GameDetailState = .idle
+    @Published var state: GameEditState = .idle
 
-//    func fetchData() async {
-//        state = .loading
-//
-//        let result = await repository.fetchData(id: gameId)
-//
-//        if let result {
-//            state = .successGame(result)
-//        } else {
-//            state = .error("Erro na busca de dados do jogo no servidor")
-//        }
-//    }
+    func fetchData() async {
+        state = .loading
+
+        let platforms = await platformRepository.fetchData()
+
+        if let platforms {
+            state = .loadedPlatforms(platforms)
+        } else {
+            state = .error("Erro na busca de dados do jogo no servidor")
+        }
+    }
 
     // MARK: Private
 
     private var gameId: String?
-//    @Injected(RepositoryContainer.gameRepository) private var repository
-//    private var cancellable = Set<AnyCancellable>()
+    @Injected(RepositoryContainer.gameRepository) private var repository
+    @Injected(RepositoryContainer.platformRepository) private var platformRepository
+    private var cancellable = Set<AnyCancellable>()
+
+    private func handleViewModelState(_ state: GameEditState) {
+        switch state {
+        case let .loadedPlatforms(platforms):
+            if let platforms {
+                self.platforms = platforms
+            }
+        default:
+            break
+        }
+    }
+
 }
 
 extension GameEditViewModel {

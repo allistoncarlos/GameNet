@@ -116,6 +116,7 @@
 		A5D267E5299FF4D2001E7667 /* GameplaySessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D267E4299FF4D2001E7667 /* GameplaySessionRepository.swift */; };
 		A5D267E8299FF58B001E7667 /* GameplaySessionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D267E7299FF58B001E7667 /* GameplaySessionDataSource.swift */; };
 		A5D2BCE02968B6720030973B /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A5D2C23C2896B676007C28AC /* Config.xcconfig */; };
+		A5DA642929CB841700B127E3 /* GameEditState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DA642829CB841700B127E3 /* GameEditState.swift */; };
 		A5DCFD4F28E62835003C280C /* EditPlatformResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DCFD4E28E62835003C280C /* EditPlatformResponseMock.swift */; };
 		A5E489F528958EE80037023C /* LoginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F428958EE80037023C /* LoginState.swift */; };
 		A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E489F628958F0A0037023C /* LoginRouter.swift */; };
@@ -270,6 +271,7 @@
 		A5D2BCDE2968B64E0030973B /* GameNet-Watch-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GameNet-Watch-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
 		A5D2C23C2896B676007C28AC /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A5D2C23D2896B823007C28AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A5DA642829CB841700B127E3 /* GameEditState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEditState.swift; sourceTree = "<group>"; };
 		A5DCFD4E28E62835003C280C /* EditPlatformResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformResponseMock.swift; sourceTree = "<group>"; };
 		A5E489F428958EE80037023C /* LoginState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginState.swift; sourceTree = "<group>"; };
 		A5E489F628958F0A0037023C /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 			children = (
 				A5507EBA2901CD930040C801 /* GamesState.swift */,
 				A5EE192F29805BCC003DF80D /* GameDetailState.swift */,
+				A5DA642829CB841700B127E3 /* GameEditState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1455,6 +1458,7 @@
 				A530E73D296EE828000EAB91 /* EditListState.swift in Sources */,
 				A582ABB0296F4C03000A0435 /* GamesListView.swift in Sources */,
 				A599F5E229CA21C100C60626 /* GameEditViewModel.swift in Sources */,
+				A5DA642929CB841700B127E3 /* GameEditState.swift in Sources */,
 				A5D267E8299FF58B001E7667 /* GameplaySessionDataSource.swift in Sources */,
 				A56A95F428B3FDAE00CAAFFF /* APIError.swift in Sources */,
 				A56A95F628B4010600CAAFFF /* Date+Extensions.swift in Sources */,
