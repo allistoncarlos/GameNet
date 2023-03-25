@@ -11,15 +11,6 @@ import Foundation
 import GameNet_Network
 import SwiftUI
 
-public extension Binding where Value: Equatable {
-    init(_ source: Binding<Value>, deselectTo value: Value) {
-        self.init(
-            get: { source.wrappedValue },
-            set: { source.wrappedValue = $0 == source.wrappedValue ? value : $0 }
-        )
-    }
-}
-
 // MARK: - GameEditViewModel
 
 @MainActor
@@ -42,9 +33,9 @@ class GameEditViewModel: ObservableObject {
 
     @Published var isNewGame: Bool
     @Published var platforms: [Platform] = []
-//    @Published var game: GameDetail? = nil
-//    @Published var gameplays: GameplaySessions?
     @Published var state: GameEditState = .idle
+    
+    @ObservedObject var game: UserGameModel = .init()
 
     func fetchData() async {
         state = .loading

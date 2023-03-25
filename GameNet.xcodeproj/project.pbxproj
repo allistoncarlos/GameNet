@@ -87,6 +87,9 @@
 		A57185CC286793D700655B31 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A57185CB286793D700655B31 /* Preview Assets.xcassets */; };
 		A57185D52867953F00655B31 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185D42867953F00655B31 /* Color.swift */; };
 		A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57185D82867984400655B31 /* MainButtonStyle.swift */; };
+		A57D3F2429CF773B000AFFBA /* UserGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D3F2329CF773B000AFFBA /* UserGameModel.swift */; };
+		A57D3F2629CF77F3000AFFBA /* Binding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D3F2529CF77F3000AFFBA /* Binding+Extensions.swift */; };
+		A57D3F2B29CF8568000AFFBA /* CurrencyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D3F2A29CF8568000AFFBA /* CurrencyTextField.swift */; };
 		A581484A296DF8AD00F52ED7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5814849296DF8AD00F52ED7 /* HomeView.swift */; };
 		A581484D296DF8CB00F52ED7 /* NotLoggedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */; };
 		A5814851296DF8FA00F52ED7 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5814850296DF8FA00F52ED7 /* HomeViewModel.swift */; };
@@ -241,6 +244,9 @@
 		A57185CB286793D700655B31 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A57185D42867953F00655B31 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		A57185D82867984400655B31 /* MainButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainButtonStyle.swift; sourceTree = "<group>"; };
+		A57D3F2329CF773B000AFFBA /* UserGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGameModel.swift; sourceTree = "<group>"; };
+		A57D3F2529CF77F3000AFFBA /* Binding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extensions.swift"; sourceTree = "<group>"; };
+		A57D3F2A29CF8568000AFFBA /* CurrencyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTextField.swift; sourceTree = "<group>"; };
 		A5814849296DF8AD00F52ED7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotLoggedView.swift; sourceTree = "<group>"; };
 		A5814850296DF8FA00F52ED7 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -565,6 +571,7 @@
 				A5507EBA2901CD930040C801 /* GamesState.swift */,
 				A5EE192F29805BCC003DF80D /* GameDetailState.swift */,
 				A5DA642829CB841700B127E3 /* GameEditState.swift */,
+				A57D3F2329CF773B000AFFBA /* UserGameModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -941,6 +948,7 @@
 				A5B5D3DB289B0933004096F4 /* View+Extensions.swift */,
 				A56A95F528B4010600CAAFFF /* Date+Extensions.swift */,
 				A56A95F728B405DB00CAAFFF /* Number+Extensions.swift */,
+				A57D3F2529CF77F3000AFFBA /* Binding+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -951,6 +959,14 @@
 				A57185D82867984400655B31 /* MainButtonStyle.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		A57D3F2729CF8420000AFFBA /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				A57D3F2A29CF8568000AFFBA /* CurrencyTextField.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		A5814848296DF8A000F52ED7 /* Home */ = {
@@ -1101,6 +1117,7 @@
 		A5E48A052895ABE90037023C /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				A57D3F2729CF8420000AFFBA /* Components */,
 				A5E48A062895ABF40037023C /* Features */,
 				A5E48A142895AD660037023C /* Styles */,
 				A57185D32867952D00655B31 /* Extensions */,
@@ -1431,6 +1448,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A57D3F2B29CF8568000AFFBA /* CurrencyTextField.swift in Sources */,
 				A5EE192C298057EF003DF80D /* GameRouter.swift in Sources */,
 				A57185C7286793D600655B31 /* LoginView.swift in Sources */,
 				A56A95F828B405DB00CAAFFF /* Number+Extensions.swift in Sources */,
@@ -1443,6 +1461,7 @@
 				A59E763728B6AC65003CBA3E /* EditPlatformViewModel.swift in Sources */,
 				A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */,
 				A5EE192A298057C6003DF80D /* GameDetailView.swift in Sources */,
+				A57D3F2629CF77F3000AFFBA /* Binding+Extensions.swift in Sources */,
 				A524F53628B5105000A91627 /* PlatformsState.swift in Sources */,
 				A530E729296EE334000EAB91 /* MockListRepository.swift in Sources */,
 				A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */,
@@ -1503,6 +1522,7 @@
 				A59DB73228B114EE009B7641 /* Font.swift in Sources */,
 				A566D849296E368D00760F01 /* ListRepository.swift in Sources */,
 				A566D842296E352C00760F01 /* ListsState.swift in Sources */,
+				A57D3F2429CF773B000AFFBA /* UserGameModel.swift in Sources */,
 				A5E489FE289590120037023C /* HomeView.swift in Sources */,
 				A5507EBB2901CD930040C801 /* GamesState.swift in Sources */,
 				A5F029F8297320070013AA13 /* ListDetailsView.swift in Sources */,

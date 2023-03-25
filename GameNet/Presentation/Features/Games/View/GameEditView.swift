@@ -20,9 +20,6 @@ struct GameEditView: View {
     @Binding var navigationPath: NavigationPath
     @State var isLoading = true
 
-    @State private var selectedImageItem: PhotosPickerItem? = nil
-    @State private var selectedImageData: Data? = nil
-
     var body: some View {
         NavigationStack(path: $navigationPath) {
             Form {
@@ -36,7 +33,7 @@ struct GameEditView: View {
                                 .frame(maxWidth: .infinity, idealHeight: 240)
                                 .padding(20)
                         }
-                        
+
                         PhotosPicker(
                             selection: $selectedImageItem,
                             matching: .images,
@@ -62,39 +59,23 @@ struct GameEditView: View {
                 }
 
                 Section("Dados do Jogo") {
-                    TextField("Nome", text: $name)
+                    TextField("Nome", text: $viewModel.game.name)
 
-                    TextField("Preço (R$)", text: $name)
+                    CurrencyTextField(
+                        "Preço (R$)",
+                        value: $viewModel.game.price,
+                        currencySymbol: "R$"
+                    )
 
                     DatePicker(
                         "Data de Compra",
-                        selection: $boughtDate,
+                        selection: $viewModel.game.boughtDate,
                         displayedComponents: .date
                     )
 
-                    Toggle("Digital", isOn: $digital)
-                    Toggle("Tenho", isOn: $digital)
-                    // TODO: NÃO COLOCAR O "QUERO", NÃO TÁ SERVINDO PRA NADA
-                    Toggle("Original", isOn: $digital)
-
-                    Picker(
-                        "Plataforma",
-                        selection: Binding($selectedPlatform, deselectTo: nil)
-                    ) {
-                        if let selectedPlatform {
-                            if !viewModel.platforms.contains(selectedPlatform) {
-                                Text(String()).tag(nil as Platform?)
-                            }
-                        } else {
-                            Text(String()).tag(nil as Platform?)
-                        }
-
-                        ForEach(viewModel.platforms, id: \.id) { platform in
-                            Text(platform.name)
-                                .tag(platform as Platform?)
-                        }
-                    }
-                    .pickerStyle(.navigationLink)
+                    Toggle("Digital", isOn: $viewModel.game.digital)
+                    Toggle("Tenho", isOn: $viewModel.game.have)
+                    Toggle("Original", isOn: $viewModel.game.original)
                 }
             }
             .disabled(isLoading)
@@ -113,15 +94,15 @@ struct GameEditView: View {
 
     // MARK: Private
 
-    @State private var selection: String?
-    let strengths = ["Mild", "Medium", "Mature"]
+    @State private var selectedImageItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
 
-    // TODO: Levar pra ViewModel, talvez em um model
-    @State private var name: String = .init()
-    @State private var boughtDate: Date = .init()
-    @State private var digital: Bool = true
-
-    @State private var selectedPlatform: Platform? = nil
+    var formatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = 2
+        return formatter
+    }()
 
 }
 
