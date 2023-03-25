@@ -16,7 +16,7 @@ struct GameEditView: View {
 
     // MARK: Internal
 
-    @ObservedObject var viewModel: GameEditViewModel
+    @StateObject var viewModel: GameEditViewModel
     @Binding var navigationPath: NavigationPath
     @State var isLoading = true
 
@@ -61,11 +61,7 @@ struct GameEditView: View {
                 Section("Dados do Jogo") {
                     TextField("Nome", text: $viewModel.game.name)
 
-                    CurrencyTextField(
-                        "Preço (R$)",
-                        value: $viewModel.game.price,
-                        currencySymbol: "R$"
-                    )
+                    CurrencyTextField(title: "Preço (R$)", amountString: $viewModel.game.price)
 
                     DatePicker(
                         "Data de Compra",
@@ -76,6 +72,25 @@ struct GameEditView: View {
                     Toggle("Digital", isOn: $viewModel.game.digital)
                     Toggle("Tenho", isOn: $viewModel.game.have)
                     Toggle("Original", isOn: $viewModel.game.original)
+
+                    Picker(
+                        "Plataforma",
+                        selection: Binding($viewModel.game.platform, deselectTo: nil)
+                    ) {
+                        if let selectedPlatform = viewModel.game.platform {
+                            if !viewModel.platforms.contains(selectedPlatform) {
+                                Text(String()).tag(nil as Platform?)
+                            }
+                        } else {
+                            Text(String()).tag(nil as Platform?)
+                        }
+
+                        ForEach(viewModel.platforms, id: \.id) { platform in
+                            Text(platform.name)
+                                .tag(platform as Platform?)
+                        }
+                    }
+                    .pickerStyle(.navigationLink)
                 }
             }
             .disabled(isLoading)

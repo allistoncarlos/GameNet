@@ -35,7 +35,7 @@ class GameEditViewModel: ObservableObject {
     @Published var platforms: [Platform] = []
     @Published var state: GameEditState = .idle
     
-    @ObservedObject var game: UserGameModel = .init()
+    @Published var game: UserGameModel = .init()
 
     func fetchData() async {
         state = .loading
