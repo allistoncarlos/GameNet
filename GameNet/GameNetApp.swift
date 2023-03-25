@@ -82,6 +82,5 @@ struct GameNetApp: App {
         return KeychainDataSource.hasValidToken() ?
             AnyView(LoginRouter.makeHomeView()) :
             AnyView(LoginRouter.makeLoginView())
-//        return AnyView(LoginRouter.makeLoginView())
     }
 }

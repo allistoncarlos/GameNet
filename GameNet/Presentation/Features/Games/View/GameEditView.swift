@@ -6,6 +6,7 @@
 //
 
 import GameNet_Network
+import PhotosUI
 import SwiftUI
 import TTProgressHUD
 
@@ -16,19 +17,47 @@ struct GameEditView: View {
     // MARK: Internal
 
     @ObservedObject var viewModel: GameEditViewModel
-    @State var isLoading = true
     @Binding var navigationPath: NavigationPath
+    @State var isLoading = true
+
+    @State private var selectedImageItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
             Form {
                 Section("Escolha a imagem de capa") {
                     VStack {
-                        Image(systemName: "arrow.up.bin")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: .infinity, idealHeight: 240)
-                            .foregroundColor(Color.main)
+                        if let selectedImageData,
+                           let uiImage = UIImage(data: selectedImageData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: .infinity, idealHeight: 240)
+                                .padding(20)
+                        }
+                        
+                        PhotosPicker(
+                            selection: $selectedImageItem,
+                            matching: .images,
+                            photoLibrary: .shared()
+                        ) {
+                            if selectedImageData == nil {
+                                Image(systemName: "arrow.up.bin")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxWidth: .infinity, idealHeight: 240)
+                                    .foregroundColor(Color.main)
+                                    .padding(20)
+                            }
+                        }
+                        .onChange(of: selectedImageItem) { newItem in
+                            Task {
+                                if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                                    selectedImageData = data
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -63,23 +92,6 @@ struct GameEditView: View {
                         ForEach(viewModel.platforms, id: \.id) { platform in
                             Text(platform.name)
                                 .tag(platform as Platform?)
-                        }
-                    }
-                    .pickerStyle(.navigationLink)
-                }
-
-                Section {
-                    let charHorizontalTab: String = .init(Character(UnicodeScalar(9)))
-                    Picker("Strength", selection: $selection) {
-                        if let safeSelection = selection {
-                            if !strengths.contains(safeSelection) { // does not care about a initialization value as long as it is not part of the collection 'strengths'
-                                Text(charHorizontalTab).tag(String?(nil)) // is only shown until a selection is made
-                            }
-                        } else {
-                            Text(charHorizontalTab).tag(String?(nil))
-                        }
-                        ForEach(strengths, id: \.self) {
-                            Text($0).tag(Optional($0))
                         }
                     }
                     .pickerStyle(.navigationLink)
