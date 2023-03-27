@@ -9,6 +9,7 @@ import GameNet_Network
 import SwiftUI
 import TTProgressHUD
 import UniformTypeIdentifiers
+import CachedAsyncImage
 
 // MARK: - GameDetailView
 
@@ -23,7 +24,7 @@ struct GameDetailView: View {
         ScrollView {
             VStack(spacing: 15) {
                 if let game = viewModel.game {
-                    AsyncImage(url: URL(string: game.cover)) { image in
+                    CachedAsyncImage(url: URL(string: game.cover)) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)

@@ -78,7 +78,7 @@ class GameDataSource: GameDataSourceProtocol {
 
     func save(data: Game, userGameData: UserGame) async -> Bool {
         if let apiResult = await NetworkManager.shared
-            .performUploadGameNew(data: data.toRequest()) {
+            .performUploadGame(data: data.toRequest()) {
             if apiResult.ok {
                 if let userId = KeychainDataSource.id.get(),
                    let gameId = apiResult.data.id {

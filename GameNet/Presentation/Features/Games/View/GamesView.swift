@@ -8,6 +8,7 @@
 import GameNet_Network
 import SwiftUI
 import TTProgressHUD
+import CachedAsyncImage
 
 // MARK: - GamesView
 
@@ -26,7 +27,7 @@ struct GamesView: View {
                         ForEach(search.isEmpty ? viewModel.data : viewModel.searchedGames, id: \.id) { game in
                             NavigationLink(value: game) {
                                 ZStack(alignment: .bottomTrailing) {
-                                    AsyncImage(url: URL(string: game.coverURL ?? "")) { image in
+                                    CachedAsyncImage(url: URL(string: game.coverURL ?? "")) { image in
                                         image
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)

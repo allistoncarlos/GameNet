@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 11/01/23.
 //
 
+import CachedAsyncImage
 import GameNet_Network
 import SwiftUI
 
@@ -22,7 +23,7 @@ struct GamesListItemView: View {
     var body: some View {
         NavigationLink(value: game) {
             HStack(spacing: 20) {
-                AsyncImage(url: URL(string: game?.cover ?? "")) { image in
+                CachedAsyncImage(url: URL(string: game?.cover ?? "")) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)

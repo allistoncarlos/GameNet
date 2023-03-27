@@ -133,6 +133,7 @@
 		A5EE193029805BCC003DF80D /* GameDetailState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EE192F29805BCC003DF80D /* GameDetailState.swift */; };
 		A5F029F8297320070013AA13 /* ListDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F029F7297320070013AA13 /* ListDetailsView.swift */; };
 		A5F029FA2973203F0013AA13 /* ListDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F029F92973203F0013AA13 /* ListDetailsViewModel.swift */; };
+		A5F18C5529D2554200E712F5 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = A5F18C5429D2554200E712F5 /* CachedAsyncImage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -316,6 +317,7 @@
 				A5E48A1A2895B2450037023C /* GameNet.Network in Frameworks */,
 				A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */,
 				A54B83B72993CF5500F5A0E6 /* TTProgressHUD in Frameworks */,
+				A5F18C5529D2554200E712F5 /* CachedAsyncImage in Frameworks */,
 				A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */,
 				A51AA6A42899539A0081AE4B /* Factory in Frameworks */,
 			);
@@ -1316,6 +1318,7 @@
 				A536616A2899820700D52088 /* OHHTTPStubs */,
 				A536616C2899820700D52088 /* OHHTTPStubsSwift */,
 				A54B83B62993CF5500F5A0E6 /* TTProgressHUD */,
+				A5F18C5429D2554200E712F5 /* CachedAsyncImage */,
 			);
 			productName = GameNet;
 			productReference = A57185C1286793D600655B31 /* GameNet.app */;
@@ -1357,6 +1360,7 @@
 				A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */,
 				A53661692899820700D52088 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 				A54B83B52993CF5500F5A0E6 /* XCRemoteSwiftPackageReference "TTProgressHUD" */,
+				A5F18C5329D2554200E712F5 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 			);
 			productRefGroup = A57185C2286793D600655B31 /* Products */;
 			projectDirPath = "";
@@ -1915,6 +1919,14 @@
 				kind = branch;
 			};
 		};
+		A5F18C5329D2554200E712F5 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1952,6 +1964,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */;
 			productName = GameNet.Network;
+		};
+		A5F18C5429D2554200E712F5 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5F18C5329D2554200E712F5 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
