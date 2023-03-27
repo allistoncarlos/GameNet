@@ -34,7 +34,8 @@ class GameEditViewModel: ObservableObject {
     @Published var isNewGame: Bool
     @Published var platforms: [Platform] = []
     @Published var state: GameEditState = .idle
-    
+    @Published var selectedImageData: Data? = nil
+
     @Published var game: UserGameModel = .init()
 
     func fetchData() async {
@@ -46,6 +47,27 @@ class GameEditViewModel: ObservableObject {
             state = .loadedPlatforms(platforms)
         } else {
             state = .error("Erro na busca de dados do jogo no servidor")
+        }
+    }
+
+    func save() async {
+        state = .loading
+
+        if let selectedImageData,
+           let gameData = game.toGameData(cover: selectedImageData),
+           let userGameData = game.toUserGameData() {
+            let saved = await repository.save(
+                data: gameData,
+                userGameData: userGameData
+            )
+
+            if saved {
+                state = .saved
+            } else {
+                state = .error("Erro ao salvar o jogo")
+            }
+        } else {
+            state = .error("Erro ao retornar objeto de jogo")
         }
     }
 

@@ -25,7 +25,7 @@ struct GameEditView: View {
             Form {
                 Section("Escolha a imagem de capa") {
                     VStack {
-                        if let selectedImageData,
+                        if let selectedImageData = viewModel.selectedImageData,
                            let uiImage = UIImage(data: selectedImageData) {
                             Image(uiImage: uiImage)
                                 .resizable()
@@ -39,7 +39,7 @@ struct GameEditView: View {
                             matching: .images,
                             photoLibrary: .shared()
                         ) {
-                            if selectedImageData == nil {
+                            if viewModel.selectedImageData == nil {
                                 Image(systemName: "arrow.up.bin")
                                     .resizable()
                                     .scaledToFit()
@@ -51,7 +51,7 @@ struct GameEditView: View {
                         .onChange(of: selectedImageItem) { newItem in
                             Task {
                                 if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                    selectedImageData = data
+                                    viewModel.selectedImageData = data
                                 }
                             }
                         }
@@ -94,7 +94,14 @@ struct GameEditView: View {
                 }
             }
             .disabled(isLoading)
-            .navigationView(title: viewModel.isNewGame ? "Novo Jogo" : "MUDAR")
+            .navigationView(title: viewModel.isNewGame ? "Novo Jogo" : viewModel.game.name)
+            .toolbar {
+                Button("Salvar") {
+                    Task {
+                        await viewModel.save()
+                    }
+                }
+            }
         }
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
@@ -110,7 +117,7 @@ struct GameEditView: View {
     // MARK: Private
 
     @State private var selectedImageItem: PhotosPickerItem? = nil
-    @State private var selectedImageData: Data? = nil
+//    @State private var selectedImageData: Data? = nil
 
     var formatter: NumberFormatter = {
         let formatter = NumberFormatter()

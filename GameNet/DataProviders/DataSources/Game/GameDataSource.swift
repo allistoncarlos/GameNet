@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import GameNet_Keychain
 import GameNet_Network
 
 // MARK: - GameDataSourceProtocol
@@ -14,11 +15,15 @@ protocol GameDataSourceProtocol {
     func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>?
     func fetchData(id: String) async -> GameDetail?
     func fetchGameplaySessions(id: String) async -> GameplaySessions?
+    func save(data: Game, userGameData: UserGame) async -> Bool
 }
 
 // MARK: - GameDataSource
 
 class GameDataSource: GameDataSourceProtocol {
+
+    // MARK: Internal
+
     func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>? {
         if let apiResult = await NetworkManager.shared
             .performRequest(
@@ -69,5 +74,47 @@ class GameDataSource: GameDataSourceProtocol {
         }
 
         return nil
+    }
+
+    func save(data: Game, userGameData: UserGame) async -> Bool {
+        if let apiResult = await NetworkManager.shared
+            .performUploadGameNew(data: data.toRequest()) {
+            if apiResult.ok {
+                if let userId = KeychainDataSource.id.get(),
+                   let gameId = apiResult.data.id {
+                    let resultUserGameRequest = UserGameEditRequest(
+                        id: nil,
+                        gameId: gameId,
+                        userId: userId,
+                        price: userGameData.price,
+                        boughtDate: userGameData.boughtDate,
+                        have: userGameData.have,
+                        want: userGameData.want,
+                        digital: userGameData.digital,
+                        original: userGameData.original
+                    )
+
+                    return await saveUserGame(data: resultUserGameRequest)
+                }
+            } else {
+                return false
+            }
+        }
+
+        return false
+    }
+
+    // MARK: Private
+
+    private func saveUserGame(data: UserGameEditRequest) async -> Bool {
+        if let apiResult = await NetworkManager.shared
+            .performRequest(
+                responseType: APIResult<UserGameEditResponse>.self,
+                endpoint: .saveUserGame(data: data)
+            ) {
+            return apiResult.ok
+        }
+
+        return false
     }
 }
