@@ -5,11 +5,11 @@
 //  Created by Alliston Aleixo on 24/01/23.
 //
 
+import CachedAsyncImage
 import GameNet_Network
 import SwiftUI
 import TTProgressHUD
 import UniformTypeIdentifiers
-import CachedAsyncImage
 
 // MARK: - GameDetailView
 
@@ -92,27 +92,28 @@ struct GameDetailView: View {
                                 .bold()
                         }
 
-                        if let sessions = gameplays.sessions.sorted(by: { $0!.start >= $1!.start }) {
-                            VStack(spacing: 5) {
-                                ForEach(sessions, id: \.?.id) { session in
-                                    if let session {
-                                        if let finishSession = session.finish {
-                                            VStack(spacing: 2) {
-                                                Text("\(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat)) até \(finishSession.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
-                                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                                    .font(.system(size: 14))
-
-                                                Text("Total de \(session.totalGameplayTime)")
-                                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                                    .font(.system(size: 14))
-                                            }
-                                        } else {
-                                            Text("Jogando desde \(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
+                        VStack(spacing: 5) {
+                            ForEach(
+                                gameplays.sessions.sorted(by: { $0!.start >= $1!.start }),
+                                id: \.?.id
+                            ) { session in
+                                if let session {
+                                    if let finishSession = session.finish {
+                                        VStack(spacing: 2) {
+                                            Text("\(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat)) até \(finishSession.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
                                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                                .font(.system(size: 16))
-                                                .bold()
-                                                .padding(.bottom, 10)
+                                                .font(.system(size: 14))
+
+                                            Text("Total de \(session.totalGameplayTime)")
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                                .font(.system(size: 14))
                                         }
+                                    } else {
+                                        Text("Jogando desde \(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .font(.system(size: 16))
+                                            .bold()
+                                            .padding(.bottom, 10)
                                     }
                                 }
                             }

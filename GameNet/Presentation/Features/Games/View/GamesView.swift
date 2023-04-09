@@ -5,10 +5,10 @@
 //  Created by Alliston Aleixo on 03/08/22.
 //
 
+import CachedAsyncImage
 import GameNet_Network
 import SwiftUI
 import TTProgressHUD
-import CachedAsyncImage
 
 // MARK: - GamesView
 
@@ -49,12 +49,11 @@ struct GamesView: View {
                     }
                 }
                 .navigationDestination(for: Game.self) { game in
-                    if let game, let gameId = game.id {
-                        viewModel.showGameDetailView(
-                            navigationPath: $presentedGames,
-                            gameId: gameId
-                        )
-                    }
+                    #warning("Removido temporariamente por erro no Xcode 14.3")
+//                    viewModel.showGameDetailView(
+//                        navigationPath: $presentedGames,
+//                        gameId: game.id
+//                    )
                 }
                 .searchable(
                     text: $search,
