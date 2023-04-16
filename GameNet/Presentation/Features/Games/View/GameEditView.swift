@@ -89,7 +89,7 @@ struct GameEditView: View {
                             .tag(platform as Platform?)
                     }
                 }
-                .pickerStyle(.navigationLink)
+                .pickerStyle(.menu)
             }
         }
         .disabled(isLoading)
