@@ -72,15 +72,17 @@ struct GamesView: View {
             }
             .disabled(isLoading)
             .navigationView(title: "Games")
+            .navigationDestination(for: String.self) { gameId in
+                viewModel.showGameEditView(
+                    navigationPath: $presentedGames
+                )
+            }
             .toolbar {
-                NavigationLink(
-                    destination: viewModel.showGameEditView(
-                        navigationPath: $presentedGames
-                    ),
-                    label: {
+                Button(action: {}) {
+                    NavigationLink(value: String()) {
                         Image(systemName: "plus")
                     }
-                )
+                }
             }
         }
         .overlay(
