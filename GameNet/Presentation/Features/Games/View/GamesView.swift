@@ -25,7 +25,7 @@ struct GamesView: View {
                 ScrollView {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
                         ForEach(search.isEmpty ? viewModel.data : viewModel.searchedGames, id: \.id) { game in
-                            NavigationLink(value: game) {
+                            NavigationLink(value: game.id) {
                                 ZStack(alignment: .bottomTrailing) {
                                     CachedAsyncImage(url: URL(string: game.coverURL ?? "")) { image in
                                         image
@@ -48,12 +48,11 @@ struct GamesView: View {
                         }
                     }
                 }
-                .navigationDestination(for: Game.self) { game in
-                    #warning("Removido temporariamente por erro no Xcode 14.3")
-//                    viewModel.showGameDetailView(
-//                        navigationPath: $presentedGames,
-//                        gameId: game.id
-//                    )
+                .navigationDestination(for: String.self) { gameId in
+                    viewModel.showGameDetailView(
+                        navigationPath: $presentedGames,
+                        gameId: gameId
+                    )
                 }
                 .searchable(
                     text: $search,
@@ -72,16 +71,16 @@ struct GamesView: View {
             }
             .disabled(isLoading)
             .navigationView(title: "Games")
-            .navigationDestination(for: String.self) { gameId in
-                viewModel.showGameEditView(
-                    navigationPath: $presentedGames
-                )
-            }
             .toolbar {
                 Button(action: {}) {
-                    NavigationLink(value: String()) {
+                    NavigationLink {
+                        viewModel.showGameEditView(
+                            navigationPath: $presentedGames
+                        )
+                    } label: {
                         Image(systemName: "plus")
                     }
+
                 }
             }
         }
