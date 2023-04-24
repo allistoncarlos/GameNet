@@ -8,6 +8,7 @@
 import GameNet_Network
 import SwiftUI
 import TTProgressHUD
+import CachedAsyncImage
 
 // MARK: - GameplaySessionCell
 
@@ -21,7 +22,7 @@ struct GameplaySessionCell: View {
     var body: some View {
         HStack(spacing: 16) {
             if let gameCover {
-                AsyncImage(url: URL(string: gameCover)) { image in
+                CachedAsyncImage(url: URL(string: gameCover)) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)

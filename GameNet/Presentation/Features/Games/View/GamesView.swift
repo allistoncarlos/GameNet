@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 03/08/22.
 //
 
+import CachedAsyncImage
 import GameNet_Network
 import SwiftUI
 import TTProgressHUD
@@ -24,9 +25,9 @@ struct GamesView: View {
                 ScrollView {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
                         ForEach(search.isEmpty ? viewModel.data : viewModel.searchedGames, id: \.id) { game in
-                            NavigationLink(value: game) {
+                            NavigationLink(value: game.id) {
                                 ZStack(alignment: .bottomTrailing) {
-                                    AsyncImage(url: URL(string: game.coverURL ?? "")) { image in
+                                    CachedAsyncImage(url: URL(string: game.coverURL ?? "")) { image in
                                         image
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
@@ -47,13 +48,11 @@ struct GamesView: View {
                         }
                     }
                 }
-                .navigationDestination(for: Game.self) { game in
-                    if let game, let gameId = game.id {
-                        viewModel.showGameDetailView(
-                            navigationPath: $presentedGames,
-                            gameId: gameId
-                        )
-                    }
+                .navigationDestination(for: String.self) { gameId in
+                    viewModel.showGameDetailView(
+                        navigationPath: $presentedGames,
+                        gameId: gameId
+                    )
                 }
                 .searchable(
                     text: $search,
@@ -72,6 +71,18 @@ struct GamesView: View {
             }
             .disabled(isLoading)
             .navigationView(title: "Games")
+            .toolbar {
+                Button(action: {}) {
+                    NavigationLink {
+                        viewModel.showGameEditView(
+                            navigationPath: $presentedGames
+                        )
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+
+                }
+            }
         }
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)

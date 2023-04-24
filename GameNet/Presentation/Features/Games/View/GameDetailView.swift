@@ -5,25 +5,41 @@
 //  Created by Alliston Aleixo on 24/01/23.
 //
 
+import CachedAsyncImage
 import GameNet_Network
 import SwiftUI
+import TTProgressHUD
+import UniformTypeIdentifiers
 
 // MARK: - GameDetailView
 
 struct GameDetailView: View {
     @StateObject var viewModel: GameDetailViewModel
+
     @Binding var navigationPath: NavigationPath
+
+    @State var isCopied = false
 
     var body: some View {
         ScrollView {
             VStack(spacing: 15) {
                 if let game = viewModel.game {
-                    AsyncImage(url: URL(string: game.cover)) { image in
+                    CachedAsyncImage(url: URL(string: game.cover)) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                     } placeholder: { ProgressView().progressViewStyle(.circular) }
                         .frame(height: 250)
+                        .onTapGesture(count: 2) {
+                            if let gameId = game.id {
+                                UIPasteboard.general.setValue(
+                                    gameId,
+                                    forPasteboardType: UTType.plainText.identifier
+                                )
+
+                                isCopied = true
+                            }
+                        }
 
                     Text(game.name)
                         .font(.system(.title))
@@ -76,27 +92,28 @@ struct GameDetailView: View {
                                 .bold()
                         }
 
-                        if let sessions = gameplays.sessions.sorted(by: { $0!.start >= $1!.start }) {
-                            VStack(spacing: 5) {
-                                ForEach(sessions, id: \.?.id) { session in
-                                    if let session {
-                                        if let finishSession = session.finish {
-                                            VStack(spacing: 2) {
-                                                Text("\(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat)) até \(finishSession.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
-                                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                                    .font(.system(size: 14))
-
-                                                Text("Total de \(session.totalGameplayTime)")
-                                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                                    .font(.system(size: 14))
-                                            }
-                                        } else {
-                                            Text("Jogando desde \(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
+                        VStack(spacing: 5) {
+                            ForEach(
+                                gameplays.sessions.sorted(by: { $0!.start >= $1!.start }),
+                                id: \.?.id
+                            ) { session in
+                                if let session {
+                                    if let finishSession = session.finish {
+                                        VStack(spacing: 2) {
+                                            Text("\(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat)) até \(finishSession.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
                                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                                .font(.system(size: 16))
-                                                .bold()
-                                                .padding(.bottom, 10)
+                                                .font(.system(size: 14))
+
+                                            Text("Total de \(session.totalGameplayTime)")
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                                .font(.system(size: 14))
                                         }
+                                    } else {
+                                        Text("Jogando desde \(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .font(.system(size: 16))
+                                            .bold()
+                                            .padding(.bottom, 10)
                                     }
                                 }
                             }
@@ -108,6 +125,15 @@ struct GameDetailView: View {
             }
             .padding(10)
         }
+        .overlay(
+            TTProgressHUD($isCopied, config: TTProgressHUDConfig(
+                type: .success,
+                title: "Copiado",
+                shouldAutoHide: true,
+                allowsTapToHide: true,
+                autoHideInterval: 3.0
+            ))
+        )
         .navigationView(title: viewModel.game?.name ?? "")
         .task {
             await viewModel.fetchData()

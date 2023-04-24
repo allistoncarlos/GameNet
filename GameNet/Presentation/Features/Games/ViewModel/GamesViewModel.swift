@@ -28,14 +28,14 @@ class GamesViewModel: ObservableObject {
             data = []
             searchedGames = []
         }
-        
+
         state = .loading
 
         let pagedList = await repository.fetchData(search: search, page: page, pageSize: GameNetApp.pageSize)
 
         if let pagedList {
             self.pagedList = pagedList
-            
+
             if let search, !search.isEmpty {
                 searchedGames += pagedList.result
             } else {
@@ -51,14 +51,14 @@ class GamesViewModel: ObservableObject {
     func loadNextPage(currentGame: Game) async {
         if pagedList?.search == nil {
             let thresholdIndex = data.index(data.endIndex, offsetBy: -5)
-            
+
             if data.firstIndex(where: { $0.id == currentGame.id }) == thresholdIndex {
                 let page = pagedList?.page ?? 0
                 await fetchData(search: pagedList?.search, page: page + 1)
             }
         } else {
             let thresholdIndex = searchedGames.index(searchedGames.endIndex, offsetBy: -5)
-            
+
             if searchedGames.firstIndex(where: { $0.id == currentGame.id }) == thresholdIndex {
                 let page = pagedList?.page ?? 0
                 await fetchData(search: pagedList?.search, page: page + 1)
@@ -75,5 +75,9 @@ class GamesViewModel: ObservableObject {
 extension GamesViewModel {
     func showGameDetailView(navigationPath: Binding<NavigationPath>, gameId: String) -> some View {
         return GameRouter.makeGameDetailView(navigationPath: navigationPath, gameId: gameId)
+    }
+
+    func showGameEditView(navigationPath: Binding<NavigationPath>, gameId: String? = nil) -> some View {
+        return GameRouter.makeGameEditView(navigationPath: navigationPath, gameId: gameId)
     }
 }
