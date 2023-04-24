@@ -29,6 +29,10 @@ struct MockGameRepository: GameRepositoryProtocol {
     func fetchGameplaySessions(id: String) -> GameplaySessions? {
         return MockGameRepository.gameplaySessions
     }
+    
+    func save(data: Game, userGameData: UserGame) async -> Bool {
+        return true
+    }
 
     // MARK: Private
 

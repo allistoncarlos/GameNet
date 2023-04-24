@@ -233,10 +233,11 @@ extension DashboardView {
                             ForEach(boughtByYear, id: \.year) { boughtGame in
                                 NavigationLink(value: boughtGame) {
                                     HStack(spacing: 20) {
-                                        if let boughtGameQuantity = boughtGame.quantity.toLeadingZerosString(decimalPlaces: 2) {
-                                            Text(boughtGameQuantity)
-                                                .font(.dashboardGameTitle)
-                                        }
+                                        Text(
+                                            boughtGame.quantity
+                                                .toLeadingZerosString(decimalPlaces: 2)
+                                        )
+                                        .font(.dashboardGameTitle)
 
                                         Text(String(boughtGame.year))
                                             .font(.dashboardGameTitle)

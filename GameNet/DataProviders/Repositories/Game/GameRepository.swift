@@ -15,6 +15,7 @@ protocol GameRepositoryProtocol {
     func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>?
     func fetchData(id: String) async -> GameDetail?
     func fetchGameplaySessions(id: String) async -> GameplaySessions?
+    func save(data: Game, userGameData: UserGame) async -> Bool
 }
 
 // MARK: - GameRepository
@@ -33,6 +34,10 @@ struct GameRepository: GameRepositoryProtocol {
 
     func fetchGameplaySessions(id: String) async -> GameplaySessions? {
         return await dataSource.fetchGameplaySessions(id: id)
+    }
+
+    func save(data: Game, userGameData: UserGame) async -> Bool {
+        return await dataSource.save(data: data, userGameData: userGameData)
     }
 
     // MARK: Private
