@@ -241,7 +241,13 @@ extension DashboardView {
 
                                         Text(String(boughtGame.year))
                                             .font(.dashboardGameTitle)
+
                                         Spacer()
+                                        
+                                        if let formattedTotalPrice = boughtGame.total.toCurrencyString() {
+                                            Text(String("\(formattedTotalPrice)"))
+                                                .font(.dashboardGameTitle)
+                                        }
                                     }
                                 }
                             }
