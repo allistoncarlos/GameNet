@@ -21,17 +21,14 @@ struct ListsView: View {
     var body: some View {
         NavigationStack(path: $presentedLists) {
             VStack {
-                if viewModel.state == .loading {
-                    ProgressView()
-                } else {
-                    if let lists = viewModel.lists {
-                        List(lists, id: \.id) { list in
-                            NavigationLink(list.name, value: list.id)
-                        }
+                if let lists = viewModel.lists {
+                    List(lists, id: \.id) { list in
+                        NavigationLink(list.name, value: list.id)
                     }
                 }
             }
             .disabled(isLoading)
+            .padding(.top, 10)
             .navigationDestination(for: String.self) { listId in
                 viewModel.editListView(
                     navigationPath: $presentedLists,
