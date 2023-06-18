@@ -21,6 +21,12 @@ enum GameRouter {
 
         return GameEditView(viewModel: gameEditViewModel, navigationPath: navigationPath)
     }
+    
+    static func makeGameLookupView(navigationPath: Binding<NavigationPath>) -> some View {
+        let gamesViewModel = GamesViewModel()
+        
+        return GamesView(viewModel: gamesViewModel)
+    }
 
     static func goBackToGames(navigationPath: Binding<NavigationPath>) {
         navigationPath.wrappedValue.removeLast()

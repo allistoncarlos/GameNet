@@ -80,7 +80,6 @@ struct GamesView: View {
                     } label: {
                         Image(systemName: "plus")
                     }
-
                 }
             }
         }

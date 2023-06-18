@@ -58,6 +58,15 @@ struct EditListView: View {
         }
         .navigationView(title: viewModel.list.name.isEmpty ?
             "Nova Lista" : viewModel.list.name)
+        .toolbar {
+            Button(action: {}) {
+                NavigationLink {
+                    viewModel.showGameLookupView(navigationPath: $navigationPath)
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        }
         .task {
             await viewModel.fetchGames()
         }
