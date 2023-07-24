@@ -56,6 +56,7 @@ class GameplaySessionDetailViewModel: ObservableObject {
         }
 
         chartGameplaySession = chartSessions
+        recentRegister = chartSessions.last?.id
     }
 
     // MARK: Internal
@@ -63,4 +64,5 @@ class GameplaySessionDetailViewModel: ObservableObject {
     @Published var title: String
     @Published var groupedGameplaySession: [Date: [GameplaySession?]]
     @Published var chartGameplaySession: [BarShape]
+    @Published var recentRegister: UUID?
 }

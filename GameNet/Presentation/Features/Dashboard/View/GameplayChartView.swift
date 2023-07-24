@@ -15,6 +15,7 @@ struct GameplayChartView: View {
     // MARK: Internal
 
     @Binding var data: [BarShape]
+    @Binding var recentRegister: UUID?
     let barWidth: CGFloat = 70
 
     var body: some View {
@@ -42,6 +43,11 @@ struct GameplayChartView: View {
                     .padding()
                 }
                 .scrollIndicators(.hidden)
+                .onAppear {
+//                    if let recentRegister {
+//                        scrollPosition.scrollTo(recentRegister)
+//                    }
+                }
             }
         }
     }
@@ -56,15 +62,18 @@ struct GameplayChartView: View {
 
 struct GameplayChartView_Previews: PreviewProvider {
     static var previews: some View {
-        GameplayChartView(data: .constant([
-            .init(type: "Cube", sortDate: Date(), count: 5),
-            .init(type: "Sphere", sortDate: Date(), count: 4),
-            .init(type: "Pyramid", sortDate: Date(), count: 4),
-            .init(type: "Cube2", sortDate: Date(), count: 5),
-            .init(type: "Sphere2", sortDate: Date(), count: 4),
-            .init(type: "Pyramid2", sortDate: Date(), count: 4),
-            .init(type: "Pyramid3", sortDate: Date(), count: 4),
-            .init(type: "Pyramid4", sortDate: Date(), count: 4)
-        ]))
+        GameplayChartView(
+            data: .constant([
+                .init(type: "Cube", sortDate: Date(), count: 5),
+                .init(type: "Sphere", sortDate: Date(), count: 4),
+                .init(type: "Pyramid", sortDate: Date(), count: 4),
+                .init(type: "Cube2", sortDate: Date(), count: 5),
+                .init(type: "Sphere2", sortDate: Date(), count: 4),
+                .init(type: "Pyramid2", sortDate: Date(), count: 4),
+                .init(type: "Pyramid3", sortDate: Date(), count: 4),
+                .init(type: "Pyramid4", sortDate: Date(), count: 4)
+            ]),
+            recentRegister: .constant(UUID())
+        )
     }
 }

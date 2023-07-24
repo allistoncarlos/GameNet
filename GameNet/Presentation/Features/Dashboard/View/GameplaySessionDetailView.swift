@@ -73,8 +73,11 @@ struct GameplaySessionDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
-                GameplayChartView(data: $viewModel.chartGameplaySession)
-                    .frame(height: 320)
+                GameplayChartView(
+                    data: $viewModel.chartGameplaySession,
+                    recentRegister: $viewModel.recentRegister
+                )
+                .frame(height: 320)
 
                 ForEach(
                     viewModel.groupedGameplaySession.sorted(by: { $0.key > $1.key }),

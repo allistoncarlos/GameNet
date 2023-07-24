@@ -59,13 +59,22 @@ class DashboardViewModel: ObservableObject {
         let initialYear = 2020
         let lastYear = Calendar.current.component(.year, from: Date())
 
-        for year in initialYear ... lastYear {
-            let result = await gameplaySessionRepository.fetchGameplaySessionsByYear(year: year, month: nil)
+        await withTaskGroup(of: GameplaySessions?.self) { group in
+            for year in initialYear ... lastYear {
+                group.addTask {
+                    await self.gameplaySessionRepository.fetchGameplaySessionsByYear(year: year, month: nil)
+                }
+            }
 
-            if let result {
-                state = .successGameplay(year, result)
-            } else {
-                state = .error("Erro no carregamento de dados do servidor")
+            for await result in group {
+                if let firstDate = result?.sessions[0]?.start {
+                    let year = Calendar.current.component(.year, from: firstDate)
+                    if let result {
+                        state = .successGameplay(year, result)
+                    } else {
+                        state = .error("Erro no carregamento de dados do servidor")
+                    }
+                }
             }
         }
     }
@@ -89,7 +98,7 @@ extension DashboardViewModel {
     func showGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
         return DashboardRouter.makeGameDetailView(navigationPath: navigationPath, id: id)
     }
-    
+
     func showGameplaySessionDetailView(navigationPath: Binding<NavigationPath>, gameplaySession: GameplaySessionNavigation) -> some View {
         return DashboardRouter.makeGameplaySessionDetailView(
             navigationPath: navigationPath,
