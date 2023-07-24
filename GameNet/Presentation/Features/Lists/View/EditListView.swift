@@ -26,15 +26,17 @@ struct EditListView: View {
                     }
             }
 
-            Section(header: Text("Jogos")) {
-                if let listGame = viewModel.listGame {
+            if let listGame = viewModel.listGame {
+                Section(header: Text("Jogos")) {
                     viewModel.showListGamesView(
                         navigationPath: $navigationPath,
                         listGame: listGame
                     )
-                } else {
-                    ProgressView()
                 }
+            } else if viewModel.list.name.isEmpty {
+                EmptyView()
+            } else {
+                ProgressView()
             }
 
             Section(
