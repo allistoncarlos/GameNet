@@ -25,7 +25,7 @@ enum GameRouter {
     static func makeGameLookupView(navigationPath: Binding<NavigationPath>) -> some View {
         let gamesViewModel = GamesViewModel()
         
-        return GamesView(viewModel: gamesViewModel)
+        return GamesView(viewModel: gamesViewModel, navigationPath: navigationPath)
     }
 
     static func goBackToGames(navigationPath: Binding<NavigationPath>) {

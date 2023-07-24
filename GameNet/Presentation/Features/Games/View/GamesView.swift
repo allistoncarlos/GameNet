@@ -19,8 +19,10 @@ struct GamesView: View {
     @ObservedObject var viewModel: GamesViewModel
     @State var isLoading = true
 
+    var navigationPath: Binding<NavigationPath>? = nil
+
     var body: some View {
-        NavigationStack(path: $presentedGames) {
+        NavigationStack(path: navigationPath ?? $presentedGames) {
             Group {
                 ScrollView {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
