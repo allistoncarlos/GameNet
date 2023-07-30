@@ -41,12 +41,11 @@ struct GameplayChartView: View {
                     .foregroundColor(.main)
                     .frame(width: UIScreen.main.bounds.size.width < CGFloat($data.count) * barWidth ? CGFloat($data.count) * barWidth : UIScreen.main.bounds.size.width)
                     .padding()
+                    .id(10001)
                 }
                 .scrollIndicators(.hidden)
                 .onAppear {
-//                    if let recentRegister {
-//                        scrollPosition.scrollTo(recentRegister)
-//                    }
+                    scrollPosition.scrollTo(10001, anchor: .topTrailing)
                 }
             }
         }
