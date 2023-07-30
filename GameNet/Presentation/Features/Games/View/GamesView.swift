@@ -5,7 +5,6 @@
 //  Created by Alliston Aleixo on 03/08/22.
 //
 
-import CachedAsyncImage
 import GameNet_Network
 import SwiftUI
 import TTProgressHUD
@@ -18,6 +17,7 @@ struct GamesView: View {
 
     @ObservedObject var viewModel: GamesViewModel
     @State var isLoading = true
+    @State var origin: GameRouter.Origin = .home
 
     var navigationPath: Binding<NavigationPath>? = nil
 
@@ -27,24 +27,22 @@ struct GamesView: View {
                 ScrollView {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
                         ForEach(search.isEmpty ? viewModel.data : viewModel.searchedGames, id: \.id) { game in
-                            NavigationLink(value: game.id) {
-                                ZStack(alignment: .bottomTrailing) {
-                                    CachedAsyncImage(url: URL(string: game.coverURL ?? "")) { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                    } placeholder: { ProgressView().progressViewStyle(.circular) }
-                                    Text(game.name)
-                                        .padding(4)
-                                        .background(.black)
-                                        .foregroundColor(.white)
-                                        .offset(x: -5, y: -5)
-                                        .font(.system(size: 10))
+                            if origin == .home {
+                                NavigationLink(value: game.id) {
+                                    GameItemView(name: game.name, coverURL: game.coverURL ?? "")
                                 }
-                            }
-                            .onAppear {
-                                Task {
-                                    await viewModel.loadNextPage(currentGame: game)
+                                .onAppear {
+                                    Task {
+                                        await viewModel.loadNextPage(currentGame: game)
+                                    }
+                                }
+                            } else {
+                                Button(action: {
+                                    if let navigationPath, let gameId = game.id {
+                                        viewModel.selectGameList(navigationPath: navigationPath, gameId: gameId)
+                                    }
+                                }) {
+                                    GameItemView(name: game.name, coverURL: game.coverURL ?? "")
                                 }
                             }
                         }
@@ -62,7 +60,7 @@ struct GamesView: View {
                 )
                 .onChange(of: search) { search in
                     if search.isEmpty {
-                        Task { await viewModel.fetchData(clear: true) }
+                        Task { await viewModel.fetchData(origin: origin, clear: true) }
                     }
                 }
                 .onSubmit(of: .search) {
@@ -99,7 +97,7 @@ struct GamesView: View {
             }
         }
         .task {
-            await viewModel.fetchData()
+            await viewModel.fetchData(origin: origin)
         }
     }
 
@@ -111,7 +109,7 @@ struct GamesView: View {
         GridItem(.adaptive(minimum: 120))
     ]
 
-    @State private var presentedGames = NavigationPath()
+    @State var presentedGames = NavigationPath()
 }
 
 // MARK: - GamesView_Previews

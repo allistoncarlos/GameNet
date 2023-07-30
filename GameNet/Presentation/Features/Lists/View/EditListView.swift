@@ -12,6 +12,7 @@ import SwiftUI
 
 struct EditListView: View {
     @StateObject var viewModel: EditListViewModel
+    @State private var selectedUserGameId: String? = nil
     @Binding var navigationPath: NavigationPath
 
     var body: some View {
@@ -63,7 +64,9 @@ struct EditListView: View {
         .toolbar {
             Button(action: {}) {
                 NavigationLink {
-                    viewModel.showGameLookupView(navigationPath: $navigationPath)
+                    viewModel.showGameLookupView(
+                        navigationPath: $navigationPath
+                    )
                 } label: {
                     Image(systemName: "plus")
                 }

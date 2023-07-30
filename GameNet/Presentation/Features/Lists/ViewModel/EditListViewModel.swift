@@ -77,13 +77,17 @@ extension EditListViewModel {
     func showListGamesView(navigationPath: Binding<NavigationPath>, listGame: ListGame) -> some View {
         return ListRouter.makeListGamesView(navigationPath: navigationPath, listGame: listGame)
     }
-    
+
     func showGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
         return ListRouter.makeGameDetailView(navigationPath: navigationPath, id: id)
     }
-    
-    func showGameLookupView(navigationPath: Binding<NavigationPath>) -> some View {
-        return ListRouter.makeGameLookupView(navigationPath: navigationPath)
+
+    func showGameLookupView(
+        navigationPath: Binding<NavigationPath>
+    ) -> some View {
+        return ListRouter.makeGameLookupView(
+            navigationPath: navigationPath
+        )
     }
 
     func goBackToLists(navigationPath: Binding<NavigationPath>) {

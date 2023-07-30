@@ -30,9 +30,13 @@ enum ListRouter {
     static func makeGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
         return GameRouter.makeGameDetailView(navigationPath: navigationPath, gameId: id)
     }
-    
-    static func makeGameLookupView(navigationPath: Binding<NavigationPath>) -> some View {
-        return GameRouter.makeGameLookupView(navigationPath: navigationPath)
+
+    static func makeGameLookupView(
+        navigationPath: Binding<NavigationPath>
+    ) -> some View {
+        return GameRouter.makeGameLookupView(
+            navigationPath: navigationPath
+        )
     }
 
     static func goBackToLists(navigationPath: Binding<NavigationPath>) {
