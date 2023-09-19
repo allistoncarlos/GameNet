@@ -38,8 +38,8 @@ struct GamesView: View {
                                 }
                             } else {
                                 Button(action: {
-                                    if let navigationPath, let gameId = game.id {
-                                        viewModel.selectGameList(navigationPath: navigationPath, gameId: gameId)
+                                    if let gameId = game.id {
+                                        viewModel.selectGameList(navigationPath: $presentedGames, gameId: gameId)
                                     }
                                 }) {
                                     GameItemView(name: game.name, coverURL: game.coverURL ?? "")

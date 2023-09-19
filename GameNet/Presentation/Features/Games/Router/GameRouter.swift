@@ -35,7 +35,6 @@ enum GameRouter {
         return GamesView(
             viewModel: gamesViewModel,
             origin: Origin.lists,
-//            navigationPath: navigationPath
             presentedGames: navigationPath.wrappedValue
         )
     }
