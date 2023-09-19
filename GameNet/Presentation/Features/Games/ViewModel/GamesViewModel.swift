@@ -95,11 +95,4 @@ extension GamesViewModel {
     ) -> some View {
         return GameRouter.makeGameEditView(navigationPath: navigationPath, gameId: gameId)
     }
-
-    func selectGameList(
-        navigationPath: Binding<NavigationPath>,
-        gameId: String
-    ) {
-        GameRouter.selectGameList(navigationPath: navigationPath, gameId: gameId)
-    }
 }

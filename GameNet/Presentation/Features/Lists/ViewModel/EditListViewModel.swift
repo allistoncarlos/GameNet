@@ -83,10 +83,12 @@ extension EditListViewModel {
     }
 
     func showGameLookupView(
-        navigationPath: Binding<NavigationPath>
+        selectedUserGameId: Binding<String?>,
+        isPresented: Binding<Bool>
     ) -> some View {
         return ListRouter.makeGameLookupView(
-            navigationPath: navigationPath
+            selectedUserGameId: selectedUserGameId,
+            isPresented: isPresented
         )
     }
 

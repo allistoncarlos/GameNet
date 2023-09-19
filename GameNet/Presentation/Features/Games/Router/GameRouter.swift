@@ -28,22 +28,20 @@ enum GameRouter {
     }
 
     static func makeGameLookupView(
-        navigationPath: Binding<NavigationPath>
+        selectedUserGameId: Binding<String?>,
+        isPresented: Binding<Bool>
     ) -> some View {
         let gamesViewModel = GamesViewModel()
 
         return GamesView(
             viewModel: gamesViewModel,
             origin: Origin.lists,
-            presentedGames: navigationPath.wrappedValue
+            selectedUserGameId: selectedUserGameId,
+            isPresented: isPresented
         )
     }
 
     static func goBackToGames(navigationPath: Binding<NavigationPath>) {
-        navigationPath.wrappedValue.removeLast()
-    }
-
-    static func selectGameList(navigationPath: Binding<NavigationPath>, gameId: String) {
         navigationPath.wrappedValue.removeLast()
     }
 }

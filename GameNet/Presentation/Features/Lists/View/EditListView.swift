@@ -11,8 +11,10 @@ import SwiftUI
 // MARK: - EditListView
 
 struct EditListView: View {
+
+    // MARK: Internal
+
     @StateObject var viewModel: EditListViewModel
-    @State private var selectedUserGameId: String? = nil
     @Binding var navigationPath: NavigationPath
 
     var body: some View {
@@ -62,20 +64,28 @@ struct EditListView: View {
         .navigationView(title: viewModel.list.name.isEmpty ?
             "Nova Lista" : viewModel.list.name)
         .toolbar {
-            Button(action: {}) {
-                NavigationLink {
-                    viewModel.showGameLookupView(
-                        navigationPath: $navigationPath
-                    )
-                } label: {
-                    Image(systemName: "plus")
-                }
+            Button(action: {
+                self.isGameSelectionSheetPresented = true
+            }) {
+                Image(systemName: "plus")
             }
         }
         .task {
             await viewModel.fetchGames()
         }
+        .sheet(isPresented: $isGameSelectionSheetPresented) {
+            viewModel.showGameLookupView(
+                selectedUserGameId: $selectedUserGameId,
+                isPresented: $isGameSelectionSheetPresented
+            )
+        }
     }
+
+    // MARK: Private
+
+    @State private var isGameSelectionSheetPresented = false
+    @State private var selectedUserGameId: String? = nil
+
 }
 
 // MARK: - EditListView_Previews

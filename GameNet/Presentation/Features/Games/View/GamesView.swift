@@ -19,6 +19,9 @@ struct GamesView: View {
     @State var isLoading = true
     @State var origin: GameRouter.Origin = .home
 
+    @Binding var selectedUserGameId: String?
+    @Binding var isPresented: Bool
+
     var navigationPath: Binding<NavigationPath>? = nil
 
     var body: some View {
@@ -39,7 +42,8 @@ struct GamesView: View {
                             } else {
                                 Button(action: {
                                     if let gameId = game.id {
-                                        viewModel.selectGameList(navigationPath: $presentedGames, gameId: gameId)
+                                        self.selectedUserGameId = gameId
+                                        self.isPresented = false
                                     }
                                 }) {
                                     GameItemView(name: game.name, coverURL: game.coverURL ?? "")
@@ -72,13 +76,15 @@ struct GamesView: View {
             .disabled(isLoading)
             .navigationView(title: "Games")
             .toolbar {
-                Button(action: {}) {
-                    NavigationLink {
-                        viewModel.showGameEditView(
-                            navigationPath: $presentedGames
-                        )
-                    } label: {
-                        Image(systemName: "plus")
+                if origin == .home {
+                    Button(action: {}) {
+                        NavigationLink {
+                            viewModel.showGameEditView(
+                                navigationPath: $presentedGames
+                            )
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
             }
@@ -119,7 +125,11 @@ struct GamesView_Previews: PreviewProvider {
         let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
 
         ForEach(ColorScheme.allCases, id: \.self) {
-            GamesView(viewModel: GamesViewModel()).preferredColorScheme($0)
+            GamesView(
+                viewModel: GamesViewModel(),
+                selectedUserGameId: .constant(nil),
+                isPresented: .constant(false)
+            ).preferredColorScheme($0)
         }
     }
 }

@@ -27,15 +27,18 @@ enum ListRouter {
         return ListGamesView(viewModel: viewModel)
     }
 
-    static func makeGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
+    static func makeGameDetailView(navigationPath: Binding<NavigationPath>, id: String)
+        -> some View {
         return GameRouter.makeGameDetailView(navigationPath: navigationPath, gameId: id)
     }
 
     static func makeGameLookupView(
-        navigationPath: Binding<NavigationPath>
+        selectedUserGameId: Binding<String?>,
+        isPresented: Binding<Bool>
     ) -> some View {
         return GameRouter.makeGameLookupView(
-            navigationPath: navigationPath
+            selectedUserGameId: selectedUserGameId,
+            isPresented: isPresented
         )
     }
 
