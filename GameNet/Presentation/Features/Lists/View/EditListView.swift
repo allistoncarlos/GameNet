@@ -70,14 +70,20 @@ struct EditListView: View {
                 Image(systemName: "plus")
             }
         }
-        .task {
-            await viewModel.fetchGames()
-        }
         .sheet(isPresented: $isGameSelectionSheetPresented) {
             viewModel.showGameLookupView(
                 selectedUserGameId: $selectedUserGameId,
                 isPresented: $isGameSelectionSheetPresented
             )
+        }
+        .onChange(of: selectedUserGameId, perform: { newValue in
+            Task {
+                await viewModel.addUserGame(selectedUserGameId: $selectedUserGameId)
+                self.selectedUserGameId = nil
+            }
+        })
+        .task {
+            await viewModel.fetchGames()
         }
     }
 

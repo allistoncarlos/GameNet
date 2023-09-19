@@ -43,10 +43,14 @@ struct HomeView: View {
                 }
                 .navigationBarTitle("Test", displayMode: .inline)
 
-            GamesView(viewModel: gamesViewModel)
-                .tabItem {
-                    Label("Games", systemImage: "gamecontroller")
-                }
+            GamesView(
+                viewModel: gamesViewModel,
+                selectedUserGameId: .constant(nil),
+                isPresented: .constant(false)
+            )
+            .tabItem {
+                Label("Games", systemImage: "gamecontroller")
+            }
 
             PlatformsView(viewModel: platformsViewModel)
                 .tabItem {

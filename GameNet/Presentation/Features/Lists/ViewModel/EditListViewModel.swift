@@ -67,9 +67,39 @@ class EditListViewModel: ObservableObject {
         }
     }
 
+    func addUserGame(selectedUserGameId: Binding<String?>) async {
+        state = .loading
+
+        if let selectedUserGameIdWrapped = selectedUserGameId.wrappedValue {
+            let result = await gameRepository.fetchData(id: selectedUserGameIdWrapped)
+
+            if let result {
+                let listItem = ListItem(
+                    id: result.id,
+                    name: result.name,
+                    platform: result.platform,
+                    userGameId: result.id,
+                    year: nil,
+                    boughtDate: nil,
+                    value: nil,
+                    start: nil,
+                    finish: nil,
+                    cover: result.cover,
+                    order: nil,
+                    comment: nil
+                )
+
+                listGame?.games?.append(listItem)
+            }
+
+            state = .idle
+        }
+    }
+
     // MARK: Private
 
     @Injected(RepositoryContainer.listRepository) private var repository
+    @Injected(RepositoryContainer.gameRepository) private var gameRepository
     private var cancellable = Set<AnyCancellable>()
 }
 
