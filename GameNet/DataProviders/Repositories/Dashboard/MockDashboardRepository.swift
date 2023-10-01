@@ -25,8 +25,8 @@ struct MockDashboardRepository: DashboardRepositoryProtocol {
         let latestGameplaySession = LatestGameplaySession(id: "1", userGameId: "123", start: Date.now, finish: Date.now)
 
         let playingGames: [PlayingGame]? = [
-            PlayingGame(id: "1", name: "The Legend of Zelda: Breath of the Wild", platform: "Nintendo Switch", latestGameplaySession: latestGameplaySession),
-            PlayingGame(id: "2", name: "Horizon: Forbidden West", platform: "PlayStation 5", latestGameplaySession: latestGameplaySession),
+            PlayingGame(id: "1", name: "The Legend of Zelda: Breath of the Wild", platform: "Nintendo Switch", coverURL: "https://placehold.co/400", latestGameplaySession: latestGameplaySession),
+            PlayingGame(id: "2", name: "Horizon: Forbidden West", platform: "PlayStation 5", coverURL: "https://placehold.co/400", latestGameplaySession: latestGameplaySession),
         ]
 
         let physicalDigital = PhysicalDigital(physical: 200, digital: 1)

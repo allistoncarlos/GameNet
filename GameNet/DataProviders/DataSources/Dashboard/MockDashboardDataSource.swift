@@ -23,8 +23,8 @@ class MockDashboardDataSource: DashboardDataSourceProtocol {
         ]
 
         let playingGames: [PlayingGame]? = [
-            PlayingGame(id: "1", name: "The Legend of Zelda: Breath of the Wild", platform: "Nintendo Switch", latestGameplaySession: nil),
-            PlayingGame(id: "2", name: "Horizon: Forbidden West", platform: "PlayStation 5", latestGameplaySession: nil),
+            PlayingGame(id: "1", name: "The Legend of Zelda: Breath of the Wild", platform: "Nintendo Switch", coverURL: "https://placehold.co/400", latestGameplaySession: nil),
+            PlayingGame(id: "2", name: "Horizon: Forbidden West", platform: "PlayStation 5", coverURL: "https://placehold.co/400", latestGameplaySession: nil),
         ]
 
         let physicalDigital = PhysicalDigital(physical: 200, digital: 1)

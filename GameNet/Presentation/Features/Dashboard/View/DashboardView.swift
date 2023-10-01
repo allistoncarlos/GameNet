@@ -9,6 +9,7 @@ import Factory
 import GameNet_Network
 import SwiftUI
 import TTProgressHUD
+import CachedAsyncImage
 
 // MARK: - DashboardView
 
@@ -113,28 +114,36 @@ extension DashboardView {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.primaryCardBackground)
-
+            
             VStack(alignment: .leading, spacing: 15) {
                 VStack {
                     Text("Jogando")
                         .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
                         .font(.cardTitle)
                 }
-
-                if let playingGames = viewModel.dashboard?.playingGames {
-                    ForEach(playingGames, id: \.id) { playingGame in
-                        NavigationLink(value: playingGame) {
-                            VStack(alignment: .leading) {
-                                Text(playingGame.name)
-                                    .font(.dashboardGameTitle)
-                                    .multilineTextAlignment(.leading)
-                                Text(playingGame.latestGameplaySession?.start.toFormattedString() ?? "")
-                                    .font(.dashboardGameSubtitle)
-                                    .multilineTextAlignment(.leading)
+                
+                ScrollView(.horizontal) {
+                    VStack(alignment: .leading, spacing: 15) {
+                        LazyHStack {
+                            if let playingGames = viewModel.dashboard?.playingGames {
+                                let ordered = playingGames.sorted(by: { lhs, rhs in
+                                    if let lhsDate = lhs.latestGameplaySession?.finish,
+                                       let rhsDate = rhs.latestGameplaySession?.finish {
+                                        
+                                        return lhsDate > rhsDate
+                                    }
+                                    
+                                    return false
+                                })
+                                
+                                ForEach(ordered, id: \.id) { playingGame in
+                                    GameCoverView(playingGame: playingGame)
+                                }
                             }
                         }
                     }
                 }
+                .scrollIndicators(.hidden)
             }
             .padding()
         }
