@@ -14,7 +14,7 @@ struct GameCoverView: View {
     
     var body: some View {
         NavigationLink(value: playingGame) {
-            VStack(alignment: .leading) {
+            VStack(alignment: .center) {
                 CachedAsyncImage(url: URL(string: playingGame.coverURL)) { image in
                     image
                         .resizable()
@@ -23,13 +23,12 @@ struct GameCoverView: View {
                 
                 Text(playingGame.name)
                     .font(.dashboardGameTitle)
-                    .multilineTextAlignment(.leading)
+                    .multilineTextAlignment(.center)
                 Text(playingGame.latestGameplaySession?.start.toFormattedString() ?? "")
                     .font(.dashboardGameSubtitle)
-                    .multilineTextAlignment(.leading)
+                    .multilineTextAlignment(.center)
             }
         }
-        .containerRelativeFrame(.vertical)
         .containerRelativeFrame(.horizontal)
         .scrollTransition(axis: .horizontal) { content, phase in
             content

@@ -106,7 +106,7 @@ struct DashboardView: View {
     // MARK: Private
 
     @State private var presentedViews = NavigationPath()
-
+    var containerHeight: CGFloat = UIScreen.main.bounds.height
 }
 
 extension DashboardView {
@@ -147,6 +147,7 @@ extension DashboardView {
             }
             .padding()
         }
+        .frame(height: containerHeight * 0.5)
         .padding()
     }
 }
