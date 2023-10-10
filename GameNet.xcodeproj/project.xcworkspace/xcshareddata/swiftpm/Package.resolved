@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Alamofire/Alamofire.git",
       "state" : {
-        "revision" : "8dd85aee02e39dd280c75eef88ffdb86eed4b07b",
-        "version" : "5.6.2"
+        "revision" : "b2fa556e4e48cbf06cf8c63def138c98f4b811fa",
+        "version" : "5.8.0"
       }
     },
     {
@@ -33,7 +33,7 @@
       "location" : "https://github.com/allistoncarlos/GameNet.Network",
       "state" : {
         "branch" : "main",
-        "revision" : "19e84406e8a17febb08d140088da396754f95172"
+        "revision" : "3adb6501e6b49f6802cb0d1a4f3107be24deab05"
       }
     },
     {

@@ -10,6 +10,7 @@ import Factory
 import Foundation
 import GameNet_Network
 import SwiftUI
+import GameNet_Keychain
 
 // MARK: - EditListViewModel
 
@@ -56,9 +57,12 @@ class EditListViewModel: ObservableObject {
     }
 
     func save() async {
+        guard let listGame else { return }
+        
         state = .loading
 
-        let result = await repository.saveList(id: list.id, list: List(id: list.id, name: list.name))
+        let userId = KeychainDataSource.id.get()
+        let result = await repository.saveList(id: list.id, userId: userId, list: listGame)
 
         if let result {
             state = .success(result)

@@ -54,15 +54,19 @@ class ListDataSourceTests: XCTestCase {
         XCTAssertNil(result)
     }
 
-    func testList_SaveNewData_ShouldSave() async {
+    func testList_SaveNewDataWithoutGames_ShouldSave() async {
         // Given
         DataSourceContainer.listDataSource.register(factory: { MockListDataSource() })
 
+        let userId = "123"
         let listName = "Jogos à Comprar"
         let dataSourceContainer = DataSourceContainer.listDataSource()
 
         // When
-        let result = await dataSourceContainer.saveList(id: nil, list: List(id: nil, name: listName))
+        let result = await dataSourceContainer.saveList(
+            id: nil,
+            userId: userId,
+            list: ListGame(id: nil, name: listName, games: nil))
 
         // Then
         XCTAssertNotNil(result)
@@ -78,6 +82,7 @@ class ListDataSourceTests: XCTestCase {
         DataSourceContainer.listDataSource.register(factory: { MockListDataSource() })
 
         let listId = "1"
+        let userId = "123"
         let listNewName = "Próximos Jogos"
         let dataSourceContainer = DataSourceContainer.listDataSource()
         let existingList = await dataSourceContainer.fetchData(id: listId)
@@ -88,8 +93,12 @@ class ListDataSourceTests: XCTestCase {
         }
 
         // When
-        let editedExistingList = List(id: existingList.id, name: listNewName)
-        let result = await dataSourceContainer.saveList(id: listId, list: editedExistingList)
+        let editedExistingList = ListGame(
+            id: existingList.id,
+            name: listNewName,
+            games: nil
+        )
+        let result = await dataSourceContainer.saveList(id: listId, userId: userId, list: editedExistingList)
 
         // Then
         XCTAssertNotNil(result)
