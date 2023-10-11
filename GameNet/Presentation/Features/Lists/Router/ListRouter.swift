@@ -21,14 +21,34 @@ enum ListRouter {
         return ListDetailsView(viewModel: ListDetailsViewModel(originFlow: originFlow), navigationPath: navigationPath)
     }
 
-    static func makeListGamesView(navigationPath: Binding<NavigationPath>, listGame: ListGame) -> some View {
+    static func makeListGamesView(
+        navigationPath: Binding<NavigationPath>,
+        listGame: ListGame,
+        deleteAction: ((IndexSet) -> Void)?,
+        moveAction: ((IndexSet, Int) -> Void)?
+    ) -> some View {
         let viewModel = ListGamesViewModel(listGame: listGame)
 
-        return ListGamesView(viewModel: viewModel)
+        return ListGamesView(
+            viewModel: viewModel,
+            deleteAction: deleteAction,
+            moveAction: moveAction
+        )
     }
 
-    static func makeGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
+    static func makeGameDetailView(navigationPath: Binding<NavigationPath>, id: String)
+        -> some View {
         return GameRouter.makeGameDetailView(navigationPath: navigationPath, gameId: id)
+    }
+
+    static func makeGameLookupView(
+        selectedUserGameId: Binding<String?>,
+        isPresented: Binding<Bool>
+    ) -> some View {
+        return GameRouter.makeGameLookupView(
+            selectedUserGameId: selectedUserGameId,
+            isPresented: isPresented
+        )
     }
 
     static func goBackToLists(navigationPath: Binding<NavigationPath>) {

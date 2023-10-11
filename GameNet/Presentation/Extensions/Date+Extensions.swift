@@ -30,6 +30,10 @@ extension Date {
 
         return try! Date(formattedDate, strategy: expectedFormat)
     }
+
+    static func - (lhs: Date, rhs: Date) -> TimeInterval {
+        return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
+    }
 }
 
 extension String {

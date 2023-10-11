@@ -5,7 +5,6 @@
 //  Created by Alliston Aleixo on 03/08/22.
 //
 
-import CachedAsyncImage
 import GameNet_Network
 import SwiftUI
 import TTProgressHUD
@@ -18,31 +17,36 @@ struct GamesView: View {
 
     @ObservedObject var viewModel: GamesViewModel
     @State var isLoading = true
+    @State var origin: GameRouter.Origin = .home
+
+    @Binding var selectedUserGameId: String?
+    @Binding var isPresented: Bool
+
+    var navigationPath: Binding<NavigationPath>? = nil
 
     var body: some View {
-        NavigationStack(path: $presentedGames) {
+        NavigationStack(path: navigationPath ?? $presentedGames) {
             Group {
                 ScrollView {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
                         ForEach(search.isEmpty ? viewModel.data : viewModel.searchedGames, id: \.id) { game in
-                            NavigationLink(value: game.id) {
-                                ZStack(alignment: .bottomTrailing) {
-                                    CachedAsyncImage(url: URL(string: game.coverURL ?? "")) { image in
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                    } placeholder: { ProgressView().progressViewStyle(.circular) }
-                                    Text(game.name)
-                                        .padding(4)
-                                        .background(.black)
-                                        .foregroundColor(.white)
-                                        .offset(x: -5, y: -5)
-                                        .font(.system(size: 10))
+                            if origin == .home {
+                                NavigationLink(value: game.id) {
+                                    GameItemView(name: game.name, coverURL: game.coverURL ?? "")
                                 }
-                            }
-                            .onAppear {
-                                Task {
-                                    await viewModel.loadNextPage(currentGame: game)
+                                .onAppear {
+                                    Task {
+                                        await viewModel.loadNextPage(currentGame: game)
+                                    }
+                                }
+                            } else {
+                                Button(action: {
+                                    if let gameId = game.id {
+                                        self.selectedUserGameId = gameId
+                                        self.isPresented = false
+                                    }
+                                }) {
+                                    GameItemView(name: game.name, coverURL: game.coverURL ?? "")
                                 }
                             }
                         }
@@ -60,7 +64,7 @@ struct GamesView: View {
                 )
                 .onChange(of: search) { search in
                     if search.isEmpty {
-                        Task { await viewModel.fetchData(clear: true) }
+                        Task { await viewModel.fetchData(origin: origin, clear: true) }
                     }
                 }
                 .onSubmit(of: .search) {
@@ -72,15 +76,16 @@ struct GamesView: View {
             .disabled(isLoading)
             .navigationView(title: "Games")
             .toolbar {
-                Button(action: {}) {
-                    NavigationLink {
-                        viewModel.showGameEditView(
-                            navigationPath: $presentedGames
-                        )
-                    } label: {
-                        Image(systemName: "plus")
+                if origin == .home {
+                    Button(action: {}) {
+                        NavigationLink {
+                            viewModel.showGameEditView(
+                                navigationPath: $presentedGames
+                            )
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
-
                 }
             }
         }
@@ -98,7 +103,7 @@ struct GamesView: View {
             }
         }
         .task {
-            await viewModel.fetchData()
+            await viewModel.fetchData(origin: origin)
         }
     }
 
@@ -110,7 +115,7 @@ struct GamesView: View {
         GridItem(.adaptive(minimum: 120))
     ]
 
-    @State private var presentedGames = NavigationPath()
+    @State var presentedGames = NavigationPath()
 }
 
 // MARK: - GamesView_Previews
@@ -120,7 +125,11 @@ struct GamesView_Previews: PreviewProvider {
         let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
 
         ForEach(ColorScheme.allCases, id: \.self) {
-            GamesView(viewModel: GamesViewModel()).preferredColorScheme($0)
+            GamesView(
+                viewModel: GamesViewModel(),
+                selectedUserGameId: .constant(nil),
+                isPresented: .constant(false)
+            ).preferredColorScheme($0)
         }
     }
 }

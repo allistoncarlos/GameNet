@@ -16,7 +16,7 @@ protocol ListRepositoryProtocol {
     func fetchData(id: String) async -> ListGame?
     func fetchFinishedByYearData(id: Int) async -> [ListItem]?
     func fetchBoughtByYearData(id: Int) async -> [ListItem]?
-    func saveList(id: String?, list: List) async -> List?
+    func saveList(id: String?, userId: String?, list: ListGame) async -> List?
 }
 
 // MARK: - ListRepository
@@ -41,8 +41,8 @@ struct ListRepository: ListRepositoryProtocol {
         return await dataSource.fetchBoughtByYearData(id: id)
     }
 
-    func saveList(id: String?, list: List) async -> List? {
-        return await dataSource.saveList(id: id, list: list)
+    func saveList(id: String?, userId: String?, list: ListGame) async -> List? {
+        return await dataSource.saveList(id: id, userId: userId, list: list)
     }
 
     // MARK: Private

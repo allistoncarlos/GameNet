@@ -12,6 +12,7 @@
 		A51AA6A8289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6A7289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift */; };
 		A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6AA289955140081AE4B /* LoginDataSource.swift */; };
 		A51AA6AE289955540081AE4B /* Login.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51AA6AD289955540081AE4B /* Login.swift */; };
+		A524C70F2A3F7BED003817A4 /* GameplayChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524C70E2A3F7BED003817A4 /* GameplayChartView.swift */; };
 		A524F51D28B4FB5F00A91627 /* PlatformDataSourceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F51C28B4FB5F00A91627 /* PlatformDataSourceTest.swift */; };
 		A524F52028B4FC0700A91627 /* PlatformDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F51F28B4FC0700A91627 /* PlatformDataSource.swift */; };
 		A524F52228B4FC1100A91627 /* MockPlatformDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52128B4FC1100A91627 /* MockPlatformDataSource.swift */; };
@@ -98,6 +99,7 @@
 		A582ABAA296F4A69000A0435 /* ListGamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A582ABA9296F4A69000A0435 /* ListGamesViewModel.swift */; };
 		A582ABAC296F4B6A000A0435 /* ListGamesState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A582ABAB296F4B6A000A0435 /* ListGamesState.swift */; };
 		A582ABB0296F4C03000A0435 /* GamesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A582ABAF296F4C03000A0435 /* GamesListView.swift */; };
+		A597B4222AC9C7E000442D91 /* GameCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A597B4212AC9C7E000442D91 /* GameCoverView.swift */; };
 		A599F5E029CA21B200C60626 /* GameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A599F5DF29CA21B200C60626 /* GameEditView.swift */; };
 		A599F5E229CA21C100C60626 /* GameEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A599F5E129CA21C100C60626 /* GameEditViewModel.swift */; };
 		A59C4494296A07860097E0F4 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59C4493296A07860097E0F4 /* WatchConnectivityManager.swift */; };
@@ -114,6 +116,7 @@
 		A5B5D3DC289B0933004096F4 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B5D3DB289B0933004096F4 /* View+Extensions.swift */; };
 		A5C13EF92972E90800EB5A25 /* DashboardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C13EF82972E90800EB5A25 /* DashboardRouter.swift */; };
 		A5C13EFD2973187500EB5A25 /* ListOriginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C13EFC2973187500EB5A25 /* ListOriginFlow.swift */; };
+		A5C190A92A704C0F008D672B /* GameItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C190A82A704C0F008D672B /* GameItemView.swift */; };
 		A5CF1A06297C8F760041B82C /* HomeConnectivityState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CF1A05297C8F760041B82C /* HomeConnectivityState.swift */; };
 		A5CF1A07297C98760041B82C /* GameNet.Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A550C6E02968ABF60043FE74 /* GameNet.Watch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A5D267E5299FF4D2001E7667 /* GameplaySessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D267E4299FF4D2001E7667 /* GameplaySessionRepository.swift */; };
@@ -172,6 +175,7 @@
 		A51AA6A7289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameNetApp+DataSourceInjection.swift"; sourceTree = "<group>"; };
 		A51AA6AA289955140081AE4B /* LoginDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDataSource.swift; sourceTree = "<group>"; };
 		A51AA6AD289955540081AE4B /* Login.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login.swift; sourceTree = "<group>"; };
+		A524C70E2A3F7BED003817A4 /* GameplayChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayChartView.swift; sourceTree = "<group>"; };
 		A524F51C28B4FB5F00A91627 /* PlatformDataSourceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformDataSourceTest.swift; sourceTree = "<group>"; };
 		A524F51F28B4FC0700A91627 /* PlatformDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformDataSource.swift; sourceTree = "<group>"; };
 		A524F52128B4FC1100A91627 /* MockPlatformDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPlatformDataSource.swift; sourceTree = "<group>"; };
@@ -256,6 +260,7 @@
 		A582ABA9296F4A69000A0435 /* ListGamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGamesViewModel.swift; sourceTree = "<group>"; };
 		A582ABAB296F4B6A000A0435 /* ListGamesState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGamesState.swift; sourceTree = "<group>"; };
 		A582ABAF296F4C03000A0435 /* GamesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesListView.swift; sourceTree = "<group>"; };
+		A597B4212AC9C7E000442D91 /* GameCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCoverView.swift; sourceTree = "<group>"; };
 		A599F5DF29CA21B200C60626 /* GameEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEditView.swift; sourceTree = "<group>"; };
 		A599F5E129CA21C100C60626 /* GameEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEditViewModel.swift; sourceTree = "<group>"; };
 		A59C4493296A07860097E0F4 /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
@@ -272,6 +277,7 @@
 		A5B5D3DB289B0933004096F4 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 		A5C13EF82972E90800EB5A25 /* DashboardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRouter.swift; sourceTree = "<group>"; };
 		A5C13EFC2973187500EB5A25 /* ListOriginFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOriginFlow.swift; sourceTree = "<group>"; };
+		A5C190A82A704C0F008D672B /* GameItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameItemView.swift; sourceTree = "<group>"; };
 		A5CF1A05297C8F760041B82C /* HomeConnectivityState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeConnectivityState.swift; sourceTree = "<group>"; };
 		A5D267E4299FF4D2001E7667 /* GameplaySessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplaySessionRepository.swift; sourceTree = "<group>"; };
 		A5D267E7299FF58B001E7667 /* GameplaySessionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplaySessionDataSource.swift; sourceTree = "<group>"; };
@@ -553,6 +559,7 @@
 				A5B5D3D3289AE2D5004096F4 /* GamesView.swift */,
 				A5EE1929298057C6003DF80D /* GameDetailView.swift */,
 				A599F5DF29CA21B200C60626 /* GameEditView.swift */,
+				A5C190A82A704C0F008D672B /* GameItemView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -850,6 +857,8 @@
 			children = (
 				A5B5D3D1289AE2C4004096F4 /* DashboardView.swift */,
 				A531906229ACEB300015D167 /* GameplaySessionDetailView.swift */,
+				A524C70E2A3F7BED003817A4 /* GameplayChartView.swift */,
+				A597B4212AC9C7E000442D91 /* GameCoverView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1469,6 +1478,7 @@
 				A524F53628B5105000A91627 /* PlatformsState.swift in Sources */,
 				A530E729296EE334000EAB91 /* MockListRepository.swift in Sources */,
 				A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */,
+				A5C190A92A704C0F008D672B /* GameItemView.swift in Sources */,
 				A5507EC02901CF9A0040C801 /* MockGameRepository.swift in Sources */,
 				A5EE192E2980588A003DF80D /* GameDetailViewModel.swift in Sources */,
 				A5C13EF92972E90800EB5A25 /* DashboardRouter.swift in Sources */,
@@ -1504,6 +1514,7 @@
 				A51AA6A62899543F0081AE4B /* GameNetApp+RepositoryInjection.swift in Sources */,
 				A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */,
 				A599F5E029CA21B200C60626 /* GameEditView.swift in Sources */,
+				A524C70F2A3F7BED003817A4 /* GameplayChartView.swift in Sources */,
 				A524F52828B506E800A91627 /* PlatformRepository.swift in Sources */,
 				A59E763D28B6B331003CBA3E /* EditPlatformState.swift in Sources */,
 				A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */,
@@ -1511,6 +1522,7 @@
 				A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */,
 				A524F52A28B506F300A91627 /* MockPlatformRepository.swift in Sources */,
 				A59E763B28B6AE1F003CBA3E /* EditPlatformView.swift in Sources */,
+				A597B4222AC9C7E000442D91 /* GameCoverView.swift in Sources */,
 				A530E737296EE518000EAB91 /* MockListDataSource.swift in Sources */,
 				A56DB66728B3BD1600614046 /* MockDashboardDataSource.swift in Sources */,
 				A57185C5286793D600655B31 /* GameNetApp.swift in Sources */,
@@ -1563,7 +1575,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GameNet.Watch Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = 97VM8J235M;
+				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "GameNet-Watch-Watch-App-Info.plist";
@@ -1582,7 +1594,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -1596,7 +1608,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GameNet.Watch Watch App/Preview Content\"";
-				DEVELOPMENT_TEAM = 97VM8J235M;
+				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "GameNet-Watch-Watch-App-Info.plist";
@@ -1615,7 +1627,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -1627,7 +1639,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1649,7 +1661,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1789,7 +1801,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GameNet/Preview Content\"";
-				DEVELOPMENT_TEAM = 97VM8J235M;
+				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GameNet/Info.plist;
@@ -1798,7 +1810,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1822,7 +1834,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GameNet/Preview Content\"";
-				DEVELOPMENT_TEAM = 97VM8J235M;
+				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GameNet/Info.plist;
@@ -1831,7 +1843,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

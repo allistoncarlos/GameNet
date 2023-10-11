@@ -15,7 +15,7 @@ protocol ListDataSourceProtocol {
     func fetchData(id: String) async -> ListGame?
     func fetchFinishedByYearData(id: Int) async -> [ListItem]?
     func fetchBoughtByYearData(id: Int) async -> [ListItem]?
-    func saveList(id: String?, list: List) async -> List?
+    func saveList(id: String?, userId: String?, list: ListGame) async -> List?
 }
 
 // MARK: - ListDataSource
@@ -79,11 +79,13 @@ class ListDataSource: ListDataSourceProtocol {
         return nil
     }
 
-    func saveList(id: String?, list: List) async -> List? {
+    func saveList(id: String?, userId: String?, list: ListGame) async -> List? {
+        let listRequest = list.toRequest(userId: userId)
+        
         if let apiResult = await NetworkManager.shared
             .performRequest(
                 responseType: APIResult<ListResponse>.self,
-                endpoint: .saveList(id: id, data: list.toRequest())
+                endpoint: .saveList(id: id, data: listRequest)
             ) {
             if apiResult.ok {
                 return apiResult.data.toList()

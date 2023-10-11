@@ -23,28 +23,37 @@ class GamesViewModel: ObservableObject {
     @Published var searchedGames: [Game] = []
     @Published var state: GamesState = .idle
 
-    func fetchData(search: String? = "", page: Int = 0, clear: Bool = false) async {
+    func fetchData(
+        origin: GameRouter.Origin = .home,
+        search: String? = "",
+        page: Int = 0,
+        clear: Bool = false
+    ) async {
         if clear {
             data = []
             searchedGames = []
         }
 
-        state = .loading
+        if origin == .home {
+            state = .loading
 
-        let pagedList = await repository.fetchData(search: search, page: page, pageSize: GameNetApp.pageSize)
+            let pagedList = await repository.fetchData(search: search, page: page, pageSize: GameNetApp.pageSize)
 
-        if let pagedList {
-            self.pagedList = pagedList
+            if let pagedList {
+                self.pagedList = pagedList
 
-            if let search, !search.isEmpty {
-                searchedGames += pagedList.result
+                if let search, !search.isEmpty {
+                    searchedGames += pagedList.result
+                } else {
+                    data += pagedList.result
+                }
+
+                state = .success
             } else {
-                data += pagedList.result
+                state = .error("Erro no carregamento de dados do servidor")
             }
-
-            state = .success
         } else {
-            state = .error("Erro no carregamento de dados do servidor")
+            state = .success
         }
     }
 
@@ -73,11 +82,17 @@ class GamesViewModel: ObservableObject {
 }
 
 extension GamesViewModel {
-    func showGameDetailView(navigationPath: Binding<NavigationPath>, gameId: String) -> some View {
+    func showGameDetailView(
+        navigationPath: Binding<NavigationPath>,
+        gameId: String
+    ) -> some View {
         return GameRouter.makeGameDetailView(navigationPath: navigationPath, gameId: gameId)
     }
 
-    func showGameEditView(navigationPath: Binding<NavigationPath>, gameId: String? = nil) -> some View {
+    func showGameEditView(
+        navigationPath: Binding<NavigationPath>,
+        gameId: String? = nil
+    ) -> some View {
         return GameRouter.makeGameEditView(navigationPath: navigationPath, gameId: gameId)
     }
 }

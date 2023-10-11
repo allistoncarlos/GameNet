@@ -35,16 +35,16 @@ struct MockListRepository: ListRepositoryProtocol {
         return MockListRepository.listGames.first?.games?.filter { $0.year == id }
     }
 
-    func saveList(id: String?, list: List) async -> List? {
+    func saveList(id: String?, userId: String?, list: ListGame) async -> List? {
         if let id = id,
            let index = MockListRepository.lists.firstIndex(where: { $0.id == id }) {
-            MockListRepository.lists[index] = list
+            MockListRepository.listGames[index] = list
         } else {
             let newList = List(id: "\(UUID())", name: list.name)
             MockListRepository.lists.append(newList)
         }
 
-        return list
+        return List(id: list.id, name: list.name)
     }
 
     // MARK: Private

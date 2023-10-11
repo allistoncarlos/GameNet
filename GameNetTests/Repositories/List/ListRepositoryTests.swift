@@ -54,15 +54,24 @@ class ListRepositoryTests: XCTestCase {
         XCTAssertNil(result)
     }
 
-    func testList_SaveNewData_ShouldSave() async {
+    func testList_SaveNewDataWithoutGames_ShouldSave() async {
         // Given
         RepositoryContainer.listRepository.register(factory: { MockListRepository() })
 
+        let userId = "123"
         let listName = "Jogos à Comprar"
         let repositoryContainer = RepositoryContainer.listRepository()
 
         // When
-        let result = await repositoryContainer.saveList(id: nil, list: List(id: nil, name: listName))
+        let result = await repositoryContainer.saveList(
+            id: nil,
+            userId: userId,
+            list: ListGame(
+                id: nil,
+                name: listName,
+                games: nil
+            )
+        )
 
         // Then
         XCTAssertNotNil(result)
@@ -77,6 +86,7 @@ class ListRepositoryTests: XCTestCase {
         // Given
         RepositoryContainer.listRepository.register(factory: { MockListRepository() })
 
+        let userId = "123"
         let listId = "1"
         let listNewName = "Próximos Jogos"
         let repositoryContainer = RepositoryContainer.listRepository()
@@ -88,8 +98,16 @@ class ListRepositoryTests: XCTestCase {
         }
 
         // When
-        let editedExistingList = List(id: existingList.id, name: listNewName)
-        let result = await repositoryContainer.saveList(id: listId, list: editedExistingList)
+        let editedExistingList = ListGame(
+            id: existingList.id,
+            name: listNewName,
+            games: nil
+        )
+        let result = await repositoryContainer.saveList(
+            id: listId,
+            userId: userId,
+            list: editedExistingList
+        )
 
         // Then
         XCTAssertNotNil(result)

@@ -5,10 +5,10 @@
 //  Created by Alliston Aleixo on 27/02/23.
 //
 
+import CachedAsyncImage
 import GameNet_Network
 import SwiftUI
 import TTProgressHUD
-import CachedAsyncImage
 
 // MARK: - GameplaySessionCell
 
@@ -73,6 +73,12 @@ struct GameplaySessionDetailView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
+                GameplayChartView(
+                    data: $viewModel.chartGameplaySession,
+                    recentRegister: $viewModel.recentRegister
+                )
+                .frame(height: 320)
+
                 ForEach(
                     viewModel.groupedGameplaySession.sorted(by: { $0.key > $1.key }),
                     id: \.key
