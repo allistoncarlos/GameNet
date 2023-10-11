@@ -13,13 +13,19 @@ import SwiftUI
 struct GamesListView: View {
 
     var games: [ListItem]? = nil
+    var deleteAction: ((IndexSet) -> Void)?
 
     var body: some View {
         if let games {
-            List(games, id: \.userGameId) { game in
+            ForEach(games) { game in
                 GamesListItemView(game: game)
             }
+            .onDelete(perform: deleteItems)
         }
+    }
+    
+    func deleteItems(at offsets: IndexSet) {
+        deleteAction?(offsets)
     }
 }
 
@@ -29,8 +35,6 @@ struct GamesListView_Previews: PreviewProvider {
     static var previews: some View {
         let listGame = MockListRepository().fetchData(id: "1")
 
-        GamesListView(
-            games: listGame?.games
-        )
+        GamesListView(games: listGame?.games)
     }
 }

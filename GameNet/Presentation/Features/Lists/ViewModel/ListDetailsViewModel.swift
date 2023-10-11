@@ -94,8 +94,16 @@ class ListDetailsViewModel: ObservableObject {
 }
 
 extension ListDetailsViewModel {
-    func showListGamesView(navigationPath: Binding<NavigationPath>, listGame: ListGame) -> some View {
-        return ListRouter.makeListGamesView(navigationPath: navigationPath, listGame: listGame)
+    func showListGamesView(
+        navigationPath: Binding<NavigationPath>,
+        listGame: ListGame,
+        deleteAction: ((IndexSet) -> Void)? = nil
+    ) -> some View {
+        return ListRouter.makeListGamesView(
+            navigationPath: navigationPath,
+            listGame: listGame,
+            deleteAction: deleteAction
+        )
     }
 
     func goBackToLists(navigationPath: Binding<NavigationPath>) {

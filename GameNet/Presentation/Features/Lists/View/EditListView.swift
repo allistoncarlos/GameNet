@@ -35,7 +35,8 @@ struct EditListView: View {
                 Section(header: Text("Jogos")) {
                     viewModel.showListGamesView(
                         navigationPath: $navigationPath,
-                        listGame: listGame
+                        listGame: listGame,
+                        deleteAction: delete(at:)
                     )
                 }
             } else if viewModel.list.name.isEmpty {
@@ -96,6 +97,10 @@ struct EditListView: View {
         .task {
             await viewModel.fetchGames()
         }
+    }
+    
+    func delete(at offsets: IndexSet) {
+        viewModel.delete(at: offsets)
     }
 
     // MARK: Private

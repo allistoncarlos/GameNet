@@ -99,6 +99,10 @@ class EditListViewModel: ObservableObject {
             state = .idle
         }
     }
+    
+    func delete(at offsets: IndexSet) {
+        listGame?.games?.remove(atOffsets: offsets)
+    }
 
     // MARK: Private
 
@@ -108,8 +112,16 @@ class EditListViewModel: ObservableObject {
 }
 
 extension EditListViewModel {
-    func showListGamesView(navigationPath: Binding<NavigationPath>, listGame: ListGame) -> some View {
-        return ListRouter.makeListGamesView(navigationPath: navigationPath, listGame: listGame)
+    func showListGamesView(
+        navigationPath: Binding<NavigationPath>,
+        listGame: ListGame,
+        deleteAction: ((IndexSet) -> Void)?
+    ) -> some View {
+        return ListRouter.makeListGamesView(
+            navigationPath: navigationPath,
+            listGame: listGame,
+            deleteAction: deleteAction
+        )
     }
 
     func showGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
