@@ -14,18 +14,24 @@ struct GamesListView: View {
 
     var games: [ListItem]? = nil
     var deleteAction: ((IndexSet) -> Void)?
+    var moveAction: ((IndexSet, Int) -> Void)?
 
     var body: some View {
         if let games {
             ForEach(games) { game in
                 GamesListItemView(game: game)
             }
-            .onDelete(perform: deleteItems)
+            .onDelete(perform: delete)
+            .onMove(perform: move)
         }
     }
     
-    func deleteItems(at offsets: IndexSet) {
+    func delete(at offsets: IndexSet) {
         deleteAction?(offsets)
+    }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        moveAction?(source, destination)
     }
 }
 

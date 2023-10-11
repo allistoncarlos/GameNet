@@ -97,12 +97,14 @@ extension ListDetailsViewModel {
     func showListGamesView(
         navigationPath: Binding<NavigationPath>,
         listGame: ListGame,
-        deleteAction: ((IndexSet) -> Void)? = nil
+        deleteAction: ((IndexSet) -> Void)? = nil,
+        moveAction: ((IndexSet, Int) -> Void)? = nil
     ) -> some View {
         return ListRouter.makeListGamesView(
             navigationPath: navigationPath,
             listGame: listGame,
-            deleteAction: deleteAction
+            deleteAction: deleteAction,
+            moveAction: moveAction
         )
     }
 

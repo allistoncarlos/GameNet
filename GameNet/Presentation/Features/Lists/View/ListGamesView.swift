@@ -16,11 +16,16 @@ struct ListGamesView: View {
 
     @ObservedObject var viewModel: ListGamesViewModel
     var deleteAction: ((IndexSet) -> Void)?
+    var moveAction: ((IndexSet, Int) -> Void)?
 
     var body: some View {
         if let listGame = viewModel.listGame {
             if let games = listGame.games {
-                GamesListView(games: games, deleteAction: deleteAction)
+                GamesListView(
+                    games: games,
+                    deleteAction: deleteAction,
+                    moveAction: moveAction
+                )
             }
         }
     }

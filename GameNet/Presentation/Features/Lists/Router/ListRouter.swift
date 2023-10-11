@@ -24,11 +24,16 @@ enum ListRouter {
     static func makeListGamesView(
         navigationPath: Binding<NavigationPath>,
         listGame: ListGame,
-        deleteAction: ((IndexSet) -> Void)?
+        deleteAction: ((IndexSet) -> Void)?,
+        moveAction: ((IndexSet, Int) -> Void)?
     ) -> some View {
         let viewModel = ListGamesViewModel(listGame: listGame)
 
-        return ListGamesView(viewModel: viewModel, deleteAction: deleteAction)
+        return ListGamesView(
+            viewModel: viewModel,
+            deleteAction: deleteAction,
+            moveAction: moveAction
+        )
     }
 
     static func makeGameDetailView(navigationPath: Binding<NavigationPath>, id: String)
