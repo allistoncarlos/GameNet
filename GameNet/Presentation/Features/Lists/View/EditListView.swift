@@ -7,6 +7,7 @@
 
 import GameNet_Network
 import SwiftUI
+import TTProgressHUD
 
 // MARK: - EditListView
 
@@ -16,6 +17,7 @@ struct EditListView: View {
 
     @StateObject var viewModel: EditListViewModel
     @Binding var navigationPath: NavigationPath
+    @State var isLoading = true
 
     var body: some View {
         Form {
@@ -49,16 +51,19 @@ struct EditListView: View {
                         await viewModel.save()
                     }
                 }
-                .disabled(viewModel.list.name.isEmpty || viewModel.state == .loading)
+                .disabled(isLoading || viewModel.list.name.isEmpty)
                 .buttonStyle(MainButtonStyle())
             ) {
                 EmptyView()
             }
         }
+        .disabled(isLoading)
         .scrollIndicators(.hidden)
         .onReceive(viewModel.$state) { state in
             if case .success = state {
                 viewModel.goBackToLists(navigationPath: $navigationPath)
+            } else if case .idle = state {
+                isLoading = false
             }
         }
         .navigationView(title: viewModel.list.name.isEmpty ?
@@ -75,6 +80,12 @@ struct EditListView: View {
                 selectedUserGameId: $selectedUserGameId,
                 isPresented: $isGameSelectionSheetPresented
             )
+        }
+        .overlay(
+            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+        )
+        .onChange(of: viewModel.state) { state in
+            isLoading = state == .loading
         }
         .onChange(of: selectedUserGameId, perform: { newValue in
             Task {

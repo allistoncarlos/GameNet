@@ -57,24 +57,24 @@ class EditListViewModel: ObservableObject {
     }
 
     func save() async {
-        guard let listGame else { return }
-        
-        state = .loading
-
-        let userId = KeychainDataSource.id.get()
-        let result = await repository.saveList(id: list.id, userId: userId, list: listGame)
-
-        if let result {
-            state = .success(result)
-        } else {
-            state = .error("Erro no salvamento de dados do servidor")
+        if let listGame {
+            state = .loading
+            
+            let userId = KeychainDataSource.id.get()
+            let result = await repository.saveList(id: list.id, userId: userId, list: listGame)
+            
+            if let result {
+                state = .success(result)
+            } else {
+                state = .error("Erro no salvamento de dados do servidor")
+            }
         }
     }
 
     func addUserGame(selectedUserGameId: Binding<String?>) async {
-        state = .loading
-
         if let selectedUserGameIdWrapped = selectedUserGameId.wrappedValue {
+            state = .loading
+            
             let result = await gameRepository.fetchData(id: selectedUserGameIdWrapped)
 
             if let result {
