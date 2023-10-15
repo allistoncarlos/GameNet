@@ -42,7 +42,14 @@ struct ListRepository: ListRepositoryProtocol {
     }
 
     func saveList(id: String?, userId: String?, list: ListGame) async -> List? {
-        return await dataSource.saveList(id: id, userId: userId, list: list)
+        var resultId = id
+        
+        if id == nil {
+            let firstResult = await dataSource.saveList(id: id, userId: userId, list: list)
+            resultId = firstResult?.id
+        }
+        
+        return await dataSource.saveList(id: resultId, userId: userId, list: list)
     }
 
     // MARK: Private

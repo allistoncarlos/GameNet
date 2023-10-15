@@ -39,7 +39,7 @@ class EditListViewModel: ObservableObject {
     // MARK: Internal
 
     @Published var list: GameNet_Network.List
-    @Published var listGame: ListGame?
+    @Published var listGame: ListGame = ListGame(id: "", name: "", games: [])
     @Published var state: EditListState = .idle
 
     func fetchGames() async {
@@ -57,17 +57,15 @@ class EditListViewModel: ObservableObject {
     }
 
     func save() async {
-        if let listGame {
-            state = .loading
-            
-            let userId = KeychainDataSource.id.get()
-            let result = await repository.saveList(id: list.id, userId: userId, list: listGame)
-            
-            if let result {
-                state = .success(result)
-            } else {
-                state = .error("Erro no salvamento de dados do servidor")
-            }
+        state = .loading
+        
+        let userId = KeychainDataSource.id.get()
+        let result = await repository.saveList(id: list.id, userId: userId, list: listGame)
+        
+        if let result {
+            state = .success(result)
+        } else {
+            state = .error("Erro no salvamento de dados do servidor")
         }
     }
 
@@ -93,7 +91,7 @@ class EditListViewModel: ObservableObject {
                     comment: nil
                 )
 
-                listGame?.games?.append(listItem)
+                listGame.games?.append(listItem)
             }
 
             state = .idle
@@ -101,11 +99,11 @@ class EditListViewModel: ObservableObject {
     }
     
     func delete(at offsets: IndexSet) {
-        listGame?.games?.remove(atOffsets: offsets)
+        listGame.games?.remove(atOffsets: offsets)
     }
     
     func move(from source: IndexSet, to destination: Int) {
-        listGame?.games?.move(fromOffsets: source, toOffset: destination)
+        listGame.games?.move(fromOffsets: source, toOffset: destination)
     }
 
     // MARK: Private

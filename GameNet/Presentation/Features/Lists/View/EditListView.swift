@@ -22,7 +22,7 @@ struct EditListView: View {
     var body: some View {
         Form {
             Section(header: Text("Título")) {
-                TextField("Lista", text: $viewModel.list.name)
+                TextField("Lista", text: $viewModel.listGame.name)
                     .autocapitalization(.none)
                     .onSubmit {
                         Task {
@@ -31,11 +31,11 @@ struct EditListView: View {
                     }
             }
 
-            if let listGame = viewModel.listGame {
+            if viewModel.listGame.games != nil {
                 Section(header: Text("Jogos")) {
                     viewModel.showListGamesView(
                         navigationPath: $navigationPath,
-                        listGame: listGame,
+                        listGame: viewModel.listGame,
                         deleteAction: delete(at:),
                         moveAction: move(from:to:)
                     )
@@ -53,7 +53,7 @@ struct EditListView: View {
                         await viewModel.save()
                     }
                 }
-                .disabled(isLoading || viewModel.list.name.isEmpty)
+                .disabled(isLoading || viewModel.listGame.name.isEmpty)
                 .buttonStyle(MainButtonStyle())
             ) {
                 EmptyView()
