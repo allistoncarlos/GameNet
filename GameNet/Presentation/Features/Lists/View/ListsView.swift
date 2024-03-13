@@ -7,7 +7,7 @@
 
 import GameNet_Network
 import SwiftUI
-import TTProgressHUD
+//import TTProgressHUD
 
 // MARK: - ListsView
 
@@ -52,9 +52,9 @@ struct ListsView: View {
                 }
             }
         }
-        .overlay(
-            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
-        )
+//        .overlay(
+//            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+//        )
         .onChange(of: viewModel.state) { state in
             isLoading = state == .loading
         }

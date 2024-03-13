@@ -8,7 +8,7 @@
 import Factory
 import GameNet_Network
 import SwiftUI
-import TTProgressHUD
+//import TTProgressHUD
 import CachedAsyncImage
 
 // MARK: - DashboardView
@@ -92,9 +92,9 @@ struct DashboardView: View {
                 )
             }
         }
-        .overlay(
-            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
-        )
+//        .overlay(
+//            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+//        )
         .onChange(of: viewModel.state) { state in
             isLoading = state == .loading
         }

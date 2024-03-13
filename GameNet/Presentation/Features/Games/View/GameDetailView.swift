@@ -8,7 +8,7 @@
 import CachedAsyncImage
 import GameNet_Network
 import SwiftUI
-import TTProgressHUD
+//import TTProgressHUD
 import UniformTypeIdentifiers
 
 // MARK: - GameDetailView
@@ -30,16 +30,17 @@ struct GameDetailView: View {
                             .aspectRatio(contentMode: .fit)
                     } placeholder: { ProgressView().progressViewStyle(.circular) }
                         .frame(height: 250)
-                        .onTapGesture(count: 2) {
-                            if let gameId = game.id {
-                                UIPasteboard.general.setValue(
-                                    gameId,
-                                    forPasteboardType: UTType.plainText.identifier
-                                )
-
-                                isCopied = true
-                            }
-                        }
+                    // TODO: tvOS
+//                        .onTapGesture(count: 2) {
+//                            if let gameId = game.id {
+//                                UIPasteboard.general.setValue(
+//                                    gameId,
+//                                    forPasteboardType: UTType.plainText.identifier
+//                                )
+//
+//                                isCopied = true
+//                            }
+//                        }
 
                     Text(game.name)
                         .font(.system(.title))
@@ -125,15 +126,15 @@ struct GameDetailView: View {
             }
             .padding(10)
         }
-        .overlay(
-            TTProgressHUD($isCopied, config: TTProgressHUDConfig(
-                type: .success,
-                title: "Copiado",
-                shouldAutoHide: true,
-                allowsTapToHide: true,
-                autoHideInterval: 3.0
-            ))
-        )
+//        .overlay(
+//            TTProgressHUD($isCopied, config: TTProgressHUDConfig(
+//                type: .success,
+//                title: "Copiado",
+//                shouldAutoHide: true,
+//                allowsTapToHide: true,
+//                autoHideInterval: 3.0
+//            ))
+//        )
         .navigationView(title: viewModel.game?.name ?? "")
         .task {
             await viewModel.fetchData()

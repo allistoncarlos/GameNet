@@ -8,7 +8,7 @@
 import Combine
 import GameNet_Keychain
 import SwiftUI
-import TTProgressHUD
+//import TTProgressHUD
 
 @main
 struct GameNetApp: App {
@@ -16,6 +16,7 @@ struct GameNetApp: App {
     // MARK: Lifecycle
 
     init() {
+#if canImport(WatchConnectivity)
         WatchConnectivityManager.shared.$message
             .receive(on: RunLoop.main)
             .sink(receiveValue: { message in
@@ -48,6 +49,7 @@ struct GameNetApp: App {
                 }
             })
             .store(in: &cancellables)
+#endif
     }
 
     // MARK: Internal
@@ -60,16 +62,18 @@ struct GameNetApp: App {
     static let shortDateFormat = "dd/MM"
     static let timeFormat = "HH:mm"
 
-    static let hudConfig = TTProgressHUDConfig(
-        title: "Carregando",
-        caption: "Aguarde enquanto os dados\nsão retornados do servidor"
-    )
+//    static let hudConfig = TTProgressHUDConfig(
+//        title: "Carregando",
+//        caption: "Aguarde enquanto os dados\nsão retornados do servidor"
+//    )
 
     var body: some Scene {
         WindowGroup {
             resultView()
                 .onAppear {
+#if canImport(WatchConnectivity)
                     WatchConnectivityManager.shared.activateSession()
+#endif
                 }
         }
     }

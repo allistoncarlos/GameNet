@@ -8,7 +8,7 @@
 import GameNet_Network
 import PhotosUI
 import SwiftUI
-import TTProgressHUD
+//import TTProgressHUD
 
 // MARK: - GameEditView
 
@@ -33,6 +33,7 @@ struct GameEditView: View {
                             .padding(20)
                     }
 
+#if os(iOS)
                     PhotosPicker(
                         selection: $selectedImageItem,
                         matching: .images,
@@ -54,6 +55,7 @@ struct GameEditView: View {
                             }
                         }
                     }
+#endif
                 }
             }
 
@@ -62,11 +64,13 @@ struct GameEditView: View {
 
                 CurrencyTextField(title: "Preço (R$)", amountString: $viewModel.game.price)
 
+#if os(iOS)
                 DatePicker(
                     "Data de Compra",
                     selection: $viewModel.game.boughtDate,
                     displayedComponents: .date
                 )
+#endif
 
                 Toggle("Digital", isOn: $viewModel.game.digital)
                 Toggle("Tenho", isOn: $viewModel.game.have)
@@ -101,9 +105,9 @@ struct GameEditView: View {
                 }
             }
         }
-        .overlay(
-            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
-        )
+//        .overlay(
+//            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+//        )
         .onChange(of: viewModel.state) { state in
             isLoading = state == .loading
         }
@@ -114,7 +118,9 @@ struct GameEditView: View {
 
     // MARK: Private
 
+#if os(iOS)
     @State private var selectedImageItem: PhotosPickerItem? = nil
+#endif
 
     var formatter: NumberFormatter = {
         let formatter = NumberFormatter()

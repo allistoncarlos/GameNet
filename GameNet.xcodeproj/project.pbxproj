@@ -47,7 +47,6 @@
 		A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617C2899883B00D52088 /* MockLoginRepository.swift */; };
 		A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661802899890300D52088 /* LoginViewModelTests.swift */; };
 		A53B6FC12968B26500A0F09E /* GameNet.Network in Frameworks */ = {isa = PBXBuildFile; productRef = A53B6FC02968B26500A0F09E /* GameNet.Network */; };
-		A54B83B72993CF5500F5A0E6 /* TTProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = A54B83B62993CF5500F5A0E6 /* TTProgressHUD */; };
 		A54E8548296CA0590079F8D0 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59C4493296A07860097E0F4 /* WatchConnectivityManager.swift */; };
 		A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EB82901CD260040C801 /* GamesViewModel.swift */; };
 		A5507EBB2901CD930040C801 /* GamesState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EBA2901CD930040C801 /* GamesState.swift */; };
@@ -118,7 +117,7 @@
 		A5C13EFD2973187500EB5A25 /* ListOriginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C13EFC2973187500EB5A25 /* ListOriginFlow.swift */; };
 		A5C190A92A704C0F008D672B /* GameItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5C190A82A704C0F008D672B /* GameItemView.swift */; };
 		A5CF1A06297C8F760041B82C /* HomeConnectivityState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5CF1A05297C8F760041B82C /* HomeConnectivityState.swift */; };
-		A5CF1A07297C98760041B82C /* GameNet.Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A550C6E02968ABF60043FE74 /* GameNet.Watch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A5CF1A07297C98760041B82C /* GameNet.Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A550C6E02968ABF60043FE74 /* GameNet.Watch Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A5D267E5299FF4D2001E7667 /* GameplaySessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D267E4299FF4D2001E7667 /* GameplaySessionRepository.swift */; };
 		A5D267E8299FF58B001E7667 /* GameplaySessionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D267E7299FF58B001E7667 /* GameplaySessionDataSource.swift */; };
 		A5D2BCE02968B6720030973B /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = A5D2C23C2896B676007C28AC /* Config.xcconfig */; };
@@ -322,7 +321,6 @@
 			files = (
 				A5E48A1A2895B2450037023C /* GameNet.Network in Frameworks */,
 				A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */,
-				A54B83B72993CF5500F5A0E6 /* TTProgressHUD in Frameworks */,
 				A5F18C5529D2554200E712F5 /* CachedAsyncImage in Frameworks */,
 				A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */,
 				A51AA6A42899539A0081AE4B /* Factory in Frameworks */,
@@ -1326,7 +1324,6 @@
 				A51AA6A32899539A0081AE4B /* Factory */,
 				A536616A2899820700D52088 /* OHHTTPStubs */,
 				A536616C2899820700D52088 /* OHHTTPStubsSwift */,
-				A54B83B62993CF5500F5A0E6 /* TTProgressHUD */,
 				A5F18C5429D2554200E712F5 /* CachedAsyncImage */,
 			);
 			productName = GameNet;
@@ -1368,7 +1365,6 @@
 				A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */,
 				A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */,
 				A53661692899820700D52088 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
-				A54B83B52993CF5500F5A0E6 /* XCRemoteSwiftPackageReference "TTProgressHUD" */,
 				A5F18C5329D2554200E712F5 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 			);
 			productRefGroup = A57185C2286793D600655B31 /* Products */;
@@ -1559,6 +1555,7 @@
 		};
 		A5CF1A09297C98760041B82C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = A550C6DF2968ABF60043FE74 /* GameNet.Watch Watch App */;
 			targetProxy = A5CF1A08297C98760041B82C /* PBXContainerItemProxy */;
 		};
@@ -1919,14 +1916,6 @@
 				minimumVersion = 9.0.0;
 			};
 		};
-		A54B83B52993CF5500F5A0E6 /* XCRemoteSwiftPackageReference "TTProgressHUD" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/honkmaster/TTProgressHUD";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/allistoncarlos/GameNet.Network";
@@ -1965,11 +1954,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */;
 			productName = GameNet.Network;
-		};
-		A54B83B62993CF5500F5A0E6 /* TTProgressHUD */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A54B83B52993CF5500F5A0E6 /* XCRemoteSwiftPackageReference "TTProgressHUD" */;
-			productName = TTProgressHUD;
 		};
 		A550C6F82968AEA40043FE74 /* Factory */ = {
 			isa = XCSwiftPackageProductDependency;

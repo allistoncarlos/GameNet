@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import TTProgressHUD
+//import TTProgressHUD
 
 // MARK: - PlatformsView
 
@@ -43,9 +43,9 @@ struct PlatformsView: View {
                 }
             }
         }
-        .overlay(
-            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
-        )
+//        .overlay(
+//            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+//        )
         .onChange(of: presentedPlatforms) { newValue in
             if newValue.isEmpty {
                 Task {

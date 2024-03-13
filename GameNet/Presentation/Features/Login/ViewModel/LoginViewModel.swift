@@ -9,7 +9,10 @@ import Combine
 import Factory
 import GameNet_Keychain
 import SwiftUI
+
+#if canImport(WatchConnectivity)
 import WatchConnectivity
+#endif
 
 // MARK: - LoginError
 
@@ -68,10 +71,12 @@ class LoginViewModel: ObservableObject {
                     formattedExpiresIn
                 ]
 
+#if canImport(WatchConnectivity)
                 WatchConnectivityManager.shared.sendMessage(
                     message: message,
                     key: "AUTH_INFO"
                 )
+#endif
             }
         } else {
             KeychainDataSource.clear()
