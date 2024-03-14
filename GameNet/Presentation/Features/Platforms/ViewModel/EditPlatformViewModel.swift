@@ -57,8 +57,10 @@ class EditPlatformViewModel: ObservableObject {
     private var cancellable = Set<AnyCancellable>()
 }
 
+#if os(iOS)
 extension EditPlatformViewModel {
     func goBackToPlatforms(navigationPath: Binding<NavigationPath>) {
         PlatformRouter.goBackToPlatforms(navigationPath: navigationPath)
     }
 }
+#endif
