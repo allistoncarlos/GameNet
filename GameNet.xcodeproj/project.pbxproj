@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -47,6 +47,7 @@
 		A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617C2899883B00D52088 /* MockLoginRepository.swift */; };
 		A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661802899890300D52088 /* LoginViewModelTests.swift */; };
 		A53B6FC12968B26500A0F09E /* GameNet.Network in Frameworks */ = {isa = PBXBuildFile; productRef = A53B6FC02968B26500A0F09E /* GameNet.Network */; };
+		A5491F3B2BA1DDCF002E752A /* TTProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = A5491F3A2BA1DDCF002E752A /* TTProgressHUD */; };
 		A54E8548296CA0590079F8D0 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59C4493296A07860097E0F4 /* WatchConnectivityManager.swift */; };
 		A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EB82901CD260040C801 /* GamesViewModel.swift */; };
 		A5507EBB2901CD930040C801 /* GamesState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EBA2901CD930040C801 /* GamesState.swift */; };
@@ -322,6 +323,7 @@
 				A5E48A1A2895B2450037023C /* GameNet.Network in Frameworks */,
 				A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */,
 				A5F18C5529D2554200E712F5 /* CachedAsyncImage in Frameworks */,
+				A5491F3B2BA1DDCF002E752A /* TTProgressHUD in Frameworks */,
 				A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */,
 				A51AA6A42899539A0081AE4B /* Factory in Frameworks */,
 			);
@@ -1325,6 +1327,7 @@
 				A536616A2899820700D52088 /* OHHTTPStubs */,
 				A536616C2899820700D52088 /* OHHTTPStubsSwift */,
 				A5F18C5429D2554200E712F5 /* CachedAsyncImage */,
+				A5491F3A2BA1DDCF002E752A /* TTProgressHUD */,
 			);
 			productName = GameNet;
 			productReference = A57185C1286793D600655B31 /* GameNet.app */;
@@ -1366,6 +1369,7 @@
 				A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */,
 				A53661692899820700D52088 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 				A5F18C5329D2554200E712F5 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
+				A5491F392BA1DDCF002E752A /* XCLocalSwiftPackageReference "../TTProgressHUD" */,
 			);
 			productRefGroup = A57185C2286793D600655B31 /* Products */;
 			projectDirPath = "";
@@ -1899,6 +1903,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		A5491F392BA1DDCF002E752A /* XCLocalSwiftPackageReference "../TTProgressHUD" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../TTProgressHUD;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1954,6 +1965,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */;
 			productName = GameNet.Network;
+		};
+		A5491F3A2BA1DDCF002E752A /* TTProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TTProgressHUD;
 		};
 		A550C6F82968AEA40043FE74 /* Factory */ = {
 			isa = XCSwiftPackageProductDependency;

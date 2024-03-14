@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-//import TTProgressHUD
+import TTProgressHUD
 
 // MARK: - LoginView
 
@@ -45,9 +45,9 @@ struct LoginView: View {
                             EmptyView()
                         }
                     }
-//                    .overlay(
-//                        TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
-//                    )
+                    .overlay(
+                        TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+                    )
                     .onChange(of: viewModel.state) { state in
                         isLoading = state == .loading
                     }

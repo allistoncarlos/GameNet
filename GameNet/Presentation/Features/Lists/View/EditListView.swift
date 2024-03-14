@@ -7,7 +7,7 @@
 
 import GameNet_Network
 import SwiftUI
-//import TTProgressHUD
+import TTProgressHUD
 
 // MARK: - EditListView
 
@@ -83,9 +83,9 @@ struct EditListView: View {
                 isPresented: $isGameSelectionSheetPresented
             )
         }
-//        .overlay(
-//            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
-//        )
+        .overlay(
+            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+        )
         .onChange(of: viewModel.state, { oldValue, state in
             isLoading = state == .loading
         })

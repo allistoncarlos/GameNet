@@ -8,7 +8,7 @@
 import GameNet_Network
 import PhotosUI
 import SwiftUI
-//import TTProgressHUD
+import TTProgressHUD
 
 // MARK: - GameEditView
 
@@ -105,9 +105,9 @@ struct GameEditView: View {
                 }
             }
         }
-//        .overlay(
-//            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
-//        )
+        .overlay(
+            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+        )
         .onChange(of: viewModel.state) { state in
             isLoading = state == .loading
         }

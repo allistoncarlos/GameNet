@@ -8,7 +8,7 @@
 import CachedAsyncImage
 import GameNet_Network
 import SwiftUI
-//import TTProgressHUD
+import TTProgressHUD
 import UniformTypeIdentifiers
 
 // MARK: - GameDetailView
@@ -126,15 +126,15 @@ struct GameDetailView: View {
             }
             .padding(10)
         }
-//        .overlay(
-//            TTProgressHUD($isCopied, config: TTProgressHUDConfig(
-//                type: .success,
-//                title: "Copiado",
-//                shouldAutoHide: true,
-//                allowsTapToHide: true,
-//                autoHideInterval: 3.0
-//            ))
-//        )
+        .overlay(
+            TTProgressHUD($isCopied, config: TTProgressHUDConfig(
+                type: .success,
+                title: "Copiado",
+                shouldAutoHide: true,
+                allowsTapToHide: true,
+                autoHideInterval: 3.0
+            ))
+        )
         .navigationView(title: viewModel.game?.name ?? "")
         .task {
             await viewModel.fetchData()
