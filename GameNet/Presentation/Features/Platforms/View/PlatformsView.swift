@@ -22,25 +22,33 @@ struct PlatformsView: View {
             VStack {
                 if let platforms = viewModel.platforms {
                     List(platforms, id: \.id) { platform in
+                        #if os(iOS)
                         NavigationLink(platform.name, value: platform.id)
+                        #else
+                        Text(platform.name)
+                        #endif
                     }
                 }
             }
             .disabled(isLoading)
             .padding(.top, 10)
             .navigationDestination(for: String.self) { platformId in
+                #if os(iOS)
                 viewModel.editPlatformView(
                     navigationPath: $presentedPlatforms,
                     platformId: platformId
                 )
+                #endif
             }
             .navigationView(title: "Platformas")
             .toolbar {
+                #if os(iOS)
                 Button(action: {}) {
                     NavigationLink(value: String()) {
                         Image(systemName: "plus")
                     }
                 }
+                #endif
             }
         }
         .overlay(

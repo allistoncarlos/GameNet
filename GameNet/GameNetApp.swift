@@ -16,6 +16,7 @@ struct GameNetApp: App {
     // MARK: Lifecycle
 
     init() {
+#if canImport(WatchConnectivity)
         WatchConnectivityManager.shared.$message
             .receive(on: RunLoop.main)
             .sink(receiveValue: { message in
@@ -48,6 +49,7 @@ struct GameNetApp: App {
                 }
             })
             .store(in: &cancellables)
+#endif
     }
 
     // MARK: Internal
@@ -69,7 +71,9 @@ struct GameNetApp: App {
         WindowGroup {
             resultView()
                 .onAppear {
+#if canImport(WatchConnectivity)
                     WatchConnectivityManager.shared.activateSession()
+#endif
                 }
         }
     }

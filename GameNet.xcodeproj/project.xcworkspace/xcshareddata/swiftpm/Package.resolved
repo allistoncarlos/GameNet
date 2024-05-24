@@ -84,19 +84,10 @@
     {
       "identity" : "swiftui-visual-effects",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/lucasbrown/swiftui-visual-effects.git",
+      "location" : "https://github.com/allistoncarlos/swiftui-visual-effects",
       "state" : {
-        "revision" : "b26f8cebd55ff60ed8953768aa818dfb005b5838",
-        "version" : "1.0.3"
-      }
-    },
-    {
-      "identity" : "ttprogresshud",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/honkmaster/TTProgressHUD",
-      "state" : {
-        "branch" : "master",
-        "revision" : "9059a560a66b6b8dc27a441af5831e51ce741f84"
+        "branch" : "feature/tvOS",
+        "revision" : "40811ea11d46a9458c6f3aeb1a475472e7150878"
       }
     }
   ],

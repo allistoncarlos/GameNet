@@ -17,12 +17,16 @@ struct ListDetailsView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                if let listGame = viewModel.listGame {
-                    viewModel.showListGamesView(
-                        navigationPath: $navigationPath,
-                        listGame: listGame
-                    )
+            Form {
+                Section {
+                    if let listGame = viewModel.listGame {
+                        viewModel.showListGamesView(
+                            navigationPath: $navigationPath,
+                            listGame: listGame
+                        )
+                        .deleteDisabled(true)
+                        .moveDisabled(true)
+                    }
                 }
             }
             .disabled(isLoading)

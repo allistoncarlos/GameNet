@@ -30,16 +30,17 @@ struct GameDetailView: View {
                             .aspectRatio(contentMode: .fit)
                     } placeholder: { ProgressView().progressViewStyle(.circular) }
                         .frame(height: 250)
-                        .onTapGesture(count: 2) {
-                            if let gameId = game.id {
-                                UIPasteboard.general.setValue(
-                                    gameId,
-                                    forPasteboardType: UTType.plainText.identifier
-                                )
-
-                                isCopied = true
-                            }
-                        }
+                    // TODO: tvOS
+//                        .onTapGesture(count: 2) {
+//                            if let gameId = game.id {
+//                                UIPasteboard.general.setValue(
+//                                    gameId,
+//                                    forPasteboardType: UTType.plainText.identifier
+//                                )
+//
+//                                isCopied = true
+//                            }
+//                        }
 
                     Text(game.name)
                         .font(.system(.title))

@@ -41,7 +41,8 @@ struct HomeView: View {
                 .tabItem {
                     Label("Dashboard", systemImage: "display")
                 }
-                .navigationBarTitle("Test", displayMode: .inline)
+            // TODO: tvOS
+//                .navigationBarTitle("Test", displayMode: .inline)
 
             GamesView(
                 viewModel: gamesViewModel,

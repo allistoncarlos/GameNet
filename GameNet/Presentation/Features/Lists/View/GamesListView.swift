@@ -18,7 +18,7 @@ struct GamesListView: View {
 
     var body: some View {
         if let games {
-            ForEach(games) { game in
+            ForEach(games, id: \.userGameId) { game in
                 GamesListItemView(game: game)
             }
             .onDelete(perform: delete)
