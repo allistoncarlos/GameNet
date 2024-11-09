@@ -118,18 +118,24 @@ struct GamesView: View {
     @State var presentedGames = NavigationPath()
 }
 
-// MARK: - GamesView_Previews
+// MARK: - Previews
 
-struct GamesView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    
+    GamesView(
+        viewModel: GamesViewModel(),
+        selectedUserGameId: .constant(nil),
+        isPresented: .constant(false)
+    ).preferredColorScheme(.dark)
+}
 
-        ForEach(ColorScheme.allCases, id: \.self) {
-            GamesView(
-                viewModel: GamesViewModel(),
-                selectedUserGameId: .constant(nil),
-                isPresented: .constant(false)
-            ).preferredColorScheme($0)
-        }
-    }
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    
+    GamesView(
+        viewModel: GamesViewModel(),
+        selectedUserGameId: .constant(nil),
+        isPresented: .constant(false)
+    ).preferredColorScheme(.light)
 }

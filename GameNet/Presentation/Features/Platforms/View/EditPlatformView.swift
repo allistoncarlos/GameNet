@@ -48,20 +48,25 @@ struct EditPlatformView: View {
     }
 }
 
-// MARK: - EditPlatformView_Previews
+// MARK: - Previews
 
-struct EditPlatformView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+    let platform = Platform(id: "1", name: "Nintendo Switch")
 
-        let platform = Platform(id: "1", name: "Nintendo Switch")
+    EditPlatformView(
+        viewModel: EditPlatformViewModel(platform: platform),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.dark)
+}
 
-        ForEach(ColorScheme.allCases, id: \.self) {
-            EditPlatformView(
-                viewModel: EditPlatformViewModel(platform: platform),
-                navigationPath: .constant(NavigationPath())
-            ).preferredColorScheme($0)
-        }
-    }
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+    let platform = Platform(id: "1", name: "Nintendo Switch")
+    
+    EditPlatformView(
+        viewModel: EditPlatformViewModel(platform: platform),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.light)
 }
 #endif

@@ -44,15 +44,22 @@ struct ListDetailsView: View {
     }
 }
 
-// MARK: - ListDetailsView_Previews
+// MARK: - Previews
 
-struct ListDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListDetailsView(
-            viewModel: ListDetailsViewModel(
-                originFlow: .finishedByYear(2023)
-            ),
-            navigationPath: .constant(NavigationPath())
-        )
-    }
+#Preview("Dark Mode") {
+    ListDetailsView(
+        viewModel: ListDetailsViewModel(
+            originFlow: .finishedByYear(2023)
+        ),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    ListDetailsView(
+        viewModel: ListDetailsViewModel(
+            originFlow: .finishedByYear(2023)
+        ),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.light)
 }

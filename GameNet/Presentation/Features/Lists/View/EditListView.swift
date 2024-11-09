@@ -115,19 +115,25 @@ struct EditListView: View {
 
 }
 
-// MARK: - EditListView_Previews
+// MARK: - Previews
 
-struct EditListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+    let list = GameNet_Network.List(id: "1", name: "Próximos Jogos")
 
-        let list = GameNet_Network.List(id: "1", name: "Próximos Jogos")
-
-        ForEach(ColorScheme.allCases, id: \.self) {
-            EditListView(
-                viewModel: EditListViewModel(list: list),
-                navigationPath: .constant(NavigationPath())
-            ).preferredColorScheme($0)
-        }
-    }
+    EditListView(
+        viewModel: EditListViewModel(list: list),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.dark)
 }
+
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+    let list = GameNet_Network.List(id: "1", name: "Próximos Jogos")
+
+    EditListView(
+        viewModel: EditListViewModel(list: list),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.light)
+}
+

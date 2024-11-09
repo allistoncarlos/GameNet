@@ -68,24 +68,36 @@ struct HomeView: View {
     }
 }
 
-// MARK: - HomeView_Previews
+// MARK: - Previews
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        ForEach(ColorScheme.allCases, id: \.self) {
-            let homeViewModel = HomeViewModel()
-            let dashboardViewModel = DashboardViewModel()
-            let platformsViewModel = PlatformsViewModel()
-            let gamesViewModel = GamesViewModel()
-            let listsViewModel = ListsViewModel()
+#Preview("Dark Mode") {
+    let homeViewModel = HomeViewModel()
+    let dashboardViewModel = DashboardViewModel()
+    let platformsViewModel = PlatformsViewModel()
+    let gamesViewModel = GamesViewModel()
+    let listsViewModel = ListsViewModel()
 
-            HomeView(
-                homeViewModel: homeViewModel,
-                dashboardViewModel: dashboardViewModel,
-                platformsViewModel: platformsViewModel,
-                gamesViewModel: gamesViewModel,
-                listsViewModel: listsViewModel
-            ).preferredColorScheme($0)
-        }
-    }
+    HomeView(
+        homeViewModel: homeViewModel,
+        dashboardViewModel: dashboardViewModel,
+        platformsViewModel: platformsViewModel,
+        gamesViewModel: gamesViewModel,
+        listsViewModel: listsViewModel
+    ).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    let homeViewModel = HomeViewModel()
+    let dashboardViewModel = DashboardViewModel()
+    let platformsViewModel = PlatformsViewModel()
+    let gamesViewModel = GamesViewModel()
+    let listsViewModel = ListsViewModel()
+
+    HomeView(
+        homeViewModel: homeViewModel,
+        dashboardViewModel: dashboardViewModel,
+        platformsViewModel: platformsViewModel,
+        gamesViewModel: gamesViewModel,
+        listsViewModel: listsViewModel
+    ).preferredColorScheme(.light)
 }

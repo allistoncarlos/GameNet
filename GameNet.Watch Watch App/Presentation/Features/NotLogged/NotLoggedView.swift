@@ -15,10 +15,8 @@ struct NotLoggedView: View {
     }
 }
 
-// MARK: - NotLoggedView_Previews
+// MARK: - Previews
 
-struct NotLoggedView_Previews: PreviewProvider {
-    static var previews: some View {
-        NotLoggedView()
-    }
+#Preview {
+    NotLoggedView()
 }

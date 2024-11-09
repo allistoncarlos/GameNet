@@ -75,14 +75,16 @@ struct ListsView: View {
     @State private var presentedLists = NavigationPath()
 }
 
-// MARK: - ListsView_Previews
+// MARK: - Previews
 
-struct ListsView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
 
-        ForEach(ColorScheme.allCases, id: \.self) {
-            ListsView(viewModel: ListsViewModel()).preferredColorScheme($0)
-        }
-    }
+    ListsView(viewModel: ListsViewModel()).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+
+    ListsView(viewModel: ListsViewModel()).preferredColorScheme(.light)
 }

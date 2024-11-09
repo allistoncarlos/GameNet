@@ -131,10 +131,12 @@ struct GameEditView: View {
 
 }
 
-// MARK: - GameEditView_Previews
+// MARK: - Previews
 
-struct GameEditView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameEditView(viewModel: GameEditViewModel(), navigationPath: .constant(NavigationPath()))
-    }
+#Preview("Dark Mode") {
+    GameEditView(viewModel: GameEditViewModel(), navigationPath: .constant(NavigationPath())).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    GameEditView(viewModel: GameEditViewModel(), navigationPath: .constant(NavigationPath())).preferredColorScheme(.light)
 }

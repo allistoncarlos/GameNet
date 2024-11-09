@@ -35,12 +35,16 @@ struct GamesListView: View {
     }
 }
 
-// MARK: - GamesListView_Previews
+// MARK: - Previews
 
-struct GamesListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let listGame = MockListRepository().fetchData(id: "1")
+#Preview("Dark Mode") {
+    let listGame = MockListRepository().fetchData(id: "1")
 
-        GamesListView(games: listGame?.games)
-    }
+    GamesListView(games: listGame?.games).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    let listGame = MockListRepository().fetchData(id: "1")
+
+    GamesListView(games: listGame?.games).preferredColorScheme(.light)
 }

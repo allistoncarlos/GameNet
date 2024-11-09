@@ -74,14 +74,16 @@ struct PlatformsView: View {
     @State private var presentedPlatforms = NavigationPath()
 }
 
-// MARK: - PlatformsView_Previews
+// MARK: - Previews
 
-struct PlatformsView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
-        ForEach(ColorScheme.allCases, id: \.self) {
-            PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme($0)
-        }
-    }
+    PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+
+    PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme(.light)
 }
