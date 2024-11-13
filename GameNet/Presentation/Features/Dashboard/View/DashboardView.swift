@@ -24,8 +24,10 @@ struct DashboardView: View {
         NavigationStack(path: $presentedViews) {
             ScrollView {
                 VStack(spacing: -20) {
-                    if viewModel.dashboard?.playingGames != nil {
-                        playingCard
+                    if FirebaseRemoteConfig.testeEnabled {
+                        if viewModel.dashboard?.playingGames != nil {
+                            playingCard
+                        }
                     }
 
                     if viewModel.gameplaySessions != nil {

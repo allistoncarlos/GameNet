@@ -49,6 +49,11 @@
 		A53B6FC12968B26500A0F09E /* GameNet.Network in Frameworks */ = {isa = PBXBuildFile; productRef = A53B6FC02968B26500A0F09E /* GameNet.Network */; };
 		A5491F3B2BA1DDCF002E752A /* TTProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = A5491F3A2BA1DDCF002E752A /* TTProgressHUD */; };
 		A54D44B82CE4D74B00C0EC3B /* FeatureToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54D44B72CE4D74B00C0EC3B /* FeatureToggleView.swift */; };
+		A54D44CD2CE4DA6500C0EC3B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A54D44CC2CE4DA6500C0EC3B /* GoogleService-Info.plist */; };
+		A54D44D02CE4DAED00C0EC3B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44CF2CE4DAED00C0EC3B /* FirebaseAnalytics */; };
+		A54D44D22CE4DAED00C0EC3B /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44D12CE4DAED00C0EC3B /* FirebaseCore */; };
+		A54D44D42CE4DAED00C0EC3B /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44D32CE4DAED00C0EC3B /* FirebaseRemoteConfig */; };
+		A54D44D62CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54D44D52CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift */; };
 		A54E8548296CA0590079F8D0 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59C4493296A07860097E0F4 /* WatchConnectivityManager.swift */; };
 		A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EB82901CD260040C801 /* GamesViewModel.swift */; };
 		A5507EBB2901CD930040C801 /* GamesState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EBA2901CD930040C801 /* GamesState.swift */; };
@@ -210,6 +215,8 @@
 		A53661802899890300D52088 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		A53B6FBF2968B19500A0F09E /* GameNet.Watch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "GameNet.Watch Watch App.entitlements"; sourceTree = "<group>"; };
 		A54D44B72CE4D74B00C0EC3B /* FeatureToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureToggleView.swift; sourceTree = "<group>"; };
+		A54D44CC2CE4DA6500C0EC3B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A54D44D52CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRemoteConfig.swift; sourceTree = "<group>"; };
 		A5507EB82901CD260040C801 /* GamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesViewModel.swift; sourceTree = "<group>"; };
 		A5507EBA2901CD930040C801 /* GamesState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesState.swift; sourceTree = "<group>"; };
 		A5507EBD2901CEDA0040C801 /* GameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRepository.swift; sourceTree = "<group>"; };
@@ -322,11 +329,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A54D44D42CE4DAED00C0EC3B /* FirebaseRemoteConfig in Frameworks */,
+				A54D44D02CE4DAED00C0EC3B /* FirebaseAnalytics in Frameworks */,
 				A5E48A1A2895B2450037023C /* GameNet.Network in Frameworks */,
 				A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */,
 				A5F18C5529D2554200E712F5 /* CachedAsyncImage in Frameworks */,
 				A5491F3B2BA1DDCF002E752A /* TTProgressHUD in Frameworks */,
 				A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */,
+				A54D44D22CE4DAED00C0EC3B /* FirebaseCore in Frameworks */,
 				A51AA6A42899539A0081AE4B /* Factory in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1122,6 +1132,7 @@
 		A5E48A032895ABD70037023C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A54D44CC2CE4DA6500C0EC3B /* GoogleService-Info.plist */,
 				A57185C8286793D700655B31 /* Assets.xcassets */,
 				A5D2C23C2896B676007C28AC /* Config.xcconfig */,
 			);
@@ -1131,6 +1142,7 @@
 		A5E48A042895ABE20037023C /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				A54D44D52CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -1339,6 +1351,9 @@
 				A536616C2899820700D52088 /* OHHTTPStubsSwift */,
 				A5F18C5429D2554200E712F5 /* CachedAsyncImage */,
 				A5491F3A2BA1DDCF002E752A /* TTProgressHUD */,
+				A54D44CF2CE4DAED00C0EC3B /* FirebaseAnalytics */,
+				A54D44D12CE4DAED00C0EC3B /* FirebaseCore */,
+				A54D44D32CE4DAED00C0EC3B /* FirebaseRemoteConfig */,
 			);
 			productName = GameNet;
 			productReference = A57185C1286793D600655B31 /* GameNet.app */;
@@ -1381,6 +1396,7 @@
 				A53661692899820700D52088 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 				A5F18C5329D2554200E712F5 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 				A5491F392BA1DDCF002E752A /* XCLocalSwiftPackageReference "../TTProgressHUD" */,
+				A54D44CE2CE4DAED00C0EC3B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = A57185C2286793D600655B31 /* Products */;
 			projectDirPath = "";
@@ -1415,6 +1431,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A57185CC286793D700655B31 /* Preview Assets.xcassets in Resources */,
+				A54D44CD2CE4DA6500C0EC3B /* GoogleService-Info.plist in Resources */,
 				A5D2BCE02968B6720030973B /* Config.xcconfig in Resources */,
 				A57185C9286793D700655B31 /* Assets.xcassets in Resources */,
 			);
@@ -1511,6 +1528,7 @@
 				A56A95F028B3FBD300CAAFFF /* DashboardState.swift in Sources */,
 				A56DB66A28B3C1AC00614046 /* DashboardRepository.swift in Sources */,
 				A5EE193029805BCC003DF80D /* GameDetailState.swift in Sources */,
+				A54D44D62CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift in Sources */,
 				A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */,
 				A582ABAA296F4A69000A0435 /* ListGamesViewModel.swift in Sources */,
 				A566D844296E355300760F01 /* ListRouter.swift in Sources */,
@@ -1939,6 +1957,14 @@
 				minimumVersion = 9.0.0;
 			};
 		};
+		A54D44CE2CE4DAED00C0EC3B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.5.0;
+			};
+		};
 		A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/allistoncarlos/GameNet.Network";
@@ -1981,6 +2007,21 @@
 		A5491F3A2BA1DDCF002E752A /* TTProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TTProgressHUD;
+		};
+		A54D44CF2CE4DAED00C0EC3B /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A54D44CE2CE4DAED00C0EC3B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		A54D44D12CE4DAED00C0EC3B /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A54D44CE2CE4DAED00C0EC3B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		A54D44D32CE4DAED00C0EC3B /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A54D44CE2CE4DAED00C0EC3B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
 		};
 		A550C6F82968AEA40043FE74 /* Factory */ = {
 			isa = XCSwiftPackageProductDependency;

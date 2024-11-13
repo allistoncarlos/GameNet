@@ -9,9 +9,23 @@ import Combine
 import GameNet_Keychain
 import SwiftUI
 import TTProgressHUD
+import FirebaseCore
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+    ) -> Bool {
+    FirebaseApp.configure()
+    return true
+  }
+}
 
 @main
 struct GameNetApp: App {
+    // MARK: Firebase
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @State private var isRemoteConfigLoaded = false
 
     // MARK: Lifecycle
 
@@ -69,12 +83,21 @@ struct GameNetApp: App {
 
     var body: some Scene {
         WindowGroup {
-            resultView()
-                .onAppear {
+            if isRemoteConfigLoaded {
+                resultView()
+                    .onAppear {
 #if canImport(WatchConnectivity)
-                    WatchConnectivityManager.shared.activateSession()
+                        WatchConnectivityManager.shared.activateSession()
 #endif
-                }
+                    }
+            } else {
+                ProgressView("Carregando...")
+                    .task {
+                        await FirebaseRemoteConfig.loadRemoteConfigValues()
+                        
+                        isRemoteConfigLoaded = true
+                    }
+            }
         }
     }
 
