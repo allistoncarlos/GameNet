@@ -11,6 +11,15 @@ import GameNet_Network
 
 struct GameCoverView: View {
     var playingGame: PlayingGame
+    var isStarted: Bool {
+        if let latestGameplaySession = playingGame.latestGameplaySession {
+            return latestGameplaySession.finish == nil
+        }
+        
+        return false
+    }
+    
+    @State private var showingConfirmation = false
     
     var body: some View {
         NavigationLink(value: playingGame) {
@@ -20,6 +29,21 @@ struct GameCoverView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 } placeholder: { ProgressView().progressViewStyle(.circular) }
+                
+                if FirebaseRemoteConfig.toggleGameplaySession {
+                    Button(isStarted ? "Finalizar" : "Iniciar") {
+                        showingConfirmation = true
+                    }
+                    .buttonStyle(ActionButtonStyle())
+                    .confirmationDialog("", isPresented: $showingConfirmation) {
+                        Button("Confirmar") {
+                            // TODO: Fazer o toggle aqui
+                        }
+                        Button("Cancelar", role: .cancel) { }
+                    } message: {
+                        Text("Deseja " + (isStarted ? "finalizar" : "iniciar") + " o jogo \(playingGame.name)?")
+                    }
+                }
                 
                 Text(playingGame.name)
                     .font(.dashboardGameTitle)
