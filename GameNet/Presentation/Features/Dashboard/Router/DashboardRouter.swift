@@ -36,6 +36,12 @@ enum DashboardRouter {
     static func goBackToDashboard(navigationPath: Binding<NavigationPath>) {
         navigationPath.wrappedValue.removeLast(navigationPath.wrappedValue.count - 1)
     }
+    
+    #if os(iOS) && DEBUG
+    static func makeFeatureToggle() -> some View {
+        return FeatureToggleView()
+    }
+    #endif
 }
 
 // MARK: - GameplaySessionNavigation

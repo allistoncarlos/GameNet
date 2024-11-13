@@ -91,6 +91,21 @@ struct DashboardView: View {
                     id: gameplaySession.userGameId
                 )
             }
+            .navigationDestination(for: String.self) { platformId in
+                #if os(iOS) && DEBUG
+                viewModel.featureToggle()
+                #endif
+            }
+            .toolbar {
+                #if os(iOS) && DEBUG
+                Button(action: {}) {
+                    NavigationLink(value: String()) {
+                        Image(systemName: "gear")
+                    }
+                }
+                .disabled(isLoading)
+                #endif
+            }
         }
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
