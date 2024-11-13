@@ -54,6 +54,8 @@
 		A54D44D22CE4DAED00C0EC3B /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44D12CE4DAED00C0EC3B /* FirebaseCore */; };
 		A54D44D42CE4DAED00C0EC3B /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44D32CE4DAED00C0EC3B /* FirebaseRemoteConfig */; };
 		A54D44D62CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54D44D52CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift */; };
+		A54D44DA2CE4E5C900C0EC3B /* FeatureToggleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54D44D92CE4E5C900C0EC3B /* FeatureToggleViewModel.swift */; };
+		A54D44DD2CE4E6E500C0EC3B /* FeatureToggleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54D44DC2CE4E6E500C0EC3B /* FeatureToggleState.swift */; };
 		A54E8548296CA0590079F8D0 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59C4493296A07860097E0F4 /* WatchConnectivityManager.swift */; };
 		A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EB82901CD260040C801 /* GamesViewModel.swift */; };
 		A5507EBB2901CD930040C801 /* GamesState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EBA2901CD930040C801 /* GamesState.swift */; };
@@ -217,6 +219,8 @@
 		A54D44B72CE4D74B00C0EC3B /* FeatureToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureToggleView.swift; sourceTree = "<group>"; };
 		A54D44CC2CE4DA6500C0EC3B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A54D44D52CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRemoteConfig.swift; sourceTree = "<group>"; };
+		A54D44D92CE4E5C900C0EC3B /* FeatureToggleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureToggleViewModel.swift; sourceTree = "<group>"; };
+		A54D44DC2CE4E6E500C0EC3B /* FeatureToggleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureToggleState.swift; sourceTree = "<group>"; };
 		A5507EB82901CD260040C801 /* GamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesViewModel.swift; sourceTree = "<group>"; };
 		A5507EBA2901CD930040C801 /* GamesState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesState.swift; sourceTree = "<group>"; };
 		A5507EBD2901CEDA0040C801 /* GameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRepository.swift; sourceTree = "<group>"; };
@@ -568,9 +572,35 @@
 		A54D44B42CE4D6EF00C0EC3B /* FeatureToggle */ = {
 			isa = PBXGroup;
 			children = (
-				A54D44B72CE4D74B00C0EC3B /* FeatureToggleView.swift */,
+				A54D44D72CE4E5AA00C0EC3B /* View */,
+				A54D44D82CE4E5B100C0EC3B /* ViewModel */,
+				A54D44DB2CE4E6CE00C0EC3B /* Model */,
 			);
 			path = FeatureToggle;
+			sourceTree = "<group>";
+		};
+		A54D44D72CE4E5AA00C0EC3B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A54D44B72CE4D74B00C0EC3B /* FeatureToggleView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A54D44D82CE4E5B100C0EC3B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A54D44D92CE4E5C900C0EC3B /* FeatureToggleViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		A54D44DB2CE4E6CE00C0EC3B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A54D44DC2CE4E6E500C0EC3B /* FeatureToggleState.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		A5507EB42901CCAE0040C801 /* View */ = {
@@ -1496,6 +1526,7 @@
 				A582ABA6296F49F2000A0435 /* ListGamesView.swift in Sources */,
 				A54D44B82CE4D74B00C0EC3B /* FeatureToggleView.swift in Sources */,
 				A531906329ACEB300015D167 /* GameplaySessionDetailView.swift in Sources */,
+				A54D44DD2CE4E6E500C0EC3B /* FeatureToggleState.swift in Sources */,
 				A5F029FA2973203F0013AA13 /* ListDetailsViewModel.swift in Sources */,
 				A56DB65F28B3B95900614046 /* DashboardViewModel.swift in Sources */,
 				A5B5D3D8289AE2E6004096F4 /* ListsView.swift in Sources */,
@@ -1554,6 +1585,7 @@
 				A59E763B28B6AE1F003CBA3E /* EditPlatformView.swift in Sources */,
 				A597B4222AC9C7E000442D91 /* GameCoverView.swift in Sources */,
 				A530E737296EE518000EAB91 /* MockListDataSource.swift in Sources */,
+				A54D44DA2CE4E5C900C0EC3B /* FeatureToggleViewModel.swift in Sources */,
 				A56DB66728B3BD1600614046 /* MockDashboardDataSource.swift in Sources */,
 				A57185C5286793D600655B31 /* GameNetApp.swift in Sources */,
 				A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */,

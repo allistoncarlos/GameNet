@@ -39,7 +39,7 @@ enum DashboardRouter {
     
     #if os(iOS) && DEBUG
     static func makeFeatureToggle() -> some View {
-        return FeatureToggleView()
+        return FeatureToggleView(viewModel: FeatureToggleViewModel())
     }
     #endif
 }

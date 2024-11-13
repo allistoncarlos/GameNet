@@ -8,7 +8,9 @@
 import Foundation
 import FirebaseRemoteConfig
 
-private enum RemoteConfigParameters: String {
+enum RemoteConfigParameters: String, CaseIterable, Identifiable {
+    var id : String { UUID().uuidString }
+    
     case testeEnabled = "TesteEnabled"
 }
 
