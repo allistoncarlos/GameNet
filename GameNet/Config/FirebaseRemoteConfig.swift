@@ -18,6 +18,25 @@ enum RemoteConfigParameters: String, CaseIterable, Identifiable {
 class FirebaseRemoteConfig {
     static private(set) var testeEnabled: Bool = false
     
+    private static func setConfigs(_ remoteConfig: RemoteConfig) {
+        FirebaseRemoteConfig.testeEnabled =
+            remoteConfig[RemoteConfigParameters.testeEnabled.rawValue]
+            .boolValue
+    }
+    
+    private static func setDebugConfigs() {
+        let decoder = JSONDecoder()
+        if let savedData = UserDefaults.standard.data(forKey: "featureToggles"),
+           let debugConfigs = try? decoder.decode([RemoteConfigModel].self, from: savedData) {
+            
+            if let testeEnabled = debugConfigs.first(where: { $0.featureToggle ==
+                RemoteConfigParameters.testeEnabled.rawValue
+            }) {
+                FirebaseRemoteConfig.testeEnabled = testeEnabled.enabled
+            }
+        }
+    }
+    
     private static func fetchAndActivateRemoteConfig() async throws -> RemoteConfigFetchAndActivateStatus {
         let remoteConfig = RemoteConfig.remoteConfig()
         let settings = RemoteConfigSettings()
@@ -37,10 +56,13 @@ class FirebaseRemoteConfig {
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else {
-                    if status == .successFetchedFromRemote || status == .successUsingPreFetchedData {
-                        FirebaseRemoteConfig.testeEnabled =
-                            remoteConfig[RemoteConfigParameters.testeEnabled.rawValue]
-                            .boolValue
+                    if status == .successFetchedFromRemote ||
+                        status == .successUsingPreFetchedData {
+                        #if os(iOS) && DEBUG
+                        FirebaseRemoteConfig.setDebugConfigs()
+                        #else
+                        FirebaseRemoteConfig.setConfigs(remoteConfig)
+                        #endif
                     }
                     
                     continuation.resume(returning: status)

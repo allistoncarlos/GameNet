@@ -55,7 +55,7 @@
 		A54D44D42CE4DAED00C0EC3B /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44D32CE4DAED00C0EC3B /* FirebaseRemoteConfig */; };
 		A54D44D62CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54D44D52CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift */; };
 		A54D44DA2CE4E5C900C0EC3B /* FeatureToggleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54D44D92CE4E5C900C0EC3B /* FeatureToggleViewModel.swift */; };
-		A54D44DD2CE4E6E500C0EC3B /* FeatureToggleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54D44DC2CE4E6E500C0EC3B /* FeatureToggleState.swift */; };
+		A54D44DD2CE4E6E500C0EC3B /* RemoteConfigModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54D44DC2CE4E6E500C0EC3B /* RemoteConfigModel.swift */; };
 		A54E8548296CA0590079F8D0 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59C4493296A07860097E0F4 /* WatchConnectivityManager.swift */; };
 		A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EB82901CD260040C801 /* GamesViewModel.swift */; };
 		A5507EBB2901CD930040C801 /* GamesState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EBA2901CD930040C801 /* GamesState.swift */; };
@@ -220,7 +220,7 @@
 		A54D44CC2CE4DA6500C0EC3B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A54D44D52CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRemoteConfig.swift; sourceTree = "<group>"; };
 		A54D44D92CE4E5C900C0EC3B /* FeatureToggleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureToggleViewModel.swift; sourceTree = "<group>"; };
-		A54D44DC2CE4E6E500C0EC3B /* FeatureToggleState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureToggleState.swift; sourceTree = "<group>"; };
+		A54D44DC2CE4E6E500C0EC3B /* RemoteConfigModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigModel.swift; sourceTree = "<group>"; };
 		A5507EB82901CD260040C801 /* GamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesViewModel.swift; sourceTree = "<group>"; };
 		A5507EBA2901CD930040C801 /* GamesState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesState.swift; sourceTree = "<group>"; };
 		A5507EBD2901CEDA0040C801 /* GameRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRepository.swift; sourceTree = "<group>"; };
@@ -598,7 +598,7 @@
 		A54D44DB2CE4E6CE00C0EC3B /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A54D44DC2CE4E6E500C0EC3B /* FeatureToggleState.swift */,
+				A54D44DC2CE4E6E500C0EC3B /* RemoteConfigModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1526,7 +1526,7 @@
 				A582ABA6296F49F2000A0435 /* ListGamesView.swift in Sources */,
 				A54D44B82CE4D74B00C0EC3B /* FeatureToggleView.swift in Sources */,
 				A531906329ACEB300015D167 /* GameplaySessionDetailView.swift in Sources */,
-				A54D44DD2CE4E6E500C0EC3B /* FeatureToggleState.swift in Sources */,
+				A54D44DD2CE4E6E500C0EC3B /* RemoteConfigModel.swift in Sources */,
 				A5F029FA2973203F0013AA13 /* ListDetailsViewModel.swift in Sources */,
 				A56DB65F28B3B95900614046 /* DashboardViewModel.swift in Sources */,
 				A5B5D3D8289AE2E6004096F4 /* ListsView.swift in Sources */,

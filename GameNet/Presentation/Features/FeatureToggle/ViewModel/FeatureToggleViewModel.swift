@@ -6,41 +6,31 @@
 //
 
 import Foundation
-import Combine
 
 @MainActor
 class FeatureToggleViewModel: ObservableObject {
-
-    // MARK: Lifecycle
+    var featureToggles: [RemoteConfigModel] = []
 
     init() {
-        $state
-            .receive(on: RunLoop.main)
-            .sink { [weak self] state in
-                switch state {
-//                case let .success:
-//                    self?.platforms = platforms
-                default:
-                    break
-                }
-            }.store(in: &cancellable)
+        featureToggles = fetchData()
     }
 
-    @Published var state: FeatureToggleState = .idle
-    var featureToggles: [RemoteConfigParameters] = RemoteConfigParameters.allCases
-
-//    func fetchData() async {
-//        state = .loading
-//
-//        let result = await repository.fetchData()
-//
-//        if let result {
-//            state = .success(result)
-//        } else {
-//            state = .error("Erro no carregamento de dados do servidor")
-//        }
-//    }
-
-    // MARK: Private
-    private var cancellable = Set<AnyCancellable>()
+    func fetchData() -> [RemoteConfigModel] {
+        let decoder = JSONDecoder()
+        if let savedData = UserDefaults.standard.data(forKey: "featureToggles"),
+           let decodedArray = try? decoder.decode([RemoteConfigModel].self, from: savedData) {
+            return decodedArray
+        }
+        
+        return RemoteConfigParameters.allCases.map {
+            RemoteConfigModel(featureToggle: $0.rawValue, enabled: false)
+        }
+    }
+    
+    func save() {
+        let encoder = JSONEncoder()
+        if let encodedData = try? encoder.encode(featureToggles) {
+            UserDefaults.standard.set(encodedData, forKey: "featureToggles")
+        }
+    }
 }

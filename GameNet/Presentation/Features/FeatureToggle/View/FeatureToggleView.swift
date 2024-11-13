@@ -12,15 +12,15 @@ struct FeatureToggleView: View {
     @State var isLoading = true
     
     var body: some View {
-        List(viewModel.featureToggles, id: \.id) { feature in
-            Toggle(isOn: .constant(false), label: {
-                Text(feature.rawValue)
+        List($viewModel.featureToggles, id: \.id) { ($feature: Binding<RemoteConfigModel>) in
+            Toggle(isOn: $feature.enabled, label: {
+                Text(feature.featureToggle)
             })
         }
         .navigationView(title: "Feature Toggle")
         .safeAreaInset(edge: VerticalEdge.bottom) {
             Button("Salvar") {
-                print("tapped!")
+                viewModel.save()
             }
             .padding(.horizontal)
             .buttonStyle(MainButtonStyle())
