@@ -18,6 +18,11 @@ enum RemoteConfigParameters: String, CaseIterable, Identifiable {
 class FirebaseRemoteConfig {
     static private(set) var testeEnabled: Bool = false
     
+    static var overrideRemoteConfigs: Bool {
+        let defaults = UserDefaults.standard
+        return defaults.bool(forKey: "OverrideRemoteConfigs")
+    }
+    
     private static func setConfigs(_ remoteConfig: RemoteConfig) {
         FirebaseRemoteConfig.testeEnabled =
             remoteConfig[RemoteConfigParameters.testeEnabled.rawValue]
@@ -58,11 +63,13 @@ class FirebaseRemoteConfig {
                 } else {
                     if status == .successFetchedFromRemote ||
                         status == .successUsingPreFetchedData {
-                        #if os(iOS) && DEBUG
-                        FirebaseRemoteConfig.setDebugConfigs()
-                        #else
-                        FirebaseRemoteConfig.setConfigs(remoteConfig)
-                        #endif
+                        if overrideRemoteConfigs {
+                            #if os(iOS) && DEBUG
+                            FirebaseRemoteConfig.setDebugConfigs()
+                            #endif
+                        } else {
+                            FirebaseRemoteConfig.setConfigs(remoteConfig)
+                        }
                     }
                     
                     continuation.resume(returning: status)
@@ -87,5 +94,10 @@ class FirebaseRemoteConfig {
         } catch {
             print("Erro ao carregar a configuração: \(error.localizedDescription)")
         }
+    }
+    
+    static func overrideRemoteConfigs(value: Bool) {
+        let defaults = UserDefaults.standard
+        defaults.set(value, forKey: "OverrideRemoteConfigs")
     }
 }

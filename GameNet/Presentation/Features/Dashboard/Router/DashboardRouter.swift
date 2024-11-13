@@ -39,7 +39,7 @@ enum DashboardRouter {
     
     #if os(iOS) && DEBUG
     static func makeFeatureToggle() -> some View {
-        return FeatureToggleView(viewModel: FeatureToggleViewModel())
+        return FeatureToggleView(viewModel: FeatureToggleViewModel(), overrideRemoteConfigs: FirebaseRemoteConfig.overrideRemoteConfigs)
     }
     #endif
 }

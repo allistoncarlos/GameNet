@@ -10,25 +10,32 @@ import SwiftUI
 struct FeatureToggleView: View {
     @ObservedObject var viewModel: FeatureToggleViewModel
     @State var isLoading = true
+    @State var overrideRemoteConfigs: Bool
     
     var body: some View {
-        List($viewModel.featureToggles, id: \.id) { ($feature: Binding<RemoteConfigModel>) in
-            Toggle(isOn: $feature.enabled, label: {
-                Text(feature.featureToggle)
-            })
+        Form {
+            Section("Principal") {
+                Toggle("Sobrepor configurações remotas", isOn: $overrideRemoteConfigs)
+            }
+            
+            Section("Configurações") {
+                ForEach($viewModel.featureToggles, id: \.id) { ($feature: Binding<RemoteConfigModel>) in
+                    Toggle(feature.featureToggle, isOn: $feature.enabled)
+                }
+                .disabled(!overrideRemoteConfigs)
+            }
         }
         .navigationView(title: "Feature Toggle")
         .safeAreaInset(edge: VerticalEdge.bottom) {
             Button("Salvar") {
-                viewModel.save()
+                viewModel.save(overrideRemoteConfigs: overrideRemoteConfigs)
             }
             .padding(.horizontal)
             .buttonStyle(MainButtonStyle())
         }
-        .padding(.vertical)
     }
 }
 
 #Preview {
-    FeatureToggleView(viewModel: FeatureToggleViewModel())
+    FeatureToggleView(viewModel: FeatureToggleViewModel(), overrideRemoteConfigs: false)
 }

@@ -27,10 +27,12 @@ class FeatureToggleViewModel: ObservableObject {
         }
     }
     
-    func save() {
+    func save(overrideRemoteConfigs: Bool) {
         let encoder = JSONEncoder()
         if let encodedData = try? encoder.encode(featureToggles) {
             UserDefaults.standard.set(encodedData, forKey: "featureToggles")
         }
+
+        FirebaseRemoteConfig.overrideRemoteConfigs(value: overrideRemoteConfigs)
     }
 }
