@@ -149,7 +149,7 @@ extension DashboardView {
                                         return lhsDate > rhsDate
                                     }
                                     
-                                    return false
+                                    return true
                                 })
                                 
                                 ForEach(ordered, id: \.id) { playingGame in
