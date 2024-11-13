@@ -12,11 +12,13 @@ enum RemoteConfigParameters: String, CaseIterable, Identifiable {
     var id : String { UUID().uuidString }
     
     case dashboardViewCarousel = "DashboardViewCarousel"
+    case toggleGameplaySession = "ToggleGameplaySession"
 }
 
 @MainActor
 class FirebaseRemoteConfig {
     static private(set) var dashboardViewCarousel: Bool = false
+    static private(set) var toggleGameplaySession: Bool = false
     
     static var overrideRemoteConfigs: Bool {
         let defaults = UserDefaults.standard
@@ -27,17 +29,26 @@ class FirebaseRemoteConfig {
         FirebaseRemoteConfig.dashboardViewCarousel =
             remoteConfig[RemoteConfigParameters.dashboardViewCarousel.rawValue]
             .boolValue
+        
+        FirebaseRemoteConfig.toggleGameplaySession =
+            remoteConfig[RemoteConfigParameters.toggleGameplaySession.rawValue]
+            .boolValue
     }
     
     private static func setDebugConfigs() {
         let decoder = JSONDecoder()
         if let savedData = UserDefaults.standard.data(forKey: "featureToggles"),
            let debugConfigs = try? decoder.decode([RemoteConfigModel].self, from: savedData) {
-            
             if let dashboardViewCarousel = debugConfigs.first(where: { $0.featureToggle ==
                 RemoteConfigParameters.dashboardViewCarousel.rawValue
             }) {
                 FirebaseRemoteConfig.dashboardViewCarousel = dashboardViewCarousel.enabled
+            }
+
+            if let toggleGameplaySession = debugConfigs.first(where: { $0.featureToggle ==
+                RemoteConfigParameters.toggleGameplaySession.rawValue
+            }) {
+                FirebaseRemoteConfig.toggleGameplaySession = toggleGameplaySession.enabled
             }
         }
     }
