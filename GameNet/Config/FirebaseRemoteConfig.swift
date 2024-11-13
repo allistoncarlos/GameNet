@@ -11,12 +11,12 @@ import FirebaseRemoteConfig
 enum RemoteConfigParameters: String, CaseIterable, Identifiable {
     var id : String { UUID().uuidString }
     
-    case testeEnabled = "TesteEnabled"
+    case dashboardViewCarousel = "DashboardViewCarousel"
 }
 
 @MainActor
 class FirebaseRemoteConfig {
-    static private(set) var testeEnabled: Bool = false
+    static private(set) var dashboardViewCarousel: Bool = false
     
     static var overrideRemoteConfigs: Bool {
         let defaults = UserDefaults.standard
@@ -24,8 +24,8 @@ class FirebaseRemoteConfig {
     }
     
     private static func setConfigs(_ remoteConfig: RemoteConfig) {
-        FirebaseRemoteConfig.testeEnabled =
-            remoteConfig[RemoteConfigParameters.testeEnabled.rawValue]
+        FirebaseRemoteConfig.dashboardViewCarousel =
+            remoteConfig[RemoteConfigParameters.dashboardViewCarousel.rawValue]
             .boolValue
     }
     
@@ -34,10 +34,10 @@ class FirebaseRemoteConfig {
         if let savedData = UserDefaults.standard.data(forKey: "featureToggles"),
            let debugConfigs = try? decoder.decode([RemoteConfigModel].self, from: savedData) {
             
-            if let testeEnabled = debugConfigs.first(where: { $0.featureToggle ==
-                RemoteConfigParameters.testeEnabled.rawValue
+            if let dashboardViewCarousel = debugConfigs.first(where: { $0.featureToggle ==
+                RemoteConfigParameters.dashboardViewCarousel.rawValue
             }) {
-                FirebaseRemoteConfig.testeEnabled = testeEnabled.enabled
+                FirebaseRemoteConfig.dashboardViewCarousel = dashboardViewCarousel.enabled
             }
         }
     }

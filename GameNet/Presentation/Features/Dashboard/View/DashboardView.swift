@@ -24,7 +24,7 @@ struct DashboardView: View {
         NavigationStack(path: $presentedViews) {
             ScrollView {
                 VStack(spacing: -20) {
-                    if FirebaseRemoteConfig.testeEnabled {
+                    if FirebaseRemoteConfig.dashboardViewCarousel {
                         if viewModel.dashboard?.playingGames != nil {
                             playingCard
                         }
@@ -105,7 +105,6 @@ struct DashboardView: View {
                         Image(systemName: "gear")
                     }
                 }
-                .disabled(isLoading)
                 #endif
             }
         }

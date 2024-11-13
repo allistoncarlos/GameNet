@@ -33,6 +33,7 @@ struct FeatureToggleView: View {
             .padding(.horizontal)
             .buttonStyle(MainButtonStyle())
         }
+        .padding(.bottom)
     }
 }
 
