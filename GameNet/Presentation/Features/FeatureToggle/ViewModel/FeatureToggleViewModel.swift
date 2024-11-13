@@ -18,8 +18,12 @@ class FeatureToggleViewModel: ObservableObject {
     func fetchData() -> [RemoteConfigModel] {
         let decoder = JSONDecoder()
         if let savedData = UserDefaults.standard.data(forKey: "featureToggles"),
-           let decodedArray = try? decoder.decode([RemoteConfigModel].self, from: savedData) {
-            return decodedArray
+           let savedConfigs = try? decoder.decode([RemoteConfigModel].self, from: savedData) {
+            let remoteConfigs = RemoteConfigParameters.allCases.map {
+                RemoteConfigModel(featureToggle: $0.rawValue, enabled: false)
+            }
+
+            return remoteConfigs.count > savedConfigs.count ? remoteConfigs : savedConfigs
         }
         
         return RemoteConfigParameters.allCases.map {
