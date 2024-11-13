@@ -24,8 +24,10 @@ struct DashboardView: View {
         NavigationStack(path: $presentedViews) {
             ScrollView {
                 VStack(spacing: -20) {
-                    if viewModel.dashboard?.playingGames != nil {
-                        playingCard
+                    if FirebaseRemoteConfig.dashboardViewCarousel {
+                        if viewModel.dashboard?.playingGames != nil {
+                            playingCard
+                        }
                     }
 
                     if viewModel.gameplaySessions != nil {
@@ -90,6 +92,20 @@ struct DashboardView: View {
                     navigationPath: $presentedViews,
                     id: gameplaySession.userGameId
                 )
+            }
+            .navigationDestination(for: String.self) { platformId in
+                #if os(iOS) && DEBUG
+                viewModel.featureToggle()
+                #endif
+            }
+            .toolbar {
+                #if os(iOS) && DEBUG
+                Button(action: {}) {
+                    NavigationLink(value: String()) {
+                        Image(systemName: "gear")
+                    }
+                }
+                #endif
             }
         }
         .overlay(

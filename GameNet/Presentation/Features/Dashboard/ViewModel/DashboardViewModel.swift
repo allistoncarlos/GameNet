@@ -105,4 +105,10 @@ extension DashboardViewModel {
             gameplaySession: gameplaySession
         )
     }
+    
+    #if os(iOS) && DEBUG
+    func featureToggle() -> some View {
+        return DashboardRouter.makeFeatureToggle()
+    }
+    #endif
 }
