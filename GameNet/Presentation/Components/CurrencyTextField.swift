@@ -10,12 +10,12 @@ struct CurrencyTextField: View {
     var body: some View {
         TextField(title, text: $amountString)
             .keyboardType(.numberPad)
-            .onChange(of: amountString, perform: { newValue in
+            .onChange(of: amountString) { _, newValue in
                 let valueFormatted = format(string: newValue)
                 if amountString != valueFormatted {
                     amountString = valueFormatted
                 }
-            })
+            }
     }
 
     // MARK: Private

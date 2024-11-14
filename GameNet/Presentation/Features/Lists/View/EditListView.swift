@@ -86,10 +86,10 @@ struct EditListView: View {
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state, { oldValue, state in
+        .onChange(of: viewModel.state, { _, state in
             isLoading = state == .loading
         })
-        .onChange(of: selectedUserGameId, { oldValue, newValue in
+        .onChange(of: selectedUserGameId, { _, newValue in
             Task {
                 await viewModel.addUserGame(selectedUserGameId: $selectedUserGameId)
                 self.selectedUserGameId = nil

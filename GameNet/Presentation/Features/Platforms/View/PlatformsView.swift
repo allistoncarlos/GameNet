@@ -54,14 +54,14 @@ struct PlatformsView: View {
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: presentedPlatforms) { newValue in
+        .onChange(of: presentedPlatforms) { _, newValue in
             if newValue.isEmpty {
                 Task {
                     await viewModel.fetchData()
                 }
             }
         }
-        .onChange(of: viewModel.state) { state in
+        .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
         .task {

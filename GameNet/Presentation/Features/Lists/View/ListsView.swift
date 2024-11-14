@@ -55,10 +55,10 @@ struct ListsView: View {
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state) { state in
+        .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
-        .onChange(of: presentedLists) { newValue in
+        .onChange(of: presentedLists) { _, newValue in
             if newValue.isEmpty {
                 Task {
                     await viewModel.fetchData()

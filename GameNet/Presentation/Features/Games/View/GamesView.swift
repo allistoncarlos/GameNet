@@ -62,7 +62,7 @@ struct GamesView: View {
                     text: $search,
                     prompt: Text("Buscar")
                 )
-                .onChange(of: search) { search in
+                .onChange(of: search) { _, search in
                     if search.isEmpty {
                         Task { await viewModel.fetchData(origin: origin, clear: true) }
                     }
@@ -92,10 +92,10 @@ struct GamesView: View {
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state) { state in
+        .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
-        .onChange(of: presentedGames) { newValue in
+        .onChange(of: presentedGames) { _, newValue in
             if newValue.isEmpty {
                 Task {
                     await viewModel.fetchData()

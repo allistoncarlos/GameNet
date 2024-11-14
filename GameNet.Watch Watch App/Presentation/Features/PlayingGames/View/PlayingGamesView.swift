@@ -35,7 +35,7 @@ struct PlayingGamesView: View {
                 }
             }
         }
-        .onChange(of: presentedPlatforms) { newValue in
+        .onChange(of: presentedPlatforms) { _, newValue in
             if newValue.isEmpty {
                 Task {
                     await viewModel.fetchData()

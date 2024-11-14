@@ -19,6 +19,7 @@ struct GameEditView: View {
     @StateObject var viewModel: GameEditViewModel
     @Binding var navigationPath: NavigationPath
     @State var isLoading = true
+    @State var isEmptyImage = true
 
     var body: some View {
         Form {
@@ -39,7 +40,7 @@ struct GameEditView: View {
                         matching: .images,
                         photoLibrary: .shared()
                     ) {
-                        if viewModel.selectedImageData == nil {
+                        if isEmptyImage {
                             Image(systemName: "arrow.up.bin")
                                 .resizable()
                                 .scaledToFit()
@@ -48,10 +49,12 @@ struct GameEditView: View {
                                 .padding(20)
                         }
                     }
-                    .onChange(of: selectedImageItem) { newItem in
+                    .onChange(of: selectedImageItem) { _, newItem in
                         Task {
                             if let data = try? await newItem?.loadTransferable(type: Data.self) {
                                 viewModel.selectedImageData = data
+                                
+                                isEmptyImage = viewModel.selectedImageData == nil
                             }
                         }
                     }
@@ -108,7 +111,7 @@ struct GameEditView: View {
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state) { state in
+        .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
         .task {
