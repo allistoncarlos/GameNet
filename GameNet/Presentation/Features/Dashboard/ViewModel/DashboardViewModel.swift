@@ -57,7 +57,7 @@ class DashboardViewModel: ObservableObject {
         state = .loading
 
         let initialYear = 2020
-        let lastYear = Calendar.current.component(.year, from: Date())
+        let lastYear = Calendar.current.component(.year, from: Date.timeZoneDate())
 
         await withTaskGroup(of: GameplaySessions?.self) { group in
             for year in initialYear ... lastYear {

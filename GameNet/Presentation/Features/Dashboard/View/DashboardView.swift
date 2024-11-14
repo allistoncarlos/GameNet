@@ -149,11 +149,15 @@ extension DashboardView {
                                         return lhsDate > rhsDate
                                     }
                                     
-                                    return false
+                                    return true
                                 })
                                 
                                 ForEach(ordered, id: \.id) { playingGame in
-                                    GameCoverView(playingGame: playingGame)
+                                    GameCoverView(
+                                        viewModel: GameCoverViewModel(
+                                            playingGame: playingGame
+                                        )
+                                    )
                                 }
                             }
                         }
