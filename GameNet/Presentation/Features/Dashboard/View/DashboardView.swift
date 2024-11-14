@@ -153,7 +153,11 @@ extension DashboardView {
                                 })
                                 
                                 ForEach(ordered, id: \.id) { playingGame in
-                                    GameCoverView(playingGame: playingGame)
+                                    GameCoverView(
+                                        viewModel: GameCoverViewModel(
+                                            playingGame: playingGame
+                                        )
+                                    )
                                 }
                             }
                         }

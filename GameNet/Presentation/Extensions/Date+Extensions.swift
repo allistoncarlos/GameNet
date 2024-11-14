@@ -30,6 +30,12 @@ extension Date {
 
         return try! Date(formattedDate, strategy: expectedFormat)
     }
+    
+    static func timeZoneDate() -> Date {
+        let timezone = TimeZone.current
+        let seconds = TimeInterval(timezone.secondsFromGMT(for: Date()))
+        return Date(timeInterval: seconds, since: Date())
+    }
 
     static func - (lhs: Date, rhs: Date) -> TimeInterval {
         return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate

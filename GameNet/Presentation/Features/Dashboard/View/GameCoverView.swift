@@ -10,45 +10,42 @@ import CachedAsyncImage
 import GameNet_Network
 
 struct GameCoverView: View {
-    var playingGame: PlayingGame
-    var isStarted: Bool {
-        if let latestGameplaySession = playingGame.latestGameplaySession {
-            return latestGameplaySession.finish == nil
-        }
-        
-        return false
-    }
-    
+    @ObservedObject var viewModel: GameCoverViewModel
     @State private var showingConfirmation = false
     
+    @State var buttonText = "Iniciar"
+    @State var confirmText = "iniciar"
+    
     var body: some View {
-        NavigationLink(value: playingGame) {
+        NavigationLink(value: viewModel.playingGame) {
             VStack(alignment: .center) {
-                CachedAsyncImage(url: URL(string: playingGame.coverURL)) { image in
+                CachedAsyncImage(url: URL(string: viewModel.playingGame.coverURL)) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 } placeholder: { ProgressView().progressViewStyle(.circular) }
                 
                 if FirebaseRemoteConfig.toggleGameplaySession {
-                    Button(isStarted ? "Finalizar" : "Iniciar") {
+                    Button(buttonText) {
                         showingConfirmation = true
                     }
                     .buttonStyle(ActionButtonStyle())
                     .confirmationDialog("", isPresented: $showingConfirmation) {
                         Button("Confirmar") {
-                            // TODO: Fazer o toggle aqui
+                            Task {
+                                await viewModel.save()
+                            }
                         }
                         Button("Cancelar", role: .cancel) { }
                     } message: {
-                        Text("Deseja " + (isStarted ? "finalizar" : "iniciar") + " o jogo \(playingGame.name)?")
+                        Text("Deseja \(confirmText) o jogo \(viewModel.playingGame.name)?")
                     }
                 }
                 
-                Text(playingGame.name)
+                Text(viewModel.playingGame.name)
                     .font(.dashboardGameTitle)
                     .multilineTextAlignment(.center)
-                Text(playingGame.latestGameplaySession?.start.toFormattedString() ?? "")
+                Text(viewModel.playingGame.latestGameplaySession?.start.toFormattedString() ?? "")
                     .font(.dashboardGameSubtitle)
                     .multilineTextAlignment(.center)
             }
@@ -61,15 +58,21 @@ struct GameCoverView: View {
                     y: phase.isIdentity ? 1 : 0.8
                 )
         }
+        .onChange(of: viewModel.isStarted) { oldValue, newValue in
+            self.buttonText = newValue ? "Finalizar" : "Iniciar"
+            self.confirmText = newValue ? "finalizar" : "iniciar"
+        }
     }
 }
 
 #Preview {
-    GameCoverView(playingGame: .init(
-        id: "1",
-        name: "The Legend of Zelda: Tears of the Kingdom",
-        platform: "Nintendo Switch",
-        coverURL: "https://placehold.co/400",
-        latestGameplaySession: nil
-    ))
+    GameCoverView(
+        viewModel: GameCoverViewModel(playingGame: .init(
+            id: "1",
+            name: "The Legend of Zelda: Tears of the Kingdom",
+            platform: "Nintendo Switch",
+            coverURL: "https://placehold.co/400",
+            latestGameplaySession: nil)
+        )
+    )
 }

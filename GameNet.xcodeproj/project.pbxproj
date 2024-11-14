@@ -102,6 +102,8 @@
 		A581484A296DF8AD00F52ED7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5814849296DF8AD00F52ED7 /* HomeView.swift */; };
 		A581484D296DF8CB00F52ED7 /* NotLoggedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */; };
 		A5814851296DF8FA00F52ED7 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5814850296DF8FA00F52ED7 /* HomeViewModel.swift */; };
+		A58281A92CE603C400AB973A /* GameCoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58281A82CE603C400AB973A /* GameCoverViewModel.swift */; };
+		A58281AB2CE6046800AB973A /* GameCoverState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A58281AA2CE6046800AB973A /* GameCoverState.swift */; };
 		A582ABA6296F49F2000A0435 /* ListGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A582ABA5296F49F2000A0435 /* ListGamesView.swift */; };
 		A582ABA8296F4A07000A0435 /* GamesListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A582ABA7296F4A07000A0435 /* GamesListItemView.swift */; };
 		A582ABAA296F4A69000A0435 /* ListGamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A582ABA9296F4A69000A0435 /* ListGamesViewModel.swift */; };
@@ -269,6 +271,8 @@
 		A5814849296DF8AD00F52ED7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotLoggedView.swift; sourceTree = "<group>"; };
 		A5814850296DF8FA00F52ED7 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		A58281A82CE603C400AB973A /* GameCoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCoverViewModel.swift; sourceTree = "<group>"; };
+		A58281AA2CE6046800AB973A /* GameCoverState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCoverState.swift; sourceTree = "<group>"; };
 		A582ABA5296F49F2000A0435 /* ListGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGamesView.swift; sourceTree = "<group>"; };
 		A582ABA7296F4A07000A0435 /* GamesListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesListItemView.swift; sourceTree = "<group>"; };
 		A582ABA9296F4A69000A0435 /* ListGamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGamesViewModel.swift; sourceTree = "<group>"; };
@@ -891,6 +895,7 @@
 			isa = PBXGroup;
 			children = (
 				A56A95EF28B3FBD300CAAFFF /* DashboardState.swift */,
+				A58281AA2CE6046800AB973A /* GameCoverState.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -900,6 +905,7 @@
 			children = (
 				A56DB65E28B3B95900614046 /* DashboardViewModel.swift */,
 				A52CF9F729ABDD3B009CAAA7 /* GameplaySessionDetailViewModel.swift */,
+				A58281A82CE603C400AB973A /* GameCoverViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1570,10 +1576,12 @@
 				A5507EBE2901CEDA0040C801 /* GameRepository.swift in Sources */,
 				A52CF9F829ABDD3B009CAAA7 /* GameplaySessionDetailViewModel.swift in Sources */,
 				A530E739296EE690000EAB91 /* EditListView.swift in Sources */,
+				A58281A92CE603C400AB973A /* GameCoverViewModel.swift in Sources */,
 				A524F52028B4FC0700A91627 /* PlatformDataSource.swift in Sources */,
 				A566D84C296E37B800760F01 /* ListDataSource.swift in Sources */,
 				A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */,
 				A5D267E5299FF4D2001E7667 /* GameplaySessionRepository.swift in Sources */,
+				A58281AB2CE6046800AB973A /* GameCoverState.swift in Sources */,
 				A5B5D3DC289B0933004096F4 /* View+Extensions.swift in Sources */,
 				A5E489F528958EE80037023C /* LoginState.swift in Sources */,
 				A51AA6A62899543F0081AE4B /* GameNetApp+RepositoryInjection.swift in Sources */,
