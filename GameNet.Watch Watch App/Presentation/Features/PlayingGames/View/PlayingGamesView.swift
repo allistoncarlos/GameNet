@@ -35,7 +35,7 @@ struct PlayingGamesView: View {
                 }
             }
         }
-        .onChange(of: presentedPlatforms) { newValue in
+        .onChange(of: presentedPlatforms) { _, newValue in
             if newValue.isEmpty {
                 Task {
                     await viewModel.fetchData()
@@ -52,10 +52,8 @@ struct PlayingGamesView: View {
     @State private var presentedPlatforms = NavigationPath()
 }
 
-// MARK: - PlayingGamesView_Previews
+// MARK: - Previews
 
-struct PlayingGamesView_Previews: PreviewProvider {
-    static var previews: some View {
-        PlayingGamesView(viewModel: PlayingGamesViewModel())
-    }
+#Preview {
+    PlayingGamesView(viewModel: PlayingGamesViewModel())
 }

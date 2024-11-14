@@ -48,7 +48,7 @@ struct LoginView: View {
                     .overlay(
                         TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
                     )
-                    .onChange(of: viewModel.state) { state in
+                    .onChange(of: viewModel.state) { _, state in
                         isLoading = state == .loading
                     }
                     .navigationTitle("Login")
@@ -83,12 +83,12 @@ struct LoginView: View {
 
 }
 
-// MARK: - LoginView_Previews
+// MARK: - Previews
 
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        ForEach(ColorScheme.allCases, id: \.self) {
-            LoginView(viewModel: LoginViewModel()).preferredColorScheme($0)
-        }
-    }
+#Preview("Dark Mode") {
+    LoginView(viewModel: LoginViewModel()).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    LoginView(viewModel: LoginViewModel()).preferredColorScheme(.light)
 }

@@ -55,10 +55,10 @@ struct ListsView: View {
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state) { state in
+        .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
-        .onChange(of: presentedLists) { newValue in
+        .onChange(of: presentedLists) { _, newValue in
             if newValue.isEmpty {
                 Task {
                     await viewModel.fetchData()
@@ -75,14 +75,16 @@ struct ListsView: View {
     @State private var presentedLists = NavigationPath()
 }
 
-// MARK: - ListsView_Previews
+// MARK: - Previews
 
-struct ListsView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
 
-        ForEach(ColorScheme.allCases, id: \.self) {
-            ListsView(viewModel: ListsViewModel()).preferredColorScheme($0)
-        }
-    }
+    ListsView(viewModel: ListsViewModel()).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+
+    ListsView(viewModel: ListsViewModel()).preferredColorScheme(.light)
 }

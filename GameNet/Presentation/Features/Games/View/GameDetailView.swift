@@ -142,19 +142,22 @@ struct GameDetailView: View {
     }
 }
 
-// MARK: - GameDetailView_Previews
+// MARK: - Previews
 
-struct GameDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
 
-        if let game = MockGameRepository().fetchData(id: "1"), let gameId = game.id {
-            GameDetailView(
-                viewModel: GameDetailViewModel(gameId: gameId),
-                navigationPath: .constant(NavigationPath())
-            )
-        } else {
-            EmptyView()
-        }
-    }
+    GameDetailView(
+        viewModel: GameDetailViewModel(gameId: "1"),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+
+    GameDetailView(
+        viewModel: GameDetailViewModel(gameId: "1"),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.light)
 }

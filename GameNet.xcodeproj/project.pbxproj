@@ -63,7 +63,6 @@
 		A5507EC02901CF9A0040C801 /* MockGameRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EBF2901CF9A0040C801 /* MockGameRepository.swift */; };
 		A5507EC32901D0950040C801 /* GameDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5507EC22901D0950040C801 /* GameDataSource.swift */; };
 		A550C6E32968ABF60043FE74 /* GameNet_WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A550C6E22968ABF60043FE74 /* GameNet_WatchApp.swift */; };
-		A550C6E52968ABF60043FE74 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A550C6E42968ABF60043FE74 /* ContentView.swift */; };
 		A550C6E72968ABF70043FE74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A550C6E62968ABF70043FE74 /* Assets.xcassets */; };
 		A550C6EA2968ABF70043FE74 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A550C6E92968ABF70043FE74 /* Preview Assets.xcassets */; };
 		A550C6EF2968ADD80043FE74 /* PlayingGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A550C6EE2968ADD80043FE74 /* PlayingGamesView.swift */; };
@@ -231,7 +230,6 @@
 		A5507EC22901D0950040C801 /* GameDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDataSource.swift; sourceTree = "<group>"; };
 		A550C6E02968ABF60043FE74 /* GameNet.Watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GameNet.Watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A550C6E22968ABF60043FE74 /* GameNet_WatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNet_WatchApp.swift; sourceTree = "<group>"; };
-		A550C6E42968ABF60043FE74 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A550C6E62968ABF70043FE74 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A550C6E92968ABF70043FE74 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A550C6EE2968ADD80043FE74 /* PlayingGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingGamesView.swift; sourceTree = "<group>"; };
@@ -673,7 +671,6 @@
 				A53B6FBF2968B19500A0F09E /* GameNet.Watch Watch App.entitlements */,
 				A550C6F02968AE020043FE74 /* Presentation */,
 				A550C6E22968ABF60043FE74 /* GameNet_WatchApp.swift */,
-				A550C6E42968ABF60043FE74 /* ContentView.swift */,
 				A550C6E62968ABF70043FE74 /* Assets.xcassets */,
 				A550C6E82968ABF70043FE74 /* Preview Content */,
 			);
@@ -1483,7 +1480,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A550C6E52968ABF60043FE74 /* ContentView.swift in Sources */,
 				A550C6E32968ABF60043FE74 /* GameNet_WatchApp.swift in Sources */,
 				A550C6EF2968ADD80043FE74 /* PlayingGamesView.swift in Sources */,
 				A5814851296DF8FA00F52ED7 /* HomeViewModel.swift in Sources */,
@@ -1885,7 +1881,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1898,6 +1894,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TVOS_DEPLOYMENT_TARGET = 18.0;
 			};
 			name = Debug;
 		};
@@ -1920,7 +1917,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1933,6 +1930,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3";
+				TVOS_DEPLOYMENT_TARGET = 18.0;
 			};
 			name = Release;
 		};

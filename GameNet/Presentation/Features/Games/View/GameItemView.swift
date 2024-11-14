@@ -31,16 +31,20 @@ struct GameItemView: View {
     }
 }
 
-// MARK: - GameItemView_Previews
+// MARK: - Previews
 
-struct GameItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    
+    if let game = MockGameRepository().fetchData(id: "1") {
+        GameItemView(name: game.name, coverURL: game.cover).preferredColorScheme(.dark)
+    }
+}
 
-        if let game = MockGameRepository().fetchData(id: "1") {
-            GameItemView(name: game.name, coverURL: game.cover)
-        } else {
-            EmptyView()
-        }
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    
+    if let game = MockGameRepository().fetchData(id: "1") {
+        GameItemView(name: game.name, coverURL: game.cover).preferredColorScheme(.light)
     }
 }

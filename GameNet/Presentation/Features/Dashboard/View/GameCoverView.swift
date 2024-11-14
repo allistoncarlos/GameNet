@@ -58,9 +58,9 @@ struct GameCoverView: View {
                     y: phase.isIdentity ? 1 : 0.8
                 )
         }
-        .onChange(of: viewModel.isStarted) { oldValue, newValue in
-            self.buttonText = newValue ? "Finalizar" : "Iniciar"
-            self.confirmText = newValue ? "finalizar" : "iniciar"
+        .onChange(of: viewModel.isStarted) { _, isStarted in
+            self.buttonText = isStarted ? "Finalizar" : "Iniciar"
+            self.confirmText = isStarted ? "finalizar" : "iniciar"
         }
     }
 }

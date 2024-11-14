@@ -111,7 +111,7 @@ struct DashboardView: View {
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state) { state in
+        .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
         .task {
@@ -324,7 +324,7 @@ extension DashboardView {
     }
 }
 
-// MARK: - DashboardView_Previews
+// MARK: - DashboardView
 
 extension DashboardView {
     var gameplaySessions: some View {
@@ -361,14 +361,16 @@ extension DashboardView {
     }
 }
 
-// MARK: - DashboardView_Previews
+// MARK: - Previews
 
-struct DashboardView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.dashboardRepository.register(factory: { MockDashboardRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.dashboardRepository.register(factory: { MockDashboardRepository() })
+    
+    DashboardView(viewModel: DashboardViewModel()).preferredColorScheme(.dark)
+}
 
-        ForEach(ColorScheme.allCases, id: \.self) {
-            DashboardView(viewModel: DashboardViewModel()).preferredColorScheme($0)
-        }
-    }
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.dashboardRepository.register(factory: { MockDashboardRepository() })
+    
+    DashboardView(viewModel: DashboardViewModel()).preferredColorScheme(.light)
 }

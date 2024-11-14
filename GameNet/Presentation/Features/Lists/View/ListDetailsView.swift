@@ -34,7 +34,7 @@ struct ListDetailsView: View {
         .overlay {
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         }
-        .onChange(of: viewModel.state) { state in
+        .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
         .navigationView(title: viewModel.name)
@@ -44,15 +44,22 @@ struct ListDetailsView: View {
     }
 }
 
-// MARK: - ListDetailsView_Previews
+// MARK: - Previews
 
-struct ListDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-        ListDetailsView(
-            viewModel: ListDetailsViewModel(
-                originFlow: .finishedByYear(2023)
-            ),
-            navigationPath: .constant(NavigationPath())
-        )
-    }
+#Preview("Dark Mode") {
+    ListDetailsView(
+        viewModel: ListDetailsViewModel(
+            originFlow: .finishedByYear(2023)
+        ),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    ListDetailsView(
+        viewModel: ListDetailsViewModel(
+            originFlow: .finishedByYear(2023)
+        ),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.light)
 }
