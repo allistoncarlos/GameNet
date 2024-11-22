@@ -10,6 +10,7 @@ import GameNet_Network
 import SwiftUI
 import TTProgressHUD
 import CachedAsyncImage
+import StepperView
 
 // MARK: - DashboardView
 
@@ -31,6 +32,12 @@ struct DashboardView: View {
                     }
 
                     if viewModel.gameplaySessions != nil {
+//                        if !FirebaseRemoteConfig.stepperView {
+//                            gameplaySessions
+//                        } else {
+//                            gameplaySessionsStepperView
+//                        }
+                        
                         gameplaySessions
                     }
 
@@ -39,7 +46,11 @@ struct DashboardView: View {
                     }
 
                     if viewModel.dashboard?.finishedByYear != nil {
-                        finishedByYearCard
+                        if !FirebaseRemoteConfig.stepperView {
+                            finishedByYearCard
+                        } else {
+                            finishedByYearCardStepperView
+                        }
                     }
 
                     if viewModel.dashboard?.boughtByYear != nil {
@@ -245,6 +256,65 @@ extension DashboardView {
 }
 
 extension DashboardView {
+    var finishedByYearCardStepperView: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.tertiaryCardBackground)
+
+            VStack {
+                VStack {
+                    Text("Finalizados por Ano")
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                        .font(.cardTitle)
+                        .padding([.top, .horizontal])
+                }
+
+                if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
+//                    Group {
+//                        ForEach(finishedGamesByYear, id: \.year) { finishedGame in
+//                            NavigationLink(value: finishedGame) {
+//                                HStack(spacing: 20) {
+//                                    Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
+//                                        .font(.dashboardGameTitle)
+//                                    Text(String(finishedGame.year))
+//                                        .font(.dashboardGameTitle)
+//                                    Spacer()
+//                                }
+//                            }
+//                        }
+//                    }
+                    let steps = finishedGamesByYear.map { finishedGame in
+                        Text(String(finishedGame.year))
+                    }
+
+                    let indicationTypes = finishedGamesByYear.map { finishedGame in
+                        StepperIndicationType.custom(
+                            NumberedCircleView(text: finishedGame.total.toLeadingZerosString(decimalPlaces: 2), color: .main)
+                            // TODO: Testar pra ver se eu consigo colocar um Text normal aqui, do SwiftUI mesmo
+                        )
+                    }
+                    
+                    ScrollView(.horizontal) {
+                        StepperView()
+                            .addSteps(steps)
+                            .indicators(indicationTypes)
+                            .stepIndicatorMode(StepperMode.horizontal)
+                            .spacing(30)
+                            .lineOptions(
+                                StepperLineOptions.custom(1, Colors.black.rawValue)
+                            )
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                    }
+                    .padding([.horizontal, .bottom])
+                }
+            }
+        }
+        .padding()
+    }
+}
+
+extension DashboardView {
     var boughtByYearCard: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
@@ -353,6 +423,54 @@ extension DashboardView {
                             }
                         }
                     }
+                }
+            }
+            .padding()
+        }
+        .padding()
+    }
+}
+
+extension DashboardView {
+    var gameplaySessionsStepperView: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.secondaryCardBackground)
+
+            VStack(alignment: .center, spacing: 15) {
+                VStack {
+                    Text("Horas Jogadas por Ano")
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                        .font(.cardTitle)
+                }
+
+                if let gameplaySessions = viewModel.gameplaySessions {
+                    let steps = gameplaySessions.map {
+                        Text(String($0.key))
+                            .font(.dashboardGameTitle)
+                    }
+
+                    let indicationTypes = gameplaySessions.map { _ in
+                        StepperIndicationType.custom(
+                            NumberedCircleView(text: "999:99", width: 80).eraseToAnyView()
+//                                Text("999:99")
+//                                    .background(.red)
+//                                    .frame(width: 80, height: 80)
+                        )
+                    }
+                    
+                    ScrollView(.horizontal) {
+                        StepperView()
+                            .addSteps(steps)
+                            .indicators(indicationTypes)
+                            .stepIndicatorMode(StepperMode.horizontal)
+                            .spacing(30)
+                            .lineOptions(
+                                StepperLineOptions.custom(5, Colors.black.rawValue)
+                            )
+//                            .padding(.top, 40)
+                    }
+                    .frame(minHeight: 70)
                 }
             }
             .padding()
