@@ -13,32 +13,44 @@ struct GameCoverView: View {
     @ObservedObject var viewModel: GameCoverViewModel
     @State private var showingConfirmation = false
     
-    @State var buttonText = "Iniciar"
+    @State var buttonImage = "play.fill"
     @State var confirmText = "iniciar"
     
     var body: some View {
         NavigationLink(value: viewModel.playingGame) {
             VStack(alignment: .center) {
+                ZStack(alignment: .bottomTrailing) {
+                    
                 CachedAsyncImage(url: URL(string: viewModel.playingGame.coverURL)) { image in
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                 } placeholder: { ProgressView().progressViewStyle(.circular) }
-                
-                if FirebaseRemoteConfig.toggleGameplaySession {
-                    Button(buttonText) {
-                        showingConfirmation = true
-                    }
-                    .buttonStyle(ActionButtonStyle())
-                    .confirmationDialog("", isPresented: $showingConfirmation) {
-                        Button("Confirmar") {
-                            Task {
-                                await viewModel.save()
-                            }
+                    if FirebaseRemoteConfig.toggleGameplaySession {
+                        Button(action: {
+                            showingConfirmation = true
+                        }, label: {
+                            Image(systemName: buttonImage)
+                                .scaledToFit()
+                                .frame(width: 50, height: 50)
+                        })
+                        .foregroundStyle(Color.white)
+                        .background {
+                            Circle()
+                                .fill(Color.main)
+                                .shadow(color: .white, radius: 4, x: -2, y: 1)
                         }
-                        Button("Cancelar", role: .cancel) { }
-                    } message: {
-                        Text("Deseja \(confirmText) o jogo \(viewModel.playingGame.name)?")
+                        .offset(x: -5, y: -5)
+                        .confirmationDialog("", isPresented: $showingConfirmation) {
+                            Button("Confirmar") {
+                                Task {
+                                    await viewModel.save()
+                                }
+                            }
+                            Button("Cancelar", role: .cancel) { }
+                        } message: {
+                            Text("Deseja \(confirmText) o jogo \(viewModel.playingGame.name)?")
+                        }
                     }
                 }
                 
@@ -58,9 +70,9 @@ struct GameCoverView: View {
                     y: phase.isIdentity ? 1 : 0.8
                 )
         }
-        .onChange(of: viewModel.isStarted) { _, isStarted in
-            self.buttonText = isStarted ? "Finalizar" : "Iniciar"
-            self.confirmText = isStarted ? "finalizar" : "iniciar"
+        .onChange(of: viewModel.isStarted) { oldValue, newValue in
+            self.buttonImage = newValue ? "stop.fill" : "play.fill"
+            self.confirmText = newValue ? "finalizar" : "iniciar"
         }
     }
 }

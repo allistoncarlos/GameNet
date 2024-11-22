@@ -146,7 +146,6 @@
 		A5F029F8297320070013AA13 /* ListDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F029F7297320070013AA13 /* ListDetailsView.swift */; };
 		A5F029FA2973203F0013AA13 /* ListDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F029F92973203F0013AA13 /* ListDetailsViewModel.swift */; };
 		A5F18C5529D2554200E712F5 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = A5F18C5429D2554200E712F5 /* CachedAsyncImage */; };
-		A5F787C52CE5260000EA6DED /* ActionButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F787C42CE525F800EA6DED /* ActionButtonStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -313,7 +312,6 @@
 		A5EE192F29805BCC003DF80D /* GameDetailState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailState.swift; sourceTree = "<group>"; };
 		A5F029F7297320070013AA13 /* ListDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailsView.swift; sourceTree = "<group>"; };
 		A5F029F92973203F0013AA13 /* ListDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailsViewModel.swift; sourceTree = "<group>"; };
-		A5F787C42CE525F800EA6DED /* ActionButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButtonStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1022,7 +1020,6 @@
 		A57185D72867983B00655B31 /* Button */ = {
 			isa = PBXGroup;
 			children = (
-				A5F787C42CE525F800EA6DED /* ActionButtonStyle.swift */,
 				A57185D82867984400655B31 /* MainButtonStyle.swift */,
 			);
 			path = Button;
@@ -1541,7 +1538,6 @@
 				A5EE192A298057C6003DF80D /* GameDetailView.swift in Sources */,
 				A57D3F2629CF77F3000AFFBA /* Binding+Extensions.swift in Sources */,
 				A524F53628B5105000A91627 /* PlatformsState.swift in Sources */,
-				A5F787C52CE5260000EA6DED /* ActionButtonStyle.swift in Sources */,
 				A530E729296EE334000EAB91 /* MockListRepository.swift in Sources */,
 				A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */,
 				A5C190A92A704C0F008D672B /* GameItemView.swift in Sources */,
