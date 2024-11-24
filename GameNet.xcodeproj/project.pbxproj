@@ -47,6 +47,15 @@
 		A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617C2899883B00D52088 /* MockLoginRepository.swift */; };
 		A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661802899890300D52088 /* LoginViewModelTests.swift */; };
 		A53B6FC12968B26500A0F09E /* GameNet.Network in Frameworks */ = {isa = PBXBuildFile; productRef = A53B6FC02968B26500A0F09E /* GameNet.Network */; };
+		A54414482CF206840072F2B8 /* ServerDrivenDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54414472CF206840072F2B8 /* ServerDrivenDashboardView.swift */; };
+		A544144A2CF206C40072F2B8 /* ServerDrivenDashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54414492CF206C40072F2B8 /* ServerDrivenDashboardViewModel.swift */; };
+		A544144D2CF208330072F2B8 /* ServerDrivenRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A544144C2CF208330072F2B8 /* ServerDrivenRepository.swift */; };
+		A54414502CF208C50072F2B8 /* ServerDrivenDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A544144F2CF208C50072F2B8 /* ServerDrivenDataSource.swift */; };
+		A54414522CF20C460072F2B8 /* ServerDrivenDashboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54414512CF20C410072F2B8 /* ServerDrivenDashboardState.swift */; };
+		A54414542CF20F320072F2B8 /* ComponentWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54414532CF20F320072F2B8 /* ComponentWrapper.swift */; };
+		A547BD1C2CF396F7003FACBE /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A547BD1B2CF396EF003FACBE /* AsyncImage.swift */; };
+		A547BD1E2CF39755003FACBE /* Title.swift in Sources */ = {isa = PBXBuildFile; fileRef = A547BD1D2CF39752003FACBE /* Title.swift */; };
+		A547BD202CF39840003FACBE /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = A547BD1F2CF39840003FACBE /* Components.swift */; };
 		A5491F3B2BA1DDCF002E752A /* TTProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = A5491F3A2BA1DDCF002E752A /* TTProgressHUD */; };
 		A54D44B82CE4D74B00C0EC3B /* FeatureToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54D44B72CE4D74B00C0EC3B /* FeatureToggleView.swift */; };
 		A54D44CD2CE4DA6500C0EC3B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A54D44CC2CE4DA6500C0EC3B /* GoogleService-Info.plist */; };
@@ -218,6 +227,15 @@
 		A536617C2899883B00D52088 /* MockLoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginRepository.swift; sourceTree = "<group>"; };
 		A53661802899890300D52088 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		A53B6FBF2968B19500A0F09E /* GameNet.Watch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "GameNet.Watch Watch App.entitlements"; sourceTree = "<group>"; };
+		A54414472CF206840072F2B8 /* ServerDrivenDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDrivenDashboardView.swift; sourceTree = "<group>"; };
+		A54414492CF206C40072F2B8 /* ServerDrivenDashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDrivenDashboardViewModel.swift; sourceTree = "<group>"; };
+		A544144C2CF208330072F2B8 /* ServerDrivenRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDrivenRepository.swift; sourceTree = "<group>"; };
+		A544144F2CF208C50072F2B8 /* ServerDrivenDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDrivenDataSource.swift; sourceTree = "<group>"; };
+		A54414512CF20C410072F2B8 /* ServerDrivenDashboardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDrivenDashboardState.swift; sourceTree = "<group>"; };
+		A54414532CF20F320072F2B8 /* ComponentWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentWrapper.swift; sourceTree = "<group>"; };
+		A547BD1B2CF396EF003FACBE /* AsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImage.swift; sourceTree = "<group>"; };
+		A547BD1D2CF39752003FACBE /* Title.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Title.swift; sourceTree = "<group>"; };
+		A547BD1F2CF39840003FACBE /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		A54D44B72CE4D74B00C0EC3B /* FeatureToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureToggleView.swift; sourceTree = "<group>"; };
 		A54D44CC2CE4DA6500C0EC3B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A54D44D52CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseRemoteConfig.swift; sourceTree = "<group>"; };
@@ -355,6 +373,7 @@
 		A51AA6A9289955030081AE4B /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
+				A544144E2CF208C00072F2B8 /* ServerDriven */,
 				A53661662899677700D52088 /* Login */,
 				A56DB66028B3BAB200614046 /* Dashboard */,
 				A524F51E28B4FBF500A91627 /* Platform */,
@@ -571,6 +590,40 @@
 				A53661802899890300D52088 /* LoginViewModelTests.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		A54414462CF206720072F2B8 /* ServerDrivenView */ = {
+			isa = PBXGroup;
+			children = (
+				A547BD1A2CF396E6003FACBE /* ServerDrivenComponents */,
+				A54414472CF206840072F2B8 /* ServerDrivenDashboardView.swift */,
+			);
+			path = ServerDrivenView;
+			sourceTree = "<group>";
+		};
+		A544144B2CF208220072F2B8 /* ServerDriven */ = {
+			isa = PBXGroup;
+			children = (
+				A544144C2CF208330072F2B8 /* ServerDrivenRepository.swift */,
+			);
+			path = ServerDriven;
+			sourceTree = "<group>";
+		};
+		A544144E2CF208C00072F2B8 /* ServerDriven */ = {
+			isa = PBXGroup;
+			children = (
+				A544144F2CF208C50072F2B8 /* ServerDrivenDataSource.swift */,
+			);
+			path = ServerDriven;
+			sourceTree = "<group>";
+		};
+		A547BD1A2CF396E6003FACBE /* ServerDrivenComponents */ = {
+			isa = PBXGroup;
+			children = (
+				A547BD1D2CF39752003FACBE /* Title.swift */,
+				A547BD1B2CF396EF003FACBE /* AsyncImage.swift */,
+			);
+			path = ServerDrivenComponents;
 			sourceTree = "<group>";
 		};
 		A54D44B42CE4D6EF00C0EC3B /* FeatureToggle */ = {
@@ -891,8 +944,11 @@
 		A56DB65B28B3B93D00614046 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A54414532CF20F320072F2B8 /* ComponentWrapper.swift */,
+				A54414512CF20C410072F2B8 /* ServerDrivenDashboardState.swift */,
 				A56A95EF28B3FBD300CAAFFF /* DashboardState.swift */,
 				A58281AA2CE6046800AB973A /* GameCoverState.swift */,
+				A547BD1F2CF39840003FACBE /* Components.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -903,6 +959,7 @@
 				A56DB65E28B3B95900614046 /* DashboardViewModel.swift */,
 				A52CF9F729ABDD3B009CAAA7 /* GameplaySessionDetailViewModel.swift */,
 				A58281A82CE603C400AB973A /* GameCoverViewModel.swift */,
+				A54414492CF206C40072F2B8 /* ServerDrivenDashboardViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1080,6 +1137,7 @@
 		A5B5D3CD289AE1FD004096F4 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				A54414462CF206720072F2B8 /* ServerDrivenView */,
 				A56DB65D28B3B94B00614046 /* View */,
 				A56DB65C28B3B94000614046 /* ViewModel */,
 				A56DB65B28B3B93D00614046 /* Model */,
@@ -1279,6 +1337,7 @@
 		A5E48A102895ACEC0037023C /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				A544144B2CF208220072F2B8 /* ServerDriven */,
 				A56D955A28995760003C13A3 /* Login */,
 				A56DB66828B3C18C00614046 /* Dashboard */,
 				A524F52628B506DA00A91627 /* Platform */,
@@ -1531,6 +1590,7 @@
 				A56A95F828B405DB00CAAFFF /* Number+Extensions.swift in Sources */,
 				A582ABA6296F49F2000A0435 /* ListGamesView.swift in Sources */,
 				A54D44B82CE4D74B00C0EC3B /* FeatureToggleView.swift in Sources */,
+				A54414522CF20C460072F2B8 /* ServerDrivenDashboardState.swift in Sources */,
 				A531906329ACEB300015D167 /* GameplaySessionDetailView.swift in Sources */,
 				A54D44DD2CE4E6E500C0EC3B /* RemoteConfigModel.swift in Sources */,
 				A5F029FA2973203F0013AA13 /* ListDetailsViewModel.swift in Sources */,
@@ -1543,6 +1603,7 @@
 				A57D3F2629CF77F3000AFFBA /* Binding+Extensions.swift in Sources */,
 				A524F53628B5105000A91627 /* PlatformsState.swift in Sources */,
 				A530E729296EE334000EAB91 /* MockListRepository.swift in Sources */,
+				A54414542CF20F320072F2B8 /* ComponentWrapper.swift in Sources */,
 				A524F53828B5106B00A91627 /* PlatformsViewModel.swift in Sources */,
 				A5C190A92A704C0F008D672B /* GameItemView.swift in Sources */,
 				A5507EC02901CF9A0040C801 /* MockGameRepository.swift in Sources */,
@@ -1569,14 +1630,19 @@
 				A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */,
 				A582ABAA296F4A69000A0435 /* ListGamesViewModel.swift in Sources */,
 				A566D844296E355300760F01 /* ListRouter.swift in Sources */,
+				A547BD1E2CF39755003FACBE /* Title.swift in Sources */,
+				A54414482CF206840072F2B8 /* ServerDrivenDashboardView.swift in Sources */,
 				A5507EBE2901CEDA0040C801 /* GameRepository.swift in Sources */,
 				A52CF9F829ABDD3B009CAAA7 /* GameplaySessionDetailViewModel.swift in Sources */,
 				A530E739296EE690000EAB91 /* EditListView.swift in Sources */,
 				A58281A92CE603C400AB973A /* GameCoverViewModel.swift in Sources */,
 				A524F52028B4FC0700A91627 /* PlatformDataSource.swift in Sources */,
 				A566D84C296E37B800760F01 /* ListDataSource.swift in Sources */,
+				A544144A2CF206C40072F2B8 /* ServerDrivenDashboardViewModel.swift in Sources */,
 				A5B5D3D6289AE2DD004096F4 /* PlatformsView.swift in Sources */,
 				A5D267E5299FF4D2001E7667 /* GameplaySessionRepository.swift in Sources */,
+				A547BD1C2CF396F7003FACBE /* AsyncImage.swift in Sources */,
+				A544144D2CF208330072F2B8 /* ServerDrivenRepository.swift in Sources */,
 				A58281AB2CE6046800AB973A /* GameCoverState.swift in Sources */,
 				A5B5D3DC289B0933004096F4 /* View+Extensions.swift in Sources */,
 				A5E489F528958EE80037023C /* LoginState.swift in Sources */,
@@ -1591,6 +1657,7 @@
 				A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */,
 				A524F52A28B506F300A91627 /* MockPlatformRepository.swift in Sources */,
 				A59E763B28B6AE1F003CBA3E /* EditPlatformView.swift in Sources */,
+				A54414502CF208C50072F2B8 /* ServerDrivenDataSource.swift in Sources */,
 				A597B4222AC9C7E000442D91 /* GameCoverView.swift in Sources */,
 				A530E737296EE518000EAB91 /* MockListDataSource.swift in Sources */,
 				A54D44DA2CE4E5C900C0EC3B /* FeatureToggleViewModel.swift in Sources */,
@@ -1614,6 +1681,7 @@
 				A5F029F8297320070013AA13 /* ListDetailsView.swift in Sources */,
 				A57185D52867953F00655B31 /* Color.swift in Sources */,
 				A5E489F928958F4F0037023C /* LoginViewModel.swift in Sources */,
+				A547BD202CF39840003FACBE /* Components.swift in Sources */,
 				A56DB66C28B3C1B700614046 /* MockDashboardRepository.swift in Sources */,
 				A56DB66528B3BB2600614046 /* DashboardDataSource.swift in Sources */,
 			);

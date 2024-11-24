@@ -24,41 +24,45 @@ struct DashboardView: View {
     var body: some View {
         NavigationStack(path: $presentedViews) {
             ScrollView {
-                VStack(spacing: -20) {
-                    if FirebaseRemoteConfig.dashboardViewCarousel {
-                        if viewModel.dashboard?.playingGames != nil {
-                            playingCard
+                if FirebaseRemoteConfig.serverDrivenDashboard {
+                    ServerDrivenDashboardView(viewModel: ServerDrivenDashboardViewModel())
+                } else {
+                    VStack(spacing: -20) {
+                        if FirebaseRemoteConfig.dashboardViewCarousel {
+                            if viewModel.dashboard?.playingGames != nil {
+                                playingCard
+                            }
                         }
-                    }
-
-                    if viewModel.gameplaySessions != nil {
-//                        if !FirebaseRemoteConfig.stepperView {
-//                            gameplaySessions
-//                        } else {
-//                            gameplaySessionsStepperView
-//                        }
                         
-                        gameplaySessions
-                    }
-
-                    if viewModel.dashboard?.totalGames != nil {
-                        physicalDigitalCard
-                    }
-
-                    if viewModel.dashboard?.finishedByYear != nil {
-                        if !FirebaseRemoteConfig.stepperView {
-                            finishedByYearCard
-                        } else {
-                            finishedByYearCardStepperView
+                        if viewModel.gameplaySessions != nil {
+                            //                        if !FirebaseRemoteConfig.stepperView {
+                            //                            gameplaySessions
+                            //                        } else {
+                            //                            gameplaySessionsStepperView
+                            //                        }
+                            
+                            gameplaySessions
                         }
-                    }
-
-                    if viewModel.dashboard?.boughtByYear != nil {
-                        boughtByYearCard
-                    }
-
-                    if viewModel.dashboard?.gamesByPlatform != nil {
-                        gamesByPlatformCard
+                        
+                        if viewModel.dashboard?.totalGames != nil {
+                            physicalDigitalCard
+                        }
+                        
+                        if viewModel.dashboard?.finishedByYear != nil {
+                            if !FirebaseRemoteConfig.stepperView {
+                                finishedByYearCard
+                            } else {
+                                finishedByYearCardStepperView
+                            }
+                        }
+                        
+                        if viewModel.dashboard?.boughtByYear != nil {
+                            boughtByYearCard
+                        }
+                        
+                        if viewModel.dashboard?.gamesByPlatform != nil {
+                            gamesByPlatformCard
+                        }
                     }
                 }
             }

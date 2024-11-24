@@ -1,5 +1,5 @@
 {
-  "originHash" : "993e7fe337594cb4e238648838748f15bd87cff24a60f685e4a4c59b092bc70c",
+  "originHash" : "7533c0f293e4e53f77627ec102dc31c52ebc41faf29b53a7a797dc198fe8cc1e",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -61,7 +61,7 @@
       "location" : "https://github.com/allistoncarlos/GameNet.Network",
       "state" : {
         "branch" : "main",
-        "revision" : "baa2540c3bd6ea669bd23bb4906bb06ef2b74b0a"
+        "revision" : "eb6bf25377f43db0014027ae2da35d9e8b40ba17"
       }
     },
     {

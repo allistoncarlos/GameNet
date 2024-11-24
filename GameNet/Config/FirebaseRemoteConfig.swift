@@ -14,6 +14,7 @@ enum RemoteConfigParameters: String, CaseIterable, Identifiable {
     case dashboardViewCarousel = "DashboardViewCarousel"
     case toggleGameplaySession = "ToggleGameplaySession"
     case stepperView = "StepperView"
+    case serverDrivenDashboard = "ServerDrivenDashboard"
 }
 
 @MainActor
@@ -21,6 +22,7 @@ class FirebaseRemoteConfig {
     static private(set) var dashboardViewCarousel: Bool = false
     static private(set) var toggleGameplaySession: Bool = false
     static private(set) var stepperView: Bool = false
+    static private(set) var serverDrivenDashboard: Bool = false
     
     static var overrideRemoteConfigs: Bool {
         let defaults = UserDefaults.standard
@@ -38,6 +40,10 @@ class FirebaseRemoteConfig {
 
         FirebaseRemoteConfig.stepperView =
             remoteConfig[RemoteConfigParameters.stepperView.rawValue]
+            .boolValue
+        
+        FirebaseRemoteConfig.serverDrivenDashboard =
+            remoteConfig[RemoteConfigParameters.serverDrivenDashboard.rawValue]
             .boolValue
     }
     
@@ -61,6 +67,12 @@ class FirebaseRemoteConfig {
                 RemoteConfigParameters.stepperView.rawValue
             }) {
                 FirebaseRemoteConfig.stepperView = stepperView.enabled
+            }
+            
+            if let serverDrivenDashboard = debugConfigs.first(where: { $0.featureToggle ==
+                RemoteConfigParameters.serverDrivenDashboard.rawValue
+            }) {
+                FirebaseRemoteConfig.serverDrivenDashboard = serverDrivenDashboard.enabled
             }
         }
     }
