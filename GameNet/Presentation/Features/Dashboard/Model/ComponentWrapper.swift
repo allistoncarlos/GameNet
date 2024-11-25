@@ -8,10 +8,27 @@
 
 import Foundation
 
-// Estrutura para representar os elementos internos
 struct Element: Decodable {
     let value: String?
+    let title: String?
+    let color: String?
     let url: String?
+    
+    let elements: [String: Element]?
+    
+    init(
+        value: String? = nil,
+        title: String? = nil,
+        color: String? = nil,
+        url: String? = nil,
+        elements: [String : Element]? = nil
+    ) {
+        self.value = value
+        self.title = title
+        self.color = color
+        self.url = url
+        self.elements = elements
+    }
 }
 
 // Estrutura dinâmica para o JSON

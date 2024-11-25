@@ -60,6 +60,18 @@ struct ServerDrivenDashboardView: View {
                     if let url = component.url {
                         AsyncImage(url: url)
                     }
+                    
+                    // TODO: Colocar uma extension pra exibir a cor vinda do backend
+                case Components.card.rawValue:
+                    if let title = component.title,
+                        let color = component.color,
+                        let elements = component.elements {
+                        Card(
+                            title: title,
+                            color: Color.secondaryCardBackground,
+                            elements: elements
+                        )
+                    }
                 default:
                     EmptyView()
                 }

@@ -77,6 +77,7 @@
 		A550C6EF2968ADD80043FE74 /* PlayingGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A550C6EE2968ADD80043FE74 /* PlayingGamesView.swift */; };
 		A550C6F62968AE3D0043FE74 /* PlayingGamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A550C6F52968AE3D0043FE74 /* PlayingGamesViewModel.swift */; };
 		A550C6F92968AEA40043FE74 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = A550C6F82968AEA40043FE74 /* Factory */; };
+		A562B71C2CF4AC3C00FEB4D9 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = A562B71B2CF4AC3C00FEB4D9 /* Card.swift */; };
 		A566D842296E352C00760F01 /* ListsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A566D841296E352C00760F01 /* ListsState.swift */; };
 		A566D844296E355300760F01 /* ListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A566D843296E355300760F01 /* ListRouter.swift */; };
 		A566D846296E35B500760F01 /* ListsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A566D845296E35B500760F01 /* ListsViewModel.swift */; };
@@ -252,6 +253,7 @@
 		A550C6E92968ABF70043FE74 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A550C6EE2968ADD80043FE74 /* PlayingGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingGamesView.swift; sourceTree = "<group>"; };
 		A550C6F52968AE3D0043FE74 /* PlayingGamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingGamesViewModel.swift; sourceTree = "<group>"; };
+		A562B71B2CF4AC3C00FEB4D9 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		A566D841296E352C00760F01 /* ListsState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsState.swift; sourceTree = "<group>"; };
 		A566D843296E355300760F01 /* ListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRouter.swift; sourceTree = "<group>"; };
 		A566D845296E35B500760F01 /* ListsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsViewModel.swift; sourceTree = "<group>"; };
@@ -622,6 +624,7 @@
 			children = (
 				A547BD1D2CF39752003FACBE /* Title.swift */,
 				A547BD1B2CF396EF003FACBE /* AsyncImage.swift */,
+				A562B71B2CF4AC3C00FEB4D9 /* Card.swift */,
 			);
 			path = ServerDrivenComponents;
 			sourceTree = "<group>";
@@ -1628,6 +1631,7 @@
 				A5EE193029805BCC003DF80D /* GameDetailState.swift in Sources */,
 				A54D44D62CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift in Sources */,
 				A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */,
+				A562B71C2CF4AC3C00FEB4D9 /* Card.swift in Sources */,
 				A582ABAA296F4A69000A0435 /* ListGamesViewModel.swift in Sources */,
 				A566D844296E355300760F01 /* ListRouter.swift in Sources */,
 				A547BD1E2CF39755003FACBE /* Title.swift in Sources */,
