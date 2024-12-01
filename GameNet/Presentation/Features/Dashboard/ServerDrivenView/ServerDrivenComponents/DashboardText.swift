@@ -1,13 +1,13 @@
 //
-//  Title.swift
+//  DashboardText.swift
 //  GameNet
 //
-//  Created by Alliston Aleixo on 24/11/24.
+//  Created by Alliston Aleixo on 25/11/24.
 //
 
 import SwiftUI
 
-struct Title: View {
+struct DashboardText: View {
     private var value: String
     
     init(_ value: String) {
@@ -17,6 +17,6 @@ struct Title: View {
     var body: some View {
         Text(value)
             .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-            .font(.cardTitle)
+            .font(.dashboardGameTitle)
     }
 }

@@ -14,7 +14,7 @@ import Combine
 class ServerDrivenDashboardViewModel: ObservableObject {
     @Published var state: ServerDrivenDashboardState = .idle
     @Published var serverDriven: ServerDriven? = nil
-    @Published var dynamicContainer: DynamicContainer? = nil
+    @Published var dynamicContainer: Element? = nil
     
     init() {
         $state
@@ -43,17 +43,15 @@ class ServerDrivenDashboardViewModel: ObservableObject {
         }
     }
     
-    private func decode(json: String) -> DynamicContainer? {
-        if let json = json.data(using: .utf8) {
+    private func decode(json: String) -> Element? {
+        if let jsonData = json.data(using: .utf8) {
             do {
-                let decodedData = try JSONDecoder().decode(DynamicContainer.self, from: json)
-                
-                return decodedData
+                let decodedData = try JSONDecoder().decode([Element].self, from: jsonData)
+                return decodedData.first
             } catch {
                 print("Erro ao decodificar JSON: \(error)")
             }
         }
-        
         return nil
     }
     

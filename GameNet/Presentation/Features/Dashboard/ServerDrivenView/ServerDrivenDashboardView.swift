@@ -15,22 +15,8 @@ struct ServerDrivenDashboardView: View {
     
     var body: some View {
         VStack(spacing: -20) {
-            if let dynamicContainer = viewModel.dynamicContainer,
-               let root = dynamicContainer.elements.first {
-                let children = renderChildren(components: root.value)
-                
-                switch root.key {
-                case Components.vstack.rawValue:
-                    VStack {
-                        children
-                    }
-                case Components.scrollView.rawValue:
-                    ScrollView {
-                        children
-                    }
-                default:
-                    EmptyView()
-                }
+            if let dynamicContainer = viewModel.dynamicContainer {
+                renderChildren(components: [dynamicContainer])
             }
         }
         .disabled(isLoading)
@@ -43,39 +29,6 @@ struct ServerDrivenDashboardView: View {
         }
         .task {
             await viewModel.fetchData()
-        }
-    }
-
-    @ViewBuilder
-    func renderChildren(components: [String: Element]) -> some View {
-        ForEach(Array(components.keys), id: \.self) { key in
-            if let component = components[key] {
-                switch key {
-                case Components.text.rawValue:
-                    if let value = component.value {
-                        Title(value)
-                    }
-                
-                case Components.image.rawValue:
-                    if let url = component.url {
-                        AsyncImage(url: url)
-                    }
-                    
-                    // TODO: Colocar uma extension pra exibir a cor vinda do backend
-                case Components.card.rawValue:
-                    if let title = component.title,
-                        let color = component.color,
-                        let elements = component.elements {
-                        Card(
-                            title: title,
-                            color: Color.secondaryCardBackground,
-                            elements: elements
-                        )
-                    }
-                default:
-                    EmptyView()
-                }
-            }
         }
     }
 }

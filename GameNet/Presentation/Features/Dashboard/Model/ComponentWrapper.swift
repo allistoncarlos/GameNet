@@ -5,64 +5,68 @@
 //  Created by Alliston Aleixo on 23/11/24.
 //
 
-
 import Foundation
 
-struct Element: Decodable {
-    let value: String?
-    let title: String?
-    let color: String?
-    let url: String?
-    
-    let elements: [String: Element]?
-    
+struct Element: Decodable, Identifiable {
+    let id: String?
+    let componentType: String?
+    let properties: Properties?
+    let elements: [Element]?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case componentType
+        case properties
+        case elements
+    }
+
     init(
-        value: String? = nil,
-        title: String? = nil,
-        color: String? = nil,
-        url: String? = nil,
-        elements: [String : Element]? = nil
+        id: String? = nil,
+        componentType: String? = nil,
+        properties: Properties? = nil,
+        elements: [Element]? = nil
     ) {
-        self.value = value
-        self.title = title
-        self.color = color
-        self.url = url
+        self.id = id
+        self.componentType = componentType
+        self.properties = properties
         self.elements = elements
     }
 }
 
-// Estrutura dinâmica para o JSON
-struct DynamicContainer: Decodable {
-    let elements: [String: [String: Element]]
+struct Properties: Decodable, Identifiable {
+    let id: String?
+    let componentType: String?
+    let title: String?
+    let color: String?
+    let value: String?
+    let url: String?
+    let spacing: CGFloat?
 
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: DynamicKey.self)
-        var tempElements: [String: [String: Element]] = [:]
-        
-        for key in container.allKeys {
-            let nestedContainer = try container.nestedContainer(keyedBy: DynamicKey.self, forKey: key)
-            var childElements: [String: Element] = [:]
-            
-            for nestedKey in nestedContainer.allKeys {
-                let element = try nestedContainer.decode(Element.self, forKey: nestedKey)
-                childElements[nestedKey.stringValue] = element
-            }
-            tempElements[key.stringValue] = childElements
-        }
-        elements = tempElements
-    }
-}
-
-// Chave dinâmica para lidar com nomes de propriedades desconhecidos
-struct DynamicKey: CodingKey {
-    let stringValue: String
-    var intValue: Int? { return nil }
-
-    init?(stringValue: String) {
-        self.stringValue = stringValue
+    enum CodingKeys: String, CodingKey {
+        case id
+        case componentType
+        case title
+        case color
+        case value
+        case url
+        case spacing
     }
 
-    init?(intValue: Int) {
-        return nil
+    init(
+        id: String? = nil,
+        componentType: String? = nil,
+        title: String? = nil,
+        color: String? = nil,
+        value: String? = nil,
+        url: String? = nil,
+        spacing: CGFloat? = nil
+    ) {
+        self.id = id
+        self.componentType = componentType
+        self.title = title
+        self.color = color
+        self.value = value
+        self.url = url
+        self.spacing = spacing
     }
 }

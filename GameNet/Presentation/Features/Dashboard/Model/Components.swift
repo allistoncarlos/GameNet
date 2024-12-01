@@ -13,10 +13,14 @@ enum Components: String, CaseIterable, Identifiable, CustomStringConvertible {
     
     var description: String { rawValue }
     
+    case spacer = "Spacer"
+    
     case vstack = "VStack"
     case scrollView = "ScrollView"
+    case hstack = "HStack"
     
     case text = "Text"
+    case dashboardText = "DashboardText"
     case image = "Image"
     case card = "Card"
 }

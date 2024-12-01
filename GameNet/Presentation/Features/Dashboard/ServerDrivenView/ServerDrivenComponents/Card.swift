@@ -11,7 +11,7 @@ struct Card: View {
     var title: String
     var color: Color
     
-    var elements: [String: Element]
+    var elements: [Element]?
     
     var body: some View {
         ZStack {
@@ -20,11 +20,13 @@ struct Card: View {
 
             VStack(alignment: .leading, spacing: 15) {
                 VStack {
-                    Title(title)
+                    CardTitle(title)
                 }
 
                 VStack(alignment: .leading, spacing: 5) {
-                    renderChildren(components: elements)
+                    if let elements {
+                        renderChildren(components: elements)
+                    }
                 }
             }
             .padding()
@@ -33,32 +35,10 @@ struct Card: View {
     }
 }
 
-// TODO: ISSO AQUI DEVE SER PARAMETRIZADO, TÁ DUPLICADO PRA TESTE
-@ViewBuilder
-func renderChildren(components: [String: Element]) -> some View {
-    ForEach(Array(components.keys), id: \.self) { key in
-        if let component = components[key] {
-            switch key {
-            case Components.text.rawValue:
-                if let value = component.value {
-                    Text(value)
-                }
-            
-            case Components.image.rawValue:
-                if let url = component.url {
-                    AsyncImage(url: url)
-                }
-            default:
-                EmptyView()
-            }
-        }
-    }
-}
-
 #Preview {
     Card(
         title: "Horas jogadas por ano",
         color: .blue,
-        elements: [:]
+        elements: []
     )
 }
