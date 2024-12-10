@@ -49,6 +49,12 @@ extension View {
                    let value = properties.value {
                     AnyView(DashboardText(value))
                 }
+                
+            case Components.subtitle.rawValue:
+                if let properties = component.properties,
+                   let value = properties.value {
+                    AnyView(Subtitle(value))
+                }
 
             case Components.image.rawValue:
                 if let properties = component.properties,

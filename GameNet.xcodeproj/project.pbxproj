@@ -108,6 +108,7 @@
 		A57D3F2429CF773B000AFFBA /* UserGameModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D3F2329CF773B000AFFBA /* UserGameModel.swift */; };
 		A57D3F2629CF77F3000AFFBA /* Binding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D3F2529CF77F3000AFFBA /* Binding+Extensions.swift */; };
 		A57D3F2B29CF8568000AFFBA /* CurrencyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D3F2A29CF8568000AFFBA /* CurrencyTextField.swift */; };
+		A57F59A12D088ECE00353397 /* Subtitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F59A02D088ECB00353397 /* Subtitle.swift */; };
 		A581484A296DF8AD00F52ED7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5814849296DF8AD00F52ED7 /* HomeView.swift */; };
 		A581484D296DF8CB00F52ED7 /* NotLoggedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */; };
 		A5814851296DF8FA00F52ED7 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5814850296DF8FA00F52ED7 /* HomeViewModel.swift */; };
@@ -288,6 +289,7 @@
 		A57D3F2329CF773B000AFFBA /* UserGameModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserGameModel.swift; sourceTree = "<group>"; };
 		A57D3F2529CF77F3000AFFBA /* Binding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extensions.swift"; sourceTree = "<group>"; };
 		A57D3F2A29CF8568000AFFBA /* CurrencyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTextField.swift; sourceTree = "<group>"; };
+		A57F59A02D088ECB00353397 /* Subtitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subtitle.swift; sourceTree = "<group>"; };
 		A5814849296DF8AD00F52ED7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotLoggedView.swift; sourceTree = "<group>"; };
 		A5814850296DF8FA00F52ED7 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -627,6 +629,7 @@
 		A547BD1A2CF396E6003FACBE /* ServerDrivenComponents */ = {
 			isa = PBXGroup;
 			children = (
+				A57F59A02D088ECB00353397 /* Subtitle.swift */,
 				A547BD1D2CF39752003FACBE /* CardTitle.swift */,
 				A547BD1B2CF396EF003FACBE /* AsyncImage.swift */,
 				A562B71B2CF4AC3C00FEB4D9 /* Card.swift */,
@@ -1646,6 +1649,7 @@
 				A5EE193029805BCC003DF80D /* GameDetailState.swift in Sources */,
 				A54D44D62CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift in Sources */,
 				A5507EB92901CD260040C801 /* GamesViewModel.swift in Sources */,
+				A57F59A12D088ECE00353397 /* Subtitle.swift in Sources */,
 				A562B71C2CF4AC3C00FEB4D9 /* Card.swift in Sources */,
 				A582ABAA296F4A69000A0435 /* ListGamesViewModel.swift in Sources */,
 				A566D844296E355300760F01 /* ListRouter.swift in Sources */,

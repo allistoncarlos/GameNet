@@ -21,6 +21,8 @@ enum Components: String, CaseIterable, Identifiable, CustomStringConvertible {
     
     case text = "Text"
     case dashboardText = "DashboardText"
+    case subtitle = "Subtitle"
+    
     case image = "Image"
     case card = "Card"
 }
