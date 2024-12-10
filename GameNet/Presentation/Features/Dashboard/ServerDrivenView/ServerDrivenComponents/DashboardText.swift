@@ -16,7 +16,6 @@ struct DashboardText: View {
     
     var body: some View {
         Text(value)
-            .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
             .font(.dashboardGameTitle)
     }
 }

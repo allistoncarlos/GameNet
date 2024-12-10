@@ -62,7 +62,7 @@ extension View {
                    let elements = component.elements {
                     AnyView(Card(
                         title: title,
-                        color: Color.secondaryCardBackground, // Ajustar para mapear a cor do backend
+                        color: Color.secondaryCardBackground, // TODO: Ajustar para mapear a cor do backend
                         elements: elements
                     ))
                 }

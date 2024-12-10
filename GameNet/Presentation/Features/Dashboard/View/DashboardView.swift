@@ -19,7 +19,7 @@ struct DashboardView: View {
     // MARK: Internal
 
     @ObservedObject var viewModel: DashboardViewModel
-    @State var isLoading = true
+    @State var isLoading = false
 
     var body: some View {
         NavigationStack(path: $presentedViews) {
@@ -35,13 +35,11 @@ struct DashboardView: View {
                         }
                         
                         if viewModel.gameplaySessions != nil {
-                            //                        if !FirebaseRemoteConfig.stepperView {
-                            //                            gameplaySessions
-                            //                        } else {
-                            //                            gameplaySessionsStepperView
-                            //                        }
-                            
-                            gameplaySessions
+                            if !FirebaseRemoteConfig.stepperView {
+                                gameplaySessions
+                            } else {
+                                gameplaySessionsStepperView
+                            }
                         }
                         
                         if viewModel.dashboard?.totalGames != nil {
@@ -130,7 +128,9 @@ struct DashboardView: View {
             isLoading = state == .loading
         }
         .task {
-            await viewModel.fetchData()
+            if !FirebaseRemoteConfig.serverDrivenDashboard {
+                await viewModel.fetchData()
+            }
         }
     }
 
