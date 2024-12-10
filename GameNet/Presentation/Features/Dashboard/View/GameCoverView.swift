@@ -17,7 +17,7 @@ struct GameCoverView: View {
     @State var confirmText = "iniciar"
     
     var body: some View {
-        NavigationLink(value: viewModel.playingGame) {
+        SwiftUI.NavigationLink(value: viewModel.playingGame) {
             VStack(alignment: .center) {
                 ZStack(alignment: .bottomTrailing) {
                     

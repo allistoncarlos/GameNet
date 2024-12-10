@@ -19,6 +19,8 @@ enum Components: String, CaseIterable, Identifiable, CustomStringConvertible {
     case scrollView = "ScrollView"
     case hstack = "HStack"
     
+    case navigationLink = "NavigationLink"
+    
     case text = "Text"
     case dashboardText = "DashboardText"
     case subtitle = "Subtitle"

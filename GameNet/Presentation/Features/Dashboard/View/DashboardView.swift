@@ -114,7 +114,7 @@ struct DashboardView: View {
             .toolbar {
                 #if os(iOS) && DEBUG
                 Button(action: {}) {
-                    NavigationLink(value: String()) {
+                    SwiftUI.NavigationLink(value: String()) {
                         Image(systemName: "gear")
                     }
                 }
@@ -239,7 +239,7 @@ extension DashboardView {
                     if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
                         Group {
                             ForEach(finishedGamesByYear, id: \.year) { finishedGame in
-                                NavigationLink(value: finishedGame) {
+                                SwiftUI.NavigationLink(value: finishedGame) {
                                     HStack(spacing: 20) {
                                         Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
                                             .font(.dashboardGameTitle)
@@ -276,7 +276,7 @@ extension DashboardView {
                 if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
 //                    Group {
 //                        ForEach(finishedGamesByYear, id: \.year) { finishedGame in
-//                            NavigationLink(value: finishedGame) {
+//                            SwiftUI.NavigationLink(value: finishedGame) {
 //                                HStack(spacing: 20) {
 //                                    Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
 //                                        .font(.dashboardGameTitle)
@@ -335,7 +335,7 @@ extension DashboardView {
                     VStack(alignment: .leading) {
                         if let boughtByYear = viewModel.dashboard?.boughtByYear {
                             ForEach(boughtByYear, id: \.year) { boughtGame in
-                                NavigationLink(value: boughtGame) {
+                                SwiftUI.NavigationLink(value: boughtGame) {
                                     HStack(spacing: 20) {
                                         Text(
                                             boughtGame.quantity
@@ -416,7 +416,7 @@ extension DashboardView {
                 VStack(alignment: .leading, spacing: 5) {
                     if let gameplaySessions = viewModel.gameplaySessions {
                         ForEach(gameplaySessions.sorted(by: { $0.key >= $1.key }), id: \.key) { key, gameplaySession in
-                            NavigationLink(value: GameplaySessionNavigation(key: key, value: gameplaySession)) {
+                            SwiftUI.NavigationLink(value: GameplaySessionNavigation(key: key, value: gameplaySession)) {
                                 HStack(spacing: 20) {
                                     Text(String(key))
                                         .font(.dashboardGameTitle)

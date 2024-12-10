@@ -109,6 +109,7 @@
 		A57D3F2629CF77F3000AFFBA /* Binding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D3F2529CF77F3000AFFBA /* Binding+Extensions.swift */; };
 		A57D3F2B29CF8568000AFFBA /* CurrencyTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57D3F2A29CF8568000AFFBA /* CurrencyTextField.swift */; };
 		A57F59A12D088ECE00353397 /* Subtitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F59A02D088ECB00353397 /* Subtitle.swift */; };
+		A57F59A32D08CB7900353397 /* NavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A57F59A22D08CB7900353397 /* NavigationLink.swift */; };
 		A581484A296DF8AD00F52ED7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5814849296DF8AD00F52ED7 /* HomeView.swift */; };
 		A581484D296DF8CB00F52ED7 /* NotLoggedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */; };
 		A5814851296DF8FA00F52ED7 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5814850296DF8FA00F52ED7 /* HomeViewModel.swift */; };
@@ -290,6 +291,7 @@
 		A57D3F2529CF77F3000AFFBA /* Binding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extensions.swift"; sourceTree = "<group>"; };
 		A57D3F2A29CF8568000AFFBA /* CurrencyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTextField.swift; sourceTree = "<group>"; };
 		A57F59A02D088ECB00353397 /* Subtitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subtitle.swift; sourceTree = "<group>"; };
+		A57F59A22D08CB7900353397 /* NavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationLink.swift; sourceTree = "<group>"; };
 		A5814849296DF8AD00F52ED7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotLoggedView.swift; sourceTree = "<group>"; };
 		A5814850296DF8FA00F52ED7 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -634,6 +636,7 @@
 				A547BD1B2CF396EF003FACBE /* AsyncImage.swift */,
 				A562B71B2CF4AC3C00FEB4D9 /* Card.swift */,
 				A5F079632CF4E2ED002C3D41 /* DashboardText.swift */,
+				A57F59A22D08CB7900353397 /* NavigationLink.swift */,
 			);
 			path = ServerDrivenComponents;
 			sourceTree = "<group>";
@@ -1676,6 +1679,7 @@
 				A524C70F2A3F7BED003817A4 /* GameplayChartView.swift in Sources */,
 				A524F52828B506E800A91627 /* PlatformRepository.swift in Sources */,
 				A59E763D28B6B331003CBA3E /* EditPlatformState.swift in Sources */,
+				A57F59A32D08CB7900353397 /* NavigationLink.swift in Sources */,
 				A5E489F728958F0A0037023C /* LoginRouter.swift in Sources */,
 				A536617D2899883B00D52088 /* MockLoginRepository.swift in Sources */,
 				A524F53A28B5484600A91627 /* NavigationViewModifier.swift in Sources */,

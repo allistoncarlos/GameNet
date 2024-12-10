@@ -35,6 +35,17 @@ extension View {
                     }
                 })
                 
+            case Components.navigationLink.rawValue:
+                if let properties = component.properties,
+                   let value = properties.value,
+                   let elements = component.elements {
+                    AnyView(
+                        NavigationLink(value: value) {
+                            renderChildren(components: elements)
+                        }
+                    )
+                }
+                
             case Components.spacer.rawValue:
                 AnyView(Spacer())
 
