@@ -38,7 +38,7 @@ struct Card: View {
 #Preview {
     Card(
         title: "Horas jogadas por ano",
-        color: .blue,
+        color: .secondaryCardBackground,
         elements: []
     )
 }
