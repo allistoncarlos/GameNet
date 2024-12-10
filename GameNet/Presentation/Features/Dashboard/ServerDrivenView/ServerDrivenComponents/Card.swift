@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct Card: View {
-    var title: String
+    var title: String?
     var color: Color
     
     var elements: [Element]?
@@ -19,8 +19,10 @@ struct Card: View {
                 .fill(color)
 
             VStack(alignment: .leading, spacing: 15) {
-                VStack {
-                    CardTitle(title)
+                if let title {
+                    VStack {
+                        CardTitle(title)
+                    }
                 }
 
                 VStack(alignment: .leading, spacing: 5) {

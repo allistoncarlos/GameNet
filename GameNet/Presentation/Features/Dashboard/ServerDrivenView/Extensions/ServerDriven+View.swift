@@ -58,10 +58,9 @@ extension View {
 
             case Components.card.rawValue:
                 if let properties = component.properties,
-                   let title = properties.title,
                    let elements = component.elements {
                     AnyView(Card(
-                        title: title,
+                        title: properties.title,
                         color: Color.from(name: properties.color ?? ""),
                         elements: elements
                     ))
