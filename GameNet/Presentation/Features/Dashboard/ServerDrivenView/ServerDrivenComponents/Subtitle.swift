@@ -17,5 +17,6 @@ struct Subtitle: View {
     var body: some View {
         Text(value)
             .font(.dashboardGameSubtitle)
+            .multilineTextAlignment(.center)
     }
 }

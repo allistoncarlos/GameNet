@@ -27,4 +27,7 @@ enum Components: String, CaseIterable, Identifiable, CustomStringConvertible {
     
     case image = "Image"
     case card = "Card"
+    
+    case carousel = "Carousel"
+    case carouselCover = "CarouselCover"
 }

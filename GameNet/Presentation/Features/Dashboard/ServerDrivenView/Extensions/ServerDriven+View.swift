@@ -99,6 +99,17 @@ extension View {
                         }
                     })
                 }
+                
+            case Components.carouselCover.rawValue:
+                if let properties = component.properties {
+                    AnyView(CarouselCover(properties: properties))
+                }
+                
+                
+            case Components.carousel.rawValue:
+                if let elements = component.elements {
+                    AnyView(Carousel(elements: elements))
+                }
 
             default:
                 AnyView(EmptyView())
