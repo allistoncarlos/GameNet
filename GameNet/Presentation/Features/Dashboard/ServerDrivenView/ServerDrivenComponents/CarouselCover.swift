@@ -51,18 +51,13 @@ struct CarouselCover: View {
                             Text("Deseja \(confirmText) o jogo \(title)?")
                         }
                     }
-                    
-                    //                Text(model.title)
-                    //                    .font(.dashboardGameTitle)
-                    //                    .multilineTextAlignment(.center)
+
                     DashboardText(title)
-                    //                Text(viewModel.playingGame.latestGameplaySession?.start.toFormattedString() ?? "")
-                    //                    .font(.dashboardGameSubtitle)
-                    //                    .multilineTextAlignment(.center)
+
                     Subtitle(subtitle)
                 }
             }
-//            .containerRelativeFrame(.horizontal)
+            .frame(maxWidth: .infinity, maxHeight: 400)
             .scrollTransition(axis: .horizontal) { content, phase in
                 content
                     .scaleEffect(
