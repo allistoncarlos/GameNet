@@ -78,7 +78,7 @@ struct GamesView: View {
             .toolbar {
                 if origin == .home {
                     Button(action: {}) {
-                        NavigationLink {
+                        SwiftUI.NavigationLink {
                             viewModel.showGameEditView(
                                 navigationPath: $presentedGames
                             )
