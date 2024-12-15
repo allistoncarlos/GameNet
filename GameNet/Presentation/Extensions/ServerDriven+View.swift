@@ -48,6 +48,9 @@ extension View {
             case Components.carousel.rawValue:
                 renderCarousel(component)
                 
+            case Components.list.rawValue:
+                renderList(component)
+                
             default:
                 EmptyView()
             }
@@ -179,6 +182,15 @@ extension View {
     private func renderCarousel(_ component: Element) -> some View {
         if let elements = component.elements {
             Carousel(elements: elements)
+        }
+    }
+
+    @ViewBuilder
+    private func renderList(_ component: Element) -> some View {
+        if let elements = component.elements {
+            List(elements, id: \.properties!.value!) { element in
+                renderChildren(components: Array(CollectionOfOne(element)))
+            }
         }
     }
 }

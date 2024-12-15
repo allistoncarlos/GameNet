@@ -30,4 +30,6 @@ enum Components: String, CaseIterable, Identifiable, CustomStringConvertible {
     
     case carousel = "Carousel"
     case carouselCover = "CarouselCover"
+    
+    case list = "List"
 }
