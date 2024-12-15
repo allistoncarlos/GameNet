@@ -7,7 +7,6 @@
 
 import SwiftUI
 import TTProgressHUD
-import CachedAsyncImage
 
 struct ServerDrivenDashboardView: View {
     @ObservedObject var viewModel: ServerDrivenDashboardViewModel
@@ -16,7 +15,7 @@ struct ServerDrivenDashboardView: View {
     var body: some View {
         VStack(spacing: -20) {
             if let dynamicContainer = viewModel.dynamicContainer {
-                renderChildren(components: [dynamicContainer])
+                renderChildren(components: Array(CollectionOfOne(dynamicContainer)))
             }
         }
         .disabled(isLoading)
