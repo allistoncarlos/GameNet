@@ -22,7 +22,6 @@ class ServerDrivenDashboardViewModel: ObservableObject {
             .sink { [weak self] state in
                 switch state {
                 case let .success(serverDriven):
-                    // TODO: Não tá chegando aqui
                     self?.serverDriven = serverDriven
                     self?.dynamicContainer = self?.decode(json: serverDriven.json)
                 default:
