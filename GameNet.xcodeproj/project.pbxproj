@@ -410,6 +410,7 @@
 		A5050A272D0F5EFF0044A791 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A547BD1F2CF39840003FACBE /* Components.swift */,
 				A54414512CF20C410072F2B8 /* ServerDrivenState.swift */,
 			);
 			path = Model;
@@ -991,7 +992,6 @@
 				A54414532CF20F320072F2B8 /* ComponentWrapper.swift */,
 				A56A95EF28B3FBD300CAAFFF /* DashboardState.swift */,
 				A58281AA2CE6046800AB973A /* GameCoverState.swift */,
-				A547BD1F2CF39840003FACBE /* Components.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
