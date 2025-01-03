@@ -94,9 +94,9 @@ extension View {
     @ViewBuilder
     private func renderNavigationLink(_ component: Element) -> some View {
         if let properties = component.properties,
-           let value = properties.value,
+           let itemId = properties.itemId,
            let elements = component.elements {
-            NavigationLink(value: value) {
+            NavigationLink(value: itemId) {
                 renderChildren(components: elements)
             }
         }
@@ -188,7 +188,7 @@ extension View {
     @ViewBuilder
     private func renderList(_ component: Element) -> some View {
         if let elements = component.elements {
-            List(elements, id: \.properties!.value!) { element in
+            List(elements, id: \.properties!.itemId!) { element in
                 renderChildren(components: Array(CollectionOfOne(element)))
             }
         }

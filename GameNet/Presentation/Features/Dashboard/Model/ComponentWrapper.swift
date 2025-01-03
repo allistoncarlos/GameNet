@@ -41,6 +41,8 @@ struct Properties: Decodable, Identifiable {
     let value: String?
     let url: String?
     let spacing: CGFloat?
+    let template: String?
+    let itemId: String?
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -50,6 +52,8 @@ struct Properties: Decodable, Identifiable {
         case value
         case url
         case spacing
+        case template
+        case itemId
     }
 
     init(
@@ -59,7 +63,9 @@ struct Properties: Decodable, Identifiable {
         color: String? = nil,
         value: String? = nil,
         url: String? = nil,
-        spacing: CGFloat? = nil
+        spacing: CGFloat? = nil,
+        template: String? = nil,
+        itemId: String? = nil
     ) {
         self.id = id
         self.componentType = componentType
@@ -68,5 +74,7 @@ struct Properties: Decodable, Identifiable {
         self.value = value
         self.url = url
         self.spacing = spacing
+        self.template = template
+        self.itemId = itemId
     }
 }
