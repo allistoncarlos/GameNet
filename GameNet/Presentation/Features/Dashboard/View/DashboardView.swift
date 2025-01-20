@@ -106,9 +106,13 @@ struct DashboardView: View {
                     id: gameplaySession.userGameId
                 )
             }
-            .navigationDestination(for: String.self) { platformId in
+            .navigationDestination(for: String.self) { value in
                 #if os(iOS) && DEBUG
-                viewModel.featureToggle()
+                if value == "" {
+                    viewModel.featureToggle()
+                } else if FirebaseRemoteConfig.metabaseDashboard {
+                    viewModel.metabaseDashboard()
+                }
                 #endif
             }
             .toolbar {
@@ -116,6 +120,12 @@ struct DashboardView: View {
                 Button(action: {}) {
                     SwiftUI.NavigationLink(value: String()) {
                         Image(systemName: "gear")
+                    }
+                }
+
+                Button(action: {}) {
+                    SwiftUI.NavigationLink(value: "metabaseDashboard") {
+                        Image(systemName: "chart.pie")
                     }
                 }
                 #endif
