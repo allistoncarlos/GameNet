@@ -5,8 +5,9 @@
 	<key>API_PATH</key>
 	<string>$(API_PATH)</string>
 	<key>NSAppTransportSecurity</key>
-	<dict>  
-      <key>NSAllowsArbitraryLoads</key><true/>  
- </dict>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>
