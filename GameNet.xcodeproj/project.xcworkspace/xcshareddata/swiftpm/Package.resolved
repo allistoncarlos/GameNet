@@ -1,5 +1,5 @@
 {
-  "originHash" : "044ad130aae4f4573e7d06d662aaa1ebfa42e7824a66ca1f132bc2ae01ce26a7",
+  "originHash" : "7533c0f293e4e53f77627ec102dc31c52ebc41faf29b53a7a797dc198fe8cc1e",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -61,7 +61,7 @@
       "location" : "https://github.com/allistoncarlos/GameNet.Network",
       "state" : {
         "branch" : "main",
-        "revision" : "baa2540c3bd6ea669bd23bb4906bb06ef2b74b0a"
+        "revision" : "eb6bf25377f43db0014027ae2da35d9e8b40ba17"
       }
     },
     {
@@ -170,6 +170,15 @@
       "state" : {
         "revision" : "403699c645e0872fa8986366a7015da334f0f48b",
         "version" : "1.1.0"
+      }
+    },
+    {
+      "identity" : "stepperview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/badrinathvm/StepperView.git",
+      "state" : {
+        "revision" : "c66fb84c640fbc312f4eead0b7ae2a77f93e0839",
+        "version" : "1.6.7"
       }
     },
     {

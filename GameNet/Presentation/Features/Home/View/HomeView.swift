@@ -18,13 +18,17 @@ struct HomeView: View {
         dashboardViewModel: DashboardViewModel,
         platformsViewModel: PlatformsViewModel,
         gamesViewModel: GamesViewModel,
-        listsViewModel: ListsViewModel
+        listsViewModel: ListsViewModel,
+        
+        serverDrivenPlatformsViewModel: ServerDrivenPlatformsViewModel
     ) {
         self.homeViewModel = homeViewModel
         self.dashboardViewModel = dashboardViewModel
         self.platformsViewModel = platformsViewModel
         self.gamesViewModel = gamesViewModel
         self.listsViewModel = listsViewModel
+        
+        self.serverDrivenPlatformsViewModel = serverDrivenPlatformsViewModel
     }
 
     // MARK: Internal
@@ -34,6 +38,8 @@ struct HomeView: View {
     @ObservedObject var platformsViewModel: PlatformsViewModel
     @ObservedObject var gamesViewModel: GamesViewModel
     @ObservedObject var listsViewModel: ListsViewModel
+    
+    @ObservedObject var serverDrivenPlatformsViewModel: ServerDrivenPlatformsViewModel
 
     var body: some View {
         TabView {
@@ -53,7 +59,7 @@ struct HomeView: View {
                 Label("Games", systemImage: "gamecontroller")
             }
 
-            PlatformsView(viewModel: platformsViewModel)
+            platforms
                 .tabItem {
                     Label("Plataformas", systemImage: "laptopcomputer")
                 }
@@ -66,6 +72,12 @@ struct HomeView: View {
         .foregroundColor(.accentColor)
         .navigationViewStyle(.stack)
     }
+
+    @ViewBuilder private var platforms: some View {
+        FirebaseRemoteConfig.serverDrivenPlatforms ?
+            AnyView(ServerDrivenPlatformsView(viewModel: serverDrivenPlatformsViewModel)) :
+            AnyView(PlatformsView(viewModel: platformsViewModel))
+    }
 }
 
 // MARK: - Previews
@@ -76,13 +88,17 @@ struct HomeView: View {
     let platformsViewModel = PlatformsViewModel()
     let gamesViewModel = GamesViewModel()
     let listsViewModel = ListsViewModel()
+    
+    let serverDrivenPlatformsViewModel = ServerDrivenPlatformsViewModel()
 
     HomeView(
         homeViewModel: homeViewModel,
         dashboardViewModel: dashboardViewModel,
         platformsViewModel: platformsViewModel,
         gamesViewModel: gamesViewModel,
-        listsViewModel: listsViewModel
+        listsViewModel: listsViewModel,
+        
+        serverDrivenPlatformsViewModel: serverDrivenPlatformsViewModel
     ).preferredColorScheme(.dark)
 }
 
@@ -92,12 +108,16 @@ struct HomeView: View {
     let platformsViewModel = PlatformsViewModel()
     let gamesViewModel = GamesViewModel()
     let listsViewModel = ListsViewModel()
+    
+    let serverDrivenPlatformsViewModel = ServerDrivenPlatformsViewModel()
 
     HomeView(
         homeViewModel: homeViewModel,
         dashboardViewModel: dashboardViewModel,
         platformsViewModel: platformsViewModel,
         gamesViewModel: gamesViewModel,
-        listsViewModel: listsViewModel
+        listsViewModel: listsViewModel,
+        
+        serverDrivenPlatformsViewModel: serverDrivenPlatformsViewModel
     ).preferredColorScheme(.light)
 }

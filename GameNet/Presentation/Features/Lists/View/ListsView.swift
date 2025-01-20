@@ -23,7 +23,7 @@ struct ListsView: View {
             VStack {
                 if let lists = viewModel.lists {
                     List(lists, id: \.id) { list in
-                        NavigationLink(list.name, value: list.id)
+                        SwiftUI.NavigationLink(list.name, value: list.id)
                     }
                 }
             }
@@ -46,7 +46,7 @@ struct ListsView: View {
             .navigationView(title: "Listas")
             .toolbar {
                 Button(action: {}) {
-                    NavigationLink(value: String()) {
+                    SwiftUI.NavigationLink(value: String()) {
                         Image(systemName: "plus")
                     }
                 }

@@ -87,7 +87,7 @@ struct GameplaySessionDetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     ForEach(sessions, id: \.?.id) { session in
-                        NavigationLink(value: session) {
+                        SwiftUI.NavigationLink(value: session) {
                             GameplaySessionCell(
                                 gameName: session?.gameName,
                                 gameCover: session?.gameCover,

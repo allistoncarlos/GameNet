@@ -31,7 +31,7 @@ struct GamesView: View {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
                         ForEach(search.isEmpty ? viewModel.data : viewModel.searchedGames, id: \.id) { game in
                             if origin == .home {
-                                NavigationLink(value: game.id) {
+                                SwiftUI.NavigationLink(value: game.id) {
                                     GameItemView(name: game.name, coverURL: game.coverURL ?? "")
                                 }
                                 .onAppear {
@@ -78,7 +78,7 @@ struct GamesView: View {
             .toolbar {
                 if origin == .home {
                     Button(action: {}) {
-                        NavigationLink {
+                        SwiftUI.NavigationLink {
                             viewModel.showGameEditView(
                                 navigationPath: $presentedGames
                             )

@@ -41,6 +41,10 @@ enum DashboardRouter {
     static func makeFeatureToggle() -> some View {
         return FeatureToggleView(viewModel: FeatureToggleViewModel(), overrideRemoteConfigs: FirebaseRemoteConfig.overrideRemoteConfigs)
     }
+
+    static func makeMetabaseDashboard() -> some View {
+        return MetabaseDashboardView(viewModel: MetabaseDashboardViewModel())
+    }
     #endif
 }
 

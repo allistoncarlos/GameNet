@@ -23,7 +23,7 @@ struct PlatformsView: View {
                 if let platforms = viewModel.platforms {
                     List(platforms, id: \.id) { platform in
                         #if os(iOS)
-                        NavigationLink(platform.name, value: platform.id)
+                        SwiftUI.NavigationLink(platform.name, value: platform.id)
                         #else
                         Text(platform.name)
                         #endif
@@ -44,7 +44,7 @@ struct PlatformsView: View {
             .toolbar {
                 #if os(iOS)
                 Button(action: {}) {
-                    NavigationLink(value: String()) {
+                    SwiftUI.NavigationLink(value: String()) {
                         Image(systemName: "plus")
                     }
                 }
