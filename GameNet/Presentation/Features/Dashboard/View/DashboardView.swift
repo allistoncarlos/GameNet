@@ -19,46 +19,48 @@ struct DashboardView: View {
     // MARK: Internal
 
     @ObservedObject var viewModel: DashboardViewModel
-    @State var isLoading = true
+    @State var isLoading = false
 
     var body: some View {
         NavigationStack(path: $presentedViews) {
             ScrollView {
-                VStack(spacing: -20) {
-                    if FirebaseRemoteConfig.dashboardViewCarousel {
-                        if viewModel.dashboard?.playingGames != nil {
-                            playingCard
+                if FirebaseRemoteConfig.serverDrivenDashboard {
+                    ServerDrivenDashboardView(viewModel: ServerDrivenDashboardViewModel())
+                } else {
+                    VStack(spacing: -20) {
+                        if FirebaseRemoteConfig.dashboardViewCarousel {
+                            if viewModel.dashboard?.playingGames != nil {
+                                playingCard
+                            }
                         }
-                    }
-
-                    if viewModel.gameplaySessions != nil {
-//                        if !FirebaseRemoteConfig.stepperView {
-//                            gameplaySessions
-//                        } else {
-//                            gameplaySessionsStepperView
-//                        }
                         
-                        gameplaySessions
-                    }
-
-                    if viewModel.dashboard?.totalGames != nil {
-                        physicalDigitalCard
-                    }
-
-                    if viewModel.dashboard?.finishedByYear != nil {
-                        if !FirebaseRemoteConfig.stepperView {
-                            finishedByYearCard
-                        } else {
-                            finishedByYearCardStepperView
+                        if viewModel.gameplaySessions != nil {
+                            if !FirebaseRemoteConfig.stepperView {
+                                gameplaySessions
+                            } else {
+                                gameplaySessionsStepperView
+                            }
                         }
-                    }
-
-                    if viewModel.dashboard?.boughtByYear != nil {
-                        boughtByYearCard
-                    }
-
-                    if viewModel.dashboard?.gamesByPlatform != nil {
-                        gamesByPlatformCard
+                        
+                        if viewModel.dashboard?.totalGames != nil {
+                            physicalDigitalCard
+                        }
+                        
+                        if viewModel.dashboard?.finishedByYear != nil {
+                            if !FirebaseRemoteConfig.stepperView {
+                                finishedByYearCard
+                            } else {
+                                finishedByYearCardStepperView
+                            }
+                        }
+                        
+                        if viewModel.dashboard?.boughtByYear != nil {
+                            boughtByYearCard
+                        }
+                        
+                        if viewModel.dashboard?.gamesByPlatform != nil {
+                            gamesByPlatformCard
+                        }
                     }
                 }
             }
@@ -104,16 +106,26 @@ struct DashboardView: View {
                     id: gameplaySession.userGameId
                 )
             }
-            .navigationDestination(for: String.self) { platformId in
+            .navigationDestination(for: String.self) { value in
                 #if os(iOS) && DEBUG
-                viewModel.featureToggle()
+                if value == "" {
+                    viewModel.featureToggle()
+                } else if FirebaseRemoteConfig.metabaseDashboard {
+                    viewModel.metabaseDashboard()
+                }
                 #endif
             }
             .toolbar {
                 #if os(iOS) && DEBUG
                 Button(action: {}) {
-                    NavigationLink(value: String()) {
+                    SwiftUI.NavigationLink(value: String()) {
                         Image(systemName: "gear")
+                    }
+                }
+
+                Button(action: {}) {
+                    SwiftUI.NavigationLink(value: "metabaseDashboard") {
+                        Image(systemName: "chart.pie")
                     }
                 }
                 #endif
@@ -126,7 +138,9 @@ struct DashboardView: View {
             isLoading = state == .loading
         }
         .task {
-            await viewModel.fetchData()
+            if !FirebaseRemoteConfig.serverDrivenDashboard {
+                await viewModel.fetchData()
+            }
         }
     }
 
@@ -235,7 +249,7 @@ extension DashboardView {
                     if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
                         Group {
                             ForEach(finishedGamesByYear, id: \.year) { finishedGame in
-                                NavigationLink(value: finishedGame) {
+                                SwiftUI.NavigationLink(value: finishedGame) {
                                     HStack(spacing: 20) {
                                         Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
                                             .font(.dashboardGameTitle)
@@ -272,7 +286,7 @@ extension DashboardView {
                 if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
 //                    Group {
 //                        ForEach(finishedGamesByYear, id: \.year) { finishedGame in
-//                            NavigationLink(value: finishedGame) {
+//                            SwiftUI.NavigationLink(value: finishedGame) {
 //                                HStack(spacing: 20) {
 //                                    Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
 //                                        .font(.dashboardGameTitle)
@@ -331,7 +345,7 @@ extension DashboardView {
                     VStack(alignment: .leading) {
                         if let boughtByYear = viewModel.dashboard?.boughtByYear {
                             ForEach(boughtByYear, id: \.year) { boughtGame in
-                                NavigationLink(value: boughtGame) {
+                                SwiftUI.NavigationLink(value: boughtGame) {
                                     HStack(spacing: 20) {
                                         Text(
                                             boughtGame.quantity
@@ -412,7 +426,7 @@ extension DashboardView {
                 VStack(alignment: .leading, spacing: 5) {
                     if let gameplaySessions = viewModel.gameplaySessions {
                         ForEach(gameplaySessions.sorted(by: { $0.key >= $1.key }), id: \.key) { key, gameplaySession in
-                            NavigationLink(value: GameplaySessionNavigation(key: key, value: gameplaySession)) {
+                            SwiftUI.NavigationLink(value: GameplaySessionNavigation(key: key, value: gameplaySession)) {
                                 HStack(spacing: 20) {
                                     Text(String(key))
                                         .font(.dashboardGameTitle)

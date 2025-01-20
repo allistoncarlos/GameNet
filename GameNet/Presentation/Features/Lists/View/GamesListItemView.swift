@@ -21,7 +21,7 @@ struct GamesListItemView: View {
     let fixedWidth: CGFloat = 60
 
     var body: some View {
-        NavigationLink(value: game) {
+        SwiftUI.NavigationLink(value: game) {
             HStack(spacing: 20) {
                 CachedAsyncImage(url: URL(string: game?.cover ?? "")) { image in
                     image

@@ -14,6 +14,10 @@ enum RemoteConfigParameters: String, CaseIterable, Identifiable {
     case dashboardViewCarousel = "DashboardViewCarousel"
     case toggleGameplaySession = "ToggleGameplaySession"
     case stepperView = "StepperView"
+    case serverDrivenDashboard = "ServerDrivenDashboard"
+    case serverDrivenPlatforms = "ServerDrivenPlatforms"
+
+    case metabaseDashboard = "MetabaseDashboard"
 }
 
 @MainActor
@@ -21,6 +25,10 @@ class FirebaseRemoteConfig {
     static private(set) var dashboardViewCarousel: Bool = false
     static private(set) var toggleGameplaySession: Bool = false
     static private(set) var stepperView: Bool = false
+    static private(set) var serverDrivenDashboard: Bool = false
+    static private(set) var serverDrivenPlatforms: Bool = false
+
+    static private(set) var metabaseDashboard: Bool = false
     
     static var overrideRemoteConfigs: Bool {
         let defaults = UserDefaults.standard
@@ -38,6 +46,18 @@ class FirebaseRemoteConfig {
 
         FirebaseRemoteConfig.stepperView =
             remoteConfig[RemoteConfigParameters.stepperView.rawValue]
+            .boolValue
+        
+        FirebaseRemoteConfig.serverDrivenDashboard =
+            remoteConfig[RemoteConfigParameters.serverDrivenDashboard.rawValue]
+            .boolValue
+
+        FirebaseRemoteConfig.serverDrivenPlatforms =
+            remoteConfig[RemoteConfigParameters.serverDrivenPlatforms.rawValue]
+            .boolValue
+
+        FirebaseRemoteConfig.metabaseDashboard =
+            remoteConfig[RemoteConfigParameters.metabaseDashboard.rawValue]
             .boolValue
     }
     
@@ -61,6 +81,24 @@ class FirebaseRemoteConfig {
                 RemoteConfigParameters.stepperView.rawValue
             }) {
                 FirebaseRemoteConfig.stepperView = stepperView.enabled
+            }
+            
+            if let serverDrivenDashboard = debugConfigs.first(where: { $0.featureToggle ==
+                RemoteConfigParameters.serverDrivenDashboard.rawValue
+            }) {
+                FirebaseRemoteConfig.serverDrivenDashboard = serverDrivenDashboard.enabled
+            }
+
+            if let serverDrivenPlatforms = debugConfigs.first(where: { $0.featureToggle ==
+                RemoteConfigParameters.serverDrivenPlatforms.rawValue
+            }) {
+                FirebaseRemoteConfig.serverDrivenPlatforms = serverDrivenPlatforms.enabled
+            }
+
+            if let metabaseDashboard = debugConfigs.first(where: { $0.featureToggle ==
+                RemoteConfigParameters.metabaseDashboard.rawValue
+            }) {
+                FirebaseRemoteConfig.metabaseDashboard = metabaseDashboard.enabled
             }
         }
     }

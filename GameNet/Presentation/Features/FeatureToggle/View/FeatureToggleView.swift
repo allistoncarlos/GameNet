@@ -11,6 +11,7 @@ struct FeatureToggleView: View {
     @ObservedObject var viewModel: FeatureToggleViewModel
     @State var isLoading = true
     @State var overrideRemoteConfigs: Bool
+    @State private var isRemoveAllDataSheetPresented = false
     
     var body: some View {
         Form {
@@ -26,6 +27,22 @@ struct FeatureToggleView: View {
             }
         }
         .navigationView(title: "Feature Toggle")
+        .toolbar {
+            Button(action: {
+                self.isRemoveAllDataSheetPresented = true
+            }, label: {
+                Image(systemName: "clear")
+            })
+            .confirmationDialog("", isPresented: $isRemoveAllDataSheetPresented) {
+                Button("Confirmar") {
+                    viewModel.removeAllData()
+                }
+                Button("Cancelar", role: .cancel) { }
+            } message: {
+                Text("Deseja limpar as configurações?")
+            }
+        }
+        
         .safeAreaInset(edge: VerticalEdge.bottom) {
             Button("Salvar") {
                 viewModel.save(overrideRemoteConfigs: overrideRemoteConfigs)

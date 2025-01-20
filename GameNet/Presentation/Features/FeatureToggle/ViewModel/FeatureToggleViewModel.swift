@@ -15,7 +15,7 @@ class FeatureToggleViewModel: ObservableObject {
         featureToggles = fetchData()
     }
 
-    func fetchData() -> [RemoteConfigModel] {
+    private func fetchData() -> [RemoteConfigModel] {
         let decoder = JSONDecoder()
         if let savedData = UserDefaults.standard.data(forKey: "featureToggles"),
            let savedConfigs = try? decoder.decode([RemoteConfigModel].self, from: savedData) {
@@ -38,5 +38,15 @@ class FeatureToggleViewModel: ObservableObject {
         }
 
         FirebaseRemoteConfig.overrideRemoteConfigs(value: overrideRemoteConfigs)
+        
+        featureToggles = fetchData()
+    }
+    
+    func removeAllData() {
+        let domain = Bundle.main.bundleIdentifier!
+        UserDefaults.standard.removePersistentDomain(forName: domain)
+        UserDefaults.standard.synchronize()
+        
+        featureToggles = fetchData()
     }
 }
