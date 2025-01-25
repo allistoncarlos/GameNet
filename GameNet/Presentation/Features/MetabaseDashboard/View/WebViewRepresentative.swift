@@ -81,6 +81,7 @@ struct WebView: UIViewRepresentable {
     func fetchMetabaseURL() async throws -> String? {
         // Endpoint da API
         let urlString = "https://api.ngrok.com/endpoints"
+        let bearer: String = (Bundle.main.infoDictionary!["BEARER"] as? String)!
         
         // Verificar se a URL é válida
         guard let url = URL(string: urlString) else {
@@ -90,7 +91,7 @@ struct WebView: UIViewRepresentable {
         // Configuração da requisição
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue("Bearer 2ru5NUHsDoF9tceIUVWX1XwEekD_4EmXJuRcSYbsa7BnrXZ5u", forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer \(bearer)", forHTTPHeaderField: "Authorization")
         request.addValue("2", forHTTPHeaderField: "ngrok-version")
         
         // Realizar a chamada usando async/await
