@@ -23,7 +23,7 @@ struct PlayingGamesView: View {
                 } else {
                     if let platforms = viewModel.platforms {
                         List(platforms, id: \.id) { platform in
-                            NavigationLink(value: platform.id) {
+                            SwiftUI.NavigationLink(value: platform.id) {
                                 VStack(alignment: .leading, spacing: 5) {
                                     Image(systemName: "dpad.down.fill").foregroundColor(.blue).font(.system(size: 30)).padding(.top, 5)
                                     Text(platform.name).bold().padding(.top, 5)
@@ -35,7 +35,7 @@ struct PlayingGamesView: View {
                 }
             }
         }
-        .onChange(of: presentedPlatforms) { newValue in
+        .onChange(of: presentedPlatforms) { _, newValue in
             if newValue.isEmpty {
                 Task {
                     await viewModel.fetchData()
@@ -52,10 +52,8 @@ struct PlayingGamesView: View {
     @State private var presentedPlatforms = NavigationPath()
 }
 
-// MARK: - PlayingGamesView_Previews
+// MARK: - Previews
 
-struct PlayingGamesView_Previews: PreviewProvider {
-    static var previews: some View {
-        PlayingGamesView(viewModel: PlayingGamesViewModel())
-    }
+#Preview {
+    PlayingGamesView(viewModel: PlayingGamesViewModel())
 }

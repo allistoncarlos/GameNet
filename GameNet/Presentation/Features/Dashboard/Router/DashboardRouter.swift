@@ -36,6 +36,16 @@ enum DashboardRouter {
     static func goBackToDashboard(navigationPath: Binding<NavigationPath>) {
         navigationPath.wrappedValue.removeLast(navigationPath.wrappedValue.count - 1)
     }
+    
+    #if os(iOS) && DEBUG
+    static func makeFeatureToggle() -> some View {
+        return FeatureToggleView(viewModel: FeatureToggleViewModel(), overrideRemoteConfigs: FirebaseRemoteConfig.overrideRemoteConfigs)
+    }
+
+    static func makeMetabaseDashboard() -> some View {
+        return MetabaseDashboardView(viewModel: MetabaseDashboardViewModel())
+    }
+    #endif
 }
 
 // MARK: - GameplaySessionNavigation

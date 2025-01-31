@@ -12,6 +12,7 @@ import GameNet_Network
 
 protocol GameplaySessionDataSourceProtocol {
     func fetchGameplaySessionsByYear(year: Int, month: Int?) async -> GameplaySessions?
+    func save(gameplaySession: GameplaySession) async -> GameplaySession?
 }
 
 // MARK: - GameplaySessionDataSource
@@ -25,6 +26,20 @@ class GameplaySessionDataSource: GameplaySessionDataSourceProtocol {
             ) {
             if apiResult.ok {
                 return apiResult.data.toGameplaySessions()
+            }
+        }
+
+        return nil
+    }
+    
+    func save(gameplaySession: GameplaySession) async -> GameplaySession? {
+        if let apiResult = await NetworkManager.shared
+            .performRequest(
+                responseType: APIResult<GameplaySessionResponse>.self,
+                endpoint: .saveGameplaySession(data: gameplaySession.toRequest())
+            ) {
+            if apiResult.ok {
+                return apiResult.data.toGameplaySession()
             }
         }
 

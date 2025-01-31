@@ -22,38 +22,46 @@ struct PlatformsView: View {
             VStack {
                 if let platforms = viewModel.platforms {
                     List(platforms, id: \.id) { platform in
-                        NavigationLink(platform.name, value: platform.id)
+                        #if os(iOS)
+                        SwiftUI.NavigationLink(platform.name, value: platform.id)
+                        #else
+                        Text(platform.name)
+                        #endif
                     }
                 }
             }
             .disabled(isLoading)
             .padding(.top, 10)
             .navigationDestination(for: String.self) { platformId in
+                #if os(iOS)
                 viewModel.editPlatformView(
                     navigationPath: $presentedPlatforms,
                     platformId: platformId
                 )
+                #endif
             }
             .navigationView(title: "Platformas")
             .toolbar {
+                #if os(iOS)
                 Button(action: {}) {
-                    NavigationLink(value: String()) {
+                    SwiftUI.NavigationLink(value: String()) {
                         Image(systemName: "plus")
                     }
                 }
+                #endif
             }
         }
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: presentedPlatforms) { newValue in
+        .onChange(of: presentedPlatforms) { _, newValue in
             if newValue.isEmpty {
                 Task {
                     await viewModel.fetchData()
                 }
             }
         }
-        .onChange(of: viewModel.state) { state in
+        .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
         .task {
@@ -66,14 +74,16 @@ struct PlatformsView: View {
     @State private var presentedPlatforms = NavigationPath()
 }
 
-// MARK: - PlatformsView_Previews
+// MARK: - Previews
 
-struct PlatformsView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
-        ForEach(ColorScheme.allCases, id: \.self) {
-            PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme($0)
-        }
-    }
+    PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+
+    PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme(.light)
 }

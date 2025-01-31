@@ -57,22 +57,36 @@ struct GameplayChartView: View {
 
 }
 
-// MARK: - GameplayChartView_Previews
+// MARK: - Previews
 
-struct GameplayChartView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameplayChartView(
-            data: .constant([
-                .init(type: "Cube", sortDate: Date(), count: 5),
-                .init(type: "Sphere", sortDate: Date(), count: 4),
-                .init(type: "Pyramid", sortDate: Date(), count: 4),
-                .init(type: "Cube2", sortDate: Date(), count: 5),
-                .init(type: "Sphere2", sortDate: Date(), count: 4),
-                .init(type: "Pyramid2", sortDate: Date(), count: 4),
-                .init(type: "Pyramid3", sortDate: Date(), count: 4),
-                .init(type: "Pyramid4", sortDate: Date(), count: 4)
-            ]),
-            recentRegister: .constant(UUID())
-        )
-    }
+#Preview("Dark Mode") {
+    GameplayChartView(
+        data: .constant([
+            .init(type: "Cube", sortDate: Date(), count: 5),
+            .init(type: "Sphere", sortDate: Date(), count: 4),
+            .init(type: "Pyramid", sortDate: Date(), count: 4),
+            .init(type: "Cube2", sortDate: Date(), count: 5),
+            .init(type: "Sphere2", sortDate: Date(), count: 4),
+            .init(type: "Pyramid2", sortDate: Date(), count: 4),
+            .init(type: "Pyramid3", sortDate: Date(), count: 4),
+            .init(type: "Pyramid4", sortDate: Date(), count: 4)
+        ]),
+        recentRegister: .constant(UUID())
+    ).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    GameplayChartView(
+        data: .constant([
+            .init(type: "Cube", sortDate: Date(), count: 5),
+            .init(type: "Sphere", sortDate: Date(), count: 4),
+            .init(type: "Pyramid", sortDate: Date(), count: 4),
+            .init(type: "Cube2", sortDate: Date(), count: 5),
+            .init(type: "Sphere2", sortDate: Date(), count: 4),
+            .init(type: "Pyramid2", sortDate: Date(), count: 4),
+            .init(type: "Pyramid3", sortDate: Date(), count: 4),
+            .init(type: "Pyramid4", sortDate: Date(), count: 4)
+        ]),
+        recentRegister: .constant(UUID())
+    ).preferredColorScheme(.light)
 }

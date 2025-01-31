@@ -29,10 +29,8 @@ struct HomeView: View {
     }
 }
 
-// MARK: - HomeView_Previews
+// MARK: - Previews
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView(viewModel: HomeViewModel())
-    }
+#Preview {
+    HomeView(viewModel: HomeViewModel())
 }

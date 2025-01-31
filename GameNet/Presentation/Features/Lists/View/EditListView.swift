@@ -22,7 +22,7 @@ struct EditListView: View {
     var body: some View {
         Form {
             Section(header: Text("Título")) {
-                TextField("Lista", text: $viewModel.list.name)
+                TextField("Lista", text: $viewModel.listGame.name)
                     .autocapitalization(.none)
                     .onSubmit {
                         Task {
@@ -31,11 +31,11 @@ struct EditListView: View {
                     }
             }
 
-            if let listGame = viewModel.listGame {
+            if viewModel.listGame.games != nil {
                 Section(header: Text("Jogos")) {
                     viewModel.showListGamesView(
                         navigationPath: $navigationPath,
-                        listGame: listGame,
+                        listGame: viewModel.listGame,
                         deleteAction: delete(at:),
                         moveAction: move(from:to:)
                     )
@@ -53,7 +53,7 @@ struct EditListView: View {
                         await viewModel.save()
                     }
                 }
-                .disabled(isLoading || viewModel.list.name.isEmpty)
+                .disabled(isLoading || viewModel.listGame.name.isEmpty)
                 .buttonStyle(MainButtonStyle())
             ) {
                 EmptyView()
@@ -86,10 +86,10 @@ struct EditListView: View {
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state, { oldValue, state in
+        .onChange(of: viewModel.state, { _, state in
             isLoading = state == .loading
         })
-        .onChange(of: selectedUserGameId, { oldValue, newValue in
+        .onChange(of: selectedUserGameId, { _, newValue in
             Task {
                 await viewModel.addUserGame(selectedUserGameId: $selectedUserGameId)
                 self.selectedUserGameId = nil
@@ -115,19 +115,25 @@ struct EditListView: View {
 
 }
 
-// MARK: - EditListView_Previews
+// MARK: - Previews
 
-struct EditListView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+    let list = GameNet_Network.List(id: "1", name: "Próximos Jogos")
 
-        let list = GameNet_Network.List(id: "1", name: "Próximos Jogos")
-
-        ForEach(ColorScheme.allCases, id: \.self) {
-            EditListView(
-                viewModel: EditListViewModel(list: list),
-                navigationPath: .constant(NavigationPath())
-            ).preferredColorScheme($0)
-        }
-    }
+    EditListView(
+        viewModel: EditListViewModel(list: list),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.dark)
 }
+
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+    let list = GameNet_Network.List(id: "1", name: "Próximos Jogos")
+
+    EditListView(
+        viewModel: EditListViewModel(list: list),
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.light)
+}
+

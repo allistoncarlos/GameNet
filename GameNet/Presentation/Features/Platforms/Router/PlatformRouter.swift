@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 24/08/22.
 //
 
+#if os(iOS)
 import GameNet_Network
 import SwiftUI
 
@@ -21,3 +22,4 @@ enum PlatformRouter {
         navigationPath.wrappedValue.removeLast()
     }
 }
+#endif

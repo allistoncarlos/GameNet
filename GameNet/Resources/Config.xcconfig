@@ -8,3 +8,4 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 API_PATH=https:/$()/gamenet.azurewebsites.net/api
+BEARER=2ru5NUHsDoF9tceIUVWX1XwEekD_4EmXJuRcSYbsa7BnrXZ5u

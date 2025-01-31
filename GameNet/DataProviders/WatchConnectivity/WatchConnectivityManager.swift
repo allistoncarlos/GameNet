@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 07/01/23.
 //
 
+#if canImport(WatchConnectivity)
 import Foundation
 import WatchConnectivity
 
@@ -129,3 +130,4 @@ extension WatchConnectivityManager: WCSessionDelegate {
         }
     #endif
 }
+#endif

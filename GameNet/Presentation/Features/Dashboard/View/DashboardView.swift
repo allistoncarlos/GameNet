@@ -10,6 +10,7 @@ import GameNet_Network
 import SwiftUI
 import TTProgressHUD
 import CachedAsyncImage
+import StepperView
 
 // MARK: - DashboardView
 
@@ -18,34 +19,48 @@ struct DashboardView: View {
     // MARK: Internal
 
     @ObservedObject var viewModel: DashboardViewModel
-    @State var isLoading = true
+    @State var isLoading = false
 
     var body: some View {
         NavigationStack(path: $presentedViews) {
             ScrollView {
-                VStack(spacing: -20) {
-                    if viewModel.dashboard?.playingGames != nil {
-                        playingCard
-                    }
-
-                    if viewModel.gameplaySessions != nil {
-                        gameplaySessions
-                    }
-
-                    if viewModel.dashboard?.totalGames != nil {
-                        physicalDigitalCard
-                    }
-
-                    if viewModel.dashboard?.finishedByYear != nil {
-                        finishedByYearCard
-                    }
-
-                    if viewModel.dashboard?.boughtByYear != nil {
-                        boughtByYearCard
-                    }
-
-                    if viewModel.dashboard?.gamesByPlatform != nil {
-                        gamesByPlatformCard
+                if FirebaseRemoteConfig.serverDrivenDashboard {
+                    ServerDrivenDashboardView(viewModel: ServerDrivenDashboardViewModel())
+                } else {
+                    VStack(spacing: -20) {
+                        if FirebaseRemoteConfig.dashboardViewCarousel {
+                            if viewModel.dashboard?.playingGames != nil {
+                                playingCard
+                            }
+                        }
+                        
+                        if viewModel.gameplaySessions != nil {
+                            if !FirebaseRemoteConfig.stepperView {
+                                gameplaySessions
+                            } else {
+                                gameplaySessionsStepperView
+                            }
+                        }
+                        
+                        if viewModel.dashboard?.totalGames != nil {
+                            physicalDigitalCard
+                        }
+                        
+                        if viewModel.dashboard?.finishedByYear != nil {
+                            if !FirebaseRemoteConfig.stepperView {
+                                finishedByYearCard
+                            } else {
+                                finishedByYearCardStepperView
+                            }
+                        }
+                        
+                        if viewModel.dashboard?.boughtByYear != nil {
+                            boughtByYearCard
+                        }
+                        
+                        if viewModel.dashboard?.gamesByPlatform != nil {
+                            gamesByPlatformCard
+                        }
                     }
                 }
             }
@@ -91,15 +106,41 @@ struct DashboardView: View {
                     id: gameplaySession.userGameId
                 )
             }
+            .navigationDestination(for: String.self) { value in
+                #if os(iOS) && DEBUG
+                if value == "" {
+                    viewModel.featureToggle()
+                } else if FirebaseRemoteConfig.metabaseDashboard {
+                    viewModel.metabaseDashboard()
+                }
+                #endif
+            }
+            .toolbar {
+                #if os(iOS) && DEBUG
+                Button(action: {}) {
+                    SwiftUI.NavigationLink(value: String()) {
+                        Image(systemName: "gear")
+                    }
+                }
+
+                Button(action: {}) {
+                    SwiftUI.NavigationLink(value: "metabaseDashboard") {
+                        Image(systemName: "chart.pie")
+                    }
+                }
+                #endif
+            }
         }
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state) { state in
+        .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
         .task {
-            await viewModel.fetchData()
+            if !FirebaseRemoteConfig.serverDrivenDashboard {
+                await viewModel.fetchData()
+            }
         }
     }
 
@@ -133,11 +174,15 @@ extension DashboardView {
                                         return lhsDate > rhsDate
                                     }
                                     
-                                    return false
+                                    return true
                                 })
                                 
                                 ForEach(ordered, id: \.id) { playingGame in
-                                    GameCoverView(playingGame: playingGame)
+                                    GameCoverView(
+                                        viewModel: GameCoverViewModel(
+                                            playingGame: playingGame
+                                        )
+                                    )
                                 }
                             }
                         }
@@ -204,7 +249,7 @@ extension DashboardView {
                     if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
                         Group {
                             ForEach(finishedGamesByYear, id: \.year) { finishedGame in
-                                NavigationLink(value: finishedGame) {
+                                SwiftUI.NavigationLink(value: finishedGame) {
                                     HStack(spacing: 20) {
                                         Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
                                             .font(.dashboardGameTitle)
@@ -219,6 +264,65 @@ extension DashboardView {
                 }
             }
             .padding()
+        }
+        .padding()
+    }
+}
+
+extension DashboardView {
+    var finishedByYearCardStepperView: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.tertiaryCardBackground)
+
+            VStack {
+                VStack {
+                    Text("Finalizados por Ano")
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                        .font(.cardTitle)
+                        .padding([.top, .horizontal])
+                }
+
+                if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
+//                    Group {
+//                        ForEach(finishedGamesByYear, id: \.year) { finishedGame in
+//                            SwiftUI.NavigationLink(value: finishedGame) {
+//                                HStack(spacing: 20) {
+//                                    Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
+//                                        .font(.dashboardGameTitle)
+//                                    Text(String(finishedGame.year))
+//                                        .font(.dashboardGameTitle)
+//                                    Spacer()
+//                                }
+//                            }
+//                        }
+//                    }
+                    let steps = finishedGamesByYear.map { finishedGame in
+                        Text(String(finishedGame.year))
+                    }
+
+                    let indicationTypes = finishedGamesByYear.map { finishedGame in
+                        StepperIndicationType.custom(
+                            NumberedCircleView(text: finishedGame.total.toLeadingZerosString(decimalPlaces: 2), color: .main)
+                            // TODO: Testar pra ver se eu consigo colocar um Text normal aqui, do SwiftUI mesmo
+                        )
+                    }
+                    
+                    ScrollView(.horizontal) {
+                        StepperView()
+                            .addSteps(steps)
+                            .indicators(indicationTypes)
+                            .stepIndicatorMode(StepperMode.horizontal)
+                            .spacing(30)
+                            .lineOptions(
+                                StepperLineOptions.custom(1, Colors.black.rawValue)
+                            )
+                            .padding(.horizontal)
+                            .padding(.top, 40)
+                    }
+                    .padding([.horizontal, .bottom])
+                }
+            }
         }
         .padding()
     }
@@ -241,7 +345,7 @@ extension DashboardView {
                     VStack(alignment: .leading) {
                         if let boughtByYear = viewModel.dashboard?.boughtByYear {
                             ForEach(boughtByYear, id: \.year) { boughtGame in
-                                NavigationLink(value: boughtGame) {
+                                SwiftUI.NavigationLink(value: boughtGame) {
                                     HStack(spacing: 20) {
                                         Text(
                                             boughtGame.quantity
@@ -304,7 +408,7 @@ extension DashboardView {
     }
 }
 
-// MARK: - DashboardView_Previews
+// MARK: - DashboardView
 
 extension DashboardView {
     var gameplaySessions: some View {
@@ -322,7 +426,7 @@ extension DashboardView {
                 VStack(alignment: .leading, spacing: 5) {
                     if let gameplaySessions = viewModel.gameplaySessions {
                         ForEach(gameplaySessions.sorted(by: { $0.key >= $1.key }), id: \.key) { key, gameplaySession in
-                            NavigationLink(value: GameplaySessionNavigation(key: key, value: gameplaySession)) {
+                            SwiftUI.NavigationLink(value: GameplaySessionNavigation(key: key, value: gameplaySession)) {
                                 HStack(spacing: 20) {
                                     Text(String(key))
                                         .font(.dashboardGameTitle)
@@ -341,14 +445,64 @@ extension DashboardView {
     }
 }
 
-// MARK: - DashboardView_Previews
+extension DashboardView {
+    var gameplaySessionsStepperView: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.secondaryCardBackground)
 
-struct DashboardView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.dashboardRepository.register(factory: { MockDashboardRepository() })
+            VStack(alignment: .center, spacing: 15) {
+                VStack {
+                    Text("Horas Jogadas por Ano")
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                        .font(.cardTitle)
+                }
 
-        ForEach(ColorScheme.allCases, id: \.self) {
-            DashboardView(viewModel: DashboardViewModel()).preferredColorScheme($0)
+                if let gameplaySessions = viewModel.gameplaySessions {
+                    let steps = gameplaySessions.map {
+                        Text(String($0.key))
+                            .font(.dashboardGameTitle)
+                    }
+
+                    let indicationTypes = gameplaySessions.map { _ in
+                        StepperIndicationType.custom(
+                            NumberedCircleView(text: "999:99", width: 80).eraseToAnyView()
+//                                Text("999:99")
+//                                    .background(.red)
+//                                    .frame(width: 80, height: 80)
+                        )
+                    }
+                    
+                    ScrollView(.horizontal) {
+                        StepperView()
+                            .addSteps(steps)
+                            .indicators(indicationTypes)
+                            .stepIndicatorMode(StepperMode.horizontal)
+                            .spacing(30)
+                            .lineOptions(
+                                StepperLineOptions.custom(5, Colors.black.rawValue)
+                            )
+//                            .padding(.top, 40)
+                    }
+                    .frame(minHeight: 70)
+                }
+            }
+            .padding()
         }
+        .padding()
     }
+}
+
+// MARK: - Previews
+
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.dashboardRepository.register(factory: { MockDashboardRepository() })
+    
+    DashboardView(viewModel: DashboardViewModel()).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.dashboardRepository.register(factory: { MockDashboardRepository() })
+    
+    DashboardView(viewModel: DashboardViewModel()).preferredColorScheme(.light)
 }

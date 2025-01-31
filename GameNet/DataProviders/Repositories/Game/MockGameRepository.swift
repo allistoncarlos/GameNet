@@ -101,8 +101,8 @@ struct MockGameRepository: GameRepositoryProtocol {
                 GameplaySession(
                     id: "1",
                     userGameId: "1",
-                    start: Date(),
-                    finish: Date(),
+                    start: Calendar.current.date(byAdding: .hour, value: -77, to: Date())!,
+                    finish: Calendar.current.date(byAdding: .hour, value: -71, to: Date())!,
                     gameName: "The Legend of Zelda: Tears of the Kingdom",
                     gameCover: "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg",
                     platformName: "Nintendo Switch",
@@ -111,7 +111,27 @@ struct MockGameRepository: GameRepositoryProtocol {
                 GameplaySession(
                     id: "2",
                     userGameId: "1",
-                    start: Date(),
+                    start: Calendar.current.date(byAdding: .hour, value: -29, to: Date())!,
+                    finish: Calendar.current.date(byAdding: .hour, value: -28, to: Date())!,
+                    gameName: "The Legend of Zelda: Tears of the Kingdom",
+                    gameCover: "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg",
+                    platformName: "Nintendo Switch",
+                    totalGameplayTime: "01:20"
+                ),
+                GameplaySession(
+                    id: "3",
+                    userGameId: "1",
+                    start: Calendar.current.date(byAdding: .hour, value: -5, to: Date())!,
+                    finish: Calendar.current.date(byAdding: .hour, value: -4, to: Date())!,
+                    gameName: "The Legend of Zelda: Tears of the Kingdom",
+                    gameCover: "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg",
+                    platformName: "Nintendo Switch",
+                    totalGameplayTime: "01:20"
+                ),
+                GameplaySession(
+                    id: "4",
+                    userGameId: "1",
+                    start: Calendar.current.date(byAdding: .hour, value: -5, to: Date())!,
                     finish: nil,
                     gameName: "The Legend of Zelda: Tears of the Kingdom",
                     gameCover: "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg",

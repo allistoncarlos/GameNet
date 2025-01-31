@@ -21,7 +21,7 @@ struct GamesListItemView: View {
     let fixedWidth: CGFloat = 60
 
     var body: some View {
-        NavigationLink(value: game) {
+        SwiftUI.NavigationLink(value: game) {
             HStack(spacing: 20) {
                 CachedAsyncImage(url: URL(string: game?.cover ?? "")) { image in
                     image
@@ -51,14 +51,20 @@ struct GamesListItemView: View {
     }
 }
 
-// MARK: - GamesListItemView_Previews
+// MARK: - Previews
 
-struct GamesListItemView_Previews: PreviewProvider {
-    static var previews: some View {
-        let listGame = MockListRepository().fetchData(id: "1")
+#Preview("Dark Mode") {
+    let listGame = MockListRepository().fetchData(id: "1")
 
-        GamesListItemView(
-            game: listGame?.games?[0]
-        )
-    }
+    GamesListItemView(
+        game: listGame?.games?[0]
+    ).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    let listGame = MockListRepository().fetchData(id: "1")
+
+    GamesListItemView(
+        game: listGame?.games?[0]
+    ).preferredColorScheme(.light)
 }

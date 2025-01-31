@@ -31,7 +31,7 @@ struct GamesView: View {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
                         ForEach(search.isEmpty ? viewModel.data : viewModel.searchedGames, id: \.id) { game in
                             if origin == .home {
-                                NavigationLink(value: game.id) {
+                                SwiftUI.NavigationLink(value: game.id) {
                                     GameItemView(name: game.name, coverURL: game.coverURL ?? "")
                                 }
                                 .onAppear {
@@ -62,7 +62,7 @@ struct GamesView: View {
                     text: $search,
                     prompt: Text("Buscar")
                 )
-                .onChange(of: search) { search in
+                .onChange(of: search) { _, search in
                     if search.isEmpty {
                         Task { await viewModel.fetchData(origin: origin, clear: true) }
                     }
@@ -78,7 +78,7 @@ struct GamesView: View {
             .toolbar {
                 if origin == .home {
                     Button(action: {}) {
-                        NavigationLink {
+                        SwiftUI.NavigationLink {
                             viewModel.showGameEditView(
                                 navigationPath: $presentedGames
                             )
@@ -92,10 +92,10 @@ struct GamesView: View {
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state) { state in
+        .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
-        .onChange(of: presentedGames) { newValue in
+        .onChange(of: presentedGames) { _, newValue in
             if newValue.isEmpty {
                 Task {
                     await viewModel.fetchData()
@@ -118,18 +118,24 @@ struct GamesView: View {
     @State var presentedGames = NavigationPath()
 }
 
-// MARK: - GamesView_Previews
+// MARK: - Previews
 
-struct GamesView_Previews: PreviewProvider {
-    static var previews: some View {
-        let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+#Preview("Dark Mode") {
+    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    
+    GamesView(
+        viewModel: GamesViewModel(),
+        selectedUserGameId: .constant(nil),
+        isPresented: .constant(false)
+    ).preferredColorScheme(.dark)
+}
 
-        ForEach(ColorScheme.allCases, id: \.self) {
-            GamesView(
-                viewModel: GamesViewModel(),
-                selectedUserGameId: .constant(nil),
-                isPresented: .constant(false)
-            ).preferredColorScheme($0)
-        }
-    }
+#Preview("Light Mode") {
+    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    
+    GamesView(
+        viewModel: GamesViewModel(),
+        selectedUserGameId: .constant(nil),
+        isPresented: .constant(false)
+    ).preferredColorScheme(.light)
 }

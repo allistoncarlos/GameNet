@@ -8,7 +8,6 @@
 import CachedAsyncImage
 import GameNet_Network
 import SwiftUI
-import TTProgressHUD
 
 // MARK: - GameplaySessionCell
 
@@ -88,7 +87,7 @@ struct GameplaySessionDetailView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     ForEach(sessions, id: \.?.id) { session in
-                        NavigationLink(value: session) {
+                        SwiftUI.NavigationLink(value: session) {
                             GameplaySessionCell(
                                 gameName: session?.gameName,
                                 gameCover: session?.gameCover,
@@ -108,22 +107,36 @@ struct GameplaySessionDetailView: View {
 
 }
 
-// MARK: - GameplaySessionDetailView_Previews
+// MARK: - Previews
 
-struct GameplaySessionDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        let sessions = MockGameRepository().fetchGameplaySessions(id: "1")!
+#Preview("Dark Mode") {
+    let sessions = MockGameRepository().fetchGameplaySessions(id: "1")!
 
-        let gameplaySessionNavigation = GameplaySessionNavigation(
-            key: 2023,
-            value: sessions
-        )
+    let gameplaySessionNavigation = GameplaySessionNavigation(
+        key: Calendar.current.component(.year, from: Date()),
+        value: sessions
+    )
 
-        let viewModel = GameplaySessionDetailViewModel(gameplaySession: gameplaySessionNavigation)
+    let viewModel = GameplaySessionDetailViewModel(gameplaySession: gameplaySessionNavigation)
 
-        GameplaySessionDetailView(
-            viewModel: viewModel,
-            navigationPath: .constant(NavigationPath())
-        )
-    }
+    GameplaySessionDetailView(
+        viewModel: viewModel,
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.dark)
+}
+
+#Preview("Light Mode") {
+    let sessions = MockGameRepository().fetchGameplaySessions(id: "1")!
+
+    let gameplaySessionNavigation = GameplaySessionNavigation(
+        key: Calendar.current.component(.year, from: Date()),
+        value: sessions
+    )
+
+    let viewModel = GameplaySessionDetailViewModel(gameplaySession: gameplaySessionNavigation)
+
+    GameplaySessionDetailView(
+        viewModel: viewModel,
+        navigationPath: .constant(NavigationPath())
+    ).preferredColorScheme(.light)
 }
