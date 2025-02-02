@@ -1,5 +1,5 @@
 {
-  "originHash" : "7533c0f293e4e53f77627ec102dc31c52ebc41faf29b53a7a797dc198fe8cc1e",
+  "originHash" : "d8671d19ffd4fcaa76eceb213545b7d9362d86e561c53c9a7c7afd05433106f9",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -215,6 +215,15 @@
       "state" : {
         "branch" : "feature/tvOS",
         "revision" : "40811ea11d46a9458c6f3aeb1a475472e7150878"
+      }
+    },
+    {
+      "identity" : "ttprogresshud",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/allistoncarlos/ttprogresshud",
+      "state" : {
+        "branch" : "feature/tvOS",
+        "revision" : "9dd3a6e24f0ca107c7f26ef8f302ad82f900980c"
       }
     }
   ],

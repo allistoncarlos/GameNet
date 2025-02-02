@@ -2,10 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>BEARER</key>
-	<string>$(BEARER)</string>
 	<key>API_PATH</key>
 	<string>$(API_PATH)</string>
+	<key>BEARER</key>
+	<string>$(BEARER)</string>
 	<key>METABASE_DASHBOARD</key>
 	<string>$(METABASE_DASHBOARD)</string>
 </dict>
