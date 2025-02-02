@@ -13,5 +13,6 @@ enum GameDetailState: Equatable {
     case loading
     case successGame(GameDetail)
     case successGameplays(GameplaySessions)
+    case successSave(GameplaySession)
     case error(String)
 }

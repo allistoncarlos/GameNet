@@ -18,29 +18,63 @@ struct GameDetailView: View {
 
     @Binding var navigationPath: NavigationPath
 
+    @State var isLoading = true
     @State var isCopied = false
+    @State var showingConfirmation = false
+    @State var buttonImage = "play.fill"
+    @State var confirmText = "iniciar"
 
     var body: some View {
         ScrollView {
             VStack(spacing: 15) {
                 if let game = viewModel.game {
-                    CachedAsyncImage(url: URL(string: game.cover)) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                    } placeholder: { ProgressView().progressViewStyle(.circular) }
-                        .frame(height: 250)
-                    // TODO: tvOS
-//                        .onTapGesture(count: 2) {
-//                            if let gameId = game.id {
-//                                UIPasteboard.general.setValue(
-//                                    gameId,
-//                                    forPasteboardType: UTType.plainText.identifier
-//                                )
-//
-//                                isCopied = true
-//                            }
-//                        }
+                    ZStack(alignment: .bottomTrailing) {
+                        CachedAsyncImage(url: URL(string: game.cover)) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                        } placeholder: { ProgressView().progressViewStyle(.circular) }
+                            .frame(height: 250)
+                            .onTapGesture(count: 2) {
+                                #if os(iOS)
+                                if let gameId = game.id {
+                                    UIPasteboard.general.setValue(
+                                        gameId,
+                                        forPasteboardType: UTType.plainText.identifier
+                                    )
+                                    
+                                    isCopied = true
+                                }
+                                #endif
+                            }
+                        
+                        if FirebaseRemoteConfig.toggleGameplaySession {
+                            Button(action: {
+                                showingConfirmation = true
+                            }, label: {
+                                Image(systemName: buttonImage)
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
+                            })
+                            .foregroundStyle(Color.white)
+                            .background {
+                                Circle()
+                                    .fill(Color.main)
+                                    .shadow(color: .white, radius: 4, x: -2, y: 1)
+                            }
+                            .offset(x: -5, y: -5)
+                            .confirmationDialog("", isPresented: $showingConfirmation) {
+                                Button("Confirmar") {
+                                    Task {
+                                        await viewModel.save()
+                                    }
+                                }
+                                Button("Cancelar", role: .cancel) { }
+                            } message: {
+                                Text("Deseja \(confirmText) o jogo \(game.name)?")
+                            }
+                        }
+                    }
 
                     Text(game.name)
                         .font(.system(.title))
@@ -126,6 +160,7 @@ struct GameDetailView: View {
             }
             .padding(10)
         }
+        .disabled(isLoading)
         .overlay(
             TTProgressHUD($isCopied, config: TTProgressHUDConfig(
                 type: .success,
@@ -136,6 +171,16 @@ struct GameDetailView: View {
             ))
         )
         .navigationView(title: viewModel.game?.name ?? "")
+        .overlay(
+            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+        )
+        .onChange(of: viewModel.state) { _, state in
+            isLoading = state == .loading
+        }
+        .onChange(of: viewModel.isStarted) { oldValue, newValue in
+            self.buttonImage = newValue ? "stop.fill" : "play.fill"
+            self.confirmText = newValue ? "finalizar" : "iniciar"
+        }
         .task {
             await viewModel.fetchData()
         }
