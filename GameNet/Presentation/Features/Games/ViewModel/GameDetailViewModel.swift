@@ -35,6 +35,11 @@ class GameDetailViewModel: ObservableObject {
                     }
                 case let .successGameplays(gameplays):
                     self?.gameplays = gameplays
+                    self?.updateStarted()
+                case .successSave:
+                    Task {
+                        await self?.fetchGameplaySessions(id: gameId)
+                    }
                 default:
                     break
                 }
@@ -45,7 +50,9 @@ class GameDetailViewModel: ObservableObject {
 
     @Published var game: GameDetail? = nil
     @Published var gameplays: GameplaySessions?
+    @Published var latestGameplaySession: GameplaySession?
     @Published var state: GameDetailState = .idle
+    @Published var isStarted: Bool = false
 
     func fetchData() async {
         state = .loading
@@ -68,12 +75,63 @@ class GameDetailViewModel: ObservableObject {
             state = .error("Erro na busca de dados de sessões no servidor")
         }
     }
+    
+    func save() async {
+        state = .loading
+        
+        var start = Date.timeZoneDate()
+        
+        if isStarted {
+            if let latestStart = self.latestGameplaySession?.start {
+                start = latestStart
+            }
+        }
+        
+        let finish = isStarted ? Date.timeZoneDate() : nil
+
+        let result = await gameplaySessionRepository.save(
+            userGameId: self.gameId,
+            start: start,
+            finish: finish,
+            id: nil
+        )
+        
+        if let result {
+            state = .successSave(result)
+        } else {
+            state = .error("Erro no salvamento de dados do servidor")
+        }
+    }
 
     // MARK: Private
 
     private var gameId: String
     @Injected(RepositoryContainer.gameRepository) private var repository
+    @Injected(RepositoryContainer.gameplaySessionRepository) private var gameplaySessionRepository
     private var cancellable = Set<AnyCancellable>()
+    
+    private func updateStarted() {
+        if let gameplays {
+            let ordered = gameplays.sessions.sorted(by: { lhs, rhs in
+                if let lhsDate = lhs?.finish,
+                   let rhsDate = rhs?.finish {
+                    
+                    return lhsDate < rhsDate
+                }
+                
+                return true
+            })
+            
+            if ordered.contains(where: { gameplaySession in
+                gameplaySession?.finish == nil
+            }) {
+                isStarted = true
+            } else if let latestGameplaySession = ordered.last, let latestGameplaySession {
+                self.latestGameplaySession = latestGameplaySession
+                isStarted = latestGameplaySession.finish == nil
+            }
+        }
+    }
 }
 
 extension GameDetailViewModel {
