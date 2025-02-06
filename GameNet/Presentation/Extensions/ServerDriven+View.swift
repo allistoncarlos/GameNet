@@ -13,46 +13,46 @@ extension View {
         ForEach(components) { component in
             switch component.componentType {
             case Components.vstack.rawValue:
-                renderVStack(component)
+                AnyView(renderVStack(component))
                 
             case Components.scrollView.rawValue:
-                renderScrollView(component)
+                AnyView(renderScrollView(component))
                 
             case Components.navigationLink.rawValue:
-                renderNavigationLink(component)
+                AnyView(renderNavigationLink(component))
                 
             case Components.spacer.rawValue:
-                Spacer()
+                AnyView(Spacer())
                 
             case Components.text.rawValue:
-                renderText(component)
+                AnyView(renderText(component))
                 
             case Components.dashboardText.rawValue:
-                renderDashboardText(component)
+                AnyView(renderDashboardText(component))
                 
             case Components.subtitle.rawValue:
-                renderSubtitle(component)
+                AnyView(renderSubtitle(component))
                 
             case Components.image.rawValue:
-                renderImage(component)
+                AnyView(renderImage(component))
                 
             case Components.card.rawValue:
-                renderCard(component)
+                AnyView(renderCard(component))
                 
             case Components.hstack.rawValue:
-                renderHStack(component)
+                AnyView(renderHStack(component))
                 
             case Components.carouselCover.rawValue:
-                renderCarouselCover(component)
+                AnyView(renderCarouselCover(component))
                 
             case Components.carousel.rawValue:
-                renderCarousel(component)
+                AnyView(renderCarousel(component))
                 
             case Components.list.rawValue:
-                renderList(component)
+                AnyView(renderList(component))
                 
             default:
-                EmptyView()
+                AnyView(EmptyView())
             }
         }
     }
