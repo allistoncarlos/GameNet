@@ -37,7 +37,7 @@ enum DashboardRouter {
         navigationPath.wrappedValue.removeLast(navigationPath.wrappedValue.count - 1)
     }
     
-    #if os(iOS) && DEBUG
+    #if os(iOS) && DEBUG && canImport(WebKit)
     static func makeFeatureToggle() -> some View {
         return FeatureToggleView(viewModel: FeatureToggleViewModel(), overrideRemoteConfigs: FirebaseRemoteConfig.overrideRemoteConfigs)
     }
