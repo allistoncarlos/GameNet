@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 19/12/24.
 //
 
+#if canImport(WebKit)
 import SwiftUI
 
 struct MetabaseDashboardView: View {
@@ -23,3 +24,4 @@ struct MetabaseDashboardView: View {
 #Preview {
     MetabaseDashboardView(viewModel: MetabaseDashboardViewModel())
 }
+#endif

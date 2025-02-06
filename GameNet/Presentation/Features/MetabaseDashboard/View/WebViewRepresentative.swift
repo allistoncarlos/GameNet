@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 19/12/24.
 //
 
+#if canImport(WebKit)
 import SwiftUI
 import WebKit
 
@@ -212,3 +213,4 @@ struct WebView: UIViewRepresentable {
         }
     }
 }
+#endif
