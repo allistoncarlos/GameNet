@@ -7,6 +7,7 @@
 
 import Combine
 import GameNet_Keychain
+import GameNet_Network
 import SwiftUI
 import TTProgressHUD
 import FirebaseCore
@@ -83,7 +84,9 @@ struct GameNetApp: App {
     )
     
     var sharedModelContainer: ModelContainer = {
-        let schema = Schema([])
+        let schema = Schema([
+            Platform.self
+        ])
 
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -97,7 +100,7 @@ struct GameNetApp: App {
     var body: some Scene {
         WindowGroup {
             if isRemoteConfigLoaded {
-                resultView()
+                resultView(modelContext: sharedModelContainer.mainContext)
                     .onAppear {
 #if canImport(WatchConnectivity)
                         WatchConnectivityManager.shared.activateSession()
@@ -112,7 +115,6 @@ struct GameNetApp: App {
                     }
             }
         }
-        .modelContainer(sharedModelContainer)
     }
 
     // MARK: Private
@@ -120,9 +122,9 @@ struct GameNetApp: App {
     private var cancellables = Set<AnyCancellable>()
 
     @MainActor
-    private func resultView() -> AnyView {
+    private func resultView(modelContext: ModelContext) -> AnyView {
         return KeychainDataSource.hasValidToken() ?
-            AnyView(LoginRouter.makeHomeView()) :
+            AnyView(LoginRouter.makeHomeView(modelContext: modelContext)) :
             AnyView(LoginRouter.makeLoginView())
     }
 }

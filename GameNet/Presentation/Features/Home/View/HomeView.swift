@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import SwiftData
+import GameNet_Network
 
 // MARK: - HomeView
 
@@ -32,7 +34,6 @@ struct HomeView: View {
     }
 
     // MARK: Internal
-
     @ObservedObject var homeViewModel: HomeViewModel
     @ObservedObject var dashboardViewModel: DashboardViewModel
     @ObservedObject var platformsViewModel: PlatformsViewModel
@@ -82,10 +83,21 @@ struct HomeView: View {
 
 // MARK: - Previews
 
-#Preview("Dark Mode") {
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    
+    let persistentModels: [any PersistentModel.Type] = [
+        Platform.self,
+        GameNet_Network.List.self
+    ]
+    
+    let modelContext = ModelContext(
+        try! ModelContainer(for: Schema(persistentModels), configurations: config)
+    )
+    
     let homeViewModel = HomeViewModel()
     let dashboardViewModel = DashboardViewModel()
-    let platformsViewModel = PlatformsViewModel()
+    let platformsViewModel = PlatformsViewModel(modelContext: modelContext)
     let gamesViewModel = GamesViewModel()
     let listsViewModel = ListsViewModel()
     
@@ -99,25 +111,10 @@ struct HomeView: View {
         listsViewModel: listsViewModel,
         
         serverDrivenPlatformsViewModel: serverDrivenPlatformsViewModel
-    ).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let homeViewModel = HomeViewModel()
-    let dashboardViewModel = DashboardViewModel()
-    let platformsViewModel = PlatformsViewModel()
-    let gamesViewModel = GamesViewModel()
-    let listsViewModel = ListsViewModel()
-    
-    let serverDrivenPlatformsViewModel = ServerDrivenPlatformsViewModel()
-
-    HomeView(
-        homeViewModel: homeViewModel,
-        dashboardViewModel: dashboardViewModel,
-        platformsViewModel: platformsViewModel,
-        gamesViewModel: gamesViewModel,
-        listsViewModel: listsViewModel,
-        
-        serverDrivenPlatformsViewModel: serverDrivenPlatformsViewModel
-    ).preferredColorScheme(.light)
+    )
+    .modelContainer(
+        for: persistentModels,
+        inMemory: true
+    )
+    .preferredColorScheme(.dark)
 }

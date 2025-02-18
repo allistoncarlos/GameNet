@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @MainActor
 enum LoginRouter {
-    static func makeHomeView() -> some View {
+    static func makeHomeView(modelContext: ModelContext) -> some View {
         let homeViewModel = HomeViewModel()
         let dashboardViewModel = DashboardViewModel()
-        let platformsViewModel = PlatformsViewModel()
+        let platformsViewModel = PlatformsViewModel(modelContext: modelContext)
         let gamesViewModel = GamesViewModel()
         let listsViewModel = ListsViewModel()
 

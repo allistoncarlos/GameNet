@@ -7,15 +7,18 @@
 
 import SwiftUI
 import TTProgressHUD
+import SwiftData
+import GameNet_Network
 
 // MARK: - PlatformsView
 
 struct PlatformsView: View {
-
     // MARK: Internal
-
+    @Environment(\.modelContext) private var modelContext
+    
     @ObservedObject var viewModel: PlatformsViewModel
     @State var isLoading = true
+    @StateObject var monitor = NetworkConnectivity()
 
     var body: some View {
         NavigationStack(path: $presentedPlatforms) {
@@ -57,7 +60,7 @@ struct PlatformsView: View {
         .onChange(of: presentedPlatforms) { _, newValue in
             if newValue.isEmpty {
                 Task {
-                    await viewModel.fetchData()
+                    await viewModel.fetchData(isConnected: monitor.status == .connected)
                 }
             }
         }
@@ -65,7 +68,7 @@ struct PlatformsView: View {
             isLoading = state == .loading
         }
         .task {
-            await viewModel.fetchData()
+            await viewModel.fetchData(isConnected: monitor.status == .connected)
         }
     }
 
@@ -76,14 +79,18 @@ struct PlatformsView: View {
 
 // MARK: - Previews
 
-#Preview("Dark Mode") {
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    
     let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
-    PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
-
-    PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme(.light)
+    PlatformsView(
+        viewModel: PlatformsViewModel(
+            modelContext: ModelContext(
+                try! ModelContainer(for: Platform.self, configurations: config)
+            )
+        )
+    )
+    .modelContainer(for: Platform.self, inMemory: true)
+    .preferredColorScheme(.dark)
 }

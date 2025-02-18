@@ -9,6 +9,7 @@ import Combine
 import Factory
 import GameNet_Keychain
 import SwiftUI
+import SwiftData
 
 #if canImport(WatchConnectivity)
 import WatchConnectivity
@@ -26,7 +27,7 @@ enum LoginError: Error, Equatable {
 class LoginViewModel: ObservableObject {
 
     // MARK: Internal
-
+    @Environment(\.modelContext) private var modelContext
     @Published var state: LoginState = .idle
 
     func login(username: String, password: String) async {
@@ -87,7 +88,7 @@ class LoginViewModel: ObservableObject {
 
 extension LoginViewModel {
     @MainActor
-    func homeView() -> some View {
-        return LoginRouter.makeHomeView()
+    func homeView(modelContext: ModelContext) -> some View {
+        return LoginRouter.makeHomeView(modelContext: modelContext)
     }
 }

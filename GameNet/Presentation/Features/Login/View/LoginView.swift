@@ -11,6 +11,8 @@ import TTProgressHUD
 // MARK: - LoginView
 
 struct LoginView: View {
+    @Environment(\.modelContext) private var modelContext
+    
     @State var username: String = ""
     @State var password: String = ""
     @State var isLoading = false
@@ -20,7 +22,7 @@ struct LoginView: View {
     var body: some View {
         ZStack {
             if case .success = viewModel.state {
-                viewModel.homeView()
+                viewModel.homeView(modelContext: modelContext)
             } else {
                 NavigationView {
                     Form {
