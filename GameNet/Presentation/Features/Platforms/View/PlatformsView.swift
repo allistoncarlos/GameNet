@@ -18,7 +18,7 @@ struct PlatformsView: View {
     
     @ObservedObject var viewModel: PlatformsViewModel
     @State var isLoading = true
-    @StateObject var monitor = NetworkConnectivity()
+    @StateObject var networkConnectivity = NetworkConnectivity()
 
     var body: some View {
         NavigationStack(path: $presentedPlatforms) {
@@ -60,7 +60,7 @@ struct PlatformsView: View {
         .onChange(of: presentedPlatforms) { _, newValue in
             if newValue.isEmpty {
                 Task {
-                    await viewModel.fetchData(isConnected: monitor.status == .connected)
+                    await viewModel.fetchData(isConnected: networkConnectivity.status == .connected)
                 }
             }
         }
@@ -68,7 +68,7 @@ struct PlatformsView: View {
             isLoading = state == .loading
         }
         .task {
-            await viewModel.fetchData(isConnected: monitor.status == .connected)
+            await viewModel.fetchData(isConnected: networkConnectivity.status == .connected)
         }
     }
 

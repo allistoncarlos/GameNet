@@ -10,16 +10,17 @@ import Factory
 import Foundation
 import GameNet_Network
 import SwiftUI
+import SwiftData
 
 // MARK: - EditPlatformViewModel
 
 @MainActor
 class EditPlatformViewModel: ObservableObject {
+    private var modelContext: ModelContext
 
-    // MARK: Lifecycle
-
-    init(platform: Platform) {
+    init(platform: Platform, modelContext: ModelContext) {
         self.platform = platform
+        self.modelContext = modelContext
 
         $state
             .receive(on: RunLoop.main)
@@ -39,7 +40,20 @@ class EditPlatformViewModel: ObservableObject {
     @Published var platform: Platform
     @Published var state: EditPlatformState = .idle
 
-    func save() async {
+    func save(isConnected: Bool) async {
+        if (isConnected) {
+            await self.saveRemote()
+        } else {
+            self.saveLocal()
+        }
+    }
+
+    // MARK: Private
+
+    @Injected(RepositoryContainer.platformRepository) private var repository
+    private var cancellable = Set<AnyCancellable>()
+    
+    private func saveRemote() async {
         state = .loading
 
         let result = await repository.savePlatform(id: platform.id, platform: Platform(id: platform.id, name: platform.name))
@@ -50,11 +64,46 @@ class EditPlatformViewModel: ObservableObject {
             state = .error("Erro no salvamento de dados do servidor")
         }
     }
+    
+    private func saveLocal() {
+        state = .loading
+        
+        do {
+            var descriptor: FetchDescriptor<Platform>?
+            
+            if let id = self.platform.id {
+                // TODO: UPDATE HERE
+//                try modelContext.save()
 
-    // MARK: Private
+                descriptor = FetchDescriptor<Platform>(predicate: #Predicate { platform in
+                    platform.id == id
+                })
+            } else {
+                modelContext.insert(self.platform)
+                try modelContext.save()
 
-    @Injected(RepositoryContainer.platformRepository) private var repository
-    private var cancellable = Set<AnyCancellable>()
+                let name = self.platform.name
+                
+                descriptor = FetchDescriptor<Platform>(predicate: #Predicate { platform in
+                    platform.name == name
+                })
+            }
+
+            descriptor?.fetchLimit = 1
+            
+            if let descriptor {
+                let result = try modelContext.fetch(descriptor)
+                
+                if result.count == 1 {
+                    state = .success(self.platform)
+                } else {
+                    state = .error("Erro no salvamento de dados local")
+                }
+            }
+        } catch {
+            state = .error("Erro no salvamento de dados local")
+        }
+    }
 }
 
 #if os(iOS)

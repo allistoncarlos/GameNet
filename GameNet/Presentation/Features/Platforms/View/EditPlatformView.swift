@@ -8,12 +8,14 @@
 #if os(iOS)
 import GameNet_Network
 import SwiftUI
+import SwiftData
 
 // MARK: - EditPlatformView
 
 struct EditPlatformView: View {
     @ObservedObject var viewModel: EditPlatformViewModel
     @Binding var navigationPath: NavigationPath
+    @StateObject var networkConnectivity = NetworkConnectivity()
 
     var body: some View {
         Form {
@@ -21,7 +23,7 @@ struct EditPlatformView: View {
                 .autocapitalization(.none)
                 .onSubmit {
                     Task {
-                        await viewModel.save()
+                        await viewModel.save(isConnected: networkConnectivity.status == .connected)
                     }
                 }
 
@@ -29,7 +31,7 @@ struct EditPlatformView: View {
                 footer:
                 Button("Salvar") {
                     Task {
-                        await viewModel.save()
+                        await viewModel.save(isConnected: networkConnectivity.status == .connected)
                     }
                 }
                 .disabled(viewModel.platform.name.isEmpty || viewModel.state == .loading)
@@ -50,23 +52,21 @@ struct EditPlatformView: View {
 
 // MARK: - Previews
 
-#Preview("Dark Mode") {
+#Preview {
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
     let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
     let platform = Platform(id: "1", name: "Nintendo Switch")
 
     EditPlatformView(
-        viewModel: EditPlatformViewModel(platform: platform),
+        viewModel: EditPlatformViewModel(
+            platform: platform,
+            modelContext: ModelContext(
+                try! ModelContainer(for: Platform.self, configurations: config)
+            )
+        ),
         navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
-    let platform = Platform(id: "1", name: "Nintendo Switch")
-    
-    EditPlatformView(
-        viewModel: EditPlatformViewModel(platform: platform),
-        navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.light)
+    )
+    .modelContainer(for: Platform.self, inMemory: true)
+    .preferredColorScheme(.dark)
 }
 #endif
