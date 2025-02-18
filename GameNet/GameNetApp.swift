@@ -10,6 +10,7 @@ import GameNet_Keychain
 import SwiftUI
 import TTProgressHUD
 import FirebaseCore
+import SwiftData
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(
@@ -80,6 +81,18 @@ struct GameNetApp: App {
         title: "Carregando",
         caption: "Aguarde enquanto os dados\nsão retornados do servidor"
     )
+    
+    var sharedModelContainer: ModelContainer = {
+        let schema = Schema([])
+
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+        do {
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
 
     var body: some Scene {
         WindowGroup {
@@ -99,6 +112,7 @@ struct GameNetApp: App {
                     }
             }
         }
+        .modelContainer(sharedModelContainer)
     }
 
     // MARK: Private
