@@ -1824,13 +1824,13 @@
 				INFOPLIST_FILE = "GameNet-Watch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = GameNet.Watch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.alliston.GameNet;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.alliston.GameNetApp;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNet.Watch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp.Watch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
@@ -1857,13 +1857,13 @@
 				INFOPLIST_FILE = "GameNet-Watch-Watch-App-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = GameNet.Watch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.alliston.GameNet;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.alliston.GameNetApp;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNet.Watch;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp.Watch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
