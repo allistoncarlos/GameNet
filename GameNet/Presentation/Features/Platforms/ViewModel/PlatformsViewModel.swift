@@ -84,6 +84,7 @@ class PlatformsViewModel: ObservableObject {
             try modelContext.delete(model: Platform.self)
             
             platforms.forEach { platform in
+                platform.synced = true
                 modelContext.insert(platform)
             }
             

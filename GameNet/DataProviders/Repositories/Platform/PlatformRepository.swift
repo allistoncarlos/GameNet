@@ -14,7 +14,7 @@ import GameNet_Network
 protocol PlatformRepositoryProtocol {
     func fetchData() async -> [Platform]?
     func fetchData(id: String) async -> Platform?
-    func savePlatform(id: String?, platform: Platform) async -> Platform?
+    @discardableResult func savePlatform(id: String?, platform: Platform) async -> Platform?
 }
 
 // MARK: - PlatformRepository

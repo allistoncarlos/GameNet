@@ -11,7 +11,7 @@ import SwiftData
 @MainActor
 enum LoginRouter {
     static func makeHomeView(modelContext: ModelContext) -> some View {
-        let homeViewModel = HomeViewModel()
+        let homeViewModel = HomeViewModel(modelContext: modelContext)
         let dashboardViewModel = DashboardViewModel()
         let platformsViewModel = PlatformsViewModel(modelContext: modelContext)
         let gamesViewModel = GamesViewModel()

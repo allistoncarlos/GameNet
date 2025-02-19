@@ -12,6 +12,7 @@ import GameNet_Network
 // MARK: - HomeView
 
 struct HomeView: View {
+    @Environment(\.modelContext) private var modelContext
 
     // MARK: Lifecycle
 
@@ -95,7 +96,7 @@ struct HomeView: View {
         try! ModelContainer(for: Schema(persistentModels), configurations: config)
     )
     
-    let homeViewModel = HomeViewModel()
+    let homeViewModel = HomeViewModel(modelContext: modelContext)
     let dashboardViewModel = DashboardViewModel()
     let platformsViewModel = PlatformsViewModel(modelContext: modelContext)
     let gamesViewModel = GamesViewModel()

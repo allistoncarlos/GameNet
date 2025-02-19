@@ -69,40 +69,63 @@ class EditPlatformViewModel: ObservableObject {
         state = .loading
         
         do {
-            var descriptor: FetchDescriptor<Platform>?
-            
-            if let id = self.platform.id {
-                // TODO: UPDATE HERE
-//                try modelContext.save()
-
-                descriptor = FetchDescriptor<Platform>(predicate: #Predicate { platform in
-                    platform.id == id
-                })
+            if let id = platform.id {
+                try update(id: id)
             } else {
-                modelContext.insert(self.platform)
-                try modelContext.save()
-
-                let name = self.platform.name
-                
-                descriptor = FetchDescriptor<Platform>(predicate: #Predicate { platform in
-                    platform.name == name
-                })
-            }
-
-            descriptor?.fetchLimit = 1
-            
-            if let descriptor {
-                let result = try modelContext.fetch(descriptor)
-                
-                if result.count == 1 {
-                    state = .success(self.platform)
-                } else {
-                    state = .error("Erro no salvamento de dados local")
-                }
+                try insert()
             }
         } catch {
             state = .error("Erro no salvamento de dados local")
         }
+    }
+    
+    private func update(id: String) throws {
+        let descriptor = createUpdateDescriptor(for: id)
+        
+        let result = try modelContext.fetch(descriptor)
+        
+        if result.count == 1, let platformResult = result.first {
+            platformResult.synced = false
+            try modelContext.save()
+            state = .success(platform)
+        } else {
+            state = .error("Erro ao atualizar plataforma local")
+        }
+    }
+    
+    private func insert() throws {
+        modelContext.insert(platform)
+        try modelContext.save()
+            
+        let descriptor = createInsertDescriptor(for: platform.name)
+
+        let result = try modelContext.fetch(descriptor)
+        
+        if result.count == 1 {
+            state = .success(platform)
+        } else {
+            state = .error("Erro ao inserir plataforma local")
+        }
+    }
+    
+    private func createUpdateDescriptor(for id: String) -> FetchDescriptor<Platform> {
+        var descriptor = FetchDescriptor<Platform>(predicate: #Predicate { platform in
+            platform.id == id
+        })
+        
+        descriptor.fetchLimit = 1
+        
+        return descriptor
+    }
+
+    private func createInsertDescriptor(for name: String) -> FetchDescriptor<Platform> {
+        var descriptor = FetchDescriptor<Platform>(predicate: #Predicate { platform in
+            platform.name == name
+        })
+        
+        descriptor.fetchLimit = 1
+        
+        return descriptor
     }
 }
 
