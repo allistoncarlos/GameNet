@@ -34,8 +34,8 @@ Helps the user to create some lists. Example: Best The Legend of Zelda games, Bu
 <img src="https://github.com/allistoncarlos/GameNet.UIKit/blob/master/Screenshots/NewList.png" alt="New List" width="200"/>
 </p>
 
-### Pods
-It uses some pods
+### Packages
+It uses some packages
 * [Alamofire](https://github.com/Alamofire/Alamofire)
 * [Keychain Access](https://github.com/kishikawakatsumi/KeychainAccess)
 * [Factory](https://github.com/hmlongco/Factory)
@@ -49,5 +49,9 @@ MVVM, Clean Architecture, DI (using Factory)
 
 ### Next steps
 - [ ] Correct the bugs
-- [ ] Finish lists feature
-- [ ] Use iCloud
+- [x] Finish lists feature
+- [ ] Use SwiftData/Offline first
+- [ ] Organize Hours Player per Year and Finished per Year UI
+- [ ] Chart for Digital/Physical games
+- [ ] Apply filters to Games screen (Platform, Finished, Physical, Digital, Have, Want...)
+- [ ] Apply Games sort
