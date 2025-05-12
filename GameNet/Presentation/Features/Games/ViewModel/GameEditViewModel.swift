@@ -38,10 +38,10 @@ class GameEditViewModel: ObservableObject {
 
     @Published var game: UserGameModel = .init()
 
-    func fetchData() async {
+    func fetchData(cache: Bool = true) async {
         state = .loading
 
-        let platforms = await platformRepository.fetchData()
+        let platforms = await platformRepository.fetchData(cache: cache)
 
         if let platforms {
             state = .loadedPlatforms(platforms)

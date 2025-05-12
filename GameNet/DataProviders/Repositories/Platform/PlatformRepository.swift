@@ -12,7 +12,7 @@ import GameNet_Network
 // MARK: - PlatformRepositoryProtocol
 
 protocol PlatformRepositoryProtocol {
-    func fetchData() async -> [Platform]?
+    func fetchData(cache: Bool) async -> [Platform]?
     func fetchData(id: String) async -> Platform?
     func savePlatform(id: String?, platform: Platform) async -> Platform?
 }
@@ -22,8 +22,8 @@ protocol PlatformRepositoryProtocol {
 struct PlatformRepository: PlatformRepositoryProtocol {
     // MARK: Internal
 
-    func fetchData() async -> [Platform]? {
-        return await dataSource.fetchData()
+    func fetchData(cache: Bool = true) async -> [Platform]? {
+        return await dataSource.fetchData(cache: cache)
     }
 
     func fetchData(id: String) async -> Platform? {

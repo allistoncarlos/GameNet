@@ -11,7 +11,7 @@ import GameNet_Network
 // MARK: - PlatformDataSourceProtocol
 
 protocol PlatformDataSourceProtocol {
-    func fetchData() async -> [Platform]?
+    func fetchData(cache: Bool) async -> [Platform]?
     func fetchData(id: String) async -> Platform?
     func savePlatform(id: String?, platform: Platform) async -> Platform?
 }
@@ -19,11 +19,12 @@ protocol PlatformDataSourceProtocol {
 // MARK: - PlatformDataSource
 
 class PlatformDataSource: PlatformDataSourceProtocol {
-    func fetchData() async -> [Platform]? {
+    func fetchData(cache: Bool = true) async -> [Platform]? {
         if let apiResult = await NetworkManager.shared
             .performRequest(
                 responseType: APIResult<PagedResult<PlatformResponse>>.self,
-                endpoint: .platforms
+                endpoint: .platforms,
+                cache: cache
             ) {
             if apiResult.ok {
                 return apiResult.data.result

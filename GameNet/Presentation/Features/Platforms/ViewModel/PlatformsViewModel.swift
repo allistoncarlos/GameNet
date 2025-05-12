@@ -36,10 +36,10 @@ class PlatformsViewModel: ObservableObject {
     @Published var platforms: [Platform]? = nil
     @Published var state: PlatformsState = .idle
 
-    func fetchData() async {
+    func fetchData(cache: Bool = true) async {
         state = .loading
 
-        let result = await repository.fetchData()
+        let result = await repository.fetchData(cache: cache)
 
         if let result {
             state = .success(result)

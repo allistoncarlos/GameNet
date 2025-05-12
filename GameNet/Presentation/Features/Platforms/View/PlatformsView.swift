@@ -64,6 +64,11 @@ struct PlatformsView: View {
         .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
+        .refreshable {
+            Task {
+                await viewModel.fetchData(cache: false)
+            }
+        }
         .task {
             await viewModel.fetchData()
         }
