@@ -17,7 +17,7 @@ class MockListDataSource: ListDataSourceProtocol {
         listsGames = Defaults.listsGames
     }
 
-    func fetchData() async -> [List]? {
+    func fetchData(cache: Bool = true) async -> [List]? {
         return MockListDataSource.lists
     }
 

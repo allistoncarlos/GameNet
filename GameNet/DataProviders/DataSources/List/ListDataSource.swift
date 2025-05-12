@@ -11,7 +11,7 @@ import GameNet_Network
 // MARK: - ListDataSourceProtocol
 
 protocol ListDataSourceProtocol {
-    func fetchData() async -> [List]?
+    func fetchData(cache: Bool) async -> [List]?
     func fetchData(id: String) async -> ListGame?
     func fetchFinishedByYearData(id: Int) async -> [ListItem]?
     func fetchBoughtByYearData(id: Int) async -> [ListItem]?
@@ -21,11 +21,12 @@ protocol ListDataSourceProtocol {
 // MARK: - ListDataSource
 
 class ListDataSource: ListDataSourceProtocol {
-    func fetchData() async -> [List]? {
+    func fetchData(cache: Bool = true) async -> [List]? {
         if let apiResult = await NetworkManager.shared
             .performRequest(
                 responseType: APIResult<PagedResult<ListResponse>>.self,
-                endpoint: .lists
+                endpoint: .lists,
+                cache: cache
             ) {
             if apiResult.ok {
                 return apiResult.data.result

@@ -12,7 +12,7 @@ import GameNet_Network
 // MARK: - ListRepositoryProtocol
 
 protocol ListRepositoryProtocol {
-    func fetchData() async -> [List]?
+    func fetchData(cache: Bool) async -> [List]?
     func fetchData(id: String) async -> ListGame?
     func fetchFinishedByYearData(id: Int) async -> [ListItem]?
     func fetchBoughtByYearData(id: Int) async -> [ListItem]?
@@ -25,8 +25,8 @@ struct ListRepository: ListRepositoryProtocol {
 
     // MARK: Internal
 
-    func fetchData() async -> [List]? {
-        return await dataSource.fetchData()
+    func fetchData(cache: Bool = true) async -> [List]? {
+        return await dataSource.fetchData(cache: cache)
     }
 
     func fetchData(id: String) async -> ListGame? {

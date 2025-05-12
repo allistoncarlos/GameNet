@@ -17,7 +17,7 @@ struct MockListRepository: ListRepositoryProtocol {
         listGames = Defaults.listGames
     }
 
-    func fetchData() -> [List]? {
+    func fetchData(cache: Bool = true) -> [List]? {
         return MockListRepository.lists
     }
 

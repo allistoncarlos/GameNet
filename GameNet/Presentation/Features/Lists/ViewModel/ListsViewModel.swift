@@ -36,10 +36,10 @@ class ListsViewModel: ObservableObject {
     @Published var lists: [GameNet_Network.List]? = nil
     @Published var state: ListsState = .idle
 
-    func fetchData() async {
+    func fetchData(cache: Bool = true) async {
         state = .loading
 
-        let result = await repository.fetchData()
+        let result = await repository.fetchData(cache: cache)
 
         if let result {
             state = .success(result)
