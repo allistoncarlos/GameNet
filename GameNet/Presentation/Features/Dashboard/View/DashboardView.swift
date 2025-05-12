@@ -62,6 +62,13 @@ struct DashboardView: View {
                     }
                 }
             }
+            .refreshable {
+                if !FirebaseRemoteConfig.serverDrivenDashboard {
+                    Task {
+                        await viewModel.fetchData()
+                    }
+                }
+            }
             .disabled(isLoading)
             .navigationView(title: "Dashboard")
             .navigationDestination(for: FinishedGameByYearTotal.self) { finishedGame in
