@@ -50,8 +50,10 @@ MVVM, Clean Architecture, DI (using Factory)
 ### Next steps
 - [ ] Correct the bugs
 - [x] Finish lists feature
+- [ ] Update on refresh
+- [ ] Improve game fetch (background/parallel fetch for Gameplay Sessions)
 - [ ] Use SwiftData/Offline first
-- [ ] Organize Hours Player per Year and Finished per Year UI
+- [ ] Organize Hours Played per Year and Finished per Year UI
 - [ ] Chart for Digital/Physical games
 - [ ] Apply filters to Games screen (Platform, Finished, Physical, Digital, Have, Want...)
 - [ ] Apply Games sort
