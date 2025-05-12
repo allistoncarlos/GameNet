@@ -28,10 +28,8 @@ struct DashboardView: View {
                     ServerDrivenDashboardView(viewModel: ServerDrivenDashboardViewModel())
                 } else {
                     VStack(spacing: -20) {
-                        if FirebaseRemoteConfig.dashboardViewCarousel {
-                            if viewModel.dashboard?.playingGames != nil {
-                                playingCard
-                            }
+                        if viewModel.dashboard?.playingGames != nil {
+                            playingCard
                         }
                         
                         if viewModel.gameplaySessions != nil {
