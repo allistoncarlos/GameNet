@@ -72,6 +72,11 @@ struct GamesView: View {
                         await viewModel.fetchData(search: search, clear: true)
                     }
                 }
+                .refreshable {
+                    Task {
+                        await viewModel.fetchData(origin: origin)
+                    }
+                }
             }
             .disabled(isLoading)
             .navigationView(title: "Games")
