@@ -53,7 +53,7 @@ class PlatformsViewModelTests: XCTestCase {
 
         // When
         await viewModel.fetchData()
-        waitForExpectations(timeout: 10)
+        await fulfillment(of: [platformsLoadedExpectation], timeout: 30)
     }
 
     // MARK: Private

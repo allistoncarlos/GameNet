@@ -27,6 +27,7 @@ final class DashboardResponseMock {
                 [
                     "name": "The Legend of Zelda: Breath of the Wild",
                     "platform": "Nintendo Switch",
+                    "coverURL": "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg",
                     "latestGameplaySession": [
                         "userId": "123",
                         "userGameId": "123",

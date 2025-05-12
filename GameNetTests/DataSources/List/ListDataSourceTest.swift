@@ -23,7 +23,7 @@ class ListDataSourceTests: XCTestCase {
         DataSourceContainer.listDataSource.register(factory: { MockListDataSource() })
 
         // When
-        let result = await DataSourceContainer.listDataSource().fetchData()
+        let result = await DataSourceContainer.listDataSource().fetchData(cache: false)
 
         // Then
         XCTAssertNotNil(result)

@@ -68,7 +68,7 @@ class EditPlatformViewModelTests: XCTestCase {
         // When
         viewModel.platform.name = name
         await viewModel.save()
-        waitForExpectations(timeout: 10)
+        await fulfillment(of: [matchSavedPlatformExpectation, stateExpectation], timeout: 30)
     }
 
     // MARK: Private

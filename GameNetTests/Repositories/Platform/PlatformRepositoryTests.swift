@@ -23,7 +23,7 @@ class PlatformRepositoryTests: XCTestCase {
         RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
 
         // When
-        let result = await RepositoryContainer.platformRepository().fetchData()
+        let result = await RepositoryContainer.platformRepository().fetchData(cache: false)
 
         // Then
         XCTAssertNotNil(result)

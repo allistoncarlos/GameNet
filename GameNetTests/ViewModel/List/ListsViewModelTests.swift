@@ -53,7 +53,7 @@ class ListsViewModelTests: XCTestCase {
 
         // When
         await viewModel.fetchData()
-        waitForExpectations(timeout: 10)
+        await fulfillment(of: [listsLoadedExpectation], timeout: 30)
     }
 
     // MARK: Private

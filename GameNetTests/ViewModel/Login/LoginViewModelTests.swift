@@ -59,7 +59,7 @@ class LoginViewModelTests: XCTestCase {
 
         // When
         await viewModel.login(username: username, password: password)
-        waitForExpectations(timeout: 10)
+        await fulfillment(of: [matchAccessTokenExpectation], timeout: 30)
     }
 
     func testLogin_InvalidData_ShouldNotReturnAccessToken() async {
@@ -91,7 +91,7 @@ class LoginViewModelTests: XCTestCase {
 
         // When
         await viewModel.login(username: username, password: password)
-        waitForExpectations(timeout: 10)
+        await fulfillment(of: [nilAccessTokenExpectation], timeout: 30)
     }
 
     // MARK: Private

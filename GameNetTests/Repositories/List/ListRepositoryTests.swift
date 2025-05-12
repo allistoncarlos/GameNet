@@ -23,7 +23,7 @@ class ListRepositoryTests: XCTestCase {
         RepositoryContainer.listRepository.register(factory: { MockListRepository() })
 
         // When
-        let result = await RepositoryContainer.listRepository().fetchData()
+        let result = await RepositoryContainer.listRepository().fetchData(cache: false)
 
         // Then
         XCTAssertNotNil(result)

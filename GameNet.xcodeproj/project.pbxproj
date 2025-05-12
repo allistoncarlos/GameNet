@@ -268,6 +268,7 @@
 		A550C6E92968ABF70043FE74 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A550C6EE2968ADD80043FE74 /* PlayingGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingGamesView.swift; sourceTree = "<group>"; };
 		A550C6F52968AE3D0043FE74 /* PlayingGamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingGamesViewModel.swift; sourceTree = "<group>"; };
+		A55A0D3D2DD24BFA004532F3 /* GameNet.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GameNet.xctestplan; sourceTree = "<group>"; };
 		A562B71B2CF4AC3C00FEB4D9 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		A565F0CF2D0A10B10055554C /* Carousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Carousel.swift; sourceTree = "<group>"; };
 		A565F0D12D0A16820055554C /* CarouselCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselCover.swift; sourceTree = "<group>"; };
@@ -1070,6 +1071,7 @@
 		A57185B8286793D600655B31 = {
 			isa = PBXGroup;
 			children = (
+				A55A0D3D2DD24BFA004532F3 /* GameNet.xctestplan */,
 				A57185C3286793D600655B31 /* GameNet */,
 				A56D956728996508003C13A3 /* GameNetTests */,
 				A550C6E12968ABF60043FE74 /* GameNet.Watch Watch App */,
@@ -1870,7 +1872,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1881,6 +1883,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,4";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GameNet.app/GameNet";
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -1892,7 +1895,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KB2R5P3BHU;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1903,6 +1906,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,4";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GameNet.app/GameNet";
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};

@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "EE0D68A5-E2C2-47E7-999D-69988C9D5406",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:GameNet.xcodeproj",
+      "identifier" : "A57185C0286793D600655B31",
+      "name" : "GameNet"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:GameNet.xcodeproj",
+        "identifier" : "A56D956528996508003C13A3",
+        "name" : "GameNetTests"
+      }
+    }
+  ],
+  "version" : 1
+}

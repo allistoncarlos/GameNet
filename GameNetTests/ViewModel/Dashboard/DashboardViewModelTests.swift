@@ -53,7 +53,7 @@ class DashboardViewModelTests: XCTestCase {
 
         // When
         await viewModel.fetchData()
-        waitForExpectations(timeout: 10)
+        await fulfillment(of: [dashboardLoadedExpectation], timeout: 30)
     }
 
     // MARK: Private

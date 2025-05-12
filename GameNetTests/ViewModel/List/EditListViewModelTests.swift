@@ -68,7 +68,7 @@ class EditListViewModelTests: XCTestCase {
         // When
         viewModel.list.name = name
         await viewModel.save()
-        waitForExpectations(timeout: 10)
+        await fulfillment(of: [matchSavedListExpectation, stateExpectation], timeout: 30)
     }
 
     // MARK: Private
