@@ -43,14 +43,10 @@ struct DashboardView: View {
                         if viewModel.dashboard?.totalGames != nil {
                             physicalDigitalCard
                         }
-                        
+
                         if viewModel.dashboard?.finishedByYear != nil {
-                            if !FirebaseRemoteConfig.stepperView {
-                                finishedByYearCard
-                            } else {
-                                finishedByYearCardStepperView
-                            }
-                        }
+                           finishedByYearTimelineCard
+                       }
                         
                         if viewModel.dashboard?.boughtByYear != nil {
                             boughtByYearCard
@@ -275,6 +271,17 @@ extension DashboardView {
 }
 
 extension DashboardView {
+    var finishedByYearTimelineCard: some View {
+        FinishedByYearTimelineView(
+            finishedGamesByYear: viewModel.dashboard?.finishedByYear ?? [],
+            onYearTapped: { finishedGame in
+                presentedViews.append(finishedGame)
+            }
+        )
+    }
+}
+
+extension DashboardView {
     var finishedByYearCardStepperView: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)
@@ -289,19 +296,6 @@ extension DashboardView {
                 }
 
                 if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
-//                    Group {
-//                        ForEach(finishedGamesByYear, id: \.year) { finishedGame in
-//                            SwiftUI.NavigationLink(value: finishedGame) {
-//                                HStack(spacing: 20) {
-//                                    Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
-//                                        .font(.dashboardGameTitle)
-//                                    Text(String(finishedGame.year))
-//                                        .font(.dashboardGameTitle)
-//                                    Spacer()
-//                                }
-//                            }
-//                        }
-//                    }
                     let steps = finishedGamesByYear.map { finishedGame in
                         Text(String(finishedGame.year))
                     }
