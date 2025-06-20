@@ -234,43 +234,6 @@ extension DashboardView {
 }
 
 extension DashboardView {
-    var finishedByYearCard: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.tertiaryCardBackground)
-
-            VStack(alignment: .leading, spacing: 15) {
-                VStack {
-                    Text("Finalizados por Ano")
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                        .font(.cardTitle)
-                }
-
-                VStack(alignment: .leading) {
-                    if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
-                        Group {
-                            ForEach(finishedGamesByYear, id: \.year) { finishedGame in
-                                SwiftUI.NavigationLink(value: finishedGame) {
-                                    HStack(spacing: 20) {
-                                        Text(finishedGame.total.toLeadingZerosString(decimalPlaces: 2))
-                                            .font(.dashboardGameTitle)
-                                        Text(String(finishedGame.year))
-                                            .font(.dashboardGameTitle)
-                                        Spacer()
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            .padding()
-        }
-        .padding()
-    }
-}
-
-extension DashboardView {
     var finishedByYearTimelineCard: some View {
         FinishedByYearTimelineView(
             finishedGamesByYear: viewModel.dashboard?.finishedByYear ?? [],

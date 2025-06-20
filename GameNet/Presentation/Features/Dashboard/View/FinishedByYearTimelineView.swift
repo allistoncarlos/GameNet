@@ -29,23 +29,20 @@ struct FinishedByYearTimelineView: View {
                         .font(.cardTitle)
                 }
                 
-                ScrollView {
-                    LazyVStack(spacing: 0) {
-                        ForEach(Array(finishedGamesByYear.enumerated()), id: \.element.year) { index, finishedGame in
-                            TimelineItemView(
-                                finishedGame: finishedGame,
-                                isLeft: index % 2 == 0,
-                                isFirst: index == 0,
-                                isLast: index == finishedGamesByYear.count - 1,
-                                onTapped: {
-                                    onYearTapped(finishedGame)
-                                }
-                            )
-                        }
+                LazyVStack(spacing: 0) {
+                    ForEach(Array(finishedGamesByYear.enumerated()), id: \.element.year) { index, finishedGame in
+                        TimelineItemView(
+                            finishedGame: finishedGame,
+                            isLeft: index % 2 == 0,
+                            isFirst: index == 0,
+                            isLast: index == finishedGamesByYear.count - 1,
+                            onTapped: {
+                                onYearTapped(finishedGame)
+                            }
+                        )
                     }
-                    .padding(.vertical, 10)
                 }
-                .frame(maxHeight: 400)
+                .padding(.vertical, 10)
             }
             .padding()
         }
