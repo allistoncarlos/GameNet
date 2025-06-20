@@ -122,7 +122,7 @@ struct TimelineItemView: View {
             if !isFirst {
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
-                    .frame(width: 2, height: 20)
+                    .frame(width: 2, height: isLast ? 68 : 20)
             }
             
             // Círculo central
@@ -138,7 +138,7 @@ struct TimelineItemView: View {
             if !isLast {
                 Rectangle()
                     .fill(Color.gray.opacity(0.3))
-                    .frame(width: 2, height: 48)
+                    .frame(width: 2, height: isFirst ? 68 : 48)
             }
         }
         .frame(width: 20)
