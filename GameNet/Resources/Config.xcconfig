@@ -9,3 +9,4 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 API_PATH=https:/$()/gamenet.azurewebsites.net/api
 BEARER=2ru5NUHsDoF9tceIUVWX1XwEekD_4EmXJuRcSYbsa7BnrXZ5u
+METABASE_DASHBOARD=http:/$()/mac-mini-de-alliston.tail56b10b.ts.net:3000/public/dashboard/d13d0306-535f-413a-af30-f546ccbbdfd4#theme=night

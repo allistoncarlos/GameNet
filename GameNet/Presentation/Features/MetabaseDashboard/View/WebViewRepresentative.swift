@@ -78,92 +78,24 @@ struct WebView: UIViewRepresentable {
     func makeCoordinator() -> Coordinator {
         Coordinator(webView, webArchiveDataManager: webArchiveDataManager)
     }
-    
-    func fetchMetabaseURL() async throws -> String? {
-        // Endpoint da API
-        let urlString = "https://api.ngrok.com/endpoints"
-        let bearer: String = (Bundle.main.infoDictionary!["BEARER"] as? String)!
-        
-        // Verificar se a URL é válida
-        guard let url = URL(string: urlString) else {
-            throw URLError(.badURL)
-        }
-        
-        // Configuração da requisição
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("Bearer \(bearer)", forHTTPHeaderField: "Authorization")
-        request.addValue("2", forHTTPHeaderField: "ngrok-version")
-        
-        // Realizar a chamada usando async/await
-        let (data, _) = try await URLSession.shared.data(for: request)
-        
-        // Parse do JSON
-        if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
-           let endpoints = json["endpoints"] as? [[String: Any]] {
-            for endpoint in endpoints {
-                if let name = endpoint["name"] as? String, name == "metabase",
-                   let url = endpoint["url"] as? String {
-                    return url
-                }
-            }
-        }
-        
-        // Retornar nil caso não encontre
-        return nil
-    }
 
-//    func updateUIView(_ uiView: WKWebView, context: Context) {
-//        Task {
-//            do {
-//                if let metabaseURL = try await fetchMetabaseURL() {
-//                    let url = URL(string: "\(metabaseURL)/public/dashboard/4045df1b-f4cd-4460-84e6-39dcd883d593#theme=night")!
-//
-//                    let request = URLRequest(
-//                        url: url,
-//                        cachePolicy: .returnCacheDataElseLoad,
-//                        timeoutInterval: TimeInterval(30)
-//                    )
-//                    
-//                    if let content = await urlIsReachable(request) {
-//                        webView.loadHTMLString(content, baseURL: url)//.load(request)
-//                    } else {
-//                        webArchiveDataManager.loadWebArchive(named: "MetabaseDashboard", into: webView)
-//                    }
-//                } else {
-//                    print("URL do Metabase não encontrada.")
-//                }
-//            } catch {
-//                print("Erro ao buscar a URL: \(error)")
-//            }
-//        }
-//    }
     func updateUIView(_ uiView: WKWebView, context: Context) {
         Task {
-            do {
-                let webArchiveId = "MetabaseDashboard"
-                
-                if let metabaseURL = try await fetchMetabaseURL() {
-                    let url = URL(string: "\(metabaseURL)/public/dashboard/4045df1b-f4cd-4460-84e6-39dcd883d593#theme=night")!
+            let webArchiveId = "MetabaseDashboard"
+            
+            let url = URL(string: Constants.metabaseDashboard)!
 
-                    let request = URLRequest(
-                        url: url,
-                        cachePolicy: .returnCacheDataElseLoad,
-                        timeoutInterval: TimeInterval(30)
-                    )
-                    
-                    if await urlIsReachable(request) {
-                        webView.load(request)
-                        webArchiveDataManager.saveWebArchive(from: webView, withName: webArchiveId)
-                    } else {
-                        webArchiveDataManager.loadWebArchive(named: webArchiveId, into: webView)
-                    }
-                } else {
-                    print("URL do Metabase não encontrada.")
-                    webArchiveDataManager.loadWebArchive(named: webArchiveId, into: webView)
-                }
-            } catch {
-                print("Erro ao buscar a URL: \(error)")
+            let request = URLRequest(
+                url: url,
+                cachePolicy: .returnCacheDataElseLoad,
+                timeoutInterval: TimeInterval(30)
+            )
+            
+            if await urlIsReachable(request) {
+                webView.load(request)
+                webArchiveDataManager.saveWebArchive(from: webView, withName: webArchiveId)
+            } else {
+                webArchiveDataManager.loadWebArchive(named: webArchiveId, into: webView)
             }
         }
     }

@@ -6,5 +6,7 @@
 	<string>$(BEARER)</string>
 	<key>API_PATH</key>
 	<string>$(API_PATH)</string>
+	<key>METABASE_DASHBOARD</key>
+	<string>$(METABASE_DASHBOARD)</string>
 </dict>
 </plist>

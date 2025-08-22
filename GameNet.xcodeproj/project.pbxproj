@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A5019DE22E58E55400FC284D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5019DE12E58E55400FC284D /* Constants.swift */; };
 		A5050A202D0F4F040044A791 /* ServerDrivenPlatformsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5050A1F2D0F4F040044A791 /* ServerDrivenPlatformsView.swift */; };
 		A5050A222D0F50FE0044A791 /* ServerDrivenPlatformsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5050A212D0F50FE0044A791 /* ServerDrivenPlatformsViewModel.swift */; };
 		A5050A262D0F54570044A791 /* ServerDrivenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5050A252D0F54570044A791 /* ServerDrivenViewModel.swift */; };
@@ -204,6 +205,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A5019DE12E58E55400FC284D /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		A5050A1F2D0F4F040044A791 /* ServerDrivenPlatformsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDrivenPlatformsView.swift; sourceTree = "<group>"; };
 		A5050A212D0F50FE0044A791 /* ServerDrivenPlatformsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDrivenPlatformsViewModel.swift; sourceTree = "<group>"; };
 		A5050A252D0F54570044A791 /* ServerDrivenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDrivenViewModel.swift; sourceTree = "<group>"; };
@@ -1318,6 +1320,7 @@
 			isa = PBXGroup;
 			children = (
 				A54D44D52CE4DBF800C0EC3B /* FirebaseRemoteConfig.swift */,
+				A5019DE12E58E55400FC284D /* Constants.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -1743,6 +1746,7 @@
 				A51AA6A62899543F0081AE4B /* GameNetApp+RepositoryInjection.swift in Sources */,
 				A51AA6AB289955140081AE4B /* LoginDataSource.swift in Sources */,
 				A599F5E029CA21B200C60626 /* GameEditView.swift in Sources */,
+				A5019DE22E58E55400FC284D /* Constants.swift in Sources */,
 				A524C70F2A3F7BED003817A4 /* GameplayChartView.swift in Sources */,
 				A524F52828B506E800A91627 /* PlatformRepository.swift in Sources */,
 				A59E763D28B6B331003CBA3E /* EditPlatformState.swift in Sources */,
