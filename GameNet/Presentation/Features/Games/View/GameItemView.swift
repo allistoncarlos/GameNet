@@ -23,10 +23,9 @@ struct GameItemView: View {
             } placeholder: { ProgressView().progressViewStyle(.circular) }
             Text(name)
                 .padding(4)
-                .background(.black)
                 .foregroundColor(.white)
-                .offset(x: -5, y: -5)
                 .font(.system(size: 10))
+                .glassEffect()
         }
     }
 }
