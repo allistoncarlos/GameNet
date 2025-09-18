@@ -110,6 +110,7 @@ struct TimelineItemView: View {
                     .padding(.vertical, 12)
                 })
          .buttonStyle(.glassProminent)
+         .buttonBorderShape(.roundedRectangle(radius: 12.0))
          .tint(Color.primaryCardBackground.opacity(0.4))
     }
     
