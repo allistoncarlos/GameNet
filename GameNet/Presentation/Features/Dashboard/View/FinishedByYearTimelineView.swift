@@ -94,26 +94,23 @@ struct TimelineItemView: View {
     // MARK: Private
     
     private var contentView: some View {
-        Button(action: onTapped) {
-            VStack(spacing: 4) {
-                Text(String(finishedGame.year))
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-                
-                Text("\(finishedGame.total) jogos")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.primaryCardBackground)
-                    .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
-            )
-        }
-        .buttonStyle(PlainButtonStyle())
+         Button(action: onTapped,
+                label: {
+                    VStack(spacing: 4) {
+                        Text(String(finishedGame.year))
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+                        
+                        Text("\(finishedGame.total) jogos")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                })
+         .buttonStyle(.glassProminent)
+         .tint(Color.primaryCardBackground.opacity(0.4))
     }
     
     private var timelineView: some View {
