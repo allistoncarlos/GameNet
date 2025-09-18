@@ -27,23 +27,22 @@ struct GameCoverView: View {
                         .aspectRatio(contentMode: .fit)
                 } placeholder: { ProgressView().progressViewStyle(.circular) }
                     if FirebaseRemoteConfig.toggleGameplaySession {
-                        Button(action: {
+                        Button {
                             showingConfirmation = true
-                        }, label: {
-                            Label("TogglePlay", systemImage: buttonImage)
-                                    .labelStyle(.iconOnly)
-                                    .frame(width: 50, height: 50)
-                        })
-                        .foregroundStyle(.white)
-                        .glassEffect()
+                        } label: {
+                            Image(systemName: buttonImage)
+                                .frame(width: 40, height: 40)
+                        }
                         .offset(x: -5, y: -5)
+                        .buttonBorderShape(.circle)
+                        .buttonStyle(.glassProminent)
+                        .tint(Color.main.opacity(0.4))
                         .confirmationDialog("", isPresented: $showingConfirmation) {
                             Button("Confirmar") {
                                 Task {
                                     await viewModel.save()
                                 }
                             }
-                            Button("Cancelar", role: .cancel) { }
                         } message: {
                             Text("Deseja \(confirmText) o jogo \(viewModel.playingGame.name)?")
                         }
