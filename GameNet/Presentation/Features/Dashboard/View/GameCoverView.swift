@@ -30,16 +30,12 @@ struct GameCoverView: View {
                         Button(action: {
                             showingConfirmation = true
                         }, label: {
-                            Image(systemName: buttonImage)
-                                .scaledToFit()
-                                .frame(width: 50, height: 50)
+                            Label("TogglePlay", systemImage: buttonImage)
+                                    .labelStyle(.iconOnly)
+                                    .frame(width: 50, height: 50)
                         })
-                        .foregroundStyle(Color.white)
-                        .background {
-                            Circle()
-                                .fill(Color.main)
-                                .shadow(color: .white, radius: 4, x: -2, y: 1)
-                        }
+                        .foregroundStyle(.white)
+                        .glassEffect()
                         .offset(x: -5, y: -5)
                         .confirmationDialog("", isPresented: $showingConfirmation) {
                             Button("Confirmar") {
