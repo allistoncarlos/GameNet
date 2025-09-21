@@ -2057,7 +2057,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.2.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNet;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alliston.GameNet-2026";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -2093,7 +2093,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.2.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNet;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alliston.GameNet-2026";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
