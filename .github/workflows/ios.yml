@@ -20,6 +20,32 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v3
 
+      - name: Extract version from branch name
+        id: extract_version
+        run: |
+          BRANCH_NAME="${GITHUB_REF_NAME}"
+          VERSION="${BRANCH_NAME#bump-v}"
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - name: Update MARKETING_VERSION and PRODUCT_BUNDLE_IDENTIFIER
+        run: |
+          PBXPROJ_PATH="$(find . -name project.pbxproj | head -n 1)"
+          echo "Updating MARKETING_VERSION and PRODUCT_BUNDLE_IDENTIFIER in $PBXPROJ_PATH"
+          # Bundle identifier
+          sed -i '' "s/com.alliston.GameNet-2026/com.neicex9253.sign/" "$PBXPROJ_PATH"
+          # MARKETING_VERSION
+          sed -i '' "s/MARKETING_VERSION = [0-9.]\+;/MARKETING_VERSION = $VERSION;/" "$PBXPROJ_PATH"
+
+      - name: Commit updated version and bundle identifier
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "[CI/CD] v$VERSION" || echo "No changes to commit"
+          git push origin HEAD
+
       - name: Install the Apple certificate and provisioning profile
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
