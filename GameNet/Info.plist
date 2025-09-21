@@ -4,10 +4,10 @@
 <dict>
 	<key>API_PATH</key>
 	<string>$(API_PATH)</string>
-	<key>METABASE_DASHBOARD</key>
-	<string>$(METABASE_DASHBOARD)</string>
 	<key>BEARER</key>
 	<string>$(BEARER)</string>
+	<key>METABASE_DASHBOARD</key>
+	<string>$(METABASE_DASHBOARD)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>

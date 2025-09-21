@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -60,7 +60,6 @@
 		A547BD1C2CF396F7003FACBE /* AsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A547BD1B2CF396EF003FACBE /* AsyncImage.swift */; };
 		A547BD1E2CF39755003FACBE /* CardTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A547BD1D2CF39752003FACBE /* CardTitle.swift */; };
 		A547BD202CF39840003FACBE /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = A547BD1F2CF39840003FACBE /* Components.swift */; };
-		A5491F3B2BA1DDCF002E752A /* TTProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = A5491F3A2BA1DDCF002E752A /* TTProgressHUD */; };
 		A54D44B82CE4D74B00C0EC3B /* FeatureToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54D44B72CE4D74B00C0EC3B /* FeatureToggleView.swift */; };
 		A54D44CD2CE4DA6500C0EC3B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A54D44CC2CE4DA6500C0EC3B /* GoogleService-Info.plist */; };
 		A54D44D02CE4DAED00C0EC3B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44CF2CE4DAED00C0EC3B /* FirebaseAnalytics */; };
@@ -89,6 +88,7 @@
 		A566D846296E35B500760F01 /* ListsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A566D845296E35B500760F01 /* ListsViewModel.swift */; };
 		A566D849296E368D00760F01 /* ListRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A566D848296E368D00760F01 /* ListRepository.swift */; };
 		A566D84C296E37B800760F01 /* ListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A566D84B296E37B800760F01 /* ListDataSource.swift */; };
+		A5675A3A2E80851400AF066A /* TTProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = A5675A392E80851400AF066A /* TTProgressHUD */; };
 		A56A95EE28B3E5E000CAAFFF /* DashboardResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95ED28B3E5E000CAAFFF /* DashboardResponseMock.swift */; };
 		A56A95F028B3FBD300CAAFFF /* DashboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95EF28B3FBD300CAAFFF /* DashboardState.swift */; };
 		A56A95F428B3FDAE00CAAFFF /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95F328B3FDAE00CAAFFF /* APIError.swift */; };
@@ -390,9 +390,9 @@
 				A5E48A1A2895B2450037023C /* GameNet.Network in Frameworks */,
 				A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */,
 				A5F18C5529D2554200E712F5 /* CachedAsyncImage in Frameworks */,
-				A5491F3B2BA1DDCF002E752A /* TTProgressHUD in Frameworks */,
 				A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */,
 				A5AE543E2CE67BE8007EF068 /* StepperView in Frameworks */,
+				A5675A3A2E80851400AF066A /* TTProgressHUD in Frameworks */,
 				A54D44D22CE4DAED00C0EC3B /* FirebaseCore in Frameworks */,
 				A51AA6A42899539A0081AE4B /* Factory in Frameworks */,
 			);
@@ -1531,11 +1531,11 @@
 				A536616A2899820700D52088 /* OHHTTPStubs */,
 				A536616C2899820700D52088 /* OHHTTPStubsSwift */,
 				A5F18C5429D2554200E712F5 /* CachedAsyncImage */,
-				A5491F3A2BA1DDCF002E752A /* TTProgressHUD */,
 				A54D44CF2CE4DAED00C0EC3B /* FirebaseAnalytics */,
 				A54D44D12CE4DAED00C0EC3B /* FirebaseCore */,
 				A54D44D32CE4DAED00C0EC3B /* FirebaseRemoteConfig */,
 				A5AE543D2CE67BE8007EF068 /* StepperView */,
+				A5675A392E80851400AF066A /* TTProgressHUD */,
 			);
 			productName = GameNet;
 			productReference = A57185C1286793D600655B31 /* GameNet.app */;
@@ -1577,9 +1577,9 @@
 				A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */,
 				A53661692899820700D52088 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 				A5F18C5329D2554200E712F5 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
-				A5491F392BA1DDCF002E752A /* XCLocalSwiftPackageReference "../TTProgressHUD" */,
 				A54D44CE2CE4DAED00C0EC3B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				A5AE543C2CE67BE8007EF068 /* XCRemoteSwiftPackageReference "StepperView" */,
+				A5675A382E80851400AF066A /* XCRemoteSwiftPackageReference "TTProgressHUD" */,
 			);
 			productRefGroup = A57185C2286793D600655B31 /* Products */;
 			projectDirPath = "";
@@ -2147,13 +2147,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		A5491F392BA1DDCF002E752A /* XCLocalSwiftPackageReference "../TTProgressHUD" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../TTProgressHUD;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -2177,6 +2170,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 11.5.0;
+			};
+		};
+		A5675A382E80851400AF066A /* XCRemoteSwiftPackageReference "TTProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/allistoncarlos/TTProgressHUD";
+			requirement = {
+				branch = feature/tvOS;
+				kind = branch;
 			};
 		};
 		A5AE543C2CE67BE8007EF068 /* XCRemoteSwiftPackageReference "StepperView" */ = {
@@ -2226,10 +2227,6 @@
 			package = A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */;
 			productName = GameNet.Network;
 		};
-		A5491F3A2BA1DDCF002E752A /* TTProgressHUD */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = TTProgressHUD;
-		};
 		A54D44CF2CE4DAED00C0EC3B /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A54D44CE2CE4DAED00C0EC3B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -2249,6 +2246,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */;
 			productName = Factory;
+		};
+		A5675A392E80851400AF066A /* TTProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A5675A382E80851400AF066A /* XCRemoteSwiftPackageReference "TTProgressHUD" */;
+			productName = TTProgressHUD;
 		};
 		A5AE543D2CE67BE8007EF068 /* StepperView */ = {
 			isa = XCSwiftPackageProductDependency;
