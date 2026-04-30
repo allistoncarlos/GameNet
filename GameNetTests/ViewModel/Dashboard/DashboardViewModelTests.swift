@@ -9,6 +9,7 @@ import Combine
 import Factory
 @testable import GameNet
 import GameNet_Keychain
+import GameNet_Network
 import XCTest
 
 @MainActor
@@ -54,6 +55,55 @@ class DashboardViewModelTests: XCTestCase {
         // When
         await viewModel.fetchData()
         await fulfillment(of: [dashboardLoadedExpectation], timeout: 30)
+    }
+
+    func testAnnualGameplayProgress_ShouldAccumulateMinutesByDay() throws {
+        let formatter = ISO8601DateFormatter()
+        let calendar = Calendar(identifier: .gregorian)
+
+        let gameplaySessions = GameplaySessions(
+            id: "2021",
+            sessions: [
+                GameplaySession(
+                    id: "1",
+                    userGameId: "game-1",
+                    start: formatter.date(from: "2021-01-01T10:00:00Z")!,
+                    finish: formatter.date(from: "2021-01-01T11:00:00Z")!,
+                    gameName: "Game 1",
+                    gameCover: nil,
+                    platformName: "Platform",
+                    totalGameplayTime: "01:00"
+                ),
+                GameplaySession(
+                    id: "2",
+                    userGameId: "game-1",
+                    start: formatter.date(from: "2021-01-02T12:00:00Z")!,
+                    finish: formatter.date(from: "2021-01-02T12:30:00Z")!,
+                    gameName: "Game 1",
+                    gameCover: nil,
+                    platformName: "Platform",
+                    totalGameplayTime: "00:30"
+                ),
+            ],
+            totalGameplayTime: "01:30",
+            averageGameplayTime: "00:45"
+        )
+
+        let series = DashboardViewModel.makeAnnualGameplayProgress(
+            gameplaySessionsByYear: [2021: gameplaySessions],
+            currentDate: formatter.date(from: "2026-01-03T12:00:00Z")!,
+            calendar: calendar
+        )
+
+        let year2021 = try XCTUnwrap(series.first(where: { $0.year == 2021 }))
+
+        XCTAssertEqual(series.first?.year, 2021)
+        XCTAssertEqual(year2021.points.count, 3)
+        XCTAssertEqual(year2021.points[0].cumulativeMinutes, 60, accuracy: 0.001)
+        XCTAssertEqual(year2021.points[1].cumulativeMinutes, 90, accuracy: 0.001)
+        XCTAssertEqual(year2021.points[2].cumulativeMinutes, 90, accuracy: 0.001)
+        XCTAssertEqual(year2021.totalMinutes, 90, accuracy: 0.001)
+        XCTAssertEqual(series.last?.year, 2026)
     }
 
     // MARK: Private

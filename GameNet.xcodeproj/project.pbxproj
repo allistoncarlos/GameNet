@@ -117,6 +117,7 @@
 		A582ABB0296F4C03000A0435 /* GamesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A582ABAF296F4C03000A0435 /* GamesListView.swift */; };
 		A596B11C2D148B2C00E537BC /* MetabaseDashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A596B11B2D148B2C00E537BC /* MetabaseDashboardViewModel.swift */; };
 		A596B1202D148B4200E537BC /* MetabaseDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A596B11F2D148B4200E537BC /* MetabaseDashboardView.swift */; };
+		A5F6A1022F006A1200420001 /* AnnualGameplayProgressChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F6A1012F006A1200420001 /* AnnualGameplayProgressChartView.swift */; };
 		A596B1222D148CE700E537BC /* WebViewRepresentative.swift in Sources */ = {isa = PBXBuildFile; fileRef = A596B1212D148CDC00E537BC /* WebViewRepresentative.swift */; };
 		A597B4222AC9C7E000442D91 /* GameCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A597B4212AC9C7E000442D91 /* GameCoverView.swift */; };
 		A599F5E029CA21B200C60626 /* GameEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A599F5DF29CA21B200C60626 /* GameEditView.swift */; };
@@ -286,6 +287,7 @@
 		A582ABAF296F4C03000A0435 /* GamesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesListView.swift; sourceTree = "<group>"; };
 		A596B11B2D148B2C00E537BC /* MetabaseDashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetabaseDashboardViewModel.swift; sourceTree = "<group>"; };
 		A596B11F2D148B4200E537BC /* MetabaseDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetabaseDashboardView.swift; sourceTree = "<group>"; };
+		A5F6A1012F006A1200420001 /* AnnualGameplayProgressChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualGameplayProgressChartView.swift; sourceTree = "<group>"; };
 		A596B1212D148CDC00E537BC /* WebViewRepresentative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewRepresentative.swift; sourceTree = "<group>"; };
 		A597B4212AC9C7E000442D91 /* GameCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCoverView.swift; sourceTree = "<group>"; };
 		A599F5DF29CA21B200C60626 /* GameEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEditView.swift; sourceTree = "<group>"; };
@@ -977,6 +979,7 @@
 		A56DB65D28B3B94B00614046 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				A5F6A1012F006A1200420001 /* AnnualGameplayProgressChartView.swift */,
 				A54414472CF206840072F2B8 /* ServerDrivenDashboardView.swift */,
 				A5B5D3D1289AE2C4004096F4 /* DashboardView.swift */,
 				A531906229ACEB300015D167 /* GameplaySessionDetailView.swift */,
@@ -1671,6 +1674,7 @@
 				A57185D92867984400655B31 /* MainButtonStyle.swift in Sources */,
 				A582ABAC296F4B6A000A0435 /* ListGamesState.swift in Sources */,
 				A596B11C2D148B2C00E537BC /* MetabaseDashboardViewModel.swift in Sources */,
+				A5F6A1022F006A1200420001 /* AnnualGameplayProgressChartView.swift in Sources */,
 				A51AA6A8289954EA0081AE4B /* GameNetApp+DataSourceInjection.swift in Sources */,
 				A5507EC32901D0950040C801 /* GameDataSource.swift in Sources */,
 				A59E763928B6AD46003CBA3E /* PlatformRouter.swift in Sources */,

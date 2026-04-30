@@ -40,6 +40,8 @@ struct DashboardView: View {
                             }
                         }
                         
+                        annualGameplayProgressCard
+                        
                         if viewModel.dashboard?.totalGames != nil {
                             physicalDigitalCard
                         }
@@ -195,6 +197,14 @@ extension DashboardView {
         }
         .frame(height: containerHeight * 0.5)
         .padding()
+    }
+}
+
+extension DashboardView {
+    var annualGameplayProgressCard: some View {
+        AnnualGameplayProgressChartView(
+            series: viewModel.annualGameplayProgress
+        )
     }
 }
 

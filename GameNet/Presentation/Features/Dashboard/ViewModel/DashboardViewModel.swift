@@ -11,6 +11,34 @@ import Foundation
 import GameNet_Network
 import SwiftUI
 
+// MARK: - AnnualGameplayProgressSeries
+
+struct AnnualGameplayProgressSeries: Identifiable {
+    let year: Int
+    let points: [AnnualGameplayProgressPoint]
+    let totalMinutes: Double
+
+    var id: Int { year }
+}
+
+// MARK: - AnnualGameplayProgressPoint
+
+struct AnnualGameplayProgressPoint: Identifiable {
+    let year: Int
+    let day: Int
+    let date: Date
+    let referenceDate: Date
+    let cumulativeMinutes: Double
+
+    var id: String {
+        "\(year)-\(day)"
+    }
+
+    var yearLabel: String { String(year) }
+    var dayLabel: String { referenceDate.toFormattedString(dateFormat: "dd/MM") }
+    var value: Double { cumulativeMinutes }
+}
+
 // MARK: - DashboardViewModel
 
 @MainActor
@@ -26,8 +54,12 @@ class DashboardViewModel: ObservableObject {
                 case let .success(dashboard):
                     self?.dashboard = dashboard
                     self?.gameplaySessions = [:]
+                    self?.annualGameplayProgress = []
                 case let .successGameplay(year, gameplaySessions):
                     self?.gameplaySessions?[year] = gameplaySessions
+                    self?.annualGameplayProgress = Self.makeAnnualGameplayProgress(
+                        gameplaySessionsByYear: self?.gameplaySessions ?? [:]
+                    )
                 default:
                     break
                 }
@@ -38,6 +70,7 @@ class DashboardViewModel: ObservableObject {
 
     @Published var dashboard: Dashboard? = nil
     @Published var gameplaySessions: [Int: GameplaySessions]? = nil
+    @Published var annualGameplayProgress: [AnnualGameplayProgressSeries] = []
     @Published var state: DashboardState = .idle
 
     func fetchData() async {
@@ -84,6 +117,121 @@ class DashboardViewModel: ObservableObject {
     @Injected(RepositoryContainer.dashboardRepository) private var repository
     @Injected(RepositoryContainer.gameplaySessionRepository) private var gameplaySessionRepository
     private var cancellable = Set<AnyCancellable>()
+}
+
+extension DashboardViewModel {
+    static func makeAnnualGameplayProgress(
+        gameplaySessionsByYear: [Int: GameplaySessions],
+        currentDate: Date = Date.timeZoneDate(),
+        calendar: Calendar = .current
+    ) -> [AnnualGameplayProgressSeries] {
+        let currentYear = calendar.component(.year, from: currentDate)
+
+        guard currentYear >= 2021 else {
+            return []
+        }
+
+        return (2021 ... currentYear).map { year in
+            let sessions = gameplaySessionsByYear[year]?.sessions.compactMap { $0 } ?? []
+            let gameplayMinutesByDay = Dictionary(grouping: sessions, by: { $0.start.dateOnly() })
+                .mapValues { sessions in
+                    sessions.reduce(0.0) { partialResult, session in
+                        guard let finish = session.finish else {
+                            return partialResult
+                        }
+
+                        return partialResult + max(0, (finish - session.start) / 60)
+                    }
+                }
+
+            guard
+                let startDate = calendar.date(from: DateComponents(year: year, month: 1, day: 1)),
+                let endDate = comparisonEndDate(for: year, currentDate: currentDate, calendar: calendar)
+            else {
+                return AnnualGameplayProgressSeries(year: year, points: [], totalMinutes: 0)
+            }
+
+            var points: [AnnualGameplayProgressPoint] = []
+            var cumulativeMinutes = 0.0
+            var currentPointDate = startDate.dateOnly()
+            var day = 1
+
+            while currentPointDate <= endDate {
+                cumulativeMinutes += gameplayMinutesByDay[currentPointDate] ?? 0
+
+                if let referenceDate = referenceDate(for: currentPointDate, referenceYear: currentYear, calendar: calendar) {
+                    points.append(
+                        AnnualGameplayProgressPoint(
+                            year: year,
+                            day: day,
+                            date: currentPointDate,
+                            referenceDate: referenceDate,
+                            cumulativeMinutes: cumulativeMinutes
+                        )
+                    )
+                }
+
+                guard let nextDate = calendar.date(byAdding: .day, value: 1, to: currentPointDate) else {
+                    break
+                }
+
+                currentPointDate = nextDate.dateOnly()
+                day += 1
+            }
+
+            return AnnualGameplayProgressSeries(
+                year: year,
+                points: points,
+                totalMinutes: cumulativeMinutes
+            )
+        }
+    }
+
+    private static func comparisonEndDate(
+        for year: Int,
+        currentDate: Date,
+        calendar: Calendar
+    ) -> Date? {
+        let monthDayComponents = calendar.dateComponents([.month, .day], from: currentDate)
+
+        if let exactDate = calendar.date(
+            from: DateComponents(
+                year: year,
+                month: monthDayComponents.month,
+                day: monthDayComponents.day
+            )
+        ) {
+            return exactDate.dateOnly()
+        }
+
+        guard let month = monthDayComponents.month else {
+            return nil
+        }
+
+        return calendar.date(
+            from: DateComponents(
+                year: year,
+                month: month + 1,
+                day: 0
+            )
+        )?.dateOnly()
+    }
+
+    private static func referenceDate(
+        for date: Date,
+        referenceYear: Int,
+        calendar: Calendar
+    ) -> Date? {
+        let components = calendar.dateComponents([.month, .day], from: date)
+
+        return calendar.date(
+            from: DateComponents(
+                year: referenceYear,
+                month: components.month,
+                day: components.day
+            )
+        )?.dateOnly()
+    }
 }
 
 extension DashboardViewModel {
