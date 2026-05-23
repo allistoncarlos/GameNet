@@ -74,6 +74,7 @@ struct AnnualGameplayProgressChartView: View {
                                 Rectangle()
                                     .fill(.clear)
                                     .contentShape(Rectangle())
+#if os(iOS)
                                     .simultaneousGesture(
                                         SpatialTapGesture()
                                             .onEnded { value in
@@ -105,6 +106,7 @@ struct AnnualGameplayProgressChartView: View {
                                                 selectedPoint = closest
                                             }
                                     )
+#endif
                             }
                         }
                         .overlay(alignment: .topLeading) {
@@ -212,7 +214,9 @@ struct AnnualGameplayChartHintView: View {
                 .foregroundColor(.main)
         }
         .padding(8)
+#if os(iOS)
         .background(Color(.systemBackground).opacity(0.9))
+#endif
         .cornerRadius(8)
         .shadow(radius: 4)
     }
