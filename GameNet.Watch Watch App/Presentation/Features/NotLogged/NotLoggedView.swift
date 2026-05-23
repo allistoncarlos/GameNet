@@ -7,15 +7,18 @@
 
 import SwiftUI
 
-// MARK: - NotLoggedView
-
 struct NotLoggedView: View {
     var body: some View {
-        Text("Hello, World! Not Logged")
+        VStack(spacing: 8) {
+            Text("Login necessário")
+                .font(.headline)
+            Text("Abra o GameNet no iPhone e faça login.")
+                .font(.caption2)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.secondary)
+        }
     }
 }
-
-// MARK: - Previews
 
 #Preview {
     NotLoggedView()

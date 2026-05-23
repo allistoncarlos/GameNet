@@ -6,178 +6,92 @@
 //
 
 import Combine
-import Factory
 import Foundation
-import GameNet_Network
-import SwiftUI
 
-// MARK: - APIError
-
-enum APIError: Error {
-    case server(String)
-}
-
-// MARK: - PlatformDataSourceProtocol
-
-protocol PlatformDataSourceProtocol {
-    func fetchData() async -> [Platform]?
-    func fetchData(id: String) async -> Platform?
-    func savePlatform(id: String?, platform: Platform) async -> Platform?
-}
-
-// MARK: - PlatformDataSource
-
-class PlatformDataSource: PlatformDataSourceProtocol {
-    func fetchData() async -> [Platform]? {
-        if let apiResult = await NetworkManager.shared
-            .performRequest(
-                responseType: APIResult<PagedResult<PlatformResponse>>.self,
-                endpoint: .platforms
-            ) {
-            if apiResult.ok {
-                return apiResult.data.result
-                    .compactMap { $0.toPlatform() }
-                    .sorted(by: { $1.name.uppercased() > $0.name.uppercased() })
-            }
-        }
-
-        return nil
-    }
-
-    func fetchData(id: String) async -> Platform? {
-        if let apiResult = await NetworkManager.shared
-            .performRequest(
-                responseType: APIResult<PlatformResponse>.self,
-                endpoint: .platform(id: id)
-            ) {
-            if apiResult.ok {
-                return apiResult.data.toPlatform()
-            }
-        }
-
-        return nil
-    }
-
-    func savePlatform(id: String?, platform: Platform) async -> Platform? {
-        if let apiResult = await NetworkManager.shared
-            .performRequest(
-                responseType: APIResult<PlatformResponse>.self,
-                endpoint: .savePlatform(id: id, data: platform.toRequest())
-            ) {
-            if apiResult.ok {
-                return apiResult.data.toPlatform()
-            }
-        }
-
-        return nil
-    }
-}
-
-// MARK: - DataSourceContainer
-
-class DataSourceContainer: SharedContainer {
-    static let platformDataSource = Factory<PlatformDataSourceProtocol> { PlatformDataSource() }
-}
-
-// MARK: - PlatformRepositoryProtocol
-
-protocol PlatformRepositoryProtocol {
-    func fetchData() async -> [Platform]?
-    func fetchData(id: String) async -> Platform?
-    func savePlatform(id: String?, platform: Platform) async -> Platform?
-}
-
-// MARK: - PlatformRepository
-
-struct PlatformRepository: PlatformRepositoryProtocol {
-
-    // MARK: Internal
-
-    func fetchData() async -> [Platform]? {
-        return await dataSource.fetchData()
-    }
-
-    func fetchData(id: String) async -> Platform? {
-        return await dataSource.fetchData(id: id)
-    }
-
-    func savePlatform(id: String?, platform: Platform) async -> Platform? {
-        return await dataSource.savePlatform(id: id, platform: platform)
-    }
-
-    // MARK: Private
-
-    @Injected(DataSourceContainer.platformDataSource) private var dataSource
-}
-
-// MARK: - RepositoryContainer
-
-class RepositoryContainer: SharedContainer {
-    static let platformRepository = Factory<PlatformRepositoryProtocol> { PlatformRepository() }
-}
-
-// MARK: - PlatformsUIState
-
-enum PlatformsUIState: Equatable {
-    case idle
+enum PlayingGamesUIState: Equatable {
     case loading
-    case success
+    case notLogged
+    case empty
+    case content
     case error(String)
 }
 
-// MARK: - PlayingGamesViewModel
+@MainActor
+final class PlayingGamesViewModel: ObservableObject {
+    @Published var games: [WatchPlayingGame] = []
+    @Published var uiState: PlayingGamesUIState = .loading
+    @Published var selectedGameIndex: Int = 0
+    @Published var selectedHabitDayISO: String = WatchConnectivityDateCodec.habitDayOptions().first ?? ""
+    @Published var isSaving = false
 
-class PlayingGamesViewModel: ObservableObject {
+    let habitDayOptions: [String] = WatchConnectivityDateCodec.habitDayOptions()
 
-    // MARK: Lifecycle
+    private let service = WatchPlayingGamesService()
+    private var cancellables = Set<AnyCancellable>()
 
     init() {
-        cancellable = publisher
+        WatchConnectivityManager.shared.$context
             .receive(on: RunLoop.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    print("Received finished")
-                case let .failure(error):
-                    switch error {
-                    case let .server(message):
-                        self.uiState = .error(message)
-                    }
-                }
-            } receiveValue: { [weak self] platforms in
-                self?.platforms = platforms
-
-                self?.uiState = .success
+            .sink { [weak self] _ in
+                self?.applyCachedGamesIfNeeded()
             }
+            .store(in: &cancellables)
     }
 
-    deinit {
-        cancellable?.cancel()
+    var selectedGame: WatchPlayingGame? {
+        guard games.indices.contains(selectedGameIndex) else { return nil }
+        return games[selectedGameIndex]
     }
 
-    // MARK: Public
-
-    public let publisher = PassthroughSubject<[Platform]?, APIError>()
-
-    // MARK: Internal
-
-    @Published var platforms: [Platform]? = nil
-    @Published var uiState: PlatformsUIState = .idle
-
-    func fetchData() async {
+    func load() async {
         uiState = .loading
 
-        let result = await repository.fetchData()
+        do {
+            _ = try await service.checkAuth()
+            games = try await service.fetchPlayingGames()
+            uiState = games.isEmpty ? .empty : .content
+        } catch WatchPlayingGamesServiceError.notLogged {
+            games = []
+            uiState = .notLogged
+        } catch {
+            games = []
+            uiState = .error(error.localizedDescription)
+        }
+    }
 
-        if let result = result {
-            publisher.send(result)
-        } else {
-            publisher.send(completion: .failure(.server("Erro no carregamento de dados do servidor")))
+    func toggleGameplay() async {
+        guard let game = selectedGame, !isSaving else { return }
+
+        isSaving = true
+        defer { isSaving = false }
+
+        do {
+            let updated = try await service.toggleGameplay(
+                game: game,
+                habitDayISO: selectedHabitDayISO
+            )
+            replaceGame(updated)
+        } catch {
+            uiState = .error(error.localizedDescription)
         }
     }
 
     // MARK: Private
 
-    @Injected(RepositoryContainer.platformRepository) private var repository
-    private var cancellable: AnyCancellable?
+    private func replaceGame(_ updated: WatchPlayingGame) {
+        guard let index = games.firstIndex(where: { $0.id == updated.id }) else { return }
+        games[index] = updated
+    }
+
+    private func applyCachedGamesIfNeeded() {
+        guard let cached = WatchConnectivityManager.shared.playingGamesFromContext()?.games,
+              !cached.isEmpty else {
+            return
+        }
+
+        games = cached
+        if uiState == .loading {
+            uiState = cached.isEmpty ? .empty : .content
+        }
+    }
 }

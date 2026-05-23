@@ -38,48 +38,51 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
         message: Any,
         key: String
     ) {
+        sendMessage(message: message, key: key, replyHandler: nil)
+    }
+
+    func sendMessage(
+        message: Any = true,
+        key: String,
+        replyHandler: (([String: Any]) -> Void)?,
+        errorHandler: ((Error) -> Void)? = nil
+    ) {
         do {
-            try validateSession()
+            try validateSessionForMessaging()
 
             WCSession.default.sendMessage(
                 [key: message],
-                replyHandler: nil
-            ) { error in
-                print("Cannot send message: \(String(describing: error))")
-            }
-        } catch WCError.notReachable {
-            print("[WATCH SESSION] - Error: NOT REACHABLE")
-        } catch WCError.companionAppNotInstalled {
-            print("[WATCH SESSION] - Error: COMPANION APP NOT INSTALLED")
-        } catch WCError.watchAppNotInstalled {
-            print("[WATCH SESSION] - Error: WATCH APP NOT INSTALLED")
-        } catch WCError.sessionNotActivated {
-            print("[WATCH SESSION] - Error: SESSION NOT ACTIVATED")
+                replyHandler: replyHandler,
+                errorHandler: { error in
+                    print("Cannot send message: \(String(describing: error))")
+                    errorHandler?(error)
+                }
+            )
         } catch {
             print("[WATCH SESSION] - Error: \(error.localizedDescription)")
+            errorHandler?(error)
         }
     }
 
     func updateApplicationContext(message: Any, key: String) {
         do {
-            try validateSession()
+            try validateSessionForContext()
             try WCSession.default.updateApplicationContext([key: message])
-        } catch WCError.notReachable {
-            print("[WATCH SESSION] - Error: NOT REACHABLE")
-        } catch WCError.companionAppNotInstalled {
-            print("[WATCH SESSION] - Error: COMPANION APP NOT INSTALLED")
-        } catch WCError.watchAppNotInstalled {
-            print("[WATCH SESSION] - Error: WATCH APP NOT INSTALLED")
-        } catch WCError.sessionNotActivated {
-            print("[WATCH SESSION] - Error: SESSION NOT ACTIVATED")
         } catch {
             print("[WATCH SESSION] - Error: \(error.localizedDescription)")
         }
     }
 
+    func playingGamesFromContext() -> WatchPlayingGamesPayload? {
+        guard let data = WCSession.default.receivedApplicationContext[WatchMessageKey.playingGames] as? Data else {
+            return nil
+        }
+        return WatchConnectivityPayloadCodec.decode(WatchPlayingGamesPayload.self, from: data)
+    }
+
     // MARK: Private
 
-    private func validateSession() throws {
+    private func validateSessionForMessaging() throws {
         guard WCSession.default.activationState == .activated else {
             throw WCError(.sessionNotActivated)
         }
@@ -98,6 +101,12 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
             throw WCError(.notReachable)
         }
     }
+
+    private func validateSessionForContext() throws {
+        guard WCSession.default.activationState == .activated else {
+            throw WCError(.sessionNotActivated)
+        }
+    }
 }
 
 // MARK: WCSessionDelegate
@@ -105,6 +114,23 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
 extension WatchConnectivityManager: WCSessionDelegate {
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
         self.message = message
+    }
+
+    func session(
+        _ session: WCSession,
+        didReceiveMessage message: [String: Any],
+        replyHandler: @escaping ([String: Any]) -> Void
+    ) {
+        self.message = message
+
+        #if os(iOS)
+            Task { @MainActor in
+                let reply = await WatchPhoneCoordinator.shared.handle(message: message)
+                replyHandler(reply)
+            }
+        #else
+            replyHandler([:])
+        #endif
     }
 
     func session(

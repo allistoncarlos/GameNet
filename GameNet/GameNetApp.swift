@@ -31,38 +31,39 @@ struct GameNetApp: App {
 
     init() {
 #if canImport(WatchConnectivity)
-        WatchConnectivityManager.shared.$message
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { message in
-                DispatchQueue.main.async {
-                    if message["ASK_FOR_CREDENTIALS"] != nil {
-                        if KeychainDataSource.hasValidToken() {
-                            if let id = KeychainDataSource.id.get(),
-                               let accessToken = KeychainDataSource.accessToken.get(),
-                               let refreshToken = KeychainDataSource.refreshToken.get(),
-                               let expiresIn = KeychainDataSource.expiresIn.get() {
-                                let responseMessage = [
-                                    id,
-                                    accessToken,
-                                    refreshToken,
-                                    expiresIn
-                                ]
-
-                                WatchConnectivityManager.shared.sendMessage(
-                                    message: responseMessage,
-                                    key: "AUTH_INFO"
-                                )
-                            }
-                        } else {
-                            WatchConnectivityManager.shared.sendMessage(
-                                message: "NOT_LOGGED",
-                                key: "NOT_LOGGED"
-                            )
-                        }
-                    }
-                }
-            })
-            .store(in: &cancellables)
+        WatchConnectivityManager.shared.activateSession()
+//        WatchConnectivityManager.shared.$message
+//            .receive(on: RunLoop.main)
+//            .sink(receiveValue: { message in
+//                DispatchQueue.main.async {
+//                    if message["ASK_FOR_CREDENTIALS"] != nil {
+//                        if KeychainDataSource.hasValidToken() {
+//                            if let id = KeychainDataSource.id.get(),
+//                               let accessToken = KeychainDataSource.accessToken.get(),
+//                               let refreshToken = KeychainDataSource.refreshToken.get(),
+//                               let expiresIn = KeychainDataSource.expiresIn.get() {
+//                                let responseMessage = [
+//                                    id,
+//                                    accessToken,
+//                                    refreshToken,
+//                                    expiresIn
+//                                ]
+//
+//                                WatchConnectivityManager.shared.sendMessage(
+//                                    message: responseMessage,
+//                                    key: "AUTH_INFO"
+//                                )
+//                            }
+//                        } else {
+//                            WatchConnectivityManager.shared.sendMessage(
+//                                message: "NOT_LOGGED",
+//                                key: "NOT_LOGGED"
+//                            )
+//                        }
+//                    }
+//                }
+//            })
+//            .store(in: &cancellables)
 #endif
     }
 

@@ -7,30 +7,12 @@
 
 import SwiftUI
 
-// MARK: - HomeView
-
 struct HomeView: View {
-    @ObservedObject var viewModel: HomeViewModel
-
     var body: some View {
-        switch viewModel.state {
-        case .idle:
-            NotLoggedView()
-                .onAppear {
-                    viewModel.askForCredentials()
-                }
-        case .askingForCredentials:
-            Text("PEDINDO CREDENCIAIS")
-        case .notLogged:
-            Text("PRECISA LOGAR NO IPHONE")
-        case .logged:
-            PlayingGamesView(viewModel: PlayingGamesViewModel())
-        }
+        PlayingGamesView(viewModel: PlayingGamesViewModel())
     }
 }
 
-// MARK: - Previews
-
 #Preview {
-    HomeView(viewModel: HomeViewModel())
+    HomeView()
 }

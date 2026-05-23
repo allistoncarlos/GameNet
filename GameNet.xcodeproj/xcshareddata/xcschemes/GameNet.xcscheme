@@ -21,6 +21,20 @@
                ReferencedContainer = "container:GameNet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A550C6DF2968ABF60043FE74"
+               BuildableName = "GameNet.Watch Watch App.app"
+               BlueprintName = "GameNet.Watch Watch App"
+               ReferencedContainer = "container:GameNet.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
