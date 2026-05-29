@@ -76,7 +76,8 @@ final class WatchPhoneCoordinator {
             }
             finish = Date.timeZoneDate()
         } else {
-            return [WatchMessageKey.error: "invalid_habit_day"]
+            start = Date.timeZoneDate()
+            finish = nil
         }
 
         guard let session = await gameplaySessionRepository.save(
