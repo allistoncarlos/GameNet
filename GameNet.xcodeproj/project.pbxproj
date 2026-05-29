@@ -41,6 +41,8 @@
 		A530E73F296EE856000EAB91 /* EditListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E73E296EE856000EAB91 /* EditListViewModelTests.swift */; };
 		A530E741296EE88B000EAB91 /* EditListResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E740296EE88B000EAB91 /* EditListResponseMock.swift */; };
 		A531906329ACEB300015D167 /* GameplaySessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A531906229ACEB300015D167 /* GameplaySessionDetailView.swift */; };
+		A5357E912FCA1BA40094C91E /* GameNet.icon in Resources */ = {isa = PBXBuildFile; fileRef = A5357E902FCA1BA40094C91E /* GameNet.icon */; };
+		A5357E922FCA1BA40094C91E /* GameNet.icon in Resources */ = {isa = PBXBuildFile; fileRef = A5357E902FCA1BA40094C91E /* GameNet.icon */; };
 		A53661682899678000D52088 /* MockLoginDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661672899678000D52088 /* MockLoginDataSource.swift */; };
 		A536616B2899820700D52088 /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = A536616A2899820700D52088 /* OHHTTPStubs */; };
 		A536616D2899820700D52088 /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A536616C2899820700D52088 /* OHHTTPStubsSwift */; };
@@ -235,6 +237,7 @@
 		A530E73E296EE856000EAB91 /* EditListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListViewModelTests.swift; sourceTree = "<group>"; };
 		A530E740296EE88B000EAB91 /* EditListResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListResponseMock.swift; sourceTree = "<group>"; };
 		A531906229ACEB300015D167 /* GameplaySessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplaySessionDetailView.swift; sourceTree = "<group>"; };
+		A5357E902FCA1BA40094C91E /* GameNet.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = GameNet.icon; sourceTree = "<group>"; };
 		A53661672899678000D52088 /* MockLoginDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLoginDataSource.swift; sourceTree = "<group>"; };
 		A536616F2899828700D52088 /* LoginNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkTests.swift; sourceTree = "<group>"; };
 		A53661722899837B00D52088 /* StubRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubRequests.swift; sourceTree = "<group>"; };
@@ -357,7 +360,6 @@
 		A5F029F92973203F0013AA13 /* ListDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailsViewModel.swift; sourceTree = "<group>"; };
 		A5F079612CF4E0F7002C3D41 /* ServerDriven+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ServerDriven+View.swift"; sourceTree = "<group>"; };
 		A5F079632CF4E2ED002C3D41 /* DashboardText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardText.swift; sourceTree = "<group>"; };
-		A5F6A1012F006A1200420001 /* AnnualGameplayProgressChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnualGameplayProgressChartView.swift; sourceTree = "<group>"; };
 		A5F0A0012F006A1200420001 /* WatchConnectivityMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityMessages.swift; sourceTree = "<group>"; };
 		A5F0A0022F006A1200420002 /* WatchPhoneCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPhoneCoordinator.swift; sourceTree = "<group>"; };
 		A5F0A0032F006A1200420003 /* WatchConnectivityDateCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityDateCodec.swift; sourceTree = "<group>"; };
@@ -1083,6 +1085,7 @@
 		A57185B8286793D600655B31 = {
 			isa = PBXGroup;
 			children = (
+				A5357E902FCA1BA40094C91E /* GameNet.icon */,
 				A55A0D3D2DD24BFA004532F3 /* GameNet.xctestplan */,
 				A57185C3286793D600655B31 /* GameNet */,
 				A56D956728996508003C13A3 /* GameNetTests */,
@@ -1611,6 +1614,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A550C6EA2968ABF70043FE74 /* Preview Assets.xcassets in Resources */,
+				A5357E912FCA1BA40094C91E /* GameNet.icon in Resources */,
 				A550C6E72968ABF70043FE74 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1628,6 +1632,7 @@
 			files = (
 				A57185CC286793D700655B31 /* Preview Assets.xcassets in Resources */,
 				A54D44CD2CE4DA6500C0EC3B /* GoogleService-Info.plist in Resources */,
+				A5357E922FCA1BA40094C91E /* GameNet.icon in Resources */,
 				A5D2BCE02968B6720030973B /* Config.xcconfig in Resources */,
 				A57185C9286793D700655B31 /* Assets.xcassets in Resources */,
 			);
@@ -1822,7 +1827,7 @@
 		A550C6EC2968ABF70043FE74 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = GameNet;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "GameNet.Watch Watch App/GameNet.Watch Watch App.entitlements";
@@ -1855,7 +1860,7 @@
 		A550C6ED2968ABF70043FE74 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = GameNet;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
 				CODE_SIGN_ENTITLEMENTS = "GameNet.Watch Watch App/GameNet.Watch Watch App.entitlements";
@@ -2051,7 +2056,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A5D2C23C2896B676007C28AC /* Config.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = GameNet;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GameNet/GameNet.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -2089,7 +2094,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A5D2C23C2896B676007C28AC /* Config.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = GameNet;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = GameNet/GameNet.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
