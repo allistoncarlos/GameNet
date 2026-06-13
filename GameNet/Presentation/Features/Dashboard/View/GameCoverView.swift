@@ -21,11 +21,16 @@ struct GameCoverView: View {
             VStack(alignment: .center) {
                 ZStack(alignment: .bottomTrailing) {
                     
-                CachedAsyncImage(url: URL(string: viewModel.playingGame.coverURL)) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                } placeholder: { ProgressView().progressViewStyle(.circular) }
+                CachedAsyncImage(url: URL(string: viewModel.playingGame.coverURL)) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    default:
+                        coverImageSkeleton
+                    }
+                }
                     if FirebaseRemoteConfig.toggleGameplaySession {
                         Button {
                             showingConfirmation = true
@@ -69,6 +74,14 @@ struct GameCoverView: View {
             self.buttonImage = newValue ? "stop.fill" : "play.fill"
             self.confirmText = newValue ? "finalizar" : "iniciar"
         }
+    }
+
+    private var coverImageSkeleton: some View {
+        RoundedRectangle(cornerRadius: 12)
+            .fill(Color.secondary.opacity(0.2))
+            .aspectRatio(2 / 3, contentMode: .fit)
+            .frame(maxWidth: .infinity)
+            .redacted(reason: .placeholder)
     }
 }
 
