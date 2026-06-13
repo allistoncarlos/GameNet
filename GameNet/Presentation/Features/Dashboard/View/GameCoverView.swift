@@ -12,16 +12,21 @@ import GameNet_Network
 struct GameCoverView: View {
     @ObservedObject var viewModel: GameCoverViewModel
     @State private var showingConfirmation = false
+    @State private var coverAccentColor = Color.main
     
     @State var buttonImage = "play.fill"
     @State var confirmText = "iniciar"
+    
+    private var coverURL: String {
+        viewModel.playingGame.coverURL
+    }
     
     var body: some View {
         SwiftUI.NavigationLink(value: viewModel.playingGame) {
             VStack(alignment: .center) {
                 ZStack(alignment: .bottomTrailing) {
                     
-                CachedAsyncImage(url: URL(string: viewModel.playingGame.coverURL)) { phase in
+                CachedAsyncImage(url: URL(string: coverURL)) { phase in
                     switch phase {
                     case .success(let image):
                         image
@@ -43,7 +48,8 @@ struct GameCoverView: View {
                         .offset(x: -5, y: -5)
                         .buttonBorderShape(.circle)
                         .buttonStyle(.glassProminent)
-                        .tint(Color.main.opacity(0.4))
+                        .tint(coverAccentColor.opacity(0.5))
+                        .animation(.smooth, value: coverAccentColor)
                         .confirmationDialog("", isPresented: $showingConfirmation) {
                             Button("Confirmar") {
                                 Task {
@@ -75,6 +81,12 @@ struct GameCoverView: View {
         .onChange(of: viewModel.isStarted) { oldValue, newValue in
             self.buttonImage = newValue ? "stop.fill" : "play.fill"
             self.confirmText = newValue ? "finalizar" : "iniciar"
+        }
+        .task(id: coverURL) {
+            guard !coverURL.isEmpty else { return }
+            #if os(iOS)
+            coverAccentColor = await CoverAccentColor.from(urlString: coverURL)
+            #endif
         }
     }
 

@@ -21,6 +21,7 @@ struct GameDetailView: View {
     @State var isCopied = false
     @State private var isSaving = false
     @State private var isSessionsExpanded = false
+    @State private var coverAccentColor = Color.main
     @State var showingConfirmation = false
     @State var buttonImage = "play.fill"
     @State var confirmText = "iniciar"
@@ -81,6 +82,12 @@ struct GameDetailView: View {
             async let gameData: Void = viewModel.fetchData()
             async let funRating: Void = viewModel.fetchFunRating()
             _ = await (gameData, funRating)
+        }
+        .task(id: displayCoverURL) {
+            guard !displayCoverURL.isEmpty else { return }
+            #if os(iOS)
+            coverAccentColor = await CoverAccentColor.from(urlString: displayCoverURL)
+            #endif
         }
     }
 
@@ -167,7 +174,8 @@ struct GameDetailView: View {
                 .offset(x: -5, y: -5)
                 .buttonBorderShape(.circle)
                 .buttonStyle(.glassProminent)
-                .tint(Color.main.opacity(0.4))
+                .tint(coverAccentColor.opacity(0.5))
+                .animation(.smooth, value: coverAccentColor)
                 .confirmationDialog("", isPresented: $showingConfirmation) {
                     Button("Confirmar") {
                         Task {

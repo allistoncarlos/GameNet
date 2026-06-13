@@ -94,6 +94,7 @@
 		A56A95F028B3FBD300CAAFFF /* DashboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95EF28B3FBD300CAAFFF /* DashboardState.swift */; };
 		A56A95F428B3FDAE00CAAFFF /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95F328B3FDAE00CAAFFF /* APIError.swift */; };
 		A56A95F628B4010600CAAFFF /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95F528B4010600CAAFFF /* Date+Extensions.swift */; };
+		A5ACC1022F01400600420010 /* UIImage+AccentColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5ACC1012F01400600420010 /* UIImage+AccentColor.swift */; };
 		A56A95F828B405DB00CAAFFF /* Number+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95F728B405DB00CAAFFF /* Number+Extensions.swift */; };
 		A56D955C2899576A003C13A3 /* LoginRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955B2899576A003C13A3 /* LoginRepository.swift */; };
 		A56D955F289958B2003C13A3 /* RequestError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D955E289958B2003C13A3 /* RequestError.swift */; };
@@ -288,6 +289,7 @@
 		A56A95EF28B3FBD300CAAFFF /* DashboardState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardState.swift; sourceTree = "<group>"; };
 		A56A95F328B3FDAE00CAAFFF /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		A56A95F528B4010600CAAFFF /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
+		A5ACC1012F01400600420010 /* UIImage+AccentColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+AccentColor.swift"; sourceTree = "<group>"; };
 		A56A95F728B405DB00CAAFFF /* Number+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Number+Extensions.swift"; sourceTree = "<group>"; };
 		A56D955B2899576A003C13A3 /* LoginRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepository.swift; sourceTree = "<group>"; };
 		A56D955E289958B2003C13A3 /* RequestError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestError.swift; sourceTree = "<group>"; };
@@ -1143,6 +1145,7 @@
 				A59DB73128B114EE009B7641 /* Font.swift */,
 				A5B5D3DB289B0933004096F4 /* View+Extensions.swift */,
 				A56A95F528B4010600CAAFFF /* Date+Extensions.swift */,
+				A5ACC1012F01400600420010 /* UIImage+AccentColor.swift */,
 				A56A95F728B405DB00CAAFFF /* Number+Extensions.swift */,
 				A57D3F2529CF77F3000AFFBA /* Binding+Extensions.swift */,
 			);
@@ -1758,6 +1761,7 @@
 				A5EB2F652E049DCF00398E01 /* FinishedByYearTimelineView.swift in Sources */,
 				A56A95F428B3FDAE00CAAFFF /* APIError.swift in Sources */,
 				A56A95F628B4010600CAAFFF /* Date+Extensions.swift in Sources */,
+				A5ACC1022F01400600420010 /* UIImage+AccentColor.swift in Sources */,
 				A582ABA8296F4A07000A0435 /* GamesListItemView.swift in Sources */,
 				A56A95F028B3FBD300CAAFFF /* DashboardState.swift in Sources */,
 				A56DB66A28B3C1AC00614046 /* DashboardRepository.swift in Sources */,
