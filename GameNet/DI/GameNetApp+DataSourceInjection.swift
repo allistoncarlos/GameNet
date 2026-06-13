@@ -17,4 +17,5 @@ class DataSourceContainer: SharedContainer {
     static let gameplaySessionDataSource = Factory<GameplaySessionDataSourceProtocol> { GameplaySessionDataSource() }
     
     static let serverDrivenDataSource = Factory<ServerDrivenDataSourceProtocol> { ServerDrivenDataSource() }
+    static let funDataSource = Factory<FunDataSourceProtocol> { FunDataSource() }
 }

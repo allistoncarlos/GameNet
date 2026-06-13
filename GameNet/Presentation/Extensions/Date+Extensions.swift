@@ -40,6 +40,24 @@ extension Date {
     static func - (lhs: Date, rhs: Date) -> TimeInterval {
         return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
     }
+
+    func toRelativeSessionDayLabel() -> String {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let sessionDay = calendar.startOfDay(for: self)
+        let dayDifference = calendar.dateComponents([.day], from: sessionDay, to: today).day ?? 0
+
+        switch dayDifference {
+        case 0:
+            return "hoje"
+        case 1:
+            return "ontem"
+        case 2:
+            return "anteontem"
+        default:
+            return toFormattedString(dateFormat: "dd/MM/yyyy")
+        }
+    }
 }
 
 extension String {

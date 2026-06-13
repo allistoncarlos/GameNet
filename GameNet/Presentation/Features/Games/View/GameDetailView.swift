@@ -20,37 +20,43 @@ struct GameDetailView: View {
 
     @State var isCopied = false
     @State private var isSaving = false
+    @State private var isSessionsExpanded = false
     @State var showingConfirmation = false
     @State var buttonImage = "play.fill"
     @State var confirmText = "iniciar"
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 15) {
-                heroCoverSection
+        ZStack {
+            blurredCoverBackground
 
-                Text(displayName)
-                    .font(.system(.title))
-                    .bold()
-                    .multilineTextAlignment(.center)
+            ScrollView {
+                VStack(spacing: 15) {
+                    heroCoverSection
 
-                if !displayPlatform.isEmpty {
-                    Text(displayPlatform)
-                        .font(.system(.title2))
+                    Text(displayName)
+                        .font(.system(.title))
                         .bold()
                         .multilineTextAlignment(.center)
-                }
 
-                if let game = viewModel.game {
-                    loadedDetailsSection(for: game)
-                } else {
-                    loadingDetailsPlaceholder
-                }
+                    if !displayPlatform.isEmpty {
+                        Text(displayPlatform)
+                            .font(.system(.title2))
+                            .bold()
+                            .multilineTextAlignment(.center)
+                    }
 
-                gameplaysSection
+                    if viewModel.game != nil {
+                        gameInfoBar
+                            .transition(.opacity)
+                    } else {
+                        loadingDetailsPlaceholder
+                    }
+
+                    gameSessionsSection
+                }
+                .padding(10)
+                .animation(.smooth, value: viewModel.game != nil)
             }
-            .padding(10)
-            .animation(.smooth, value: viewModel.game != nil)
         }
         .overlay(
             TTProgressHUD($isCopied, config: TTProgressHUDConfig(
@@ -72,7 +78,9 @@ struct GameDetailView: View {
             self.confirmText = newValue ? "finalizar" : "iniciar"
         }
         .task {
-            await viewModel.fetchData()
+            async let gameData: Void = viewModel.fetchData()
+            async let funRating: Void = viewModel.fetchFunRating()
+            _ = await (gameData, funRating)
         }
     }
 
@@ -86,6 +94,41 @@ struct GameDetailView: View {
 
     private var displayPlatform: String {
         viewModel.game?.platform ?? viewModel.preview?.platform ?? ""
+    }
+
+    private var blurredCoverBackground: some View {
+        GeometryReader { geometry in
+            CachedAsyncImage(url: URL(string: displayCoverURL)) { phase in
+                switch phase {
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .scaleEffect(1.04)
+                        .blur(radius: 8)
+                        .saturation(1.1)
+                        .overlay {
+                            Color.black.opacity(0.08)
+                        }
+                        .overlay {
+                            LinearGradient(
+                                colors: [
+                                    Color.clear,
+                                    Color.black.opacity(0.18)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                        }
+                default:
+                    Color.black
+                }
+            }
+            .frame(width: geometry.size.width, height: geometry.size.height)
+            .clipped()
+        }
+        .ignoresSafeArea()
     }
 
     private var heroCoverSection: some View {
@@ -102,6 +145,7 @@ struct GameDetailView: View {
             }
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .frame(height: 250)
+            .shadow(color: .black.opacity(0.35), radius: 16, y: 8)
             .onTapGesture(count: 2) {
                 #if os(iOS)
                 UIPasteboard.general.setValue(
@@ -161,79 +205,54 @@ struct GameDetailView: View {
         .redacted(reason: .placeholder)
     }
 
-    @ViewBuilder
-    private func loadedDetailsSection(for game: GameDetail) -> some View {
-        VStack(spacing: 2) {
-            Text("Preço: \(game.value.toCurrencyString() ?? "0,00")")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 16))
+    private var gameInfoBar: some View {
+        HStack(spacing: 0) {
+            infoMetricColumn(
+                icon: "tag.fill",
+                value: displayPrice,
+                label: "Preço"
+            )
+            .padding(.trailing, 8)
 
-            if let boughtDate = game.boughtDate {
-                Text("Comprado em \(boughtDate.toFormattedString())")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.system(size: 16))
-            }
+            sessionsSummaryDivider
 
-            if let latestGameplays = game.gameplays?.last {
-                if let finish = latestGameplays.finish {
-                    Text("Finalizado em \(finish.toFormattedString())")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 16))
-                } else {
-                    Text("Jogando desde: \(latestGameplays.start.toFormattedString())")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.system(size: 16))
-                }
-            }
+            infoMetricColumn(
+                icon: "calendar",
+                value: displayPlayingSince,
+                label: "Jogando Desde"
+            )
+            .padding(.horizontal, 8)
+
+            sessionsSummaryDivider
+
+            infoMetricColumn(
+                icon: "star.fill",
+                value: displayRating,
+                label: "Avaliação"
+            )
+            .padding(.leading, 8)
         }
-        .transition(.opacity)
+        .padding(12)
+        .glassEffect(in: .rect(cornerRadius: 14))
     }
 
     @ViewBuilder
-    private var gameplaysSection: some View {
+    private var gameSessionsSection: some View {
         if let gameplays = viewModel.gameplays {
-            Text("Gameplays Recentes")
-                .font(.system(.title3))
-                .bold()
-                .multilineTextAlignment(.center)
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Sessões de Jogo")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.secondary)
 
-            VStack(spacing: 2) {
-                Text("Total de \(gameplays.totalGameplayTime) horas")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.system(size: 16))
-                    .bold()
-                Text("Média de \(gameplays.averageGameplayTime) horas")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.system(size: 16))
-                    .bold()
-            }
+                sessionsSummaryRow(totalGameplayTime: gameplays.totalGameplayTime)
 
-            VStack(spacing: 5) {
-                ForEach(
-                    gameplays.sessions.sorted(by: { $0!.start >= $1!.start }),
-                    id: \.?.id
-                ) { session in
-                    if let session {
-                        if let finishSession = session.finish {
-                            VStack(spacing: 2) {
-                                Text("\(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat)) até \(finishSession.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .font(.system(size: 14))
-
-                                Text("Total de \(session.totalGameplayTime)")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .font(.system(size: 14))
-                            }
-                        } else {
-                            Text("Jogando desde \(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .font(.system(size: 16))
-                                .bold()
-                                .padding(.bottom, 10)
-                        }
-                    }
+                if !viewModel.sortedGameplaySessions.isEmpty {
+                    sessionsHistoryExpander
                 }
             }
+            .padding(12)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .glassEffect(in: .rect(cornerRadius: 14))
             .transition(.opacity)
         } else if viewModel.isLoadingGameplays {
             ProgressView()
@@ -241,12 +260,198 @@ struct GameDetailView: View {
                 .padding(.top, 8)
         }
     }
+
+    private func sessionsSummaryRow(totalGameplayTime: String) -> some View {
+        HStack(spacing: 0) {
+            sessionsSummaryColumn(
+                icon: "gamecontroller.fill",
+                value: sessionsCountText,
+                detail: lastSessionDetailText
+            )
+            .padding(.trailing, 10)
+
+            sessionsSummaryDivider
+
+            sessionsSummaryColumn(
+                icon: "clock.fill",
+                value: totalGameplayTime,
+                detail: "Tempo de jogo"
+            )
+            .padding(.leading, 10)
+        }
+    }
+
+    private var sessionsHistoryExpander: some View {
+        VStack(spacing: 0) {
+            Rectangle()
+                .fill(Color.white.opacity(0.12))
+                .frame(height: 1)
+                .padding(.vertical, 8)
+
+            Button {
+                withAnimation(.smooth) {
+                    isSessionsExpanded.toggle()
+                }
+            } label: {
+                HStack(spacing: 6) {
+                    Image(systemName: "list.bullet.rectangle")
+                        .font(.system(size: 11, weight: .semibold))
+
+                    Text("Histórico de sessões")
+                        .font(.system(size: 12, weight: .semibold))
+
+                    Text("(\(viewModel.sessionCount))")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
+
+                    Spacer(minLength: 0)
+
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(.secondary)
+                        .rotationEffect(.degrees(isSessionsExpanded ? 180 : 0))
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+
+            if isSessionsExpanded {
+                VStack(spacing: 6) {
+                    ForEach(Array(viewModel.sortedGameplaySessions.enumerated()), id: \.element) { index, session in
+                        gameplaySessionRow(for: session, index: index + 1)
+                    }
+                }
+                .padding(.top, 8)
+            }
+        }
+    }
+
+    private var sessionsSummaryDivider: some View {
+        Rectangle()
+            .fill(Color.white.opacity(0.12))
+            .frame(width: 1)
+            .padding(.vertical, 2)
+    }
+
+    private var displayPrice: String {
+        viewModel.game?.value.toCurrencyString() ?? "—"
+    }
+
+    private var displayPlayingSince: String {
+        viewModel.playingSinceText ?? "—"
+    }
+
+    private var displayRating: String {
+        guard let funRating = viewModel.funRating else { return "—" }
+
+        let formatter = NumberFormatter()
+        formatter.locale = Locale(identifier: "pt_BR")
+        formatter.minimumFractionDigits = 1
+        formatter.maximumFractionDigits = 1
+        formatter.numberStyle = .decimal
+
+        let average = formatter.string(from: funRating.average as NSDecimalNumber) ?? "5,0"
+
+        if funRating.isMock {
+            return "\(average) [MOCK]"
+        }
+
+        return average
+    }
+
+    private var sessionsCountText: String {
+        let count = viewModel.sessionCount
+        let suffix = count == 1 ? "sessão" : "sessões"
+        return "\(count) \(suffix)"
+    }
+
+    private var lastSessionDetailText: String {
+        guard let relativeLabel = viewModel.lastSessionRelativeLabel else {
+            return "Última sessão —"
+        }
+
+        return "Última sessão \(relativeLabel)"
+    }
+
+    private func infoMetricColumn(icon: String, value: String, label: String) -> some View {
+        VStack(spacing: 4) {
+            Image(systemName: icon)
+                .font(.system(size: 12))
+                .foregroundStyle(.secondary)
+
+            Text(value)
+                .font(.system(size: 13, weight: .semibold))
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .minimumScaleFactor(0.85)
+
+            Text(label)
+                .font(.system(size: 10))
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .minimumScaleFactor(0.85)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private func sessionsSummaryColumn(icon: String, value: String, detail: String) -> some View {
+        infoMetricColumn(icon: icon, value: value, label: detail)
+    }
+
+    @ViewBuilder
+    private func gameplaySessionRow(for session: GameplaySession, index: Int) -> some View {
+        HStack(alignment: .center, spacing: 8) {
+            Text("\(index)")
+                .font(.system(size: 10, weight: .medium, design: .rounded))
+                .foregroundStyle(.secondary)
+                .frame(width: 16, alignment: .trailing)
+
+            VStack(alignment: .leading, spacing: 2) {
+                if session.finish == nil {
+                    HStack(spacing: 4) {
+                        Image(systemName: "circle.fill")
+                            .font(.system(size: 6))
+                        Text("Em andamento")
+                            .font(.system(size: 10, weight: .semibold))
+                    }
+                    .foregroundStyle(.green)
+
+                    Text(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))
+                        .font(.system(size: 10))
+                        .foregroundStyle(.secondary)
+                } else if let finishSession = session.finish {
+                    Text(session.start.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))
+                        .font(.system(size: 10))
+                        .foregroundStyle(.secondary)
+
+                    Text("até \(finishSession.toFormattedString(dateFormat: GameNetApp.dateTimeFormat))")
+                        .font(.system(size: 10))
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            if session.finish != nil {
+                Text(session.totalGameplayTime)
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundStyle(.primary)
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 3)
+                    .background(.white.opacity(0.1), in: Capsule())
+            }
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 7)
+        .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 10))
+    }
 }
 
 // MARK: - Previews
 
 #Preview("Dark Mode") {
     let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    let _ = RepositoryContainer.funRepository.register(factory: { FunRepository() })
 
     GameDetailView(
         viewModel: GameDetailViewModel(gameId: "1"),
@@ -256,6 +461,7 @@ struct GameDetailView: View {
 
 #Preview("Light Mode") {
     let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    let _ = RepositoryContainer.funRepository.register(factory: { FunRepository() })
 
     GameDetailView(
         viewModel: GameDetailViewModel(gameId: "1"),

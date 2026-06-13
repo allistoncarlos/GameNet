@@ -45,6 +45,11 @@ extension GameDetailPreview {
     }
 }
 
+struct GameFunRating: Equatable {
+    let average: Decimal
+    let isMock: Bool
+}
+
 enum GameDetailState: Equatable {
     case idle
     case loading

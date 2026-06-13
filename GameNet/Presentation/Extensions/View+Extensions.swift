@@ -41,8 +41,7 @@ extension View {
         navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarTitleDisplayMode(.inline)
-            .toolbarBackground(color, for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarBackground(.hidden, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
     }
 }

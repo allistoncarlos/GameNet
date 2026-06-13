@@ -18,4 +18,5 @@ class RepositoryContainer: SharedContainer {
     static let gameplaySessionRepository = Factory<GameplaySessionRepositoryProtocol> { GameplaySessionRepository() }
     
     static let serverDrivenRepository = Factory<ServerDrivenRepositoryProtocol> { ServerDrivenRepository() }
+    static let funRepository = Factory<FunRepositoryProtocol> { FunRepository() }
 }

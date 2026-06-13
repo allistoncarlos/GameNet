@@ -52,12 +52,48 @@ class GameDetailViewModel: ObservableObject {
     @Published var game: GameDetail? = nil
     @Published var gameplays: GameplaySessions?
     @Published var latestGameplaySession: GameplaySession?
+    @Published var funRating: GameFunRating?
     @Published var state: GameDetailState = .idle
     @Published var isStarted: Bool = false
     @Published private(set) var isLoadingGameplays = false
     @Published private(set) var isSaving = false
 
     let preview: GameDetailPreview?
+
+    var sortedGameplaySessions: [GameplaySession] {
+        guard let gameplays else { return [] }
+
+        return gameplays.sessions
+            .compactMap { $0 }
+            .sorted { $0.start >= $1.start }
+    }
+
+    var sessionCount: Int {
+        sortedGameplaySessions.count
+    }
+
+    var lastSessionRelativeLabel: String? {
+        guard let latestSession = sortedGameplaySessions.first else { return nil }
+
+        let referenceDate = latestSession.finish ?? latestSession.start
+        return referenceDate.toRelativeSessionDayLabel()
+    }
+
+    var playingSinceText: String? {
+        if let activeSession = sortedGameplaySessions.first(where: { $0.finish == nil }) {
+            return activeSession.start.toFormattedString()
+        }
+
+        if let latestGameplay = game?.gameplays?.last(where: { $0.finish == nil }) {
+            return latestGameplay.start.toFormattedString()
+        }
+
+        if let latestGameplay = game?.gameplays?.last {
+            return latestGameplay.start.toFormattedString()
+        }
+
+        return nil
+    }
 
     func fetchData() async {
         state = .loading
@@ -81,6 +117,10 @@ class GameDetailViewModel: ObservableObject {
         }
 
         isLoadingGameplays = false
+    }
+
+    func fetchFunRating() async {
+        funRating = await funRepository.fetchRating(userGameId: gameId)
     }
     
     func save() async {
@@ -117,6 +157,7 @@ class GameDetailViewModel: ObservableObject {
     private var gameId: String
     @Injected(RepositoryContainer.gameRepository) private var repository
     @Injected(RepositoryContainer.gameplaySessionRepository) private var gameplaySessionRepository
+    @Injected(RepositoryContainer.funRepository) private var funRepository
     private var cancellable = Set<AnyCancellable>()
     
     private func updateStarted() {
