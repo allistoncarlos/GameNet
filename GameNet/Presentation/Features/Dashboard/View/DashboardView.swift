@@ -150,7 +150,30 @@ struct DashboardView: View {
     // MARK: Private
 
     @State private var presentedViews = NavigationPath()
+    @State private var selectedPlayingGameId: String?
     var containerHeight: CGFloat = UIScreen.main.bounds.height
+
+    private var orderedPlayingGames: [PlayingGame] {
+        guard let playingGames = viewModel.dashboard?.playingGames else { return [] }
+
+        return playingGames.sorted(by: { lhs, rhs in
+            if let lhsDate = lhs.latestGameplaySession?.finish,
+               let rhsDate = rhs.latestGameplaySession?.finish {
+                return lhsDate > rhsDate
+            }
+
+            return true
+        })
+    }
+
+    private var selectedPlayingGameIndex: Int {
+        guard let selectedPlayingGameId,
+              let index = orderedPlayingGames.firstIndex(where: { $0.id == selectedPlayingGameId }) else {
+            return 0
+        }
+
+        return index
+    }
 }
 
 extension DashboardView {
@@ -166,37 +189,66 @@ extension DashboardView {
                         .font(.cardTitle)
                 }
                 
-                ScrollView(.horizontal) {
-                    VStack(alignment: .leading, spacing: 15) {
-                        LazyHStack {
-                            if let playingGames = viewModel.dashboard?.playingGames {
-                                let ordered = playingGames.sorted(by: { lhs, rhs in
-                                    if let lhsDate = lhs.latestGameplaySession?.finish,
-                                       let rhsDate = rhs.latestGameplaySession?.finish {
-                                        
-                                        return lhsDate > rhsDate
-                                    }
-                                    
-                                    return true
-                                })
-                                
-                                ForEach(ordered, id: \.id) { playingGame in
-                                    GameCoverView(
-                                        viewModel: GameCoverViewModel(
-                                            playingGame: playingGame
-                                        )
+                VStack(spacing: 12) {
+                    ScrollView(.horizontal) {
+                        LazyHStack(spacing: 0) {
+                            ForEach(orderedPlayingGames, id: \.id) { playingGame in
+                                GameCoverView(
+                                    viewModel: GameCoverViewModel(
+                                        playingGame: playingGame
                                     )
-                                }
+                                )
+                                .id(playingGame.id)
                             }
                         }
+                        .scrollTargetLayout()
+                    }
+                    .scrollTargetBehavior(.paging)
+                    .scrollPosition(id: $selectedPlayingGameId)
+                    .scrollIndicators(.hidden)
+
+                    if !orderedPlayingGames.isEmpty {
+                        playingGamesPageIndicator
                     }
                 }
-                .scrollIndicators(.hidden)
+                .onAppear {
+                    syncSelectedPlayingGame()
+                }
+                .onChange(of: viewModel.dashboard?.playingGames) { _, _ in
+                    syncSelectedPlayingGame()
+                }
             }
             .padding()
         }
         .frame(height: containerHeight * 0.5)
         .padding()
+    }
+
+    private var playingGamesPageIndicator: some View {
+        HStack(spacing: 6) {
+            ForEach(orderedPlayingGames.indices, id: \.self) { index in
+                Circle()
+                    .fill(index == selectedPlayingGameIndex ? Color.main : Color.gray.opacity(0.4))
+                    .frame(width: 6, height: 6)
+            }
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private func syncSelectedPlayingGame() {
+        let games = orderedPlayingGames
+
+        guard !games.isEmpty else {
+            selectedPlayingGameId = nil
+            return
+        }
+
+        if let selectedPlayingGameId,
+           games.contains(where: { $0.id == selectedPlayingGameId }) {
+            return
+        }
+
+        self.selectedPlayingGameId = games.first?.id
     }
 }
 
