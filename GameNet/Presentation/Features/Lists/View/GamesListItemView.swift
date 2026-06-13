@@ -29,6 +29,8 @@ struct GamesListItemView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: fixedWidth, height: fixedHeight, alignment: .trailing)
                         .listRowInsets(EdgeInsets())
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .gameCoverTransitionSource(id: game?.userGameId)
                 } placeholder: {
                     ProgressView()
                         .progressViewStyle(.circular)

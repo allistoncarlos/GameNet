@@ -84,9 +84,10 @@ class GamesViewModel: ObservableObject {
 extension GamesViewModel {
     func showGameDetailView(
         navigationPath: Binding<NavigationPath>,
-        gameId: String
+        gameId: String,
+        preview: GameDetailPreview? = nil
     ) -> some View {
-        return GameRouter.makeGameDetailView(navigationPath: navigationPath, gameId: gameId)
+        return GameRouter.makeGameDetailView(navigationPath: navigationPath, gameId: gameId, preview: preview)
     }
 
     func showGameEditView(

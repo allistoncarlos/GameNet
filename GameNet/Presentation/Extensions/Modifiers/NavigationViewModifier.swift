@@ -16,6 +16,8 @@ struct NavigationViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .navigationTitle(title ?? "")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarTitleDisplayMode(.inline)
             .toolbarBackground(color, for: .navigationBar, .tabBar)
             .toolbarBackground(.visible, for: .navigationBar, .tabBar)
             .toolbarColorScheme(.dark, for: .navigationBar, .tabBar)

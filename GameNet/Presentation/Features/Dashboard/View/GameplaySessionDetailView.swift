@@ -14,6 +14,7 @@ import SwiftUI
 struct GameplaySessionCell: View {
     var gameName: String?
     var gameCover: String?
+    var gameId: String?
     var startDate: String?
     var finishDate: String?
     var totalGameplayTime: String?
@@ -27,6 +28,8 @@ struct GameplaySessionCell: View {
                         .aspectRatio(contentMode: .fit)
                 } placeholder: { ProgressView().progressViewStyle(.circular) }
                     .frame(height: 80)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .gameCoverTransitionSource(id: gameId)
             }
 
             VStack {
@@ -91,6 +94,7 @@ struct GameplaySessionDetailView: View {
                             GameplaySessionCell(
                                 gameName: session?.gameName,
                                 gameCover: session?.gameCover,
+                                gameId: session?.userGameId,
                                 startDate: session?.start.toFormattedString(dateFormat: GameNetApp.timeFormat),
                                 finishDate: session?.finish?.toFormattedString(dateFormat: GameNetApp.timeFormat),
                                 totalGameplayTime: session?.totalGameplayTime

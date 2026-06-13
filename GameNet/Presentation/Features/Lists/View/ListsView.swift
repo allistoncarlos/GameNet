@@ -17,6 +17,7 @@ struct ListsView: View {
 
     @ObservedObject var viewModel: ListsViewModel
     @State var isLoading = true
+    @Namespace private var gameCoverTransitionNamespace
 
     var body: some View {
         NavigationStack(path: $presentedLists) {
@@ -39,8 +40,10 @@ struct ListsView: View {
                 if let gameId = game.userGameId {
                     viewModel.showGameDetailView(
                         navigationPath: $presentedLists,
-                        id: gameId
+                        id: gameId,
+                        preview: GameDetailPreview(listItem: game)
                     )
+                    .gameDetailZoomTransition(gameId: gameId)
                 }
             }
             .navigationView(title: "Listas")
@@ -52,6 +55,7 @@ struct ListsView: View {
                 }
             }
         }
+        .gameCoverTransitionNamespace(gameCoverTransitionNamespace)
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )

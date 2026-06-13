@@ -18,8 +18,9 @@ class GameDetailViewModel: ObservableObject {
 
     // MARK: Lifecycle
 
-    init(gameId: String) {
+    init(gameId: String, preview: GameDetailPreview? = nil) {
         self.gameId = gameId
+        self.preview = preview
 
         $state
             .receive(on: RunLoop.main)
@@ -53,6 +54,10 @@ class GameDetailViewModel: ObservableObject {
     @Published var latestGameplaySession: GameplaySession?
     @Published var state: GameDetailState = .idle
     @Published var isStarted: Bool = false
+    @Published private(set) var isLoadingGameplays = false
+    @Published private(set) var isSaving = false
+
+    let preview: GameDetailPreview?
 
     func fetchData() async {
         state = .loading
@@ -67,17 +72,19 @@ class GameDetailViewModel: ObservableObject {
     }
 
     func fetchGameplaySessions(id: String) async {
-        state = .loading
+        isLoadingGameplays = true
 
         if let result = await repository.fetchGameplaySessions(id: id) {
             state = .successGameplays(result)
         } else {
             state = .error("Erro na busca de dados de sessões no servidor")
         }
+
+        isLoadingGameplays = false
     }
     
     func save() async {
-        state = .loading
+        isSaving = true
         
         var start = Date.timeZoneDate()
         
@@ -101,6 +108,8 @@ class GameDetailViewModel: ObservableObject {
         } else {
             state = .error("Erro no salvamento de dados do servidor")
         }
+
+        isSaving = false
     }
 
     // MARK: Private

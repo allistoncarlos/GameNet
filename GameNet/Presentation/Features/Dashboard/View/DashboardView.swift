@@ -85,16 +85,20 @@ struct DashboardView: View {
                 if let gameId = playingGame.id {
                     viewModel.showGameDetailView(
                         navigationPath: $presentedViews,
-                        id: gameId
+                        id: gameId,
+                        preview: GameDetailPreview(playingGame: playingGame)
                     )
+                    .gameDetailZoomTransition(gameId: gameId)
                 }
             }
             .navigationDestination(for: ListItem.self) { game in
                 if let gameId = game.userGameId {
                     viewModel.showGameDetailView(
                         navigationPath: $presentedViews,
-                        id: gameId
+                        id: gameId,
+                        preview: GameDetailPreview(listItem: game)
                     )
+                    .gameDetailZoomTransition(gameId: gameId)
                 }
             }
             .navigationDestination(for: GameplaySessionNavigation.self) { gameplaySessionNavigation in
@@ -106,8 +110,10 @@ struct DashboardView: View {
             .navigationDestination(for: GameplaySession.self) { gameplaySession in
                 viewModel.showGameDetailView(
                     navigationPath: $presentedViews,
-                    id: gameplaySession.userGameId
+                    id: gameplaySession.userGameId,
+                    preview: GameDetailPreview(gameplaySession: gameplaySession)
                 )
+                .gameDetailZoomTransition(gameId: gameplaySession.userGameId)
             }
             .navigationDestination(for: String.self) { value in
                 #if os(iOS) && DEBUG
@@ -134,6 +140,7 @@ struct DashboardView: View {
                 #endif
             }
         }
+        .gameCoverTransitionNamespace(gameCoverTransitionNamespace)
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
@@ -151,6 +158,7 @@ struct DashboardView: View {
 
     @State private var presentedViews = NavigationPath()
     @State private var selectedPlayingGameId: String?
+    @Namespace private var gameCoverTransitionNamespace
     var containerHeight: CGFloat = UIScreen.main.bounds.height
 
     private var orderedPlayingGames: [PlayingGame] {

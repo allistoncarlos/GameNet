@@ -128,8 +128,12 @@ extension EditListViewModel {
         )
     }
 
-    func showGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
-        return ListRouter.makeGameDetailView(navigationPath: navigationPath, id: id)
+    func showGameDetailView(
+        navigationPath: Binding<NavigationPath>,
+        id: String,
+        preview: GameDetailPreview? = nil
+    ) -> some View {
+        return ListRouter.makeGameDetailView(navigationPath: navigationPath, id: id, preview: preview)
     }
 
     func showGameLookupView(

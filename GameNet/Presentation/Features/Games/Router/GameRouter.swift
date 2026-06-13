@@ -15,8 +15,12 @@ enum GameRouter {
         case lists
     }
 
-    static func makeGameDetailView(navigationPath: Binding<NavigationPath>, gameId: String) -> some View {
-        let gameDetailViewModel = GameDetailViewModel(gameId: gameId)
+    static func makeGameDetailView(
+        navigationPath: Binding<NavigationPath>,
+        gameId: String,
+        preview: GameDetailPreview? = nil
+    ) -> some View {
+        let gameDetailViewModel = GameDetailViewModel(gameId: gameId, preview: preview)
 
         return GameDetailView(viewModel: gameDetailViewModel, navigationPath: navigationPath)
     }

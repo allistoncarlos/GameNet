@@ -243,8 +243,12 @@ extension DashboardViewModel {
         return DashboardRouter.makeBoughtGamesView(navigationPath: navigationPath, year: year)
     }
 
-    func showGameDetailView(navigationPath: Binding<NavigationPath>, id: String) -> some View {
-        return DashboardRouter.makeGameDetailView(navigationPath: navigationPath, id: id)
+    func showGameDetailView(
+        navigationPath: Binding<NavigationPath>,
+        id: String,
+        preview: GameDetailPreview? = nil
+    ) -> some View {
+        return DashboardRouter.makeGameDetailView(navigationPath: navigationPath, id: id, preview: preview)
     }
 
     func showGameplaySessionDetailView(navigationPath: Binding<NavigationPath>, gameplaySession: GameplaySessionNavigation) -> some View {

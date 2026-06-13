@@ -31,6 +31,8 @@ struct GameCoverView: View {
                         coverImageSkeleton
                     }
                 }
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .gameCoverTransitionSource(id: viewModel.playingGame.id)
                     if FirebaseRemoteConfig.toggleGameplaySession {
                         Button {
                             showingConfirmation = true

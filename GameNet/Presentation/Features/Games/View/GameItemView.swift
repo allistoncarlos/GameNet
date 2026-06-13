@@ -13,6 +13,7 @@ import SwiftUI
 struct GameItemView: View {
     var name: String
     var coverURL: String
+    var gameId: String? = nil
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
@@ -21,6 +22,8 @@ struct GameItemView: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
             } placeholder: { ProgressView().progressViewStyle(.circular) }
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .gameCoverTransitionSource(id: gameId)
             Text(name)
                 .padding(4)
                 .foregroundColor(.white)

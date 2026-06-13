@@ -18,6 +18,7 @@ struct GamesView: View {
     @ObservedObject var viewModel: GamesViewModel
     @State var isLoading = true
     @State var origin: GameRouter.Origin = .home
+    @Namespace private var gameCoverTransitionNamespace
 
     @Binding var selectedUserGameId: String?
     @Binding var isPresented: Bool
@@ -31,12 +32,23 @@ struct GamesView: View {
                     LazyVGrid(columns: adaptiveColumns, spacing: 20) {
                         ForEach(search.isEmpty ? viewModel.data : viewModel.searchedGames, id: \.id) { game in
                             if origin == .home {
-                                SwiftUI.NavigationLink(value: game.id) {
-                                    GameItemView(name: game.name, coverURL: game.coverURL ?? "")
-                                }
-                                .onAppear {
-                                    Task {
-                                        await viewModel.loadNextPage(currentGame: game)
+                                if let gameId = game.id {
+                                    SwiftUI.NavigationLink(
+                                        value: GameDetailRoute(
+                                            id: gameId,
+                                            preview: GameDetailPreview(game: game)
+                                        )
+                                    ) {
+                                        GameItemView(
+                                            name: game.name,
+                                            coverURL: game.coverURL ?? "",
+                                            gameId: gameId
+                                        )
+                                    }
+                                    .onAppear {
+                                        Task {
+                                            await viewModel.loadNextPage(currentGame: game)
+                                        }
                                     }
                                 }
                             } else {
@@ -52,11 +64,13 @@ struct GamesView: View {
                         }
                     }
                 }
-                .navigationDestination(for: String.self) { gameId in
+                .navigationDestination(for: GameDetailRoute.self) { route in
                     viewModel.showGameDetailView(
                         navigationPath: $presentedGames,
-                        gameId: gameId
+                        gameId: route.id,
+                        preview: route.preview
                     )
+                    .gameDetailZoomTransition(gameId: route.id)
                 }
                 .searchable(
                     text: $search,
@@ -94,6 +108,7 @@ struct GamesView: View {
                 }
             }
         }
+        .gameCoverTransitionNamespace(gameCoverTransitionNamespace)
         .overlay(
             TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
