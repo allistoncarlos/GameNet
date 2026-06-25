@@ -55,6 +55,10 @@ class DashboardViewModel: ObservableObject {
                     self?.dashboard = dashboard
                     self?.gameplaySessions = [:]
                     self?.annualGameplayProgress = []
+
+                    if let playingGames = dashboard.playingGames {
+                        WidgetSharedStore.savePlayingGames(from: playingGames)
+                    }
                 case let .successGameplay(year, gameplaySessions):
                     self?.gameplaySessions?[year] = gameplaySessions
                     self?.annualGameplayProgress = Self.makeAnnualGameplayProgress(

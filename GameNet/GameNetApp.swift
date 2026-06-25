@@ -90,6 +90,7 @@ struct GameNetApp: App {
 #if canImport(WatchConnectivity)
                         WatchConnectivityManager.shared.activateSession()
 #endif
+                        WidgetSharedStore.syncFromKeychain()
                     }
             } else {
                 ProgressView("Carregando...")

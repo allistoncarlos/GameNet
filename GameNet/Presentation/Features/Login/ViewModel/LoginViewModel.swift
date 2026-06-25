@@ -63,6 +63,8 @@ class LoginViewModel: ObservableObject {
             KeychainDataSource.refreshToken.set(refreshToken)
             KeychainDataSource.expiresIn.set(formattedExpiresIn)
 
+            WidgetSharedStore.syncFromKeychain()
+
             DispatchQueue.main.async {
                 let message = [
                     id,
@@ -80,6 +82,8 @@ class LoginViewModel: ObservableObject {
             }
         } else {
             KeychainDataSource.clear()
+            WidgetSharedStore.clearAuth()
+            WidgetSharedStore.reloadWidget()
         }
     }
 
