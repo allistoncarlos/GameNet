@@ -62,9 +62,11 @@ struct DashboardView: View {
             }
             .refreshable {
                 if !FirebaseRemoteConfig.serverDrivenDashboard {
-                    Task {
-                        await viewModel.fetchData()
-                    }
+                    // Roda em um Task desacoplado do ciclo de vida do `.refreshable`
+                    // para que desabilitar o ScrollView (isLoading) não cancele a
+                    // requisição (explicitlyCancelled). O `await .value` mantém o
+                    // indicador nativo visível até o carregamento terminar.
+                    await Task { await viewModel.fetchData() }.value
                 }
             }
             .disabled(isLoading)
