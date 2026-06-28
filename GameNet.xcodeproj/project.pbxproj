@@ -464,7 +464,6 @@
 				8EAF41795FAFC28D4BC19D48 /* ToggleGameplayIntent.swift */,
 				BC12F2BC319728F94EF8DFED /* WidgetGameClient.swift */,
 			);
-			name = GameNetWidget;
 			path = GameNetWidget;
 			sourceTree = "<group>";
 		};
@@ -1722,7 +1721,7 @@
 			);
 			mainGroup = A57185B8286793D600655B31;
 			packageReferences = (
-				A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet.Network" */,
+				A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */,
 				A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */,
 				A53661692899820700D52088 /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 				A5F18C5329D2554200E712F5 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
@@ -2272,7 +2271,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2310,7 +2309,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2443,7 +2442,7 @@
 				minimumVersion = 1.6.7;
 			};
 		};
-		A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet.Network" */ = {
+		A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/allistoncarlos/GameNet.Network";
 			requirement = {
@@ -2504,7 +2503,7 @@
 		};
 		A5E48A192895B2450037023C /* GameNet.Network */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet.Network" */;
+			package = A5E48A182895B2450037023C /* XCRemoteSwiftPackageReference "GameNet" */;
 			productName = GameNet.Network;
 		};
 		A5F18C5429D2554200E712F5 /* CachedAsyncImage */ = {
