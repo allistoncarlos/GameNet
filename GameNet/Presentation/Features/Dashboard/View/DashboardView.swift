@@ -57,6 +57,8 @@ struct DashboardView: View {
                         if viewModel.dashboard?.gamesByPlatform != nil {
                             gamesByPlatformCard
                         }
+
+                        appVersionFooter
                     }
                 }
             }
@@ -183,6 +185,17 @@ struct DashboardView: View {
         }
 
         return index
+    }
+}
+
+extension DashboardView {
+    var appVersionFooter: some View {
+        Text("Versão \(viewModel.appVersion)")
+            .font(.dashboardGameSubtitle)
+            .foregroundColor(.secondary)
+            .frame(maxWidth: .infinity)
+            .padding(.top, 30)
+            .padding(.bottom)
     }
 }
 

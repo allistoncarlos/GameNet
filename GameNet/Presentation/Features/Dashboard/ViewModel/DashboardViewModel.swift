@@ -77,6 +77,10 @@ class DashboardViewModel: ObservableObject {
     @Published var annualGameplayProgress: [AnnualGameplayProgressSeries] = []
     @Published var state: DashboardState = .idle
 
+    var appVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "-"
+    }
+
     func fetchData() async {
         state = .loading
 
