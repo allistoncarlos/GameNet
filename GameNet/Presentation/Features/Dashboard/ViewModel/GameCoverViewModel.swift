@@ -40,9 +40,12 @@ class GameCoverViewModel: ObservableObject {
     @Published var playingGame: PlayingGame
     @Published var state: GameCoverState = .idle
 
-    func save() async {
+    /// Retorna `true` quando o dashboard deve ser recarregado (ao iniciar uma nova gameplay).
+    @discardableResult
+    func save() async -> Bool {
         state = .loading
-        
+
+        let wasStarted = isStarted
         var start = Date.timeZoneDate()
         
         if isStarted {
@@ -53,30 +56,35 @@ class GameCoverViewModel: ObservableObject {
         
         let finish = isStarted ? Date.timeZoneDate() : nil
 
-        if let playingGameId = playingGame.id {
-            let result = await repository.save(
-                userGameId: playingGameId,
-                start: start,
-                finish: finish,
-                id: nil
-            )
-            
-            if let result {
-                state = .success(result)
-            } else {
-                state = .error("Erro no salvamento de dados do servidor")
-            }
-        } else {
+        guard let playingGameId = playingGame.id else {
             state = .error("Erro no processamento de dados")
+            return false
+        }
+
+        let result = await repository.save(
+            userGameId: playingGameId,
+            start: start,
+            finish: finish,
+            id: nil
+        )
+
+        if let result {
+            state = .success(result)
+            return !wasStarted
+        } else {
+            state = .error("Erro no salvamento de dados do servidor")
+            return false
         }
     }
 
-    func finishGame() async {
+    /// Retorna `true` quando o dashboard deve ser recarregado (sucesso ao zerar o jogo).
+    @discardableResult
+    func finishGame() async -> Bool {
         state = .loading
 
         guard let playingGameId = playingGame.id else {
             state = .error("Erro no processamento de dados")
-            return
+            return false
         }
 
         let success = await repository.finishGame(userGameId: playingGameId)
@@ -84,17 +92,21 @@ class GameCoverViewModel: ObservableObject {
         if success {
             isStarted = false
             state = .idle
+            return true
         } else {
             state = .error("Erro ao finalizar o jogo")
+            return false
         }
     }
 
-    func dropGameplay() async {
+    /// Retorna `true` quando o dashboard deve ser recarregado (sucesso ao parar de jogar).
+    @discardableResult
+    func dropGameplay() async -> Bool {
         state = .loading
 
         guard let playingGameId = playingGame.id else {
             state = .error("Erro no processamento de dados")
-            return
+            return false
         }
 
         let success = await repository.dropGameplay(userGameId: playingGameId)
@@ -102,8 +114,10 @@ class GameCoverViewModel: ObservableObject {
         if success {
             isStarted = false
             state = .idle
+            return true
         } else {
             state = .error("Erro ao parar de jogar")
+            return false
         }
     }
 

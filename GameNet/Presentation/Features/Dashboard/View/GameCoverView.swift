@@ -25,6 +25,7 @@ private enum GameCoverAction: Identifiable {
 
 struct GameCoverView: View {
     @ObservedObject var viewModel: GameCoverViewModel
+    var onRefresh: () async -> Void = {}
     @State private var activeAction: GameCoverAction?
     @State private var coverAccentColor = Color.main
     
@@ -90,15 +91,27 @@ struct GameCoverView: View {
                             switch action {
                             case .toggle:
                                 Button("Confirmar") {
-                                    Task { await viewModel.save() }
+                                    Task {
+                                        if await viewModel.save() {
+                                            await onRefresh()
+                                        }
+                                    }
                                 }
                             case .finishGame:
                                 Button("Zerei o Jogo") {
-                                    Task { await viewModel.finishGame() }
+                                    Task {
+                                        if await viewModel.finishGame() {
+                                            await onRefresh()
+                                        }
+                                    }
                                 }
                             case .dropGameplay:
                                 Button("Parar de Jogar", role: .destructive) {
-                                    Task { await viewModel.dropGameplay() }
+                                    Task {
+                                        if await viewModel.dropGameplay() {
+                                            await onRefresh()
+                                        }
+                                    }
                                 }
                             }
                         } message: { action in

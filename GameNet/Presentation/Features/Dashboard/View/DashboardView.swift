@@ -204,7 +204,10 @@ extension DashboardView {
                                 GameCoverView(
                                     viewModel: GameCoverViewModel(
                                         playingGame: playingGame
-                                    )
+                                    ),
+                                    onRefresh: {
+                                        await viewModel.fetchData()
+                                    }
                                 )
                                 .id(playingGame.id)
                             }
