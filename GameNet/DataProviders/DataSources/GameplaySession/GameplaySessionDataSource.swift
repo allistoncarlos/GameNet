@@ -17,6 +17,11 @@ protocol GameplaySessionDataSourceProtocol {
     func dropGameplay(userGameId: String) async -> Bool
 }
 
+// MARK: - EmptyDataResponse
+
+/// Resposta usada quando só precisamos do `ok` do `APIResult`, ignorando o conteúdo de `data`.
+private struct EmptyDataResponse: Codable {}
+
 // MARK: - GameplaySessionDataSource
 
 class GameplaySessionDataSource: GameplaySessionDataSourceProtocol {
@@ -51,7 +56,7 @@ class GameplaySessionDataSource: GameplaySessionDataSourceProtocol {
     func finishGame(userGameId: String) async -> Bool {
         if let apiResult = await NetworkManager.shared
             .performRequest(
-                responseType: APIResult<UserGameEditResponse>.self,
+                responseType: APIResult<EmptyDataResponse>.self,
                 endpoint: .finishGame(userGameId: userGameId)
             ) {
             return apiResult.ok
@@ -63,7 +68,7 @@ class GameplaySessionDataSource: GameplaySessionDataSourceProtocol {
     func dropGameplay(userGameId: String) async -> Bool {
         if let apiResult = await NetworkManager.shared
             .performRequest(
-                responseType: APIResult<UserGameEditResponse>.self,
+                responseType: APIResult<EmptyDataResponse>.self,
                 endpoint: .dropGameplay(userGameId: userGameId)
             ) {
             return apiResult.ok
