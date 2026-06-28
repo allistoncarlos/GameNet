@@ -19,6 +19,8 @@ protocol GameplaySessionRepositoryProtocol {
         finish: Date?,
         id: String?
     ) async -> GameplaySession?
+    func finishGame(userGameId: String) async -> Bool
+    func dropGameplay(userGameId: String) async -> Bool
 }
 
 // MARK: - GameplaySessionRepository
@@ -49,6 +51,14 @@ struct GameplaySessionRepository: GameplaySessionRepositoryProtocol {
         )
     
         return await dataSource.save(gameplaySession: gameplaySession)
+    }
+
+    func finishGame(userGameId: String) async -> Bool {
+        return await dataSource.finishGame(userGameId: userGameId)
+    }
+
+    func dropGameplay(userGameId: String) async -> Bool {
+        return await dataSource.dropGameplay(userGameId: userGameId)
     }
 
     // MARK: Private

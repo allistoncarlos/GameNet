@@ -13,6 +13,8 @@ import GameNet_Network
 protocol GameplaySessionDataSourceProtocol {
     func fetchGameplaySessionsByYear(year: Int, month: Int?) async -> GameplaySessions?
     func save(gameplaySession: GameplaySession) async -> GameplaySession?
+    func finishGame(userGameId: String) async -> Bool
+    func dropGameplay(userGameId: String) async -> Bool
 }
 
 // MARK: - GameplaySessionDataSource
@@ -44,5 +46,29 @@ class GameplaySessionDataSource: GameplaySessionDataSourceProtocol {
         }
 
         return nil
+    }
+
+    func finishGame(userGameId: String) async -> Bool {
+        if let apiResult = await NetworkManager.shared
+            .performRequest(
+                responseType: APIResult<UserGameEditResponse>.self,
+                endpoint: .finishGame(userGameId: userGameId)
+            ) {
+            return apiResult.ok
+        }
+
+        return false
+    }
+
+    func dropGameplay(userGameId: String) async -> Bool {
+        if let apiResult = await NetworkManager.shared
+            .performRequest(
+                responseType: APIResult<UserGameEditResponse>.self,
+                endpoint: .dropGameplay(userGameId: userGameId)
+            ) {
+            return apiResult.ok
+        }
+
+        return false
     }
 }

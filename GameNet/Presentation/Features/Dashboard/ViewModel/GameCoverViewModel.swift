@@ -71,6 +71,42 @@ class GameCoverViewModel: ObservableObject {
         }
     }
 
+    func finishGame() async {
+        state = .loading
+
+        guard let playingGameId = playingGame.id else {
+            state = .error("Erro no processamento de dados")
+            return
+        }
+
+        let success = await repository.finishGame(userGameId: playingGameId)
+
+        if success {
+            isStarted = false
+            state = .idle
+        } else {
+            state = .error("Erro ao finalizar o jogo")
+        }
+    }
+
+    func dropGameplay() async {
+        state = .loading
+
+        guard let playingGameId = playingGame.id else {
+            state = .error("Erro no processamento de dados")
+            return
+        }
+
+        let success = await repository.dropGameplay(userGameId: playingGameId)
+
+        if success {
+            isStarted = false
+            state = .idle
+        } else {
+            state = .error("Erro ao parar de jogar")
+        }
+    }
+
     // MARK: Private
     @Injected(RepositoryContainer.gameplaySessionRepository) private var repository
     private var cancellable = Set<AnyCancellable>()

@@ -9,9 +9,23 @@ import SwiftUI
 import CachedAsyncImage
 import GameNet_Network
 
+private enum GameCoverAction: Identifiable {
+    case toggle
+    case finishGame
+    case dropGameplay
+
+    var id: Int {
+        switch self {
+        case .toggle: return 0
+        case .finishGame: return 1
+        case .dropGameplay: return 2
+        }
+    }
+}
+
 struct GameCoverView: View {
     @ObservedObject var viewModel: GameCoverViewModel
-    @State private var showingConfirmation = false
+    @State private var activeAction: GameCoverAction?
     @State private var coverAccentColor = Color.main
     
     @State var buttonImage = "play.fill"
@@ -40,7 +54,7 @@ struct GameCoverView: View {
                 .gameCoverTransitionSource(id: viewModel.playingGame.id)
                     if FirebaseRemoteConfig.toggleGameplaySession {
                         Button {
-                            showingConfirmation = true
+                            activeAction = .toggle
                         } label: {
                             Image(systemName: buttonImage)
                                 .frame(width: 40, height: 40)
@@ -50,14 +64,52 @@ struct GameCoverView: View {
                         .buttonStyle(.glassProminent)
                         .tint(coverAccentColor.opacity(0.5))
                         .animation(.smooth, value: coverAccentColor)
-                        .confirmationDialog("", isPresented: $showingConfirmation) {
-                            Button("Confirmar") {
-                                Task {
-                                    await viewModel.save()
+                        .contextMenu {
+                            Button {
+                                activeAction = .finishGame
+                            } label: {
+                                Label("Zerei o Jogo", systemImage: "checkmark.seal.fill")
+                            }
+
+                            Button(role: .destructive) {
+                                activeAction = .dropGameplay
+                            } label: {
+                                Label("Parar de Jogar", systemImage: "xmark.circle.fill")
+                            }
+                        }
+                        .confirmationDialog(
+                            "",
+                            isPresented: Binding(
+                                get: { activeAction != nil },
+                                set: { isPresented in
+                                    if !isPresented { activeAction = nil }
+                                }
+                            ),
+                            presenting: activeAction
+                        ) { action in
+                            switch action {
+                            case .toggle:
+                                Button("Confirmar") {
+                                    Task { await viewModel.save() }
+                                }
+                            case .finishGame:
+                                Button("Zerei o Jogo") {
+                                    Task { await viewModel.finishGame() }
+                                }
+                            case .dropGameplay:
+                                Button("Parar de Jogar", role: .destructive) {
+                                    Task { await viewModel.dropGameplay() }
                                 }
                             }
-                        } message: {
-                            Text("Deseja \(confirmText) o jogo \(viewModel.playingGame.name)?")
+                        } message: { action in
+                            switch action {
+                            case .toggle:
+                                Text("Deseja \(confirmText) o jogo \(viewModel.playingGame.name)?")
+                            case .finishGame:
+                                Text("Deseja marcar o jogo \(viewModel.playingGame.name) como zerado?")
+                            case .dropGameplay:
+                                Text("Deseja parar de jogar o jogo \(viewModel.playingGame.name)?")
+                            }
                         }
                     }
                 }
