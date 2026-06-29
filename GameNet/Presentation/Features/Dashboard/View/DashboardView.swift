@@ -287,36 +287,111 @@ extension DashboardView {
 
 extension DashboardView {
     var physicalDigitalCard: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.secondaryCardBackground)
+        VStack(alignment: .leading, spacing: 18) {
+            physicalDigitalHeader
 
-            VStack(alignment: .leading, spacing: 5) {
-                VStack {
-                    if let totalGames = viewModel.dashboard?.totalGames {
-                        Text("\(totalGames) Jogos")
-                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                            .font(.cardTitle)
-                    }
-                }
+            if let physicalDigital = viewModel.dashboard?.physicalDigital {
+                physicalDigitalProportionBar(
+                    digital: physicalDigital.digital,
+                    physical: physicalDigital.physical
+                )
 
-                if let formattedTotalPrice = viewModel.dashboard?.totalPrice?.toCurrencyString() {
-                    Text(formattedTotalPrice)
-                        .font(.dashboardGameSubtitle)
-                }
+                HStack(spacing: 12) {
+                    physicalDigitalTile(
+                        icon: "arrow.down.circle.fill",
+                        title: "Digitais",
+                        value: physicalDigital.digital,
+                        total: physicalDigital.digital + physicalDigital.physical
+                    )
 
-                VStack(alignment: .leading) {
-                    if let digital = viewModel.dashboard?.physicalDigital?.digital, let physical = viewModel.dashboard?.physicalDigital?.physical {
-                        Text("\(digital) Digitais")
-                            .font(.dashboardGameTitle)
-                        Text("\(physical) Físicos")
-                            .font(.dashboardGameTitle)
-                    }
+                    physicalDigitalTile(
+                        icon: "opticaldisc.fill",
+                        title: "Físicos",
+                        value: physicalDigital.physical,
+                        total: physicalDigital.digital + physicalDigital.physical
+                    )
                 }
             }
-            .padding()
         }
+        .foregroundStyle(.white)
+        .padding(20)
+        .glassEffect(
+            .regular.tint(Color.secondaryCardBackground),
+            in: .rect(cornerRadius: 20)
+        )
         .padding()
+    }
+
+    private var physicalDigitalHeader: some View {
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 0) {
+                if let totalGames = viewModel.dashboard?.totalGames {
+                    Text("\(totalGames)")
+                        .font(.cardTitle)
+                    Text("Jogos na biblioteca")
+                        .font(.dashboardGameSubtitle)
+                        .opacity(0.85)
+                }
+            }
+
+            Spacer()
+
+            if let formattedTotalPrice = viewModel.dashboard?.totalPrice?.toCurrencyString() {
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("Investido")
+                        .font(.dashboardGameSubtitle)
+                        .opacity(0.85)
+                    Text(formattedTotalPrice)
+                        .font(.dashboardGameTitle)
+                }
+            }
+        }
+    }
+
+    private func physicalDigitalProportionBar(digital: Int, physical: Int) -> some View {
+        let total = max(digital + physical, 1)
+        let digitalFraction = CGFloat(digital) / CGFloat(total)
+
+        return GeometryReader { geometry in
+            let digitalWidth = geometry.size.width * digitalFraction
+
+            HStack(spacing: 0) {
+                Rectangle()
+                    .fill(.white)
+                    .frame(width: digitalWidth)
+                Rectangle()
+                    .fill(.white.opacity(0.35))
+            }
+            .clipShape(Capsule())
+        }
+        .frame(height: 8)
+    }
+
+    private func physicalDigitalTile(icon: String, title: String, value: Int, total: Int) -> some View {
+        let percentage = total > 0 ? Int((Double(value) / Double(total) * 100).rounded()) : 0
+
+        return VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
+                Image(systemName: icon)
+                    .font(.dashboardGameSubtitle)
+                Text(title)
+                    .font(.dashboardGameSubtitle)
+                Spacer()
+                Text("\(percentage)%")
+                    .font(.dashboardGameSubtitle)
+                    .opacity(0.85)
+            }
+
+            Text("\(value)")
+                .font(.dashboardGameTitle)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 12)
+        .padding(.horizontal, 14)
+        .background(
+            RoundedRectangle(cornerRadius: 14)
+                .fill(.white.opacity(0.15))
+        )
     }
 }
 
