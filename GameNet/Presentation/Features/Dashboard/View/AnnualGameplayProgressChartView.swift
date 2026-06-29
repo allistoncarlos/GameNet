@@ -69,6 +69,7 @@ struct AnnualGameplayProgressChartView: View {
                                 }
                             }
                         }
+                        .chartLegend(.hidden)
                         .chartScrollableAxes(.horizontal)
                         .chartXVisibleDomain(length: visibleDomainLength)
                         .chartScrollPosition(x: $scrollPosition)
@@ -121,10 +122,38 @@ struct AnnualGameplayProgressChartView: View {
                     }
                 }
                 .frame(height: 300)
+
+                legend
             }
             .padding()
         }
         .padding()
+    }
+
+    private var legend: some View {
+        LazyVGrid(
+            columns: [GridItem(.adaptive(minimum: 130), alignment: .leading)],
+            alignment: .leading,
+            spacing: 8
+        ) {
+            ForEach(legendEntries, id: \.year) { entry in
+                HStack(spacing: 8) {
+                    Circle()
+                        .fill(entry.color)
+                        .frame(width: 10, height: 10)
+
+                    Text(String(entry.year))
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
+                    Spacer(minLength: 4)
+
+                    Text("\(formattedMinutes(entry.totalMinutes)) min")
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                }
+            }
+        }
     }
 
     // MARK: Private
@@ -133,6 +162,12 @@ struct AnnualGameplayProgressChartView: View {
         series
             .sorted(by: { $0.year < $1.year })
             .flatMap { $0.points }
+    }
+
+    private var legendEntries: [(year: Int, color: Color, totalMinutes: Double)] {
+        series
+            .sorted(by: { $0.year < $1.year })
+            .map { (year: $0.year, color: color(for: $0.year), totalMinutes: $0.totalMinutes) }
     }
 
     private func selectPoint(at location: CGPoint, geometryProxy: GeometryProxy) {
