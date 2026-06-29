@@ -10,135 +10,171 @@ import SwiftUI
 // MARK: - FinishedByYearTimelineView
 
 struct FinishedByYearTimelineView: View {
-    
+
     // MARK: Internal
-    
+
     let finishedGamesByYear: [FinishedGameByYearTotal]
     let onYearTapped: (FinishedGameByYearTotal) -> Void
-    
+
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.tertiaryCardBackground)
-            
-            VStack(alignment: .leading, spacing: 15) {
-                VStack {
-                    Text("Finalizados por Ano")
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                        .font(.cardTitle)
-                }
-                
+        VStack(alignment: .leading, spacing: 18) {
+            header
+
+            GlassEffectContainer(spacing: 12) {
                 LazyVStack(spacing: 0) {
-                    ForEach(Array(finishedGamesByYear.enumerated()), id: \.element.year) { index, finishedGame in
+                    ForEach(Array(displayedGames.enumerated()), id: \.element.year) { index, finishedGame in
                         TimelineItemView(
                             finishedGame: finishedGame,
-                            isLeft: index % 2 == 0,
                             isFirst: index == 0,
-                            isLast: index == finishedGamesByYear.count - 1,
+                            isLast: index == displayedGames.count - 1,
+                            isHighlighted: index == 0,
                             onTapped: {
                                 onYearTapped(finishedGame)
                             }
                         )
                     }
                 }
-                .padding(.vertical, 10)
             }
-            .padding()
+
+            if finishedGamesByYear.count > collapsedCount {
+                expanderButton
+            }
         }
+        .foregroundStyle(.white)
+        .padding(20)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color.tertiaryCardBackground)
+        )
         .padding()
+    }
+
+    // MARK: Private
+
+    @State private var isExpanded = false
+
+    private let collapsedCount = 3
+
+    private var displayedGames: [FinishedGameByYearTotal] {
+        if isExpanded {
+            return finishedGamesByYear
+        }
+
+        return Array(finishedGamesByYear.prefix(collapsedCount))
+    }
+
+    private var totalFinished: Int {
+        finishedGamesByYear.reduce(0) { $0 + $1.total }
+    }
+
+    private var expanderButton: some View {
+        Button {
+            withAnimation(.snappy) {
+                isExpanded.toggle()
+            }
+        } label: {
+            HStack(spacing: 6) {
+                Text(isExpanded ? "Ver menos" : "Ver todos os \(finishedGamesByYear.count) anos")
+                    .font(.dashboardGameSubtitle)
+
+                Image(systemName: "chevron.down")
+                    .font(.dashboardGameSubtitle)
+                    .rotationEffect(.degrees(isExpanded ? 180 : 0))
+            }
+            .foregroundStyle(.white)
+            .opacity(0.85)
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var header: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Finalizados por Ano")
+                .font(.cardTitle)
+            Text("\(totalFinished) jogos no total")
+                .font(.dashboardGameSubtitle)
+                .opacity(0.85)
+        }
     }
 }
 
 // MARK: - TimelineItemView
 
 struct TimelineItemView: View {
-    
+
     // MARK: Internal
-    
+
     let finishedGame: FinishedGameByYearTotal
-    let isLeft: Bool
     let isFirst: Bool
     let isLast: Bool
+    let isHighlighted: Bool
     let onTapped: () -> Void
-    
+
     var body: some View {
-        HStack(spacing: 0) {
-            if isLeft {
-                // Conteúdo à esquerda
-                contentView
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                
-                // Timeline central
-                timelineView
-                
-                // Espaço vazio à direita
-                Spacer()
-                    .frame(maxWidth: .infinity)
-            } else {
-                // Espaço vazio à esquerda
-                Spacer()
-                    .frame(maxWidth: .infinity)
-                
-                // Timeline central
-                timelineView
-                
-                // Conteúdo à direita
-                contentView
-                    .frame(maxWidth: .infinity, alignment: .leading)
+        Button(action: onTapped) {
+            HStack(spacing: 14) {
+                railView
+
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(String(finishedGame.year))
+                        .font(.dashboardGameTitle)
+
+                    Text("\(finishedGame.total) jogos")
+                        .font(.dashboardGameSubtitle)
+                        .opacity(0.7)
+
+                    Spacer()
+
+                    Image(systemName: "chevron.right")
+                        .font(.dashboardGameSubtitle)
+                        .opacity(0.4)
+                }
             }
+            .frame(height: rowHeight)
+            .contentShape(Rectangle())
         }
-        .frame(height: 80)
+        .buttonStyle(.plain)
     }
-    
+
     // MARK: Private
-    
-    private var contentView: some View {
-         Button(action: onTapped,
-                label: {
-                    VStack(spacing: 4) {
-                        Text(String(finishedGame.year))
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .foregroundColor(.primary)
-                        
-                        Text("\(finishedGame.total) jogos")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                })
-         .buttonStyle(.glassProminent)
-         .buttonBorderShape(.roundedRectangle(radius: 12.0))
-         .tint(Color.primaryCardBackground.opacity(0.4))
-    }
-    
-    private var timelineView: some View {
+
+    private let rowHeight: CGFloat = 50
+    private let badgeSize: CGFloat = 36
+
+    private var railView: some View {
         VStack(spacing: 0) {
-            // Linha superior (apenas se não for o primeiro)
-            if !isFirst {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(width: 2, height: isLast ? 68 : 20)
-            }
-            
-            // Círculo central
-            Circle()
-                .fill(Color.accentColor)
-                .frame(width: 12, height: 12)
-                .overlay(
-                    Circle()
-                        .stroke(Color.white, lineWidth: 2)
-                )
-            
-            // Linha inferior (apenas se não for o último)
-            if !isLast {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(width: 2, height: isFirst ? 68 : 48)
-            }
+            Rectangle()
+                .fill(.white.opacity(0.22))
+                .frame(width: 2)
+                .frame(maxHeight: .infinity)
+                .opacity(isFirst ? 0 : 1)
+
+            badge
+
+            Rectangle()
+                .fill(.white.opacity(0.22))
+                .frame(width: 2)
+                .frame(maxHeight: .infinity)
+                .opacity(isLast ? 0 : 1)
         }
-        .frame(width: 20)
+        .frame(width: badgeSize)
+    }
+
+    private var badge: some View {
+        Text("\(finishedGame.total)")
+            .font(.dashboardGameSubtitle)
+            .foregroundStyle(.white)
+            .frame(width: badgeSize, height: badgeSize)
+            .glassEffect(
+                .regular.tint(Color.main.opacity(isHighlighted ? 0.8 : 0.45)),
+                in: Circle()
+            )
+            .overlay(
+                Circle()
+                    .stroke(.white.opacity(isHighlighted ? 0.9 : 0.0), lineWidth: 2)
+            )
     }
 }
 
@@ -157,11 +193,13 @@ struct TimelineItemView: View {
         FinishedGameByYearTotal(year: 2016, total: 5),
         FinishedGameByYearTotal(year: 2015, total: 2)
     ]
-    
-    FinishedByYearTimelineView(
-        finishedGamesByYear: sampleData,
-        onYearTapped: { _ in }
-    )
+
+    ScrollView {
+        FinishedByYearTimelineView(
+            finishedGamesByYear: sampleData,
+            onYearTapped: { _ in }
+        )
+    }
     .preferredColorScheme(.dark)
 }
 
@@ -173,11 +211,12 @@ struct TimelineItemView: View {
         FinishedGameByYearTotal(year: 2021, total: 10),
         FinishedGameByYearTotal(year: 2020, total: 6)
     ]
-    
-    FinishedByYearTimelineView(
-        finishedGamesByYear: sampleData,
-        onYearTapped: { _ in }
-    )
+
+    ScrollView {
+        FinishedByYearTimelineView(
+            finishedGamesByYear: sampleData,
+            onYearTapped: { _ in }
+        )
+    }
     .preferredColorScheme(.light)
 }
-
