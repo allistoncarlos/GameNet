@@ -15,8 +15,10 @@ struct AnnualGameplayProgressChartView: View {
     // MARK: Internal
 
     let series: [AnnualGameplayProgressSeries]
-    @State var selectedPoint: AnnualGameplayProgressPoint? = nil
     @State var scrollPosition = 1
+    @State private var rawSelectedDay: Int?
+    @State private var visibleDomainLength = AnnualGameplayProgressChartView.defaultVisibleDomainLength
+    @State private var visibleDomainLengthAtGestureStart: Int?
 
     var body: some View {
         ZStack {
@@ -67,48 +69,27 @@ struct AnnualGameplayProgressChartView: View {
                             }
                         }
                         .chartScrollableAxes(.horizontal)
-                        .chartXVisibleDomain(length: 15)
+                        .chartXVisibleDomain(length: visibleDomainLength)
                         .chartScrollPosition(x: $scrollPosition)
-                        .chartOverlay { proxy in
-                            GeometryReader { geometryProxy in
-                                Rectangle()
-                                    .fill(.clear)
-                                    .contentShape(Rectangle())
+                        .scrollIndicators(.hidden)
 #if os(iOS)
-                                    .simultaneousGesture(
-                                        SpatialTapGesture()
-                                            .onEnded { value in
-                                                let plotFrame = geometryProxy[proxy.plotAreaFrame]
+                        .chartXSelection(value: $rawSelectedDay)
+                        .simultaneousGesture(
+                            MagnifyGesture()
+                                .onChanged { value in
+                                    let base = visibleDomainLengthAtGestureStart ?? visibleDomainLength
+                                    if visibleDomainLengthAtGestureStart == nil {
+                                        visibleDomainLengthAtGestureStart = visibleDomainLength
+                                    }
 
-                                                guard plotFrame.contains(value.location) else {
-                                                    selectedPoint = nil
-                                                    return
-                                                }
-
-                                                let xPosition = value.location.x - plotFrame.origin.x
-                                                let yPosition = value.location.y - plotFrame.origin.y
-
-                                                guard let day: Int = proxy.value(atX: xPosition),
-                                                      let yValue: Double = proxy.value(atY: yPosition) else {
-                                                    selectedPoint = nil
-                                                    return
-                                                }
-
-                                                let candidates = gameplayPoints.filter { $0.day == day }
-
-                                                guard let closest = candidates.min(by: {
-                                                    abs($0.value - yValue) < abs($1.value - yValue)
-                                                }) else {
-                                                    selectedPoint = nil
-                                                    return
-                                                }
-
-                                                selectedPoint = closest
-                                            }
-                                    )
+                                    let proposedLength = Double(base) / value.magnification
+                                    visibleDomainLength = clampedVisibleDomainLength(Int(proposedLength.rounded()))
+                                }
+                                .onEnded { _ in
+                                    visibleDomainLengthAtGestureStart = nil
+                                }
+                        )
 #endif
-                            }
-                        }
                         .overlay(alignment: .topLeading) {
                             if let selectedPoint {
                                 AnnualGameplayChartHintView(
@@ -141,12 +122,28 @@ struct AnnualGameplayProgressChartView: View {
             .flatMap { $0.points }
     }
 
+    private var selectedPoint: AnnualGameplayProgressPoint? {
+        guard let rawSelectedDay else { return nil }
+
+        return gameplayPoints
+            .filter { $0.day == rawSelectedDay }
+            .max(by: { $0.year < $1.year })
+    }
+
     private var maxVisibleDay: Int {
         gameplayPoints.map(\.day).max() ?? 1
     }
 
+    private static let defaultVisibleDomainLength = 15
+    private static let minVisibleDomainLength = 5
+
     private var initialScrollPosition: Int {
-        max(1, maxVisibleDay - 14)
+        max(1, maxVisibleDay - (visibleDomainLength - 1))
+    }
+
+    private func clampedVisibleDomainLength(_ length: Int) -> Int {
+        let upperBound = max(Self.minVisibleDomainLength, maxVisibleDay)
+        return min(max(length, Self.minVisibleDomainLength), upperBound)
     }
 
     private var title: String {
