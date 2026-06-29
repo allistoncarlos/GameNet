@@ -6,7 +6,6 @@
 //
 
 @testable import GameNet
-import GameNet_Keychain
 import XCTest
 
 final class LoginNetworkTests: XCTestCase {

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import GameNet_Keychain
 
 extension WidgetSharedStore {
     /// Persiste a lista de jogos em andamento vinda do dashboard e recarrega o widget.

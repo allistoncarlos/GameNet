@@ -17,10 +17,12 @@
 		1E7AC9E052160839EBA8D331 /* GameplaySessionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41B7D6B55A75ED3D4FE360C1 /* GameplaySessionsResponse.swift */; };
 		25043C36772E2673F4EADE4D /* WidgetSharedStore+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A2EF27102EA419BF1529186 /* WidgetSharedStore+App.swift */; };
 		2572C9208D27D5E226178DF8 /* GameplaySessionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF4866C54415CDA6F2B4CCDC /* GameplaySessionRequest.swift */; };
+		2E472AE3E29B614E9C90CB88 /* KeychainDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D1E911F359ED49CBE68095 /* KeychainDataSource.swift */; };
 		2EEAF097E19877EB6C8004D3 /* Gameplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F0E17619F86758C146F322 /* Gameplay.swift */; };
 		2F5DD23CEC4C3802F58D9F40 /* ListItemRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A915837CD099FCCB928AAA4 /* ListItemRequest.swift */; };
 		3220409E8900A7A6C9D57E7C /* ListItemResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D2359F4C0411903604BA888 /* ListItemResponse.swift */; };
 		3BB0BCAA5BB4825C5914B69D /* ToggleGameplayIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAF41795FAFC28D4BC19D48 /* ToggleGameplayIntent.swift */; };
+		3C074E22F49DB68B882494FA /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = A9B01A444AC3BBB6F585ADBD /* KeychainAccess */; };
 		3DBFD988381EC06BB26EE008 /* WidgetSharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF4E67BF2F7943F18DB4ACB /* WidgetSharedStore.swift */; };
 		3E79A02693BA679E15F35427 /* PlayGameWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */; };
 		40404F64214504ADEF68EE52 /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D5D21F47A93744542C9D27 /* LoginResponse.swift */; };
@@ -238,7 +240,6 @@
 		E0CF9A97B8420AD051DD034D /* GameDetailResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A36FF7B1365B68B2197DCC36 /* GameDetailResponse.swift */; };
 		E3A60603216841944ED5E180 /* GameplayResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6817E324B10ECC79DB5FE53 /* GameplayResponse.swift */; };
 		E532206B1B56F7EC8D623B8C /* LatestGameplaySessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C08803B2ABBACAD0CEBA8 /* LatestGameplaySessionResponse.swift */; };
-		E820F31EEE8E6A236BC267AA /* GameNet.Keychain in Frameworks */ = {isa = PBXBuildFile; productRef = 9142C66149A83D7FFDF7CF50 /* GameNet.Keychain */; };
 		E84081207D47D8966B63D610 /* DashboardResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C23E5373E130C785ABC8B49 /* DashboardResponse.swift */; };
 		E858B951BC0C34BA3B741287 /* RefreshTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F84DE85725C840DFCB058D /* RefreshTokenResponse.swift */; };
 		E8BC231B5D8DAEFE9DD4A77E /* NetworkLoggerEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69E084B124FEBD4F5CD356A /* NetworkLoggerEventMonitor.swift */; };
@@ -314,6 +315,7 @@
 		6D2359F4C0411903604BA888 /* ListItemResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListItemResponse.swift; sourceTree = "<group>"; };
 		6E5A180F4FAC67226E29373B /* GameNetAPI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameNetAPI.swift; sourceTree = "<group>"; };
 		74468CF1FF172944AF1FB532 /* GameEditRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameEditRequest.swift; sourceTree = "<group>"; };
+		77D1E911F359ED49CBE68095 /* KeychainDataSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = KeychainDataSource.swift; sourceTree = "<group>"; };
 		7A8007A0299FC95F7F52D08E /* PhysicalDigitalResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PhysicalDigitalResponse.swift; sourceTree = "<group>"; };
 		829F51805E5A6D05EDDB2852 /* GameDetail.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameDetail.swift; sourceTree = "<group>"; };
 		835C20444DAD9FE9074B1D1B /* GameEditReponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameEditReponse.swift; sourceTree = "<group>"; };
@@ -555,7 +557,7 @@
 				A51AA6A42899539A0081AE4B /* Factory in Frameworks */,
 				7DEA1C6EB7D91A04790D87B7 /* Alamofire in Frameworks */,
 				C44E7AD82D480504807F750B /* Pulse in Frameworks */,
-				E820F31EEE8E6A236BC267AA /* GameNet.Keychain in Frameworks */,
+				3C074E22F49DB68B882494FA /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -650,6 +652,15 @@
 			path = Platform;
 			sourceTree = "<group>";
 		};
+		46376CEEA62BF6C6E65F5BF9 /* DataProviders */ = {
+			isa = PBXGroup;
+			children = (
+				F0F336FF973F7CC7FBD57E8D /* DataSources */,
+			);
+			name = DataProviders;
+			path = DataProviders;
+			sourceTree = "<group>";
+		};
 		485E2CF776A912FCC9AE182F /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -736,6 +747,15 @@
 				8A2EF27102EA419BF1529186 /* WidgetSharedStore+App.swift */,
 			);
 			name = Widget;
+			sourceTree = "<group>";
+		};
+		8C9FEC204E0A38F3478F3535 /* GameNet.Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				46376CEEA62BF6C6E65F5BF9 /* DataProviders */,
+			);
+			name = GameNet.Keychain;
+			path = GameNet.Keychain;
 			sourceTree = "<group>";
 		};
 		9BD1B12EC23CCFB4DDA83FC6 /* Game */ = {
@@ -1439,6 +1459,7 @@
 				A550C6F72968AEA40043FE74 /* Frameworks */,
 				52570E0D257C63CEA4DD65C3 /* GameNetWidget */,
 				799E39DD1798806BD29DD992 /* GameNet.Network */,
+				8C9FEC204E0A38F3478F3535 /* GameNet.Keychain */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1992,6 +2013,15 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		F0F336FF973F7CC7FBD57E8D /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				77D1E911F359ED49CBE68095 /* KeychainDataSource.swift */,
+			);
+			name = DataSources;
+			path = DataSources;
+			sourceTree = "<group>";
+		};
 		F36A01249FA6C37D6A4A3D6F /* Gameplays */ = {
 			isa = PBXGroup;
 			children = (
@@ -2111,7 +2141,7 @@
 				A5675A392E80851400AF066A /* TTProgressHUD */,
 				5E9D8A8FA1FBA53C87A852DF /* Alamofire */,
 				3EDAD8B41DE33ED69FA1FF84 /* Pulse */,
-				9142C66149A83D7FFDF7CF50 /* GameNet.Keychain */,
+				A9B01A444AC3BBB6F585ADBD /* KeychainAccess */,
 			);
 			productName = GameNet;
 			productReference = A57185C1286793D600655B31 /* GameNet.app */;
@@ -2161,7 +2191,7 @@
 				A5675A382E80851400AF066A /* XCRemoteSwiftPackageReference "TTProgressHUD" */,
 				68B61C6CAD83FA6E755CAAED /* XCRemoteSwiftPackageReference "Alamofire" */,
 				D10B50013A23127961334519 /* XCRemoteSwiftPackageReference "Pulse" */,
-				196357CAA22A7319DFF033BC /* XCRemoteSwiftPackageReference "GameNet.Keychain" */,
+				A3D91AA4215F468D939D860E /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = A57185C2286793D600655B31 /* Products */;
 			projectDirPath = "";
@@ -2457,6 +2487,7 @@
 				843C80D08FDE77EB6FD2E669 /* ListItem.swift in Sources */,
 				BB5D657DA055AAEB2CA2CD27 /* Platform.swift in Sources */,
 				4585403C53C2A9DC426EE81B /* ServerDriven.swift in Sources */,
+				2E472AE3E29B614E9C90CB88 /* KeychainDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2891,20 +2922,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		196357CAA22A7319DFF033BC /* XCRemoteSwiftPackageReference "GameNet.Keychain" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/allistoncarlos/GameNet.Keychain";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
 		68B61C6CAD83FA6E755CAAED /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.6.1;
+			};
+		};
+		A3D91AA4215F468D939D860E /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
+			requirement = {
+				branch = master;
+				kind = branch;
 			};
 		};
 		A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */ = {
@@ -2976,11 +3007,6 @@
 			package = 68B61C6CAD83FA6E755CAAED /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
-		9142C66149A83D7FFDF7CF50 /* GameNet.Keychain */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 196357CAA22A7319DFF033BC /* XCRemoteSwiftPackageReference "GameNet.Keychain" */;
-			productName = GameNet.Keychain;
-		};
 		A51AA6A32899539A0081AE4B /* Factory */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */;
@@ -3025,6 +3051,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A5F18C5329D2554200E712F5 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
 			productName = CachedAsyncImage;
+		};
+		A9B01A444AC3BBB6F585ADBD /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A3D91AA4215F468D939D860E /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -1,5 +1,5 @@
 {
-  "originHash" : "7534933db0d06862de2a133f4918fed4fb0b98c697aebe59e3a60c8d8c380085",
+  "originHash" : "935a12566560d46bb320dd69271bcd9de237ba42e1d5e887c035ba0c918d2916",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -44,15 +44,6 @@
       "state" : {
         "revision" : "dbdfdc44bee8b8e4eaa5ec27eb12b9338f3f2bc1",
         "version" : "11.5.0"
-      }
-    },
-    {
-      "identity" : "gamenet.keychain",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/allistoncarlos/GameNet.Keychain",
-      "state" : {
-        "branch" : "main",
-        "revision" : "667b2ca288dc8b8b31b41b22b20729fee2c7e82d"
       }
     },
     {

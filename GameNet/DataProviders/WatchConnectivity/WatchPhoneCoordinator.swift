@@ -8,7 +8,6 @@
 #if os(iOS) && canImport(WatchConnectivity)
 import Factory
 import Foundation
-import GameNet_Keychain
 import WatchConnectivity
 
 // MARK: - WatchPhoneCoordinator
