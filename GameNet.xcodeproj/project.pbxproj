@@ -11,38 +11,16 @@
 		3BB0BCAA5BB4825C5914B69D /* ToggleGameplayIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAF41795FAFC28D4BC19D48 /* ToggleGameplayIntent.swift */; };
 		3E79A02693BA679E15F35427 /* PlayGameWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */; };
 		581553562020A546DA5A3E0C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7658B48209B6E50E676075F /* Foundation.framework */; };
-		A524F51D28B4FB5F00A91627 /* PlatformDataSourceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F51C28B4FB5F00A91627 /* PlatformDataSourceTest.swift */; };
-		A524F52528B5064C00A91627 /* PlatformRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52428B5064C00A91627 /* PlatformRepositoryTests.swift */; };
-		A524F52D28B50BD300A91627 /* PlatformsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */; };
-		A524F53028B50D3C00A91627 /* PlatformResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A524F52F28B50D3C00A91627 /* PlatformResponseMock.swift */; };
-		A530E72C296EE39E000EAB91 /* ListsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E72B296EE39E000EAB91 /* ListsViewModelTests.swift */; };
-		A530E72F296EE3DF000EAB91 /* ListResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E72E296EE3DF000EAB91 /* ListResponseMock.swift */; };
-		A530E732296EE473000EAB91 /* ListRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E731296EE473000EAB91 /* ListRepositoryTests.swift */; };
-		A530E735296EE4C3000EAB91 /* ListDataSourceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E734296EE4C3000EAB91 /* ListDataSourceTest.swift */; };
-		A530E73F296EE856000EAB91 /* EditListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E73E296EE856000EAB91 /* EditListViewModelTests.swift */; };
-		A530E741296EE88B000EAB91 /* EditListResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A530E740296EE88B000EAB91 /* EditListResponseMock.swift */; };
 		A5357E912FCA1BA40094C91E /* GameNet.icon in Resources */ = {isa = PBXBuildFile; fileRef = A5357E902FCA1BA40094C91E /* GameNet.icon */; };
 		A5357E922FCA1BA40094C91E /* GameNet.icon in Resources */ = {isa = PBXBuildFile; fileRef = A5357E902FCA1BA40094C91E /* GameNet.icon */; };
-		A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536616F2899828700D52088 /* LoginNetworkTests.swift */; };
-		A53661732899837B00D52088 /* StubRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661722899837B00D52088 /* StubRequests.swift */; };
-		A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5366175289983A600D52088 /* LoginResponseMock.swift */; };
-		A536617B289987FB00D52088 /* LoginRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A536617A289987FB00D52088 /* LoginRepositoryTests.swift */; };
-		A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53661802899890300D52088 /* LoginViewModelTests.swift */; };
 		A550C6E32968ABF60043FE74 /* GameNet_WatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A550C6E22968ABF60043FE74 /* GameNet_WatchApp.swift */; };
 		A550C6E72968ABF70043FE74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A550C6E62968ABF70043FE74 /* Assets.xcassets */; };
 		A550C6EA2968ABF70043FE74 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A550C6E92968ABF70043FE74 /* Preview Assets.xcassets */; };
 		A550C6EF2968ADD80043FE74 /* PlayingGamesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A550C6EE2968ADD80043FE74 /* PlayingGamesView.swift */; };
 		A550C6F62968AE3D0043FE74 /* PlayingGamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A550C6F52968AE3D0043FE74 /* PlayingGamesViewModel.swift */; };
-		A56A95EE28B3E5E000CAAFFF /* DashboardResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95ED28B3E5E000CAAFFF /* DashboardResponseMock.swift */; };
-		A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56D956828996508003C13A3 /* LoginDataSourceTests.swift */; };
-		A56DB66328B3BAE000614046 /* DashboardDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66228B3BAE000614046 /* DashboardDataSourceTests.swift */; };
-		A56DB66F28B3C2B700614046 /* DashboardRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB66E28B3C2B700614046 /* DashboardRepositoryTests.swift */; };
-		A56DB67228B3C37200614046 /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56DB67128B3C37200614046 /* DashboardViewModelTests.swift */; };
 		A581484A296DF8AD00F52ED7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5814849296DF8AD00F52ED7 /* HomeView.swift */; };
 		A581484D296DF8CB00F52ED7 /* NotLoggedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */; };
 		A59C4499296A10C90097E0F4 /* GameNet.Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A550C6E02968ABF60043FE74 /* GameNet.Watch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		A59E763528B6ABD4003CBA3E /* EditPlatformViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59E763428B6ABD4003CBA3E /* EditPlatformViewModelTests.swift */; };
-		A5DCFD4F28E62835003C280C /* EditPlatformResponseMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DCFD4E28E62835003C280C /* EditPlatformResponseMock.swift */; };
 		A5F0B4112F006A1200420411 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B2012F006A1200420201 /* WatchConnectivityManager.swift */; };
 		A5F0B4122F006A1200420412 /* WatchPlayingGamesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B2022F006A1200420202 /* WatchPlayingGamesService.swift */; };
 		A5F0B4132F006A1200420413 /* WatchConnectivityMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B1012F006A1200420101 /* WatchConnectivityMessages.swift */; };
@@ -98,22 +76,7 @@
 		378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayGameWidget.swift; sourceTree = "<group>"; };
 		8EAF41795FAFC28D4BC19D48 /* ToggleGameplayIntent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ToggleGameplayIntent.swift; sourceTree = "<group>"; };
 		A2F16DB41D362ECFE5FF3DE0 /* PlayGameProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayGameProvider.swift; sourceTree = "<group>"; };
-		A524F51C28B4FB5F00A91627 /* PlatformDataSourceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformDataSourceTest.swift; sourceTree = "<group>"; };
-		A524F52428B5064C00A91627 /* PlatformRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformRepositoryTests.swift; sourceTree = "<group>"; };
-		A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformsViewModelTests.swift; sourceTree = "<group>"; };
-		A524F52F28B50D3C00A91627 /* PlatformResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformResponseMock.swift; sourceTree = "<group>"; };
-		A530E72B296EE39E000EAB91 /* ListsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListsViewModelTests.swift; sourceTree = "<group>"; };
-		A530E72E296EE3DF000EAB91 /* ListResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListResponseMock.swift; sourceTree = "<group>"; };
-		A530E731296EE473000EAB91 /* ListRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListRepositoryTests.swift; sourceTree = "<group>"; };
-		A530E734296EE4C3000EAB91 /* ListDataSourceTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDataSourceTest.swift; sourceTree = "<group>"; };
-		A530E73E296EE856000EAB91 /* EditListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListViewModelTests.swift; sourceTree = "<group>"; };
-		A530E740296EE88B000EAB91 /* EditListResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListResponseMock.swift; sourceTree = "<group>"; };
 		A5357E902FCA1BA40094C91E /* GameNet.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = GameNet.icon; sourceTree = "<group>"; };
-		A536616F2899828700D52088 /* LoginNetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNetworkTests.swift; sourceTree = "<group>"; };
-		A53661722899837B00D52088 /* StubRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubRequests.swift; sourceTree = "<group>"; };
-		A5366175289983A600D52088 /* LoginResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponseMock.swift; sourceTree = "<group>"; };
-		A536617A289987FB00D52088 /* LoginRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRepositoryTests.swift; sourceTree = "<group>"; };
-		A53661802899890300D52088 /* LoginViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModelTests.swift; sourceTree = "<group>"; };
 		A53B6FBF2968B19500A0F09E /* GameNet.Watch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "GameNet.Watch Watch App.entitlements"; sourceTree = "<group>"; };
 		A550C6E02968ABF60043FE74 /* GameNet.Watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GameNet.Watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A550C6E22968ABF60043FE74 /* GameNet_WatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNet_WatchApp.swift; sourceTree = "<group>"; };
@@ -122,18 +85,11 @@
 		A550C6EE2968ADD80043FE74 /* PlayingGamesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingGamesView.swift; sourceTree = "<group>"; };
 		A550C6F52968AE3D0043FE74 /* PlayingGamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingGamesViewModel.swift; sourceTree = "<group>"; };
 		A55A0D3D2DD24BFA004532F3 /* GameNet.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GameNet.xctestplan; sourceTree = "<group>"; };
-		A56A95ED28B3E5E000CAAFFF /* DashboardResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardResponseMock.swift; sourceTree = "<group>"; };
 		A56D956628996508003C13A3 /* GameNetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameNetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A56D956828996508003C13A3 /* LoginDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDataSourceTests.swift; sourceTree = "<group>"; };
-		A56DB66228B3BAE000614046 /* DashboardDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardDataSourceTests.swift; sourceTree = "<group>"; };
-		A56DB66E28B3C2B700614046 /* DashboardRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRepositoryTests.swift; sourceTree = "<group>"; };
-		A56DB67128B3C37200614046 /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
 		A57185C1286793D600655B31 /* GameNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5814849296DF8AD00F52ED7 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotLoggedView.swift; sourceTree = "<group>"; };
-		A59E763428B6ABD4003CBA3E /* EditPlatformViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformViewModelTests.swift; sourceTree = "<group>"; };
 		A5D2BCDE2968B64E0030973B /* GameNet-Watch-Watch-App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GameNet-Watch-Watch-App-Info.plist"; sourceTree = SOURCE_ROOT; };
-		A5DCFD4E28E62835003C280C /* EditPlatformResponseMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPlatformResponseMock.swift; sourceTree = "<group>"; };
 		A5F0B1012F006A1200420101 /* WatchConnectivityMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityMessages.swift; sourceTree = "<group>"; };
 		A5F0B1022F006A1200420102 /* WatchConnectivityDateCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityDateCodec.swift; sourceTree = "<group>"; };
 		A5F0B2012F006A1200420201 /* WatchConnectivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchConnectivityManager.swift; sourceTree = "<group>"; };
@@ -175,6 +131,13 @@
 			path = GameNet;
 			sourceTree = "<group>";
 		};
+		C1498B83FD640C61B7A4A53D /* GameNetTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			path = GameNetTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,67 +173,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0C26AF73F9F4232FF30FCEF9 /* Game */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Game;
-			sourceTree = "<group>";
-		};
-		1CA09D4B0BCF4B8E0494AEDF /* Request */ = {
-			isa = PBXGroup;
-			children = (
-				DA291C12F81EF1B1E120CBD7 /* Game */,
-				79BD6561E90BA9E774E147D5 /* GameplaySession */,
-				485E2CF776A912FCC9AE182F /* List */,
-				EDEA39321D50F9BDDC9EEE5A /* Login */,
-				DC4B69E09B73A3F9E4A52629 /* Platform */,
-			);
-			path = Request;
-			sourceTree = "<group>";
-		};
-		2C69D60A14440ECCCD868F43 /* Response */ = {
-			isa = PBXGroup;
-			children = (
-				FE1FB7C55980368334724925 /* Dashboard */,
-				0C26AF73F9F4232FF30FCEF9 /* Game */,
-				F36A01249FA6C37D6A4A3D6F /* Gameplays */,
-				72660AFDB7D61ADC36A39D3D /* List */,
-				E5D0C568A40CE1483D6207CA /* Login */,
-				CE60748EBF83301170CD1F69 /* Platform */,
-				491984EA32E5DF36A7154AB1 /* ServerDriven */,
-			);
-			path = Response;
-			sourceTree = "<group>";
-		};
-		2D12CE6DB95C6AC29793B423 /* Gameplays */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Gameplays;
-			sourceTree = "<group>";
-		};
-		3EC75184EC0EAC573302D8C5 /* Platform */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Platform;
-			sourceTree = "<group>";
-		};
-		485E2CF776A912FCC9AE182F /* List */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		491984EA32E5DF36A7154AB1 /* ServerDriven */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ServerDriven;
-			sourceTree = "<group>";
-		};
 		52570E0D257C63CEA4DD65C3 /* GameNetWidget */ = {
 			isa = PBXGroup;
 			children = (
@@ -280,367 +182,6 @@
 				BC12F2BC319728F94EF8DFED /* WidgetGameClient.swift */,
 			);
 			path = GameNetWidget;
-			sourceTree = "<group>";
-		};
-		6B640F423BA47358D4E81D69 /* ServerDriven */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ServerDriven;
-			sourceTree = "<group>";
-		};
-		72660AFDB7D61ADC36A39D3D /* List */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		79BD6561E90BA9E774E147D5 /* GameplaySession */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = GameplaySession;
-			sourceTree = "<group>";
-		};
-		8AF22FA21BE5E8F414C33DF7 /* Widget */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Widget;
-			sourceTree = "<group>";
-		};
-		9BD1B12EC23CCFB4DDA83FC6 /* Game */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Game;
-			sourceTree = "<group>";
-		};
-		A5050A232D0F543A0044A791 /* ServerDriven */ = {
-			isa = PBXGroup;
-			children = (
-				A5050A272D0F5EFF0044A791 /* Model */,
-				A5050A242D0F54400044A791 /* ViewModel */,
-			);
-			path = ServerDriven;
-			sourceTree = "<group>";
-		};
-		A5050A242D0F54400044A791 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		A5050A272D0F5EFF0044A791 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		A51AA6A9289955030081AE4B /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				A544144E2CF208C00072F2B8 /* ServerDriven */,
-				A53661662899677700D52088 /* Login */,
-				A56DB66028B3BAB200614046 /* Dashboard */,
-				A524F51E28B4FBF500A91627 /* Platform */,
-				A5507EC12901D0860040C801 /* Game */,
-				A566D84A296E37AC00760F01 /* List */,
-				A5D267E6299FF569001E7667 /* GameplaySession */,
-				A5FUN1072F01300600420004 /* Fun */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
-		A51AA6AC289955490081AE4B /* Login */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		A524F51B28B4FB4800A91627 /* Platform */ = {
-			isa = PBXGroup;
-			children = (
-				A524F51C28B4FB5F00A91627 /* PlatformDataSourceTest.swift */,
-			);
-			path = Platform;
-			sourceTree = "<group>";
-		};
-		A524F51E28B4FBF500A91627 /* Platform */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Platform;
-			sourceTree = "<group>";
-		};
-		A524F52328B5062F00A91627 /* Platform */ = {
-			isa = PBXGroup;
-			children = (
-				A524F52428B5064C00A91627 /* PlatformRepositoryTests.swift */,
-			);
-			path = Platform;
-			sourceTree = "<group>";
-		};
-		A524F52628B506DA00A91627 /* Platform */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Platform;
-			sourceTree = "<group>";
-		};
-		A524F52B28B50BC100A91627 /* Platform */ = {
-			isa = PBXGroup;
-			children = (
-				A524F52C28B50BD300A91627 /* PlatformsViewModelTests.swift */,
-				A59E763428B6ABD4003CBA3E /* EditPlatformViewModelTests.swift */,
-			);
-			path = Platform;
-			sourceTree = "<group>";
-		};
-		A524F52E28B50D2D00A91627 /* Platform */ = {
-			isa = PBXGroup;
-			children = (
-				A524F52F28B50D3C00A91627 /* PlatformResponseMock.swift */,
-				A5DCFD4E28E62835003C280C /* EditPlatformResponseMock.swift */,
-			);
-			path = Platform;
-			sourceTree = "<group>";
-		};
-		A524F53128B50FED00A91627 /* Router */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Router;
-			sourceTree = "<group>";
-		};
-		A524F53228B5101A00A91627 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		A524F53328B5101E00A91627 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		A524F53428B5102500A91627 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		A530E72A296EE385000EAB91 /* List */ = {
-			isa = PBXGroup;
-			children = (
-				A530E72B296EE39E000EAB91 /* ListsViewModelTests.swift */,
-				A530E73E296EE856000EAB91 /* EditListViewModelTests.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		A530E72D296EE3CF000EAB91 /* List */ = {
-			isa = PBXGroup;
-			children = (
-				A530E72E296EE3DF000EAB91 /* ListResponseMock.swift */,
-				A530E740296EE88B000EAB91 /* EditListResponseMock.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		A530E730296EE45D000EAB91 /* List */ = {
-			isa = PBXGroup;
-			children = (
-				A530E731296EE473000EAB91 /* ListRepositoryTests.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		A530E733296EE4B2000EAB91 /* List */ = {
-			isa = PBXGroup;
-			children = (
-				A530E734296EE4C3000EAB91 /* ListDataSourceTest.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		A53661662899677700D52088 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		A536616E2899822900D52088 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				A536616F2899828700D52088 /* LoginNetworkTests.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		A53661712899836C00D52088 /* Stubs */ = {
-			isa = PBXGroup;
-			children = (
-				A53661722899837B00D52088 /* StubRequests.swift */,
-			);
-			path = Stubs;
-			sourceTree = "<group>";
-		};
-		A53661742899839100D52088 /* Mocks */ = {
-			isa = PBXGroup;
-			children = (
-				A5366179289987EE00D52088 /* Login */,
-				A56A95EC28B3E5D100CAAFFF /* Dashboard */,
-				A524F52E28B50D2D00A91627 /* Platform */,
-				A530E72D296EE3CF000EAB91 /* List */,
-			);
-			path = Mocks;
-			sourceTree = "<group>";
-		};
-		A5366177289987E500D52088 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				A536617A289987FB00D52088 /* LoginRepositoryTests.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		A5366178289987E900D52088 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				A56D956828996508003C13A3 /* LoginDataSourceTests.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		A5366179289987EE00D52088 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				A5366175289983A600D52088 /* LoginResponseMock.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		A536617E289988EE00D52088 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				A536617F289988F700D52088 /* Login */,
-				A56DB67028B3C36700614046 /* Dashboard */,
-				A524F52B28B50BC100A91627 /* Platform */,
-				A530E72A296EE385000EAB91 /* List */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		A536617F289988F700D52088 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				A53661802899890300D52088 /* LoginViewModelTests.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		A544144B2CF208220072F2B8 /* ServerDriven */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ServerDriven;
-			sourceTree = "<group>";
-		};
-		A544144E2CF208C00072F2B8 /* ServerDriven */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ServerDriven;
-			sourceTree = "<group>";
-		};
-		A547BD1A2CF396E6003FACBE /* ServerDrivenComponents */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ServerDrivenComponents;
-			sourceTree = "<group>";
-		};
-		A54D44B42CE4D6EF00C0EC3B /* FeatureToggle */ = {
-			isa = PBXGroup;
-			children = (
-				A54D44D72CE4E5AA00C0EC3B /* View */,
-				A54D44D82CE4E5B100C0EC3B /* ViewModel */,
-				A54D44DB2CE4E6CE00C0EC3B /* Model */,
-			);
-			path = FeatureToggle;
-			sourceTree = "<group>";
-		};
-		A54D44D72CE4E5AA00C0EC3B /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		A54D44D82CE4E5B100C0EC3B /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		A54D44DB2CE4E6CE00C0EC3B /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		A5507EB42901CCAE0040C801 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		A5507EB52901CCB50040C801 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		A5507EB62901CCC70040C801 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		A5507EB72901CCCB0040C801 /* Router */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Router;
-			sourceTree = "<group>";
-		};
-		A5507EBC2901CDE10040C801 /* Game */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Game;
-			sourceTree = "<group>";
-		};
-		A5507EC12901D0860040C801 /* Game */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Game;
 			sourceTree = "<group>";
 		};
 		A550C6E12968ABF60043FE74 /* GameNet.Watch Watch App */ = {
@@ -718,206 +259,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A566D83D296E34FF00760F01 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		A566D83E296E350500760F01 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		A566D83F296E351000760F01 /* Router */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Router;
-			sourceTree = "<group>";
-		};
-		A566D840296E351400760F01 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		A566D847296E367B00760F01 /* List */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		A566D84A296E37AC00760F01 /* List */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		A56A95EC28B3E5D100CAAFFF /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-				A56A95ED28B3E5E000CAAFFF /* DashboardResponseMock.swift */,
-			);
-			path = Dashboard;
-			sourceTree = "<group>";
-		};
-		A56A95F128B3FDA100CAAFFF /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				A56A95F228B3FDA700CAAFFF /* Errors */,
-			);
-			path = Shared;
-			sourceTree = "<group>";
-		};
-		A56A95F228B3FDA700CAAFFF /* Errors */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Errors;
-			sourceTree = "<group>";
-		};
-		A56D955A28995760003C13A3 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		A56D955D289958A9003C13A3 /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
-		A56D956728996508003C13A3 /* GameNetTests */ = {
-			isa = PBXGroup;
-			children = (
-				A53661712899836C00D52088 /* Stubs */,
-				A53661742899839100D52088 /* Mocks */,
-				A56D9570289965D4003C13A3 /* Network */,
-				A56D956F28996531003C13A3 /* DataSources */,
-				A56D9571289965D9003C13A3 /* Repositories */,
-				A536617E289988EE00D52088 /* ViewModel */,
-			);
-			path = GameNetTests;
-			sourceTree = "<group>";
-		};
-		A56D956F28996531003C13A3 /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-				A5366178289987E900D52088 /* Login */,
-				A56DB66128B3BACC00614046 /* Dashboard */,
-				A524F51B28B4FB4800A91627 /* Platform */,
-				A530E733296EE4B2000EAB91 /* List */,
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
-		A56D9570289965D4003C13A3 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				A536616E2899822900D52088 /* Login */,
-			);
-			path = Network;
-			sourceTree = "<group>";
-		};
-		A56D9571289965D9003C13A3 /* Repositories */ = {
-			isa = PBXGroup;
-			children = (
-				A5366177289987E500D52088 /* Login */,
-				A56DB66D28B3C2A100614046 /* Dashboard */,
-				A524F52328B5062F00A91627 /* Platform */,
-				A530E730296EE45D000EAB91 /* List */,
-			);
-			path = Repositories;
-			sourceTree = "<group>";
-		};
-		A56DB65A28B3B93600614046 /* Router */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Router;
-			sourceTree = "<group>";
-		};
-		A56DB65B28B3B93D00614046 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		A56DB65C28B3B94000614046 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		A56DB65D28B3B94B00614046 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		A56DB66028B3BAB200614046 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Dashboard;
-			sourceTree = "<group>";
-		};
-		A56DB66128B3BACC00614046 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-				A56DB66228B3BAE000614046 /* DashboardDataSourceTests.swift */,
-			);
-			path = Dashboard;
-			sourceTree = "<group>";
-		};
-		A56DB66828B3C18C00614046 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Dashboard;
-			sourceTree = "<group>";
-		};
-		A56DB66D28B3C2A100614046 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-				A56DB66E28B3C2B700614046 /* DashboardRepositoryTests.swift */,
-			);
-			path = Dashboard;
-			sourceTree = "<group>";
-		};
-		A56DB67028B3C36700614046 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-				A56DB67128B3C37200614046 /* DashboardViewModelTests.swift */,
-			);
-			path = Dashboard;
-			sourceTree = "<group>";
-		};
 		A57185B8286793D600655B31 = {
 			isa = PBXGroup;
 			children = (
 				A5357E902FCA1BA40094C91E /* GameNet.icon */,
 				A55A0D3D2DD24BFA004532F3 /* GameNet.xctestplan */,
-				A56D956728996508003C13A3 /* GameNetTests */,
 				A550C6E12968ABF60043FE74 /* GameNet.Watch Watch App */,
 				A57185C2286793D600655B31 /* Products */,
 				A550C6F72968AEA40043FE74 /* Frameworks */,
 				52570E0D257C63CEA4DD65C3 /* GameNetWidget */,
 				D173891BBC0EB2AD9BFB91B0 /* Config.xcconfig */,
 				1F5E6D9065CB58458778EAF6 /* GameNet */,
+				C1498B83FD640C61B7A4A53D /* GameNetTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -930,29 +283,6 @@
 				C954B4D3AC3929BFAB4FA22C /* GameNetWidget.appex */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		A57185D32867952D00655B31 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				A5B5D3DD289B0ACF004096F4 /* Modifiers */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
-		A57185D72867983B00655B31 /* Button */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Button;
-			sourceTree = "<group>";
-		};
-		A57D3F2729CF8420000AFFBA /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				A547BD1A2CF396E6003FACBE /* ServerDrivenComponents */,
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		A5814848296DF8A000F52ED7 /* Home */ = {
@@ -977,210 +307,6 @@
 				A5814849296DF8AD00F52ED7 /* HomeView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		A596B11A2D148B0A00E537BC /* MetabaseDashboard */ = {
-			isa = PBXGroup;
-			children = (
-				A596B11E2D148B3700E537BC /* View */,
-				A596B11D2D148B3100E537BC /* ViewModel */,
-			);
-			path = MetabaseDashboard;
-			sourceTree = "<group>";
-		};
-		A596B11D2D148B3100E537BC /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		A596B11E2D148B3700E537BC /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		A59C4492296A07780097E0F4 /* WatchConnectivity */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = WatchConnectivity;
-			sourceTree = "<group>";
-		};
-		A5B5D3CD289AE1FD004096F4 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-				A56DB65D28B3B94B00614046 /* View */,
-				A56DB65C28B3B94000614046 /* ViewModel */,
-				A56DB65B28B3B93D00614046 /* Model */,
-				A56DB65A28B3B93600614046 /* Router */,
-			);
-			path = Dashboard;
-			sourceTree = "<group>";
-		};
-		A5B5D3CE289AE270004096F4 /* Games */ = {
-			isa = PBXGroup;
-			children = (
-				A5507EB42901CCAE0040C801 /* View */,
-				A5507EB52901CCB50040C801 /* ViewModel */,
-				A5507EB62901CCC70040C801 /* Model */,
-				A5507EB72901CCCB0040C801 /* Router */,
-			);
-			path = Games;
-			sourceTree = "<group>";
-		};
-		A5B5D3CF289AE27F004096F4 /* Platforms */ = {
-			isa = PBXGroup;
-			children = (
-				A524F53428B5102500A91627 /* View */,
-				A524F53328B5101E00A91627 /* ViewModel */,
-				A524F53228B5101A00A91627 /* Model */,
-				A524F53128B50FED00A91627 /* Router */,
-			);
-			path = Platforms;
-			sourceTree = "<group>";
-		};
-		A5B5D3D0289AE287004096F4 /* Lists */ = {
-			isa = PBXGroup;
-			children = (
-				A566D83D296E34FF00760F01 /* View */,
-				A566D83E296E350500760F01 /* ViewModel */,
-				A566D840296E351400760F01 /* Model */,
-				A566D83F296E351000760F01 /* Router */,
-			);
-			path = Lists;
-			sourceTree = "<group>";
-		};
-		A5B5D3DD289B0ACF004096F4 /* Modifiers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Modifiers;
-			sourceTree = "<group>";
-		};
-		A5D267E3299FF4C0001E7667 /* GameplaySession */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = GameplaySession;
-			sourceTree = "<group>";
-		};
-		A5D267E6299FF569001E7667 /* GameplaySession */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = GameplaySession;
-			sourceTree = "<group>";
-		};
-		A5E48A062895ABF40037023C /* Features */ = {
-			isa = PBXGroup;
-			children = (
-				A5050A232D0F543A0044A791 /* ServerDriven */,
-				A5E48A112895AD4C0037023C /* Home */,
-				A5E48A072895ABFD0037023C /* Login */,
-				A5B5D3CD289AE1FD004096F4 /* Dashboard */,
-				A5B5D3CE289AE270004096F4 /* Games */,
-				A5B5D3CF289AE27F004096F4 /* Platforms */,
-				A5B5D3D0289AE287004096F4 /* Lists */,
-				A54D44B42CE4D6EF00C0EC3B /* FeatureToggle */,
-				A596B11A2D148B0A00E537BC /* MetabaseDashboard */,
-			);
-			path = Features;
-			sourceTree = "<group>";
-		};
-		A5E48A072895ABFD0037023C /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				A5E48A0A2895AC0F0037023C /* View */,
-				A5E48A092895AC0B0037023C /* ViewModel */,
-				A5E48A082895AC060037023C /* Model */,
-				A5E48A0C2895AC170037023C /* Router */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		A5E48A082895AC060037023C /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		A5E48A092895AC0B0037023C /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		A5E48A0A2895AC0F0037023C /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		A5E48A0C2895AC170037023C /* Router */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Router;
-			sourceTree = "<group>";
-		};
-		A5E48A0E2895ACCE0037023C /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				A51AA6AC289955490081AE4B /* Login */,
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
-		A5E48A102895ACEC0037023C /* Repositories */ = {
-			isa = PBXGroup;
-			children = (
-				A544144B2CF208220072F2B8 /* ServerDriven */,
-				A56D955A28995760003C13A3 /* Login */,
-				A56DB66828B3C18C00614046 /* Dashboard */,
-				A524F52628B506DA00A91627 /* Platform */,
-				A5507EBC2901CDE10040C801 /* Game */,
-				A566D847296E367B00760F01 /* List */,
-				A5D267E3299FF4C0001E7667 /* GameplaySession */,
-				A5FUN1082F01300600420005 /* Fun */,
-			);
-			path = Repositories;
-			sourceTree = "<group>";
-		};
-		A5E48A112895AD4C0037023C /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				A5E48A122895AD520037023C /* View */,
-				A5E48A132895AD580037023C /* ViewModel */,
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		A5E48A122895AD520037023C /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		A5E48A132895AD580037023C /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		A5E48A142895AD660037023C /* Styles */ = {
-			isa = PBXGroup;
-			children = (
-				A57185D72867983B00655B31 /* Button */,
-			);
-			path = Styles;
 			sourceTree = "<group>";
 		};
 		A5F0B0102F006A1200420010 /* Shared */ = {
@@ -1209,133 +335,12 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		A5FUN1072F01300600420004 /* Fun */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Fun;
-			sourceTree = "<group>";
-		};
-		A5FUN1082F01300600420005 /* Fun */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Fun;
-			sourceTree = "<group>";
-		};
-		A7EECC877D541B38392D5EB9 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Dashboard;
-			sourceTree = "<group>";
-		};
 		C33CAE1F6F73DF78B0F06E5B /* iOS */ = {
 			isa = PBXGroup;
 			children = (
 				B7658B48209B6E50E676075F /* Foundation.framework */,
 			);
 			name = iOS;
-			sourceTree = "<group>";
-		};
-		C4B3EA9E06C834B7194F12A6 /* API */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
-		CE60748EBF83301170CD1F69 /* Platform */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Platform;
-			sourceTree = "<group>";
-		};
-		D99251D162CE1A708D2AE9E2 /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				A7EECC877D541B38392D5EB9 /* Dashboard */,
-				9BD1B12EC23CCFB4DDA83FC6 /* Game */,
-				2D12CE6DB95C6AC29793B423 /* Gameplays */,
-				E33662BB55F6D35A28A64BEE /* List */,
-				3EC75184EC0EAC573302D8C5 /* Platform */,
-				6B640F423BA47358D4E81D69 /* ServerDriven */,
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
-		DA291C12F81EF1B1E120CBD7 /* Game */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Game;
-			sourceTree = "<group>";
-		};
-		DC4B69E09B73A3F9E4A52629 /* Platform */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Platform;
-			sourceTree = "<group>";
-		};
-		E275CE935B9C668610F68681 /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				FF1C7C09436F57F1E33E7258 /* Base */,
-				1CA09D4B0BCF4B8E0494AEDF /* Request */,
-				2C69D60A14440ECCCD868F43 /* Response */,
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
-		E33662BB55F6D35A28A64BEE /* List */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		E5D0C568A40CE1483D6207CA /* Login */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		EDEA39321D50F9BDDC9EEE5A /* Login */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		F0F336FF973F7CC7FBD57E8D /* DataSources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = DataSources;
-			sourceTree = "<group>";
-		};
-		F36A01249FA6C37D6A4A3D6F /* Gameplays */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Gameplays;
-			sourceTree = "<group>";
-		};
-		FE1FB7C55980368334724925 /* Dashboard */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Dashboard;
-			sourceTree = "<group>";
-		};
-		FF1C7C09436F57F1E33E7258 /* Base */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1387,6 +392,9 @@
 			);
 			dependencies = (
 				A56D956B28996508003C13A3 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C1498B83FD640C61B7A4A53D /* GameNetTests */,
 			);
 			name = GameNetTests;
 			productName = GameNetTests;
@@ -1550,28 +558,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A53661812899890300D52088 /* LoginViewModelTests.swift in Sources */,
-				A5366176289983A600D52088 /* LoginResponseMock.swift in Sources */,
-				A530E741296EE88B000EAB91 /* EditListResponseMock.swift in Sources */,
-				A530E72F296EE3DF000EAB91 /* ListResponseMock.swift in Sources */,
-				A530E72C296EE39E000EAB91 /* ListsViewModelTests.swift in Sources */,
-				A524F51D28B4FB5F00A91627 /* PlatformDataSourceTest.swift in Sources */,
-				A56DB66328B3BAE000614046 /* DashboardDataSourceTests.swift in Sources */,
-				A524F52528B5064C00A91627 /* PlatformRepositoryTests.swift in Sources */,
-				A56A95EE28B3E5E000CAAFFF /* DashboardResponseMock.swift in Sources */,
-				A530E73F296EE856000EAB91 /* EditListViewModelTests.swift in Sources */,
-				A56DB67228B3C37200614046 /* DashboardViewModelTests.swift in Sources */,
-				A53661732899837B00D52088 /* StubRequests.swift in Sources */,
-				A530E735296EE4C3000EAB91 /* ListDataSourceTest.swift in Sources */,
-				A524F52D28B50BD300A91627 /* PlatformsViewModelTests.swift in Sources */,
-				A524F53028B50D3C00A91627 /* PlatformResponseMock.swift in Sources */,
-				A59E763528B6ABD4003CBA3E /* EditPlatformViewModelTests.swift in Sources */,
-				A56DB66F28B3C2B700614046 /* DashboardRepositoryTests.swift in Sources */,
-				A530E732296EE473000EAB91 /* ListRepositoryTests.swift in Sources */,
-				A53661702899828700D52088 /* LoginNetworkTests.swift in Sources */,
-				A5DCFD4F28E62835003C280C /* EditPlatformResponseMock.swift in Sources */,
-				A56D956928996508003C13A3 /* LoginDataSourceTests.swift in Sources */,
-				A536617B289987FB00D52088 /* LoginRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
