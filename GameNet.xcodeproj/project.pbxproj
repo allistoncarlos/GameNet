@@ -580,7 +580,6 @@
 				A0E5F9F0D2736B6BB640441B /* GameResponse.swift */,
 				B7A5ADA4823EBA67B2CD4F0B /* UserGameEditResponse.swift */,
 			);
-			name = Game;
 			path = Game;
 			sourceTree = "<group>";
 		};
@@ -593,7 +592,6 @@
 				EDEA39321D50F9BDDC9EEE5A /* Login */,
 				DC4B69E09B73A3F9E4A52629 /* Platform */,
 			);
-			name = Request;
 			path = Request;
 			sourceTree = "<group>";
 		};
@@ -608,7 +606,6 @@
 				CE60748EBF83301170CD1F69 /* Platform */,
 				491984EA32E5DF36A7154AB1 /* ServerDriven */,
 			);
-			name = Response;
 			path = Response;
 			sourceTree = "<group>";
 		};
@@ -620,7 +617,6 @@
 				00C6A2F4A12BACC145B7F3CC /* GameplaySessions.swift */,
 				BAC2240D32D2F167698A9735 /* LatestGameplaySession.swift */,
 			);
-			name = Gameplays;
 			path = Gameplays;
 			sourceTree = "<group>";
 		};
@@ -630,7 +626,6 @@
 				2B8983E7936BCF107ED149ED /* DefaultEventMonitor.swift */,
 				C69E084B124FEBD4F5CD356A /* NetworkLoggerEventMonitor.swift */,
 			);
-			name = EventMonitor;
 			path = EventMonitor;
 			sourceTree = "<group>";
 		};
@@ -639,7 +634,6 @@
 			children = (
 				D99251D162CE1A708D2AE9E2 /* Entities */,
 			);
-			name = Domain;
 			path = Domain;
 			sourceTree = "<group>";
 		};
@@ -648,7 +642,6 @@
 			children = (
 				F9AAB4FA666301F1A0B87E66 /* Platform.swift */,
 			);
-			name = Platform;
 			path = Platform;
 			sourceTree = "<group>";
 		};
@@ -657,7 +650,6 @@
 			children = (
 				F0F336FF973F7CC7FBD57E8D /* DataSources */,
 			);
-			name = DataProviders;
 			path = DataProviders;
 			sourceTree = "<group>";
 		};
@@ -668,7 +660,6 @@
 				4A915837CD099FCCB928AAA4 /* ListItemRequest.swift */,
 				39BB6AE1A5B7347230734507 /* ListRequest.swift */,
 			);
-			name = List;
 			path = List;
 			sourceTree = "<group>";
 		};
@@ -677,7 +668,6 @@
 			children = (
 				CF278D985EF61EC60657C59F /* ServerDrivenResponse.swift */,
 			);
-			name = ServerDriven;
 			path = ServerDriven;
 			sourceTree = "<group>";
 		};
@@ -687,7 +677,6 @@
 				C4B3EA9E06C834B7194F12A6 /* API */,
 				E275CE935B9C668610F68681 /* Entities */,
 			);
-			name = DataProviders;
 			path = DataProviders;
 			sourceTree = "<group>";
 		};
@@ -707,7 +696,6 @@
 			children = (
 				BC6562FD2B63323937C3167B /* ServerDriven.swift */,
 			);
-			name = ServerDriven;
 			path = ServerDriven;
 			sourceTree = "<group>";
 		};
@@ -717,7 +705,6 @@
 				6D2359F4C0411903604BA888 /* ListItemResponse.swift */,
 				C044E3AE1CE5C422446A24E5 /* ListResponse.swift */,
 			);
-			name = List;
 			path = List;
 			sourceTree = "<group>";
 		};
@@ -727,7 +714,6 @@
 				4BD46E637769BDDF941A3EC8 /* DataProviders */,
 				350558FA095FC207912BEC0D /* Domain */,
 			);
-			name = GameNet.Network;
 			path = GameNet.Network;
 			sourceTree = "<group>";
 		};
@@ -736,7 +722,6 @@
 			children = (
 				EF4866C54415CDA6F2B4CCDC /* GameplaySessionRequest.swift */,
 			);
-			name = GameplaySession;
 			path = GameplaySession;
 			sourceTree = "<group>";
 		};
@@ -754,7 +739,6 @@
 			children = (
 				46376CEEA62BF6C6E65F5BF9 /* DataProviders */,
 			);
-			name = GameNet.Keychain;
 			path = GameNet.Keychain;
 			sourceTree = "<group>";
 		};
@@ -765,7 +749,6 @@
 				829F51805E5A6D05EDDB2852 /* GameDetail.swift */,
 				17C76E618475B5A723A8B39E /* UserGame.swift */,
 			);
-			name = Game;
 			path = Game;
 			sourceTree = "<group>";
 		};
@@ -1887,7 +1870,6 @@
 				DD6281C1B64E38E382C2C18A /* PlatformGames.swift */,
 				AC76B25CBE02610438C0E2A6 /* PlayingGame.swift */,
 			);
-			name = Dashboard;
 			path = Dashboard;
 			sourceTree = "<group>";
 		};
@@ -1904,7 +1886,6 @@
 			children = (
 				C00CAE2B112BBE53638DBFB7 /* DefaultRequestInterceptor.swift */,
 			);
-			name = RequestInterceptor;
 			path = RequestInterceptor;
 			sourceTree = "<group>";
 		};
@@ -1925,7 +1906,6 @@
 				521D870F39F21D563FD15D2F /* NetworkReachability.swift */,
 				C00E6BE7D630EE434229A6D9 /* RequestInterceptor */,
 			);
-			name = API;
 			path = API;
 			sourceTree = "<group>";
 		};
@@ -1934,7 +1914,6 @@
 			children = (
 				8AC9D9E201CB8A05F75A2BD7 /* PlatformResponse.swift */,
 			);
-			name = Platform;
 			path = Platform;
 			sourceTree = "<group>";
 		};
@@ -1948,7 +1927,6 @@
 				3EC75184EC0EAC573302D8C5 /* Platform */,
 				6B640F423BA47358D4E81D69 /* ServerDriven */,
 			);
-			name = Entities;
 			path = Entities;
 			sourceTree = "<group>";
 		};
@@ -1958,7 +1936,6 @@
 				74468CF1FF172944AF1FB532 /* GameEditRequest.swift */,
 				04F7A679EF131E1AE84280C5 /* UserGameEditRequest.swift */,
 			);
-			name = Game;
 			path = Game;
 			sourceTree = "<group>";
 		};
@@ -1967,7 +1944,6 @@
 			children = (
 				F8250B88E6B86CC82FE77C71 /* PlatformRequest.swift */,
 			);
-			name = Platform;
 			path = Platform;
 			sourceTree = "<group>";
 		};
@@ -1978,7 +1954,6 @@
 				1CA09D4B0BCF4B8E0494AEDF /* Request */,
 				2C69D60A14440ECCCD868F43 /* Response */,
 			);
-			name = Entities;
 			path = Entities;
 			sourceTree = "<group>";
 		};
@@ -1989,7 +1964,6 @@
 				07E6568EF8A83B4934462091 /* ListGame.swift */,
 				004B35AC34ACC412453504F8 /* ListItem.swift */,
 			);
-			name = List;
 			path = List;
 			sourceTree = "<group>";
 		};
@@ -1999,7 +1973,6 @@
 				86D5D21F47A93744542C9D27 /* LoginResponse.swift */,
 				A6F84DE85725C840DFCB058D /* RefreshTokenResponse.swift */,
 			);
-			name = Login;
 			path = Login;
 			sourceTree = "<group>";
 		};
@@ -2009,7 +1982,6 @@
 				FAE85150C1153DC67D2DEADA /* LoginRequest.swift */,
 				46B3906A80CFE33508FD0871 /* RefreshTokenRequest.swift */,
 			);
-			name = Login;
 			path = Login;
 			sourceTree = "<group>";
 		};
@@ -2018,7 +1990,6 @@
 			children = (
 				77D1E911F359ED49CBE68095 /* KeychainDataSource.swift */,
 			);
-			name = DataSources;
 			path = DataSources;
 			sourceTree = "<group>";
 		};
@@ -2030,7 +2001,6 @@
 				41B7D6B55A75ED3D4FE360C1 /* GameplaySessionsResponse.swift */,
 				C03C08803B2ABBACAD0CEBA8 /* LatestGameplaySessionResponse.swift */,
 			);
-			name = Gameplays;
 			path = Gameplays;
 			sourceTree = "<group>";
 		};
@@ -2044,7 +2014,6 @@
 				BBEFF88A90512562B633C9EC /* PlatformGamesResponse.swift */,
 				1DE016C992B5C039E8F98AA6 /* PlayingGameResponse.swift */,
 			);
-			name = Dashboard;
 			path = Dashboard;
 			sourceTree = "<group>";
 		};
@@ -2054,7 +2023,6 @@
 				2F4CB351FEF5AF95FED1247B /* APIResult.swift */,
 				A2A374852DFA49D577E8F8C0 /* PagedResult.swift */,
 			);
-			name = Base;
 			path = Base;
 			sourceTree = "<group>";
 		};
@@ -2791,7 +2759,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.7.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2829,7 +2797,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.7.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
