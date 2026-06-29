@@ -76,7 +76,7 @@ class GamesViewModel: ObservableObject {
 
     // MARK: Private
 
-    @Injected(RepositoryContainer.gameRepository) private var repository
+    @Injected(\.gameRepository) private var repository
     private var cancellable = Set<AnyCancellable>()
 }
 

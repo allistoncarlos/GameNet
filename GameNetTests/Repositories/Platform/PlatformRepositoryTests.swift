@@ -11,18 +11,17 @@ import XCTest
 
 class PlatformRepositoryTests: XCTestCase {
     override func setUp() async throws {
-        Container.Registrations.reset()
-        Container.Scope.reset()
+        Container.shared.reset()
 
         MockPlatformRepository.reset()
     }
 
     func testPlatform_ValidData_ShouldFetchValidData() async {
         // Given
-        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+        Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
 
         // When
-        let result = await RepositoryContainer.platformRepository().fetchData(cache: false)
+        let result = await Container.shared.platformRepository().fetchData(cache: false)
 
         // Then
         XCTAssertNotNil(result)
@@ -32,10 +31,10 @@ class PlatformRepositoryTests: XCTestCase {
     func testPlatform_FetchByValidId_ShouldReturnValidData() async {
         // Given
         let platformId = "1"
-        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+        Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
 
         // When
-        let result = await RepositoryContainer.platformRepository().fetchData(id: platformId)
+        let result = await Container.shared.platformRepository().fetchData(id: platformId)
 
         // Then
         XCTAssertNotNil(result)
@@ -44,10 +43,10 @@ class PlatformRepositoryTests: XCTestCase {
     func testPlatform_FetchByInvalidId_ShouldntReturnData() async {
         // Given
         let platformId = "3"
-        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+        Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
 
         // When
-        let result = await RepositoryContainer.platformRepository().fetchData(id: platformId)
+        let result = await Container.shared.platformRepository().fetchData(id: platformId)
 
         // Then
         XCTAssertNil(result)
@@ -55,10 +54,10 @@ class PlatformRepositoryTests: XCTestCase {
 
     func testPlatform_SaveNewData_ShouldSave() async {
         // Given
-        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+        Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
 
         let platformName = "PlayStation 4"
-        let repositoryContainer = RepositoryContainer.platformRepository()
+        let repositoryContainer = Container.shared.platformRepository()
 
         // When
         let result = await repositoryContainer.savePlatform(id: nil, platform: Platform(id: nil, name: platformName))
@@ -74,11 +73,11 @@ class PlatformRepositoryTests: XCTestCase {
 
     func testPlatform_SaveExistingData_ShouldSave() async {
         // Given
-        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+        Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
 
         let platformId = "1"
         let platformNewName = "Super Nintendo"
-        let repositoryContainer = RepositoryContainer.platformRepository()
+        let repositoryContainer = Container.shared.platformRepository()
         let existingPlatform = await repositoryContainer.fetchData(id: platformId)
 
         guard let existingPlatform = existingPlatform else {

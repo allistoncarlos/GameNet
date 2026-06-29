@@ -73,8 +73,8 @@ class GameEditViewModel: ObservableObject {
     // MARK: Private
 
     private var gameId: String?
-    @Injected(RepositoryContainer.gameRepository) private var repository
-    @Injected(RepositoryContainer.platformRepository) private var platformRepository
+    @Injected(\.gameRepository) private var repository
+    @Injected(\.platformRepository) private var platformRepository
     private var cancellable = Set<AnyCancellable>()
 
     private func handleViewModelState(_ state: GameEditState) {

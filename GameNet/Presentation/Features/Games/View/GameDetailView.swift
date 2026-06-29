@@ -6,6 +6,7 @@
 //
 
 import CachedAsyncImage
+import Factory
 import SwiftUI
 import TTProgressHUD
 import UniformTypeIdentifiers
@@ -457,8 +458,8 @@ struct GameDetailView: View {
 // MARK: - Previews
 
 #Preview("Dark Mode") {
-    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
-    let _ = RepositoryContainer.funRepository.register(factory: { FunRepository() })
+    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
+    let _ = Container.shared.funRepository.register(factory: { FunRepository() })
 
     GameDetailView(
         viewModel: GameDetailViewModel(gameId: "1"),
@@ -467,8 +468,8 @@ struct GameDetailView: View {
 }
 
 #Preview("Light Mode") {
-    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
-    let _ = RepositoryContainer.funRepository.register(factory: { FunRepository() })
+    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
+    let _ = Container.shared.funRepository.register(factory: { FunRepository() })
 
     GameDetailView(
         viewModel: GameDetailViewModel(gameId: "1"),

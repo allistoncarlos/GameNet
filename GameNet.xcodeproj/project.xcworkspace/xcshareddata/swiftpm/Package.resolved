@@ -1,5 +1,5 @@
 {
-  "originHash" : "c1c28a3b4b6ee2fb4217645ee196ccfacbc2302350ae3deb360ac4bab5381dfb",
+  "originHash" : "0025d867f492c55f9d17c0ace1e3528a5dfb8c06fa215173bca219528fbe9d69",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/hmlongco/Factory",
       "state" : {
-        "revision" : "8557426f3286e20b631ecdac8115242f888656e0",
-        "version" : "1.2.8"
+        "branch" : "main",
+        "revision" : "bcca76f9243ace59477c8d077d25a97795eab5c4"
       }
     },
     {
@@ -89,15 +89,6 @@
       "state" : {
         "revision" : "2d12673670417654f08f5f90fdd62926dc3a2648",
         "version" : "100.0.0"
-      }
-    },
-    {
-      "identity" : "keychainaccess",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kishikawakatsumi/KeychainAccess",
-      "state" : {
-        "branch" : "master",
-        "revision" : "6299daec1d74be12164fec090faf9ed14d0da9d6"
       }
     },
     {

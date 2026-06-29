@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 03/08/22.
 //
 
+import Factory
 import SwiftUI
 import TTProgressHUD
 
@@ -86,13 +87,13 @@ struct ListsView: View {
 // MARK: - Previews
 
 #Preview("Dark Mode") {
-    let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+    let _ = Container.shared.listRepository.register(factory: { MockListRepository() })
 
     ListsView(viewModel: ListsViewModel()).preferredColorScheme(.dark)
 }
 
 #Preview("Light Mode") {
-    let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+    let _ = Container.shared.listRepository.register(factory: { MockListRepository() })
 
     ListsView(viewModel: ListsViewModel()).preferredColorScheme(.light)
 }

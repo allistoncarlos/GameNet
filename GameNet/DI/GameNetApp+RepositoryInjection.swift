@@ -8,14 +8,13 @@
 import Factory
 import Foundation
 
-class RepositoryContainer: SharedContainer {
-    static let loginRepository = Factory<LoginRepositoryProtocol> { LoginRepository() }
-    static let dashboardRepository = Factory<DashboardRepositoryProtocol> { DashboardRepository() }
-    static let platformRepository = Factory<PlatformRepositoryProtocol> { PlatformRepository() }
-    static let gameRepository = Factory<GameRepositoryProtocol> { GameRepository() }
-    static let listRepository = Factory<ListRepositoryProtocol> { ListRepository() }
-    static let gameplaySessionRepository = Factory<GameplaySessionRepositoryProtocol> { GameplaySessionRepository() }
-    
-    static let serverDrivenRepository = Factory<ServerDrivenRepositoryProtocol> { ServerDrivenRepository() }
-    static let funRepository = Factory<FunRepositoryProtocol> { FunRepository() }
+extension Container {
+    var loginRepository: Factory<LoginRepositoryProtocol> { self { LoginRepository() } }
+    var dashboardRepository: Factory<DashboardRepositoryProtocol> { self { DashboardRepository() } }
+    var platformRepository: Factory<PlatformRepositoryProtocol> { self { PlatformRepository() } }
+    var gameRepository: Factory<GameRepositoryProtocol> { self { GameRepository() } }
+    var listRepository: Factory<ListRepositoryProtocol> { self { ListRepository() } }
+    var gameplaySessionRepository: Factory<GameplaySessionRepositoryProtocol> { self { GameplaySessionRepository() } }
+    var serverDrivenRepository: Factory<ServerDrivenRepositoryProtocol> { self { ServerDrivenRepository() } }
+    var funRepository: Factory<FunRepositoryProtocol> { self { FunRepository() } }
 }

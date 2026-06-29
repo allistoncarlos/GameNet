@@ -11,18 +11,17 @@ import XCTest
 
 class PlatformDataSourceTests: XCTestCase {
     override func setUp() async throws {
-        Container.Registrations.reset()
-        Container.Scope.reset()
+        Container.shared.reset()
 
         MockPlatformDataSource.reset()
     }
 
     func testPlatform_FetchData_ShouldReturnValidData() async {
         // Given
-        DataSourceContainer.platformDataSource.register(factory: { MockPlatformDataSource() })
+        Container.shared.platformDataSource.register(factory: { MockPlatformDataSource() })
 
         // When
-        let result = await DataSourceContainer.platformDataSource().fetchData(cache: false)
+        let result = await Container.shared.platformDataSource().fetchData(cache: false)
 
         // Then
         XCTAssertNotNil(result)
@@ -32,10 +31,10 @@ class PlatformDataSourceTests: XCTestCase {
     func testPlatform_FetchByValidId_ShouldReturnValidData() async {
         // Given
         let platformId = "1"
-        DataSourceContainer.platformDataSource.register(factory: { MockPlatformDataSource() })
+        Container.shared.platformDataSource.register(factory: { MockPlatformDataSource() })
 
         // When
-        let result = await DataSourceContainer.platformDataSource().fetchData(id: platformId)
+        let result = await Container.shared.platformDataSource().fetchData(id: platformId)
 
         // Then
         XCTAssertNotNil(result)
@@ -44,10 +43,10 @@ class PlatformDataSourceTests: XCTestCase {
     func testPlatform_FetchByInvalidId_ShouldntReturnData() async {
         // Given
         let platformId = "3"
-        DataSourceContainer.platformDataSource.register(factory: { MockPlatformDataSource() })
+        Container.shared.platformDataSource.register(factory: { MockPlatformDataSource() })
 
         // When
-        let result = await DataSourceContainer.platformDataSource().fetchData(id: platformId)
+        let result = await Container.shared.platformDataSource().fetchData(id: platformId)
 
         // Then
         XCTAssertNil(result)
@@ -55,10 +54,10 @@ class PlatformDataSourceTests: XCTestCase {
 
     func testPlatform_SaveNewData_ShouldSave() async {
         // Given
-        DataSourceContainer.platformDataSource.register(factory: { MockPlatformDataSource() })
+        Container.shared.platformDataSource.register(factory: { MockPlatformDataSource() })
 
         let platformName = "PlayStation 4"
-        let dataSourceContainer = DataSourceContainer.platformDataSource()
+        let dataSourceContainer = Container.shared.platformDataSource()
 
         // When
         let result = await dataSourceContainer.savePlatform(id: nil, platform: Platform(id: nil, name: platformName))
@@ -74,11 +73,11 @@ class PlatformDataSourceTests: XCTestCase {
 
     func testPlatform_SaveExistingData_ShouldSave() async {
         // Given
-        DataSourceContainer.platformDataSource.register(factory: { MockPlatformDataSource() })
+        Container.shared.platformDataSource.register(factory: { MockPlatformDataSource() })
 
         let platformId = "1"
         let platformNewName = "Super Nintendo"
-        let dataSourceContainer = DataSourceContainer.platformDataSource()
+        let dataSourceContainer = Container.shared.platformDataSource()
         let existingPlatform = await dataSourceContainer.fetchData(id: platformId)
 
         guard let existingPlatform = existingPlatform else {
@@ -94,7 +93,7 @@ class PlatformDataSourceTests: XCTestCase {
         XCTAssertNotNil(result)
 
         if let id = result?.id {
-            let fetchedPlatformResult = await DataSourceContainer.platformDataSource().fetchData(id: id)
+            let fetchedPlatformResult = await Container.shared.platformDataSource().fetchData(id: id)
             XCTAssertNotNil(fetchedPlatformResult)
             XCTAssertEqual(platformNewName, fetchedPlatformResult?.name)
         }

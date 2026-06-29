@@ -57,6 +57,6 @@ class ServerDrivenViewModel: ObservableObject {
         return nil
     }
     
-    @Injected(RepositoryContainer.serverDrivenRepository) private var repository
+    @Injected(\.serverDrivenRepository) private var repository
     private var cancellable = Set<AnyCancellable>()
 }

@@ -16,8 +16,7 @@ class LoginViewModelTests: XCTestCase {
     // MARK: Internal
 
     override func setUp() async throws {
-        Container.Registrations.reset()
-        Container.Scope.reset()
+        Container.shared.reset()
 
         cancellables = Set<AnyCancellable>()
     }
@@ -25,7 +24,7 @@ class LoginViewModelTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
-        KeychainDataSource.clear()
+        Container.shared.tokenDataSource().clear()
 
         cancellables = nil
     }
@@ -41,7 +40,7 @@ class LoginViewModelTests: XCTestCase {
         let expectedAccessToken = "accessToken123"
         let username = "teste"
         let password = "teste"
-        RepositoryContainer.loginRepository.register(factory: { MockLoginRepository() })
+        Container.shared.loginRepository.register(factory: { MockLoginRepository() })
 
         viewModel.$state
             .receive(on: RunLoop.main)
@@ -50,7 +49,7 @@ class LoginViewModelTests: XCTestCase {
                 if case .success = state {
                     matchAccessTokenExpectation.fulfill()
 
-                    let resultAccessToken = KeychainDataSource.accessToken.get()
+                    let resultAccessToken = Container.shared.tokenDataSource().accessToken
                     XCTAssertNotNil(resultAccessToken)
                     XCTAssertEqual(expectedAccessToken, resultAccessToken)
                 }
@@ -72,7 +71,7 @@ class LoginViewModelTests: XCTestCase {
         let username = "teste"
         let password = "teste"
         let expectedError: LoginError = .invalidUsernameOrPassword
-        RepositoryContainer.loginRepository.register(factory: { MockLoginRepository() })
+        Container.shared.loginRepository.register(factory: { MockLoginRepository() })
 
         viewModel.$state
             .receive(on: RunLoop.main)
@@ -82,7 +81,7 @@ class LoginViewModelTests: XCTestCase {
 
                     XCTAssertEqual(error, .invalidUsernameOrPassword)
                     
-                    let resultAccessToken = KeychainDataSource.accessToken.get()
+                    let resultAccessToken = Container.shared.tokenDataSource().accessToken
                     XCTAssertNil(resultAccessToken)
                     XCTAssertEqual(error, expectedError)
                 }

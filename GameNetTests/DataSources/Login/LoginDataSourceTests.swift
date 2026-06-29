@@ -11,18 +11,17 @@ import XCTest
 
 class LoginDataSourceTests: XCTestCase {
     override func setUp() async throws {
-        Container.Registrations.reset()
-        Container.Scope.reset()
+        Container.shared.reset()
     }
 
     func testLogin_ValidData_ShouldReturnAccessToken() async {
         // Given
         let expectedAccessToken = "123"
         let login = LoginRequest(username: "teste", password: "teste")
-        DataSourceContainer.loginDataSource.register(factory: { MockLoginDataSource() })
+        Container.shared.loginDataSource.register(factory: { MockLoginDataSource() })
 
         // When
-        let result = await DataSourceContainer.loginDataSource().login(loginRequest: login)
+        let result = await Container.shared.loginDataSource().login(loginRequest: login)
 
         // Then
         XCTAssertNotNil(result)
@@ -32,10 +31,10 @@ class LoginDataSourceTests: XCTestCase {
     func testLogin_InvalidData_ShouldReturnNil() async {
         // Given
         let login = LoginRequest(username: "teste1", password: "teste")
-        DataSourceContainer.loginDataSource.register(factory: { MockLoginDataSource() })
+        Container.shared.loginDataSource.register(factory: { MockLoginDataSource() })
 
         // When
-        let result = await DataSourceContainer.loginDataSource().login(loginRequest: login)
+        let result = await Container.shared.loginDataSource().login(loginRequest: login)
 
         // Then
         XCTAssertNil(result)

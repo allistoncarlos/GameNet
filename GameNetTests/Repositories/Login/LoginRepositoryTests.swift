@@ -11,18 +11,17 @@ import XCTest
 
 class LoginRepositoryTests: XCTestCase {
     override func setUp() async throws {
-        Container.Registrations.reset()
-        Container.Scope.reset()
+        Container.shared.reset()
     }
 
     func testLogin_ValidData_ShouldReturnAccessToken() async {
         // Given
         let expectedAccessToken = "123"
         let login = Login(username: "teste", password: "teste")
-        RepositoryContainer.loginRepository.register(factory: { MockLoginRepository() })
+        Container.shared.loginRepository.register(factory: { MockLoginRepository() })
 
         // When
-        let result = await RepositoryContainer.loginRepository().login(login: login)
+        let result = await Container.shared.loginRepository().login(login: login)
 
         // Then
         XCTAssertNotNil(result)
@@ -32,10 +31,10 @@ class LoginRepositoryTests: XCTestCase {
     func testLogin_InvalidData_ShouldReturnNil() async {
         // Given
         let login = Login(username: "teste1", password: "teste")
-        RepositoryContainer.loginRepository.register(factory: { MockLoginRepository() })
+        Container.shared.loginRepository.register(factory: { MockLoginRepository() })
 
         // When
-        let result = await RepositoryContainer.loginRepository().login(login: login)
+        let result = await Container.shared.loginRepository().login(login: login)
 
         // Then
         XCTAssertNil(result)

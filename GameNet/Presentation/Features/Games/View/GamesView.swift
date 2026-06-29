@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 03/08/22.
 //
 
+import Factory
 import SwiftUI
 import TTProgressHUD
 
@@ -140,7 +141,7 @@ struct GamesView: View {
 // MARK: - Previews
 
 #Preview("Dark Mode") {
-    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
     
     GamesView(
         viewModel: GamesViewModel(),
@@ -150,7 +151,7 @@ struct GamesView: View {
 }
 
 #Preview("Light Mode") {
-    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
     
     GamesView(
         viewModel: GamesViewModel(),

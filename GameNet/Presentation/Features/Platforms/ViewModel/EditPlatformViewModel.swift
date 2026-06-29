@@ -52,7 +52,7 @@ class EditPlatformViewModel: ObservableObject {
 
     // MARK: Private
 
-    @Injected(RepositoryContainer.platformRepository) private var repository
+    @Injected(\.platformRepository) private var repository
     private var cancellable = Set<AnyCancellable>()
 }
 

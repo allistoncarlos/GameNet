@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Factory
 import SwiftUI
 import TTProgressHUD
 import FirebaseCore
@@ -108,7 +109,7 @@ struct GameNetApp: App {
 
     @MainActor
     private func resultView() -> AnyView {
-        return KeychainDataSource.hasValidToken() ?
+        return Container.shared.tokenDataSource().hasValidToken() ?
             AnyView(LoginRouter.makeHomeView()) :
             AnyView(LoginRouter.makeLoginView())
     }

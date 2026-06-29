@@ -16,8 +16,7 @@ class EditListViewModelTests: XCTestCase {
     // MARK: Internal
 
     override func setUpWithError() throws {
-        Container.Registrations.reset()
-        Container.Scope.reset()
+        Container.shared.reset()
 
         cancellables = Set<AnyCancellable>()
     }
@@ -25,7 +24,7 @@ class EditListViewModelTests: XCTestCase {
     override func tearDownWithError() throws {
         super.tearDown()
 
-        KeychainDataSource.clear()
+        Container.shared.tokenDataSource().clear()
         cancellables.forEach { $0.cancel() }
     }
 
@@ -46,7 +45,7 @@ class EditListViewModelTests: XCTestCase {
             absoluteStringWord: "gamenet.azurewebsites.net"
         )
 
-        RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+        Container.shared.listRepository.register(factory: { MockListRepository() })
 
         viewModel.$state
             .receive(on: RunLoop.main)

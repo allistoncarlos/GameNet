@@ -57,7 +57,7 @@ class EditListViewModel: ObservableObject {
     func save() async {
         state = .loading
         
-        let userId = KeychainDataSource.id.get()
+        let userId = tokenDataSource.id
         let result = await repository.saveList(id: list.id, userId: userId, list: listGame)
         
         if let result {
@@ -106,8 +106,9 @@ class EditListViewModel: ObservableObject {
 
     // MARK: Private
 
-    @Injected(RepositoryContainer.listRepository) private var repository
-    @Injected(RepositoryContainer.gameRepository) private var gameRepository
+    @Injected(\.listRepository) private var repository
+    @Injected(\.gameRepository) private var gameRepository
+    @Injected(\.tokenDataSource) private var tokenDataSource
     private var cancellable = Set<AnyCancellable>()
 }
 

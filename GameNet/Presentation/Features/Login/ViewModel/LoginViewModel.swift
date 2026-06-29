@@ -44,7 +44,8 @@ class LoginViewModel: ObservableObject {
 
     // MARK: Private
 
-    @Injected(RepositoryContainer.loginRepository) private var repository
+    @Injected(\.loginRepository) private var repository
+    @Injected(\.tokenDataSource) private var tokenDataSource
     private var cancellable = Set<AnyCancellable>()
 
     private func saveToken(response: Login?) {
@@ -57,10 +58,7 @@ class LoginViewModel: ObservableObject {
 
             let formattedExpiresIn = dateFormatter.string(from: expiresIn)
 
-            KeychainDataSource.id.set(id)
-            KeychainDataSource.accessToken.set(accessToken)
-            KeychainDataSource.refreshToken.set(refreshToken)
-            KeychainDataSource.expiresIn.set(formattedExpiresIn)
+            tokenDataSource.save(login: session)
 
             WidgetSharedStore.syncFromKeychain()
 
@@ -80,7 +78,7 @@ class LoginViewModel: ObservableObject {
 #endif
             }
         } else {
-            KeychainDataSource.clear()
+            tokenDataSource.clear()
             WidgetSharedStore.clearAuth()
             WidgetSharedStore.reloadWidget()
         }

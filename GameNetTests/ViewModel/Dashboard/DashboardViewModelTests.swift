@@ -16,8 +16,7 @@ class DashboardViewModelTests: XCTestCase {
     // MARK: Internal
 
     override func setUp() async throws {
-        Container.Registrations.reset()
-        Container.Scope.reset()
+        Container.shared.reset()
 
         cancellables = Set<AnyCancellable>()
     }
@@ -25,7 +24,7 @@ class DashboardViewModelTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
 
-        KeychainDataSource.clear()
+        Container.shared.tokenDataSource().clear()
 
         cancellables = nil
     }
@@ -37,7 +36,7 @@ class DashboardViewModelTests: XCTestCase {
 
         stubRequests.stubJSONResponse(jsonObject: fakeJSONResponse, header: nil, statusCode: 200, absoluteStringWord: "gamenet.azurewebsites.net")
 
-        RepositoryContainer.dashboardRepository.register(factory: { MockDashboardRepository() })
+        Container.shared.dashboardRepository.register(factory: { MockDashboardRepository() })
 
         viewModel.$state
             .receive(on: RunLoop.main)

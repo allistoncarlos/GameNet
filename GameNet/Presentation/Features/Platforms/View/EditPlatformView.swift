@@ -6,6 +6,7 @@
 //
 
 #if os(iOS)
+import Factory
 import SwiftUI
 
 // MARK: - EditPlatformView
@@ -50,7 +51,7 @@ struct EditPlatformView: View {
 // MARK: - Previews
 
 #Preview("Dark Mode") {
-    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+    let _ = Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
     let platform = Platform(id: "1", name: "Nintendo Switch")
 
     EditPlatformView(
@@ -60,7 +61,7 @@ struct EditPlatformView: View {
 }
 
 #Preview("Light Mode") {
-    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+    let _ = Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
     let platform = Platform(id: "1", name: "Nintendo Switch")
     
     EditPlatformView(

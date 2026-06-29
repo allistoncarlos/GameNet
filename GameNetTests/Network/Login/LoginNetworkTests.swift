@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 02/08/22.
 //
 
+import Factory
 @testable import GameNet
 import XCTest
 
@@ -18,7 +19,7 @@ final class LoginNetworkTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        KeychainDataSource.clear()
+        Container.shared.tokenDataSource().clear()
         URLCache.shared.removeAllCachedResponses()
     }
 
@@ -36,7 +37,7 @@ final class LoginNetworkTests: XCTestCase {
         // When
         let result = await NetworkManager.shared
             .performRequest(
-                responseType: LoginResponse.self,
+                responseType: LoginResponseDTO.self,
                 endpoint: .login(data: LoginRequest(username: username, password: password))
             )
 
@@ -60,7 +61,7 @@ final class LoginNetworkTests: XCTestCase {
         // When
         let result = await NetworkManager.shared
             .performRequest(
-                responseType: LoginResponse.self,
+                responseType: LoginResponseDTO.self,
                 endpoint: .login(data: LoginRequest(username: username, password: password))
             )
 

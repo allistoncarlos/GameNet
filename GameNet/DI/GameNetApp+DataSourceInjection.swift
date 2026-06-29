@@ -8,14 +8,14 @@
 import Factory
 import Foundation
 
-class DataSourceContainer: SharedContainer {
-    static let loginDataSource = Factory<LoginDataSourceProtocol> { LoginDataSource() }
-    static let dashboardDataSource = Factory<DashboardDataSourceProtocol> { DashboardDataSource() }
-    static let platformDataSource = Factory<PlatformDataSourceProtocol> { PlatformDataSource() }
-    static let gameDataSource = Factory<GameDataSourceProtocol> { GameDataSource() }
-    static let listDataSource = Factory<ListDataSourceProtocol> { ListDataSource() }
-    static let gameplaySessionDataSource = Factory<GameplaySessionDataSourceProtocol> { GameplaySessionDataSource() }
-    
-    static let serverDrivenDataSource = Factory<ServerDrivenDataSourceProtocol> { ServerDrivenDataSource() }
-    static let funDataSource = Factory<FunDataSourceProtocol> { FunDataSource() }
+extension Container {
+    var loginDataSource: Factory<LoginDataSourceProtocol> { self { LoginDataSource() } }
+    var dashboardDataSource: Factory<DashboardDataSourceProtocol> { self { DashboardDataSource() } }
+    var platformDataSource: Factory<PlatformDataSourceProtocol> { self { PlatformDataSource() } }
+    var gameDataSource: Factory<GameDataSourceProtocol> { self { GameDataSource() } }
+    var listDataSource: Factory<ListDataSourceProtocol> { self { ListDataSource() } }
+    var gameplaySessionDataSource: Factory<GameplaySessionDataSourceProtocol> { self { GameplaySessionDataSource() } }
+    var serverDrivenDataSource: Factory<ServerDrivenDataSourceProtocol> { self { ServerDrivenDataSource() } }
+    var funDataSource: Factory<FunDataSourceProtocol> { self { FunDataSource() } }
+    var tokenDataSource: Factory<TokenDataSourceProtocol> { self { TokenDataSource() } }
 }

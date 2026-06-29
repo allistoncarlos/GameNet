@@ -121,8 +121,8 @@ class DashboardViewModel: ObservableObject {
 
     // MARK: Private
 
-    @Injected(RepositoryContainer.dashboardRepository) private var repository
-    @Injected(RepositoryContainer.gameplaySessionRepository) private var gameplaySessionRepository
+    @Injected(\.dashboardRepository) private var repository
+    @Injected(\.gameplaySessionRepository) private var gameplaySessionRepository
     private var cancellable = Set<AnyCancellable>()
 }
 

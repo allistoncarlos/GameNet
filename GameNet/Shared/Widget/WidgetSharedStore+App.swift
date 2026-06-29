@@ -6,6 +6,7 @@
 //  Este arquivo pertence apenas ao target do app (usa GameNet.Network/Keychain).
 //
 
+import Factory
 import Foundation
 
 extension WidgetSharedStore {
@@ -35,15 +36,16 @@ extension WidgetSharedStore {
             saveAPIBaseURL(baseURL)
         }
 
-        guard KeychainDataSource.hasValidToken(),
-              let accessToken = KeychainDataSource.accessToken.get(),
-              let refreshToken = KeychainDataSource.refreshToken.get() else {
+        let tokenDataSource = Container.shared.tokenDataSource()
+
+        guard tokenDataSource.hasValidToken(),
+              let accessToken = tokenDataSource.accessToken,
+              let refreshToken = tokenDataSource.refreshToken else {
             clearAuth()
             return
         }
 
-        let expiresIn = KeychainDataSource.expiresIn.get()
-            .flatMap { ISO8601DateFormatter().date(from: $0) }
+        let expiresIn = tokenDataSource.expiresIn
 
         saveAuth(
             accessToken: accessToken,

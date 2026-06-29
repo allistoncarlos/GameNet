@@ -121,7 +121,7 @@ class GameCoverViewModel: ObservableObject {
     }
 
     // MARK: Private
-    @Injected(RepositoryContainer.gameplaySessionRepository) private var repository
+    @Injected(\.gameplaySessionRepository) private var repository
     private var cancellable = Set<AnyCancellable>()
     
     private func updateStarted() {

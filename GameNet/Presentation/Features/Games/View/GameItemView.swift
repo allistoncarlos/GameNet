@@ -6,6 +6,7 @@
 //
 
 import CachedAsyncImage
+import Factory
 import SwiftUI
 
 // MARK: - GameItemView
@@ -36,7 +37,7 @@ struct GameItemView: View {
 // MARK: - Previews
 
 #Preview("Dark Mode") {
-    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
     
     if let game = MockGameRepository().fetchData(id: "1") {
         GameItemView(name: game.name, coverURL: game.cover).preferredColorScheme(.dark)
@@ -44,7 +45,7 @@ struct GameItemView: View {
 }
 
 #Preview("Light Mode") {
-    let _ = RepositoryContainer.gameRepository.register(factory: { MockGameRepository() })
+    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
     
     if let game = MockGameRepository().fetchData(id: "1") {
         GameItemView(name: game.name, coverURL: game.cover).preferredColorScheme(.light)

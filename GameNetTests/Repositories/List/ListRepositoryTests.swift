@@ -11,18 +11,17 @@ import XCTest
 
 class ListRepositoryTests: XCTestCase {
     override func setUp() async throws {
-        Container.Registrations.reset()
-        Container.Scope.reset()
+        Container.shared.reset()
 
         MockListRepository.reset()
     }
 
     func testList_ValidData_ShouldFetchValidData() async {
         // Given
-        RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+        Container.shared.listRepository.register(factory: { MockListRepository() })
 
         // When
-        let result = await RepositoryContainer.listRepository().fetchData(cache: false)
+        let result = await Container.shared.listRepository().fetchData(cache: false)
 
         // Then
         XCTAssertNotNil(result)
@@ -32,10 +31,10 @@ class ListRepositoryTests: XCTestCase {
     func testList_FetchByValidId_ShouldReturnValidData() async {
         // Given
         let listId = "1"
-        RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+        Container.shared.listRepository.register(factory: { MockListRepository() })
 
         // When
-        let result = await RepositoryContainer.listRepository().fetchData(id: listId)
+        let result = await Container.shared.listRepository().fetchData(id: listId)
 
         // Then
         XCTAssertNotNil(result)
@@ -44,10 +43,10 @@ class ListRepositoryTests: XCTestCase {
     func testList_FetchByInvalidId_ShouldntReturnData() async {
         // Given
         let listId = "3"
-        RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+        Container.shared.listRepository.register(factory: { MockListRepository() })
 
         // When
-        let result = await RepositoryContainer.listRepository().fetchData(id: listId)
+        let result = await Container.shared.listRepository().fetchData(id: listId)
 
         // Then
         XCTAssertNil(result)
@@ -55,11 +54,11 @@ class ListRepositoryTests: XCTestCase {
 
     func testList_SaveNewDataWithoutGames_ShouldSave() async {
         // Given
-        RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+        Container.shared.listRepository.register(factory: { MockListRepository() })
 
         let userId = "123"
         let listName = "Jogos à Comprar"
-        let repositoryContainer = RepositoryContainer.listRepository()
+        let repositoryContainer = Container.shared.listRepository()
 
         // When
         let result = await repositoryContainer.saveList(
@@ -83,12 +82,12 @@ class ListRepositoryTests: XCTestCase {
 
     func testList_SaveExistingData_ShouldSave() async {
         // Given
-        RepositoryContainer.listRepository.register(factory: { MockListRepository() })
+        Container.shared.listRepository.register(factory: { MockListRepository() })
 
         let userId = "123"
         let listId = "1"
         let listNewName = "Próximos Jogos"
-        let repositoryContainer = RepositoryContainer.listRepository()
+        let repositoryContainer = Container.shared.listRepository()
         let existingList = await repositoryContainer.fetchData(id: listId)
 
         guard let existingList = existingList else {

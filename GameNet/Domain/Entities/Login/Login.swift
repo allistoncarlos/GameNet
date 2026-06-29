@@ -62,7 +62,7 @@ struct Login: Equatable {
     }
 }
 
-extension LoginResponse {
+extension LoginResponseDTO {
     func toLogin() -> Login {
         return Login(
             id: id,

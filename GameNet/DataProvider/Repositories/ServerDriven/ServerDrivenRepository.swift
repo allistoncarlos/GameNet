@@ -1,0 +1,31 @@
+//
+//  ServerDrivenRepositoryProtocol.swift
+//  GameNet
+//
+//  Created by Alliston Aleixo on 23/11/24.
+//
+
+
+import Factory
+import Foundation
+
+// MARK: - ServerDrivenRepositoryProtocol
+
+protocol ServerDrivenRepositoryProtocol {
+    func fetch(slug: String) async -> ServerDriven?
+}
+
+// MARK: - GameplaySessionRepository
+
+struct ServerDrivenRepository: ServerDrivenRepositoryProtocol {
+
+    // MARK: Internal
+
+    func fetch(slug: String) async -> ServerDriven? {
+        return await dataSource.fetch(slug: slug)
+    }
+
+    // MARK: Private
+
+    @Injected(\.serverDrivenDataSource) private var dataSource
+}

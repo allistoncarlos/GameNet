@@ -1,0 +1,29 @@
+//
+//  DashboardRepository.swift
+//  GameNet
+//
+//  Created by Alliston Aleixo on 22/08/22.
+//
+
+import Factory
+import Foundation
+
+// MARK: - DashboardRepositoryProtocol
+
+protocol DashboardRepositoryProtocol {
+    func fetchData() async -> Dashboard?
+}
+
+// MARK: - DashboardRepository
+
+struct DashboardRepository: DashboardRepositoryProtocol {
+    // MARK: Internal
+
+    func fetchData() async -> Dashboard? {
+        return await dataSource.fetchData()
+    }
+
+    // MARK: Private
+
+    @Injected(\.dashboardDataSource) private var dataSource
+}

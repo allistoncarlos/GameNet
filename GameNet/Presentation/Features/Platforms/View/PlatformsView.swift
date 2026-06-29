@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 03/08/22.
 //
 
+import Factory
 import SwiftUI
 import TTProgressHUD
 
@@ -82,13 +83,13 @@ struct PlatformsView: View {
 // MARK: - Previews
 
 #Preview("Dark Mode") {
-    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+    let _ = Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
 
     PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme(.dark)
 }
 
 #Preview("Light Mode") {
-    let _ = RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+    let _ = Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
 
     PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme(.light)
 }

@@ -16,8 +16,7 @@ class EditPlatformViewModelTests: XCTestCase {
     // MARK: Internal
 
     override func setUpWithError() throws {
-        Container.Registrations.reset()
-        Container.Scope.reset()
+        Container.shared.reset()
 
         cancellables = Set<AnyCancellable>()
     }
@@ -25,7 +24,7 @@ class EditPlatformViewModelTests: XCTestCase {
     override func tearDownWithError() throws {
         super.tearDown()
 
-        KeychainDataSource.clear()
+        Container.shared.tokenDataSource().clear()
         cancellables.forEach { $0.cancel() }
     }
 
@@ -46,7 +45,7 @@ class EditPlatformViewModelTests: XCTestCase {
             absoluteStringWord: "gamenet.azurewebsites.net"
         )
 
-        RepositoryContainer.platformRepository.register(factory: { MockPlatformRepository() })
+        Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
 
         viewModel.$state
             .receive(on: RunLoop.main)

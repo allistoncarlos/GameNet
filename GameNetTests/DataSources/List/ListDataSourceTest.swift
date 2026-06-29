@@ -11,18 +11,17 @@ import XCTest
 
 class ListDataSourceTests: XCTestCase {
     override func setUp() async throws {
-        Container.Registrations.reset()
-        Container.Scope.reset()
+        Container.shared.reset()
 
         MockListDataSource.reset()
     }
 
     func testList_FetchData_ShouldReturnValidData() async {
         // Given
-        DataSourceContainer.listDataSource.register(factory: { MockListDataSource() })
+        Container.shared.listDataSource.register(factory: { MockListDataSource() })
 
         // When
-        let result = await DataSourceContainer.listDataSource().fetchData(cache: false)
+        let result = await Container.shared.listDataSource().fetchData(cache: false)
 
         // Then
         XCTAssertNotNil(result)
@@ -32,10 +31,10 @@ class ListDataSourceTests: XCTestCase {
     func testList_FetchByValidId_ShouldReturnValidData() async {
         // Given
         let listId = "1"
-        DataSourceContainer.listDataSource.register(factory: { MockListDataSource() })
+        Container.shared.listDataSource.register(factory: { MockListDataSource() })
 
         // When
-        let result = await DataSourceContainer.listDataSource().fetchData(id: listId)
+        let result = await Container.shared.listDataSource().fetchData(id: listId)
 
         // Then
         XCTAssertNotNil(result)
@@ -44,10 +43,10 @@ class ListDataSourceTests: XCTestCase {
     func testList_FetchByInvalidId_ShouldntReturnData() async {
         // Given
         let listId = "3"
-        DataSourceContainer.listDataSource.register(factory: { MockListDataSource() })
+        Container.shared.listDataSource.register(factory: { MockListDataSource() })
 
         // When
-        let result = await DataSourceContainer.listDataSource().fetchData(id: listId)
+        let result = await Container.shared.listDataSource().fetchData(id: listId)
 
         // Then
         XCTAssertNil(result)
@@ -55,11 +54,11 @@ class ListDataSourceTests: XCTestCase {
 
     func testList_SaveNewDataWithoutGames_ShouldSave() async {
         // Given
-        DataSourceContainer.listDataSource.register(factory: { MockListDataSource() })
+        Container.shared.listDataSource.register(factory: { MockListDataSource() })
 
         let userId = "123"
         let listName = "Jogos à Comprar"
-        let dataSourceContainer = DataSourceContainer.listDataSource()
+        let dataSourceContainer = Container.shared.listDataSource()
 
         // When
         let result = await dataSourceContainer.saveList(
@@ -78,12 +77,12 @@ class ListDataSourceTests: XCTestCase {
 
     func testList_SaveExistingData_ShouldSave() async {
         // Given
-        DataSourceContainer.listDataSource.register(factory: { MockListDataSource() })
+        Container.shared.listDataSource.register(factory: { MockListDataSource() })
 
         let listId = "1"
         let userId = "123"
         let listNewName = "Próximos Jogos"
-        let dataSourceContainer = DataSourceContainer.listDataSource()
+        let dataSourceContainer = Container.shared.listDataSource()
         let existingList = await dataSourceContainer.fetchData(id: listId)
 
         guard let existingList = existingList else {
@@ -103,7 +102,7 @@ class ListDataSourceTests: XCTestCase {
         XCTAssertNotNil(result)
 
         if let id = result?.id {
-            let fetchedListResult = await DataSourceContainer.listDataSource().fetchData(id: id)
+            let fetchedListResult = await Container.shared.listDataSource().fetchData(id: id)
             XCTAssertNotNil(fetchedListResult)
             XCTAssertEqual(listNewName, fetchedListResult?.name)
         }

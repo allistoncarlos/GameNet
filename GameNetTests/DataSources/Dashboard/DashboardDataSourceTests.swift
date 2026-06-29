@@ -11,16 +11,15 @@ import XCTest
 
 class DashboardDataSourceTests: XCTestCase {
     override func setUp() async throws {
-        Container.Registrations.reset()
-        Container.Scope.reset()
+        Container.shared.reset()
     }
 
     func testDashboard_FetchData_ShouldReturnValidData() async {
         // Given
-        DataSourceContainer.dashboardDataSource.register(factory: { MockDashboardDataSource() })
+        Container.shared.dashboardDataSource.register(factory: { MockDashboardDataSource() })
 
         // When
-        let result = await DataSourceContainer.dashboardDataSource().fetchData()
+        let result = await Container.shared.dashboardDataSource().fetchData()
 
         // Then
         XCTAssertNotNil(result)

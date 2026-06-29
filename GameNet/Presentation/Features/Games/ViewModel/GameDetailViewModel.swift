@@ -154,9 +154,9 @@ class GameDetailViewModel: ObservableObject {
     // MARK: Private
 
     private var gameId: String
-    @Injected(RepositoryContainer.gameRepository) private var repository
-    @Injected(RepositoryContainer.gameplaySessionRepository) private var gameplaySessionRepository
-    @Injected(RepositoryContainer.funRepository) private var funRepository
+    @Injected(\.gameRepository) private var repository
+    @Injected(\.gameplaySessionRepository) private var gameplaySessionRepository
+    @Injected(\.funRepository) private var funRepository
     private var cancellable = Set<AnyCancellable>()
     
     private func updateStarted() {

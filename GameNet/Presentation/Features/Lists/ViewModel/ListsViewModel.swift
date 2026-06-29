@@ -49,7 +49,7 @@ class ListsViewModel: ObservableObject {
 
     // MARK: Private
 
-    @Injected(RepositoryContainer.listRepository) private var repository
+    @Injected(\.listRepository) private var repository
     private var cancellable = Set<AnyCancellable>()
 }
 
