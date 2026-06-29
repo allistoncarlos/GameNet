@@ -454,48 +454,12 @@ extension DashboardView {
 
 extension DashboardView {
     var boughtByYearCard: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.tertiaryCardBackground)
-
-            VStack(alignment: .leading, spacing: 15) {
-                VStack {
-                    Text("Comprados por Ano")
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                        .font(.cardTitle)
-                }
-
-                VStack(alignment: .leading) {
-                    VStack(alignment: .leading) {
-                        if let boughtByYear = viewModel.dashboard?.boughtByYear {
-                            ForEach(boughtByYear, id: \.year) { boughtGame in
-                                SwiftUI.NavigationLink(value: boughtGame) {
-                                    HStack(spacing: 20) {
-                                        Text(
-                                            boughtGame.quantity
-                                                .toLeadingZerosString(decimalPlaces: 2)
-                                        )
-                                        .font(.dashboardGameTitle)
-
-                                        Text(String(boughtGame.year))
-                                            .font(.dashboardGameTitle)
-
-                                        Spacer()
-                                        
-                                        if let formattedTotalPrice = boughtGame.total.toCurrencyString() {
-                                            Text(String("\(formattedTotalPrice)"))
-                                                .font(.dashboardGameTitle)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+        BoughtByYearView(
+            boughtByYear: viewModel.dashboard?.boughtByYear ?? [],
+            onYearTapped: { boughtGame in
+                presentedViews.append(boughtGame)
             }
-            .padding()
-        }
-        .padding()
+        )
     }
 }
 
