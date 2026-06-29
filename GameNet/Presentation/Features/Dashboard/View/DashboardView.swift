@@ -536,36 +536,12 @@ extension DashboardView {
 
 extension DashboardView {
     var gameplaySessions: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.secondaryCardBackground)
-
-            VStack(alignment: .leading, spacing: 15) {
-                VStack {
-                    Text("Horas Jogadas por Ano")
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                        .font(.cardTitle)
-                }
-
-                VStack(alignment: .leading, spacing: 5) {
-                    if let gameplaySessions = viewModel.gameplaySessions {
-                        ForEach(gameplaySessions.sorted(by: { $0.key >= $1.key }), id: \.key) { key, gameplaySession in
-                            SwiftUI.NavigationLink(value: GameplaySessionNavigation(key: key, value: gameplaySession)) {
-                                HStack(spacing: 20) {
-                                    Text(String(key))
-                                        .font(.dashboardGameTitle)
-                                    Text(gameplaySession.totalGameplayTime)
-                                        .font(.dashboardGameTitle)
-                                    Spacer()
-                                }
-                            }
-                        }
-                    }
-                }
+        PlayedHoursByYearView(
+            gameplaySessions: viewModel.gameplaySessions ?? [:],
+            onYearTapped: { navigation in
+                presentedViews.append(navigation)
             }
-            .padding()
-        }
-        .padding()
+        )
     }
 }
 
