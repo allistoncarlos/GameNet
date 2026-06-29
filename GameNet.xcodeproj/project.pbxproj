@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -21,6 +21,15 @@
 		A581484A296DF8AD00F52ED7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5814849296DF8AD00F52ED7 /* HomeView.swift */; };
 		A581484D296DF8CB00F52ED7 /* NotLoggedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */; };
 		A59C4499296A10C90097E0F4 /* GameNet.Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A550C6E02968ABF60043FE74 /* GameNet.Watch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A5DD63DD2FF305A500AEFDCB /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = A51AA6A32899539A0081AE4B /* Factory */; };
+		A5DD63DE2FF305A500AEFDCB /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = A536616A2899820700D52088 /* OHHTTPStubs */; };
+		A5DD63DF2FF305A500AEFDCB /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A536616C2899820700D52088 /* OHHTTPStubsSwift */; };
+		A5DD63E02FF305A500AEFDCB /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = A5F18C5429D2554200E712F5 /* CachedAsyncImage */; };
+		A5DD63E12FF305A500AEFDCB /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44CF2CE4DAED00C0EC3B /* FirebaseAnalytics */; };
+		A5DD63E22FF305A500AEFDCB /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44D12CE4DAED00C0EC3B /* FirebaseCore */; };
+		A5DD63E32FF305A500AEFDCB /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44D32CE4DAED00C0EC3B /* FirebaseRemoteConfig */; };
+		A5DD63E42FF305A500AEFDCB /* StepperView in Frameworks */ = {isa = PBXBuildFile; productRef = A5AE543D2CE67BE8007EF068 /* StepperView */; };
+		A5DD63E52FF305A500AEFDCB /* TTProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = A5675A392E80851400AF066A /* TTProgressHUD */; };
 		A5F0B4112F006A1200420411 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B2012F006A1200420201 /* WatchConnectivityManager.swift */; };
 		A5F0B4122F006A1200420412 /* WatchPlayingGamesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B2022F006A1200420202 /* WatchPlayingGamesService.swift */; };
 		A5F0B4132F006A1200420413 /* WatchConnectivityMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B1012F006A1200420101 /* WatchConnectivityMessages.swift */; };
@@ -102,7 +111,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		31227174FE3223A2ECA3C812 /* Exceptions for "GameNet" folder in "GameNetWidget" target */ = {
+		31227174FE3223A2ECA3C812 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Presentation/Extensions/Date+Extensions.swift",
@@ -110,11 +119,10 @@
 			);
 			target = 43596BD1BDAE0BA6BAFAD581 /* GameNetWidget */;
 		};
-		F674558428B8BEBC3CB73A6B /* Exceptions for "GameNet" folder in "GameNet" target */ = {
+		F674558428B8BEBC3CB73A6B /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				GameNet.entitlements,
 				Resources/Config.xcconfig,
 			);
 			target = A57185C0286793D600655B31 /* GameNet */;
@@ -122,22 +130,8 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		1F5E6D9065CB58458778EAF6 /* GameNet */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				F674558428B8BEBC3CB73A6B /* Exceptions for "GameNet" folder in "GameNet" target */,
-				31227174FE3223A2ECA3C812 /* Exceptions for "GameNet" folder in "GameNetWidget" target */,
-			);
-			path = GameNet;
-			sourceTree = "<group>";
-		};
-		C1498B83FD640C61B7A4A53D /* GameNetTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			path = GameNetTests;
-			sourceTree = "<group>";
-		};
+		1F5E6D9065CB58458778EAF6 /* GameNet */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (F674558428B8BEBC3CB73A6B /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 31227174FE3223A2ECA3C812 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = GameNet; sourceTree = "<group>"; };
+		C1498B83FD640C61B7A4A53D /* GameNetTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GameNetTests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +153,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A5DD63E52FF305A500AEFDCB /* TTProgressHUD in Frameworks */,
+				A5DD63E42FF305A500AEFDCB /* StepperView in Frameworks */,
+				A5DD63E32FF305A500AEFDCB /* FirebaseRemoteConfig in Frameworks */,
+				A5DD63E22FF305A500AEFDCB /* FirebaseCore in Frameworks */,
+				A5DD63E12FF305A500AEFDCB /* FirebaseAnalytics in Frameworks */,
+				A5DD63E02FF305A500AEFDCB /* CachedAsyncImage in Frameworks */,
+				A5DD63DF2FF305A500AEFDCB /* OHHTTPStubsSwift in Frameworks */,
+				A5DD63DE2FF305A500AEFDCB /* OHHTTPStubs in Frameworks */,
+				A5DD63DD2FF305A500AEFDCB /* Factory in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -636,7 +639,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.3;
+				MARKETING_VERSION = 1.7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp.Watch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -669,7 +672,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.3;
+				MARKETING_VERSION = 1.7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp.Watch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -868,7 +871,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.2;
+				MARKETING_VERSION = 1.7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -906,7 +909,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.2;
+				MARKETING_VERSION = 1.7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
