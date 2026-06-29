@@ -148,7 +148,7 @@ struct AnnualGameplayProgressChartView: View {
 
                     Spacer(minLength: 4)
 
-                    Text("\(formattedMinutes(entry.totalMinutes)) min")
+                    Text(formattedDuration(entry.totalMinutes))
                         .font(.caption)
                         .fontWeight(.semibold)
                 }
@@ -260,6 +260,18 @@ struct AnnualGameplayProgressChartView: View {
         }
 
         return String(format: "%.1f", value)
+    }
+
+    private func formattedDuration(_ totalMinutes: Double) -> String {
+        let minutes = Int(totalMinutes.rounded())
+        let hours = minutes / 60
+        let remainingMinutes = minutes % 60
+
+        if hours > 0 {
+            return "\(hours)h \(remainingMinutes)m"
+        }
+
+        return "\(remainingMinutes)m"
     }
 }
 
