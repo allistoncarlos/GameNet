@@ -53,10 +53,15 @@ struct AnnualGameplayProgressChartView: View {
                             range: yearColors.map { $0.1 }
                         )
                         .chartXAxis {
-                            AxisMarks(values: .stride(by: 5)) { _ in
+                            AxisMarks(values: .stride(by: 5)) { value in
                                 AxisGridLine()
                                 AxisTick()
-                                AxisValueLabel()
+                                AxisValueLabel {
+                                    if let day = value.as(Int.self),
+                                       let label = dayAxisLabel(forDay: day) {
+                                        Text(label)
+                                    }
+                                }
                             }
                         }
                         .chartYAxis {
@@ -168,6 +173,23 @@ struct AnnualGameplayProgressChartView: View {
         series
             .sorted(by: { $0.year < $1.year })
             .map { (year: $0.year, color: color(for: $0.year), totalMinutes: $0.totalMinutes) }
+    }
+
+    private func dayAxisLabel(forDay day: Int) -> String? {
+        if let referenceDate = gameplayPoints.first(where: { $0.day == day })?.referenceDate {
+            return referenceDate.toFormattedString(dateFormat: "dd/MM")
+        }
+
+        guard let anchor = gameplayPoints.first,
+              let date = Calendar.current.date(
+                  byAdding: .day,
+                  value: day - anchor.day,
+                  to: anchor.referenceDate
+              ) else {
+            return nil
+        }
+
+        return date.toFormattedString(dateFormat: "dd/MM")
     }
 
     private func selectPoint(at location: CGPoint, geometryProxy: GeometryProxy) {
