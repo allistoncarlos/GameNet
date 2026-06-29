@@ -38,12 +38,10 @@
 		69E07FF6E425DD12ACE35ED4 /* ListGameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4FDFBC032DDE126D146076 /* ListGameRequest.swift */; };
 		71A075BC90D681FF6A6A7EA9 /* Dashboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB95D151A3D107B3DD03C1A1 /* Dashboard.swift */; };
 		7BDDA28F0EC1921BCB718974 /* GameplaySession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05C54D364EF28CE9F8DD8BA4 /* GameplaySession.swift */; };
-		7DEA1C6EB7D91A04790D87B7 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5E9D8A8FA1FBA53C87A852DF /* Alamofire */; };
 		843C80D08FDE77EB6FD2E669 /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004B35AC34ACC412453504F8 /* ListItem.swift */; };
 		8901D3783F8E7784750E29F7 /* ListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C044E3AE1CE5C422446A24E5 /* ListResponse.swift */; };
 		92DB0969F9BD00D0D9F2F9E7 /* PlatformGames.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD6281C1B64E38E382C2C18A /* PlatformGames.swift */; };
 		931555F54E5DD2B1471E00E3 /* FinishedGameByYearTotal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A783DAA303136A706F41337 /* FinishedGameByYearTotal.swift */; };
-		98A9400CAA933C50D6057F06 /* NetworkReachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521D870F39F21D563FD15D2F /* NetworkReachability.swift */; };
 		A1D622EF90DCE4A8E3942AF1 /* ListGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E6568EF8A83B4934462091 /* ListGame.swift */; };
 		A48AA8B48A5718064A451437 /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB092537C8700B9504ADFF79 /* List.swift */; };
 		A5019DE22E58E55400FC284D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5019DE12E58E55400FC284D /* Constants.swift */; };
@@ -227,9 +225,7 @@
 		B6CBFDB9B81E8C81964273D0 /* PlayGameProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F16DB41D362ECFE5FF3DE0 /* PlayGameProvider.swift */; };
 		B6E0C995358E4E3ADB2AA91C /* ListRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BB6AE1A5B7347230734507 /* ListRequest.swift */; };
 		BB5D657DA055AAEB2CA2CD27 /* Platform.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AAB4FA666301F1A0B87E66 /* Platform.swift */; };
-		BE69646A769C8500F78B0BA2 /* DefaultRequestInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00CAE2B112BBE53638DBFB7 /* DefaultRequestInterceptor.swift */; };
 		C2E6CC303C6F288B33EF0471 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56A95F528B4010600CAAFFF /* Date+Extensions.swift */; };
-		C44E7AD82D480504807F750B /* Pulse in Frameworks */ = {isa = PBXBuildFile; productRef = 3EDAD8B41DE33ED69FA1FF84 /* Pulse */; };
 		C5F8142A5F468B0E500E1E3C /* UserGameEditRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F7A679EF131E1AE84280C5 /* UserGameEditRequest.swift */; };
 		C8700A08E9C7F1B0A4FA6796 /* PlayingGameResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE016C992B5C039E8F98AA6 /* PlayingGameResponse.swift */; };
 		D243A0C588BD5B4ED9DB0D51 /* PlatformRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8250B88E6B86CC82FE77C71 /* PlatformRequest.swift */; };
@@ -242,11 +238,9 @@
 		E532206B1B56F7EC8D623B8C /* LatestGameplaySessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03C08803B2ABBACAD0CEBA8 /* LatestGameplaySessionResponse.swift */; };
 		E84081207D47D8966B63D610 /* DashboardResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C23E5373E130C785ABC8B49 /* DashboardResponse.swift */; };
 		E858B951BC0C34BA3B741287 /* RefreshTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F84DE85725C840DFCB058D /* RefreshTokenResponse.swift */; };
-		E8BC231B5D8DAEFE9DD4A77E /* NetworkLoggerEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69E084B124FEBD4F5CD356A /* NetworkLoggerEventMonitor.swift */; };
 		EA654849B05465BC6F3FECCA /* APIResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F4CB351FEF5AF95FED1247B /* APIResult.swift */; };
 		F5A932C34A5FCA0F124A99ED /* GameEditReponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835C20444DAD9FE9074B1D1B /* GameEditReponse.swift */; };
 		FDD9AF2030F21186E3E2EEDB /* GameNetWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C954B4D3AC3929BFAB4FA22C /* GameNetWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		FE5E1805F2F12F15BB59AF0D /* DefaultEventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8983E7936BCF107ED149ED /* DefaultEventMonitor.swift */; };
 		FE68E7A2F5F18BEF94DCE475 /* GameplaySessionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB43475153155078744CF85 /* GameplaySessionResponse.swift */; };
 /* End PBXBuildFile section */
 
@@ -302,7 +296,6 @@
 		17C76E618475B5A723A8B39E /* UserGame.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UserGame.swift; sourceTree = "<group>"; };
 		1A4FDFBC032DDE126D146076 /* ListGameRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListGameRequest.swift; sourceTree = "<group>"; };
 		1DE016C992B5C039E8F98AA6 /* PlayingGameResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayingGameResponse.swift; sourceTree = "<group>"; };
-		2B8983E7936BCF107ED149ED /* DefaultEventMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DefaultEventMonitor.swift; sourceTree = "<group>"; };
 		2F4CB351FEF5AF95FED1247B /* APIResult.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = APIResult.swift; sourceTree = "<group>"; };
 		378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayGameWidget.swift; sourceTree = "<group>"; };
 		39BB6AE1A5B7347230734507 /* ListRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListRequest.swift; sourceTree = "<group>"; };
@@ -310,7 +303,6 @@
 		41B7D6B55A75ED3D4FE360C1 /* GameplaySessionsResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameplaySessionsResponse.swift; sourceTree = "<group>"; };
 		46B3906A80CFE33508FD0871 /* RefreshTokenRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RefreshTokenRequest.swift; sourceTree = "<group>"; };
 		4A915837CD099FCCB928AAA4 /* ListItemRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListItemRequest.swift; sourceTree = "<group>"; };
-		521D870F39F21D563FD15D2F /* NetworkReachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NetworkReachability.swift; sourceTree = "<group>"; };
 		5925D1A632D02FD8D5EDA1D7 /* PhysicalDigital.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PhysicalDigital.swift; sourceTree = "<group>"; };
 		6D2359F4C0411903604BA888 /* ListItemResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListItemResponse.swift; sourceTree = "<group>"; };
 		6E5A180F4FAC67226E29373B /* GameNetAPI.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameNetAPI.swift; sourceTree = "<group>"; };
@@ -510,10 +502,8 @@
 		BBEFF88A90512562B633C9EC /* PlatformGamesResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlatformGamesResponse.swift; sourceTree = "<group>"; };
 		BC12F2BC319728F94EF8DFED /* WidgetGameClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetGameClient.swift; sourceTree = "<group>"; };
 		BC6562FD2B63323937C3167B /* ServerDriven.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ServerDriven.swift; sourceTree = "<group>"; };
-		C00CAE2B112BBE53638DBFB7 /* DefaultRequestInterceptor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DefaultRequestInterceptor.swift; sourceTree = "<group>"; };
 		C03C08803B2ABBACAD0CEBA8 /* LatestGameplaySessionResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LatestGameplaySessionResponse.swift; sourceTree = "<group>"; };
 		C044E3AE1CE5C422446A24E5 /* ListResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ListResponse.swift; sourceTree = "<group>"; };
-		C69E084B124FEBD4F5CD356A /* NetworkLoggerEventMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = NetworkLoggerEventMonitor.swift; sourceTree = "<group>"; };
 		C954B4D3AC3929BFAB4FA22C /* GameNetWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GameNetWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF278D985EF61EC60657C59F /* ServerDrivenResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ServerDrivenResponse.swift; sourceTree = "<group>"; };
 		D2D6D2136452A9FBF214E888 /* BoughtGamesByYearTotal.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BoughtGamesByYearTotal.swift; sourceTree = "<group>"; };
@@ -555,8 +545,6 @@
 				A5675A3A2E80851400AF066A /* TTProgressHUD in Frameworks */,
 				A54D44D22CE4DAED00C0EC3B /* FirebaseCore in Frameworks */,
 				A51AA6A42899539A0081AE4B /* Factory in Frameworks */,
-				7DEA1C6EB7D91A04790D87B7 /* Alamofire in Frameworks */,
-				C44E7AD82D480504807F750B /* Pulse in Frameworks */,
 				3C074E22F49DB68B882494FA /* KeychainAccess in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -618,15 +606,6 @@
 				BAC2240D32D2F167698A9735 /* LatestGameplaySession.swift */,
 			);
 			path = Gameplays;
-			sourceTree = "<group>";
-		};
-		2EA16B78E86ADC68E09725ED /* EventMonitor */ = {
-			isa = PBXGroup;
-			children = (
-				2B8983E7936BCF107ED149ED /* DefaultEventMonitor.swift */,
-				C69E084B124FEBD4F5CD356A /* NetworkLoggerEventMonitor.swift */,
-			);
-			path = EventMonitor;
 			sourceTree = "<group>";
 		};
 		350558FA095FC207912BEC0D /* Domain */ = {
@@ -1881,14 +1860,6 @@
 			name = Shared;
 			sourceTree = "<group>";
 		};
-		C00E6BE7D630EE434229A6D9 /* RequestInterceptor */ = {
-			isa = PBXGroup;
-			children = (
-				C00CAE2B112BBE53638DBFB7 /* DefaultRequestInterceptor.swift */,
-			);
-			path = RequestInterceptor;
-			sourceTree = "<group>";
-		};
 		C33CAE1F6F73DF78B0F06E5B /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -1900,11 +1871,8 @@
 		C4B3EA9E06C834B7194F12A6 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				2EA16B78E86ADC68E09725ED /* EventMonitor */,
 				6E5A180F4FAC67226E29373B /* GameNetAPI.swift */,
 				F998FE5339F995C08925F0EC /* NetworkManager.swift */,
-				521D870F39F21D563FD15D2F /* NetworkReachability.swift */,
-				C00E6BE7D630EE434229A6D9 /* RequestInterceptor */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -2107,8 +2075,6 @@
 				A54D44D32CE4DAED00C0EC3B /* FirebaseRemoteConfig */,
 				A5AE543D2CE67BE8007EF068 /* StepperView */,
 				A5675A392E80851400AF066A /* TTProgressHUD */,
-				5E9D8A8FA1FBA53C87A852DF /* Alamofire */,
-				3EDAD8B41DE33ED69FA1FF84 /* Pulse */,
 				A9B01A444AC3BBB6F585ADBD /* KeychainAccess */,
 			);
 			productName = GameNet;
@@ -2157,8 +2123,6 @@
 				A54D44CE2CE4DAED00C0EC3B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				A5AE543C2CE67BE8007EF068 /* XCRemoteSwiftPackageReference "StepperView" */,
 				A5675A382E80851400AF066A /* XCRemoteSwiftPackageReference "TTProgressHUD" */,
-				68B61C6CAD83FA6E755CAAED /* XCRemoteSwiftPackageReference "Alamofire" */,
-				D10B50013A23127961334519 /* XCRemoteSwiftPackageReference "Pulse" */,
 				A3D91AA4215F468D939D860E /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = A57185C2286793D600655B31 /* Products */;
@@ -2400,12 +2364,8 @@
 				A56DB66528B3BB2600614046 /* DashboardDataSource.swift in Sources */,
 				AACDD4E3FD48CBFC873B018B /* WidgetSharedStore.swift in Sources */,
 				25043C36772E2673F4EADE4D /* WidgetSharedStore+App.swift in Sources */,
-				FE5E1805F2F12F15BB59AF0D /* DefaultEventMonitor.swift in Sources */,
-				E8BC231B5D8DAEFE9DD4A77E /* NetworkLoggerEventMonitor.swift in Sources */,
 				547E3117EF6ECF879D21B086 /* GameNetAPI.swift in Sources */,
 				DACCB908B6A740809BF5B9C7 /* NetworkManager.swift in Sources */,
-				98A9400CAA933C50D6057F06 /* NetworkReachability.swift in Sources */,
-				BE69646A769C8500F78B0BA2 /* DefaultRequestInterceptor.swift in Sources */,
 				EA654849B05465BC6F3FECCA /* APIResult.swift in Sources */,
 				AFA2B159E0C3FA0C80144B79 /* PagedResult.swift in Sources */,
 				175E2B47D9E2C0211EAC4DED /* GameEditRequest.swift in Sources */,
@@ -2890,14 +2850,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		68B61C6CAD83FA6E755CAAED /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.6.1;
-			};
-		};
 		A3D91AA4215F468D939D860E /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
@@ -2954,27 +2906,9 @@
 				kind = branch;
 			};
 		};
-		D10B50013A23127961334519 /* XCRemoteSwiftPackageReference "Pulse" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kean/Pulse.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3EDAD8B41DE33ED69FA1FF84 /* Pulse */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D10B50013A23127961334519 /* XCRemoteSwiftPackageReference "Pulse" */;
-			productName = Pulse;
-		};
-		5E9D8A8FA1FBA53C87A852DF /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 68B61C6CAD83FA6E755CAAED /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
 		A51AA6A32899539A0081AE4B /* Factory */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A51AA6A22899539A0081AE4B /* XCRemoteSwiftPackageReference "Factory" */;

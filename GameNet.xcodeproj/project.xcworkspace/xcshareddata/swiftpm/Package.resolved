@@ -1,5 +1,5 @@
 {
-  "originHash" : "935a12566560d46bb320dd69271bcd9de237ba42e1d5e887c035ba0c918d2916",
+  "originHash" : "c1c28a3b4b6ee2fb4217645ee196ccfacbc2302350ae3deb360ac4bab5381dfb",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "194a6706acbd25e4ef639bcaddea16e8758a3e27",
         "version" : "1.2024011602.0"
-      }
-    },
-    {
-      "identity" : "alamofire",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Alamofire/Alamofire.git",
-      "state" : {
-        "revision" : "b2fa556e4e48cbf06cf8c63def138c98f4b811fa",
-        "version" : "5.8.0"
       }
     },
     {
@@ -146,30 +137,12 @@
       }
     },
     {
-      "identity" : "pulse",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/kean/Pulse.git",
-      "state" : {
-        "revision" : "403699c645e0872fa8986366a7015da334f0f48b",
-        "version" : "1.1.0"
-      }
-    },
-    {
       "identity" : "stepperview",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/badrinathvm/StepperView.git",
       "state" : {
         "revision" : "c66fb84c640fbc312f4eead0b7ae2a77f93e0839",
         "version" : "1.6.7"
-      }
-    },
-    {
-      "identity" : "swift-log",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-log.git",
-      "state" : {
-        "revision" : "5d66f7ba25daf4f94100e7022febf3c75e37a6c7",
-        "version" : "1.4.2"
       }
     },
     {

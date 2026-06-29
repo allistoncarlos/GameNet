@@ -36,7 +36,6 @@ Helps the user to create some lists. Example: Best The Legend of Zelda games, Bu
 
 ### Packages
 It uses some packages
-* [Alamofire](https://github.com/Alamofire/Alamofire)
 * [Keychain Access](https://github.com/kishikawakatsumi/KeychainAccess)
 * [Factory](https://github.com/hmlongco/Factory)
 * [SDWebImage](https://github.com/SDWebImage/SDWebImage)
