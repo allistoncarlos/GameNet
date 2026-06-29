@@ -16,7 +16,8 @@ struct AnnualGameplayProgressChartView: View {
 
     let series: [AnnualGameplayProgressSeries]
     @State var scrollPosition = 1
-    @State private var rawSelectedDay: Int?
+    @State private var selectedPoint: AnnualGameplayProgressPoint?
+    @State private var chartProxy: ChartProxy?
     @State private var visibleDomainLength = AnnualGameplayProgressChartView.defaultVisibleDomainLength
     @State private var visibleDomainLengthAtGestureStart: Int?
 
@@ -37,7 +38,7 @@ struct AnnualGameplayProgressChartView: View {
                             .foregroundStyle(.secondary)
                     }
 
-                    GeometryReader { _ in
+                    GeometryReader { geometryProxy in
                         Chart(gameplayPoints) { point in
                             LineMark(
                                 x: .value("Dia", point.day),
@@ -72,8 +73,14 @@ struct AnnualGameplayProgressChartView: View {
                         .chartXVisibleDomain(length: visibleDomainLength)
                         .chartScrollPosition(x: $scrollPosition)
                         .scrollIndicators(.hidden)
+                        .chartBackground { proxy in
+                            Color.clear
+                                .allowsHitTesting(false)
+                                .onAppear { chartProxy = proxy }
+                                .onChange(of: scrollPosition) { _, _ in chartProxy = proxy }
+                                .onChange(of: visibleDomainLength) { _, _ in chartProxy = proxy }
+                        }
 #if os(iOS)
-                        .chartXSelection(value: $rawSelectedDay)
                         .simultaneousGesture(
                             MagnifyGesture()
                                 .onChanged { value in
@@ -87,6 +94,12 @@ struct AnnualGameplayProgressChartView: View {
                                 }
                                 .onEnded { _ in
                                     visibleDomainLengthAtGestureStart = nil
+                                }
+                        )
+                        .simultaneousGesture(
+                            SpatialTapGesture()
+                                .onEnded { value in
+                                    selectPoint(at: value.location, geometryProxy: geometryProxy)
                                 }
                         )
 #endif
@@ -122,12 +135,33 @@ struct AnnualGameplayProgressChartView: View {
             .flatMap { $0.points }
     }
 
-    private var selectedPoint: AnnualGameplayProgressPoint? {
-        guard let rawSelectedDay else { return nil }
+    private func selectPoint(at location: CGPoint, geometryProxy: GeometryProxy) {
+        guard let proxy = chartProxy else {
+            selectedPoint = nil
+            return
+        }
 
-        return gameplayPoints
-            .filter { $0.day == rawSelectedDay }
-            .max(by: { $0.year < $1.year })
+        let plotFrame = geometryProxy[proxy.plotAreaFrame]
+
+        guard plotFrame.contains(location) else {
+            selectedPoint = nil
+            return
+        }
+
+        let xPosition = location.x - plotFrame.origin.x
+        let yPosition = location.y - plotFrame.origin.y
+
+        guard let day: Int = proxy.value(atX: xPosition),
+              let yValue: Double = proxy.value(atY: yPosition) else {
+            selectedPoint = nil
+            return
+        }
+
+        let candidates = gameplayPoints.filter { $0.day == day }
+
+        selectedPoint = candidates.min(by: {
+            abs($0.value - yValue) < abs($1.value - yValue)
+        })
     }
 
     private var maxVisibleDay: Int {
