@@ -56,15 +56,6 @@
       }
     },
     {
-      "identity" : "gamenet.network",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/allistoncarlos/GameNet.Network",
-      "state" : {
-        "branch" : "main",
-        "revision" : "5a391ec9e93ae12479c8f276745ecd1245a00e37"
-      }
-    },
-    {
       "identity" : "googleappmeasurement",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleAppMeasurement.git",

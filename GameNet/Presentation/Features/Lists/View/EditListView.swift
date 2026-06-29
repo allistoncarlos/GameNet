@@ -5,7 +5,6 @@
 //  Created by Alliston Aleixo on 11/01/23.
 //
 
-import GameNet_Network
 import SwiftUI
 import TTProgressHUD
 
@@ -119,7 +118,7 @@ struct EditListView: View {
 
 #Preview("Dark Mode") {
     let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
-    let list = GameNet_Network.List(id: "1", name: "Próximos Jogos")
+    let list = GameNet.List(id: "1", name: "Próximos Jogos")
 
     EditListView(
         viewModel: EditListViewModel(list: list),
@@ -129,7 +128,7 @@ struct EditListView: View {
 
 #Preview("Light Mode") {
     let _ = RepositoryContainer.listRepository.register(factory: { MockListRepository() })
-    let list = GameNet_Network.List(id: "1", name: "Próximos Jogos")
+    let list = GameNet.List(id: "1", name: "Próximos Jogos")
 
     EditListView(
         viewModel: EditListViewModel(list: list),

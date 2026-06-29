@@ -8,7 +8,6 @@
 import Combine
 import Factory
 import Foundation
-import GameNet_Network
 import SwiftUI
 
 // MARK: - ListGamesViewModel

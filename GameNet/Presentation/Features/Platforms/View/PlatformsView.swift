@@ -21,7 +21,7 @@ struct PlatformsView: View {
         NavigationStack(path: $presentedPlatforms) {
             VStack {
                 if let platforms = viewModel.platforms {
-                    List(platforms, id: \.id) { platform in
+                    SwiftUI.List(platforms, id: \.id) { platform in
                         #if os(iOS)
                         SwiftUI.NavigationLink(platform.name, value: platform.id)
                         #else

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CachedAsyncImage
-import GameNet_Network
 
 private enum GameCoverAction: Identifiable {
     case toggle

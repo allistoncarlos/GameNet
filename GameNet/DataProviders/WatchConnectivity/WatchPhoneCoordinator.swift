@@ -9,7 +9,6 @@
 import Factory
 import Foundation
 import GameNet_Keychain
-import GameNet_Network
 import WatchConnectivity
 
 // MARK: - WatchPhoneCoordinator

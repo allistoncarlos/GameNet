@@ -5,7 +5,6 @@
 //  Created by Alliston Aleixo on 03/08/22.
 //
 
-import GameNet_Network
 import SwiftUI
 import TTProgressHUD
 

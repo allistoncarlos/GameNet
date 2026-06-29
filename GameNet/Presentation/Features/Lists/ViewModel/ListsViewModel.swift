@@ -8,7 +8,6 @@
 import Combine
 import Factory
 import Foundation
-import GameNet_Network
 import SwiftUI
 
 // MARK: - PlatformsViewModel
@@ -33,7 +32,7 @@ class ListsViewModel: ObservableObject {
 
     // MARK: Internal
 
-    @Published var lists: [GameNet_Network.List]? = nil
+    @Published var lists: [GameNet.List]? = nil
     @Published var state: ListsState = .idle
 
     func fetchData(cache: Bool = true) async {

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import GameNet_Network
 
 struct GameDetailPreview: Hashable {
     let coverURL: String

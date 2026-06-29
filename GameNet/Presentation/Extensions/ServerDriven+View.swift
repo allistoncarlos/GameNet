@@ -188,7 +188,7 @@ extension View {
     @ViewBuilder
     private func renderList(_ component: Element) -> some View {
         if let elements = component.elements {
-            List(elements, id: \.properties!.value!) { element in
+            SwiftUI.List(elements, id: \.properties!.value!) { element in
                 renderChildren(components: Array(CollectionOfOne(element)))
             }
         }

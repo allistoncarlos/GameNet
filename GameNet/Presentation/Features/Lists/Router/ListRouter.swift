@@ -5,13 +5,12 @@
 //  Created by Alliston Aleixo on 10/01/23.
 //
 
-import GameNet_Network
 import SwiftUI
 
 @MainActor
 enum ListRouter {
-    static func makeEditListView(navigationPath: Binding<NavigationPath>, list: GameNet_Network.List?) -> some View {
-        let emptyList = GameNet_Network.List(id: nil, name: String())
+    static func makeEditListView(navigationPath: Binding<NavigationPath>, list: GameNet.List?) -> some View {
+        let emptyList = GameNet.List(id: nil, name: String())
         let editListViewModel = EditListViewModel(list: list ?? emptyList)
 
         return EditListView(viewModel: editListViewModel, navigationPath: navigationPath)

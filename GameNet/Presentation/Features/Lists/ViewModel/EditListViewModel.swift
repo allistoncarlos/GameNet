@@ -8,7 +8,6 @@
 import Combine
 import Factory
 import Foundation
-import GameNet_Network
 import SwiftUI
 import GameNet_Keychain
 
@@ -19,7 +18,7 @@ class EditListViewModel: ObservableObject {
 
     // MARK: Lifecycle
 
-    init(list: GameNet_Network.List) {
+    init(list: GameNet.List) {
         self.list = list
 
         $state
@@ -38,7 +37,7 @@ class EditListViewModel: ObservableObject {
 
     // MARK: Internal
 
-    @Published var list: GameNet_Network.List
+    @Published var list: GameNet.List
     @Published var listGame: ListGame = ListGame(id: "", name: "", games: [])
     @Published var state: EditListState = .idle
 

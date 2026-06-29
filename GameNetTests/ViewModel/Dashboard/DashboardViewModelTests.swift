@@ -9,7 +9,6 @@ import Combine
 import Factory
 @testable import GameNet
 import GameNet_Keychain
-import GameNet_Network
 import XCTest
 
 @MainActor
@@ -70,7 +69,7 @@ class DashboardViewModelTests: XCTestCase {
                     start: formatter.date(from: "2021-01-01T10:00:00Z")!,
                     finish: formatter.date(from: "2021-01-01T11:00:00Z")!,
                     gameName: "Game 1",
-                    gameCover: nil,
+                    gameCover: "",
                     platformName: "Platform",
                     totalGameplayTime: "01:00"
                 ),
@@ -80,7 +79,7 @@ class DashboardViewModelTests: XCTestCase {
                     start: formatter.date(from: "2021-01-02T12:00:00Z")!,
                     finish: formatter.date(from: "2021-01-02T12:30:00Z")!,
                     gameName: "Game 1",
-                    gameCover: nil,
+                    gameCover: "",
                     platformName: "Platform",
                     totalGameplayTime: "00:30"
                 ),

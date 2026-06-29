@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import GameNet_Network
 
 struct UserGameModel {
     var name: String = ""

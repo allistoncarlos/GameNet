@@ -5,7 +5,6 @@
 //  Created by Alliston Aleixo on 14/01/23.
 //
 
-import GameNet_Network
 import SwiftUI
 
 // MARK: - DashboardRouter

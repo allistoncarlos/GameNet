@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import GameNet_Network
 
 enum GameEditState: Equatable {
     case idle

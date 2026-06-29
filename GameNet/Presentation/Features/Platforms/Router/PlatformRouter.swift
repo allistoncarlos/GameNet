@@ -6,7 +6,6 @@
 //
 
 #if os(iOS)
-import GameNet_Network
 import SwiftUI
 
 @MainActor

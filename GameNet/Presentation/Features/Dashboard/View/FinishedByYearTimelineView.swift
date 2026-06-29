@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import GameNet_Network
 
 // MARK: - FinishedByYearTimelineView
 

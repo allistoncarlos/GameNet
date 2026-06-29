@@ -7,7 +7,6 @@
 
 import Factory
 @testable import GameNet
-import GameNet_Network
 import XCTest
 
 class PlatformRepositoryTests: XCTestCase {

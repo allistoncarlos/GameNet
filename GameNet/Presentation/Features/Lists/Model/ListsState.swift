@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import GameNet_Network
 
 enum ListsState: Equatable {
     case idle

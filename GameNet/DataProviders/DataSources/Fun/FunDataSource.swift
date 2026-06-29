@@ -17,7 +17,7 @@ protocol FunDataSourceProtocol {
 
 struct FunDataSource: FunDataSourceProtocol {
     func fetchRating(userGameId: String) async -> GameFunRating? {
-        // A API de Fun ainda não está exposta em GameNet_Network.
+        // A API de Fun ainda não está exposta em GameNet.Network.
         // Quando o endpoint estiver disponível, implementar a chamada via NetworkManager aqui.
         nil
     }

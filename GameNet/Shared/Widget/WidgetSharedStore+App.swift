@@ -3,11 +3,10 @@
 //  GameNet
 //
 //  Conversões e sincronização do app para o App Group consumido pelo widget.
-//  Este arquivo pertence apenas ao target do app (importa GameNet_Network/Keychain).
+//  Este arquivo pertence apenas ao target do app (usa GameNet.Network/Keychain).
 //
 
 import Foundation
-import GameNet_Network
 import GameNet_Keychain
 
 extension WidgetSharedStore {

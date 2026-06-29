@@ -9,7 +9,6 @@ import Combine
 import Factory
 @testable import GameNet
 import GameNet_Keychain
-import GameNet_Network
 import XCTest
 
 @MainActor

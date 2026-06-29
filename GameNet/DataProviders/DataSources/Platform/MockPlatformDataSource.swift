@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import GameNet_Network
 
 class MockPlatformDataSource: PlatformDataSourceProtocol {
     // MARK: Internal
