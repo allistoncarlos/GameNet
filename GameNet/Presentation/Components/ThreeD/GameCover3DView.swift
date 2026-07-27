@@ -17,6 +17,7 @@ struct GameCover3DView: View {
     var cornerRadius: CGFloat = 12
     var enablesMotion: Bool = true
     var autoRotate: Bool = false
+    var playsEntranceTransition: Bool = false
 
     @State private var coverImage: UIImage?
     @State private var isLoading = true
@@ -27,7 +28,8 @@ struct GameCover3DView: View {
             GameCoverSceneKitView(
                 coverImage: coverImage ?? CoverImageLoader.placeholder(),
                 enablesMotion: enablesMotion,
-                autoRotate: autoRotate
+                autoRotate: autoRotate,
+                playsEntranceTransition: playsEntranceTransition
             )
 
             if isLoading {
@@ -37,6 +39,7 @@ struct GameCover3DView: View {
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+        .cover3DEntrance(playsEntranceTransition ? .liftAndTurn : .none)
         .task(id: coverURL) {
             isLoading = true
             coverImage = await CoverImageLoader.image(from: coverURL)

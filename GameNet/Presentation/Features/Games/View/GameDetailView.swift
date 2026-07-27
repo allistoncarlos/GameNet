@@ -143,7 +143,8 @@ struct GameDetailView: View {
             GameCover3DView(
                 coverURL: displayCoverURL,
                 cornerRadius: 12,
-                enablesMotion: true
+                enablesMotion: true,
+                playsEntranceTransition: true
             )
             .frame(height: 250)
             .shadow(color: .black.opacity(0.35), radius: 16, y: 8)

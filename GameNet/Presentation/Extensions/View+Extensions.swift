@@ -69,6 +69,10 @@ private struct GameDetailZoomTransitionModifier: ViewModifier {
             content
                 .gameDetailNavigationBar()
                 .navigationTransition(.zoom(sourceID: gameId, in: namespace))
+                // Continuidade espacial: o zoom 2D encontra a capa 3D no destino
+                .transaction { transaction in
+                    transaction.animation = transaction.animation ?? .smooth(duration: 0.45)
+                }
         } else {
             content
                 .gameDetailNavigationBar()
