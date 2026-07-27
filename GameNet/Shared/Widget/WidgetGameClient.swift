@@ -117,7 +117,21 @@ struct WidgetGameClient {
         let isStarted = game.isStarted
         let start = isStarted ? (game.latestStart ?? now) : now
         let finish: Date? = isStarted ? now : nil
+        return try await saveGameplaySession(for: game, start: start, finish: finish)
+    }
 
+    /// Sempre encerra a sessão (usado pelo botão da Live Activity).
+    func stopGameplay(for game: WidgetSharedPlayingGame) async throws -> WidgetSharedPlayingGame {
+        let now = Date.timeZoneDate()
+        let start = game.latestStart ?? now
+        return try await saveGameplaySession(for: game, start: start, finish: now)
+    }
+
+    private func saveGameplaySession(
+        for game: WidgetSharedPlayingGame,
+        start: Date,
+        finish: Date?
+    ) async throws -> WidgetSharedPlayingGame {
         let body = WidgetGameplaySessionRequest(
             id: nil,
             userGameId: game.id,
@@ -144,15 +158,6 @@ struct WidgetGameClient {
             return updated
         }
 
-        if let okOnly = try? decoder.decode(WidgetAPIResult<WidgetGameplaySessionResponse?>.self, from: data),
-           okOnly.ok {
-            var updated = game
-            updated.latestStart = start
-            updated.latestFinish = finish
-            return updated
-        }
-
-        // Último recurso: se o body tem "ok": true, aplica o estado local esperado.
         if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
            (json["ok"] as? Bool) == true {
             var updated = game

@@ -116,6 +116,7 @@
 				Shared/Widget/WidgetSharedStore.swift,
 				Shared/Widget/WidgetGameClient.swift,
 				Shared/Widget/ToggleGameplayIntent.swift,
+				Shared/Widget/StopGameplayLiveActivityIntent.swift,
 				Shared/LiveActivity/GameplayActivityAttributes.swift,
 				Shared/LiveActivity/GameplayLiveActivityManager.swift,
 				"Shared/LiveActivity/WidgetSharedStore+LiveActivity.swift",

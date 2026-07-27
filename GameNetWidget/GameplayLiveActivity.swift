@@ -10,6 +10,15 @@ import AppIntents
 import SwiftUI
 import WidgetKit
 
+// MARK: - Brand
+
+private enum GameNetLiveActivityStyle {
+    /// `Color.main` do app (#7B1FA2 / r:0.482 g:0.122 b:0.635).
+    static let purple = Color(red: 0.482, green: 0.122, blue: 0.635)
+}
+
+// MARK: - Widget
+
 struct GameplayLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: GameplayActivityAttributes.self) { context in
@@ -18,7 +27,7 @@ struct GameplayLiveActivity: Widget {
             DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
                     Image(systemName: "gamecontroller.fill")
-                        .foregroundStyle(.green)
+                        .foregroundStyle(GameNetLiveActivityStyle.purple)
                 }
                 DynamicIslandExpandedRegion(.center) {
                     VStack(alignment: .leading, spacing: 2) {
@@ -39,7 +48,7 @@ struct GameplayLiveActivity: Widget {
                             .frame(width: 70, alignment: .trailing)
                             .multilineTextAlignment(.trailing)
                     } else {
-                        Text("Pausado")
+                        Text("Encerrado")
                             .font(.caption.weight(.semibold))
                     }
                 }
@@ -49,16 +58,27 @@ struct GameplayLiveActivity: Widget {
                             .font(.caption)
                             .foregroundStyle(.secondary)
                         Spacer()
-                        Button(intent: ToggleGameplayIntent(userGameId: context.attributes.userGameId)) {
-                            Image(systemName: context.state.isPlaying ? "stop.fill" : "play.fill")
-                                .frame(width: 28, height: 28)
+                        if context.state.isPlaying {
+                            Button(
+                                intent: StopGameplayLiveActivityIntent(
+                                    userGameId: context.attributes.userGameId,
+                                    gameName: context.attributes.gameName,
+                                    platform: context.attributes.platform,
+                                    coverURL: context.attributes.coverURL
+                                )
+                            ) {
+                                Image(systemName: "stop.fill")
+                                    .foregroundStyle(.white)
+                                    .frame(width: 28, height: 28)
+                                    .background(Circle().fill(GameNetLiveActivityStyle.purple))
+                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
                 }
             } compactLeading: {
                 Image(systemName: "gamecontroller.fill")
-                    .foregroundStyle(.green)
+                    .foregroundStyle(GameNetLiveActivityStyle.purple)
             } compactTrailing: {
                 if context.state.isPlaying {
                     Text(timerInterval: context.state.sessionStart ... Date.distantFuture, countsDown: false)
@@ -66,11 +86,12 @@ struct GameplayLiveActivity: Widget {
                         .frame(maxWidth: 52)
                         .font(.caption2.weight(.semibold))
                 } else {
-                    Image(systemName: "pause.fill")
+                    Image(systemName: "stop.fill")
+                        .foregroundStyle(GameNetLiveActivityStyle.purple)
                 }
             } minimal: {
                 Image(systemName: "gamecontroller.fill")
-                    .foregroundStyle(.green)
+                    .foregroundStyle(GameNetLiveActivityStyle.purple)
             }
         }
     }
@@ -80,7 +101,7 @@ struct GameplayLiveActivity: Widget {
         HStack(spacing: 12) {
             Image(systemName: "gamecontroller.fill")
                 .font(.title2)
-                .foregroundStyle(.green)
+                .foregroundStyle(GameNetLiveActivityStyle.purple)
                 .frame(width: 40, height: 40)
 
             VStack(alignment: .leading, spacing: 4) {
@@ -105,18 +126,25 @@ struct GameplayLiveActivity: Widget {
 
             Spacer(minLength: 0)
 
-            Button(intent: ToggleGameplayIntent(userGameId: context.attributes.userGameId)) {
-                Image(systemName: context.state.isPlaying ? "stop.fill" : "play.fill")
-                    .font(.body.weight(.bold))
-                    .foregroundStyle(.white)
-                    .frame(width: 40, height: 40)
-                    .background(
-                        Circle().fill(context.state.isPlaying ? Color.red : Color.green)
+            if context.state.isPlaying {
+                Button(
+                    intent: StopGameplayLiveActivityIntent(
+                        userGameId: context.attributes.userGameId,
+                        gameName: context.attributes.gameName,
+                        platform: context.attributes.platform,
+                        coverURL: context.attributes.coverURL
                     )
+                ) {
+                    Image(systemName: "stop.fill")
+                        .font(.body.weight(.bold))
+                        .foregroundStyle(.white)
+                        .frame(width: 40, height: 40)
+                        .background(Circle().fill(GameNetLiveActivityStyle.purple))
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
         }
         .padding(16)
-        .activityBackgroundTint(Color.black.opacity(0.35))
+        .activityBackgroundTint(GameNetLiveActivityStyle.purple.opacity(0.22))
     }
 }
