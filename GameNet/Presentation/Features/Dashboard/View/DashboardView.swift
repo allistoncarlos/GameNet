@@ -414,34 +414,12 @@ extension DashboardView {
 
 extension DashboardView {
     var gamesByPlatformCard: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.tertiaryCardBackground)
-
-            VStack(alignment: .leading, spacing: 15) {
-                VStack {
-                    Text("Jogos por Plataforma")
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                        .font(.cardTitle)
-                }
-
-                VStack(alignment: .leading, spacing: 5) {
-                    if let gamesByPlatform = viewModel.dashboard?.gamesByPlatform?.platforms {
-                        ForEach(gamesByPlatform, id: \.id) { gameByPlatform in
-                            HStack(spacing: 20) {
-                                Text(gameByPlatform.platformGamesTotal.toLeadingZerosString(decimalPlaces: 3))
-                                    .font(.dashboardGameTitle)
-                                Text(gameByPlatform.name)
-                                    .font(.dashboardGameTitle)
-                                Spacer()
-                            }
-                        }
-                    }
-                }
-            }
-            .padding()
-        }
-        .padding()
+        PlatformsIslands3DView(
+            platforms: viewModel.dashboard?.gamesByPlatform?.platforms ?? [],
+            total: viewModel.dashboard?.gamesByPlatform?.total
+                ?? viewModel.dashboard?.totalGames
+                ?? 0
+        )
     }
 }
 
