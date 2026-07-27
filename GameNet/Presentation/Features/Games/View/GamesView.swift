@@ -72,6 +72,22 @@ struct GamesView: View {
                     )
                     .gameDetailZoomTransition(gameId: route.id)
                 }
+                .navigationDestination(for: SpatialLibraryRoute.self) { _ in
+                    SpatialLibraryView(
+                        games: spatialLibraryItems
+                    ) { item in
+                        presentedGames.append(
+                            GameDetailRoute(
+                                id: item.id,
+                                preview: GameDetailPreview(
+                                    coverURL: item.coverURL,
+                                    name: item.name,
+                                    platform: item.platform
+                                )
+                            )
+                        )
+                    }
+                }
                 .searchable(
                     text: $search,
                     prompt: Text("Buscar")
@@ -96,6 +112,12 @@ struct GamesView: View {
             .navigationView(title: "Games")
             .toolbar {
                 if origin == .home {
+                    Button(action: {}) {
+                        SwiftUI.NavigationLink(value: SpatialLibraryRoute()) {
+                            Image(systemName: "square.stack.3d.up")
+                        }
+                    }
+
                     Button(action: {}) {
                         SwiftUI.NavigationLink {
                             viewModel.showGameEditView(
@@ -136,6 +158,19 @@ struct GamesView: View {
     ]
 
     @State var presentedGames = NavigationPath()
+
+    private var spatialLibraryItems: [SpatialLibraryItem] {
+        let source = search.isEmpty ? viewModel.data : viewModel.searchedGames
+        return source.compactMap { game in
+            guard let id = game.id else { return nil }
+            return SpatialLibraryItem(
+                id: id,
+                name: game.name,
+                coverURL: game.coverURL ?? "",
+                platform: game.platform ?? ""
+            )
+        }
+    }
 }
 
 // MARK: - Previews

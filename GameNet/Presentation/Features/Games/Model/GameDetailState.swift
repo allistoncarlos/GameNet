@@ -18,6 +18,8 @@ struct GameDetailRoute: Hashable {
     let preview: GameDetailPreview
 }
 
+struct SpatialLibraryRoute: Hashable {}
+
 extension GameDetailPreview {
     init(playingGame: PlayingGame) {
         coverURL = playingGame.coverURL
