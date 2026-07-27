@@ -5,7 +5,6 @@
 //  Created by Alliston Aleixo on 25/07/23.
 //
 
-import CachedAsyncImage
 import Factory
 import SwiftUI
 
@@ -18,13 +17,15 @@ struct GameItemView: View {
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            CachedAsyncImage(url: URL(string: coverURL)) { image in
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            } placeholder: { ProgressView().progressViewStyle(.circular) }
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            GameCover3DView(
+                coverURL: coverURL,
+                cornerRadius: 8,
+                enablesMotion: false,
+                autoRotate: true
+            )
+            .aspectRatio(2 / 3, contentMode: .fit)
             .gameCoverTransitionSource(id: gameId)
+
             Text(name)
                 .padding(4)
                 .foregroundColor(.white)

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
 
 private enum GameCoverAction: Identifiable {
     case toggle
@@ -39,19 +38,10 @@ struct GameCoverView: View {
         SwiftUI.NavigationLink(value: viewModel.playingGame) {
             VStack(alignment: .center) {
                 ZStack(alignment: .bottomTrailing) {
-                    
-                CachedAsyncImage(url: URL(string: coverURL)) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                    default:
-                        coverImageSkeleton
-                    }
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .gameCoverTransitionSource(id: viewModel.playingGame.id)
+                GameCover3DView(coverURL: coverURL, cornerRadius: 12, enablesMotion: true)
+                    .aspectRatio(2 / 3, contentMode: .fit)
+                    .frame(maxWidth: .infinity)
+                    .gameCoverTransitionSource(id: viewModel.playingGame.id)
                     if FirebaseRemoteConfig.toggleGameplaySession {
                         Button {
                             activeAction = .toggle
@@ -152,14 +142,6 @@ struct GameCoverView: View {
             coverAccentColor = await CoverAccentColor.from(urlString: coverURL)
             #endif
         }
-    }
-
-    private var coverImageSkeleton: some View {
-        RoundedRectangle(cornerRadius: 12)
-            .fill(Color.secondary.opacity(0.2))
-            .aspectRatio(2 / 3, contentMode: .fit)
-            .frame(maxWidth: .infinity)
-            .redacted(reason: .placeholder)
     }
 }
 

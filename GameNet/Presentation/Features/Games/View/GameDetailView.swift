@@ -140,17 +140,11 @@ struct GameDetailView: View {
 
     private var heroCoverSection: some View {
         ZStack(alignment: .bottomTrailing) {
-            CachedAsyncImage(url: URL(string: displayCoverURL)) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                default:
-                    coverImageSkeleton
-                }
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 12))
+            GameCover3DView(
+                coverURL: displayCoverURL,
+                cornerRadius: 12,
+                enablesMotion: true
+            )
             .frame(height: 250)
             .shadow(color: .black.opacity(0.35), radius: 16, y: 8)
             .onTapGesture(count: 2) {
