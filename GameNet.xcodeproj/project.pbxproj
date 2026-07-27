@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3E79A02693BA679E15F35427 /* PlayGameWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */; };
-		FA11A004A1B2C3D4E5F60002 /* GameplayLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11A002A1B2C3D4E5F60001 /* GameplayLiveActivity.swift */; };
 		581553562020A546DA5A3E0C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7658B48209B6E50E676075F /* Foundation.framework */; };
 		A5357E912FCA1BA40094C91E /* GameNet.icon in Resources */ = {isa = PBXBuildFile; fileRef = A5357E902FCA1BA40094C91E /* GameNet.icon */; };
 		A5357E922FCA1BA40094C91E /* GameNet.icon in Resources */ = {isa = PBXBuildFile; fileRef = A5357E902FCA1BA40094C91E /* GameNet.icon */; };
@@ -35,6 +34,7 @@
 		A5F0B4142F006A1200420414 /* WatchConnectivityDateCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B1022F006A1200420102 /* WatchConnectivityDateCodec.swift */; };
 		A5F0B4152F006A1200420415 /* WatchColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B3012F006A1200420301 /* WatchColor.swift */; };
 		B6CBFDB9B81E8C81964273D0 /* PlayGameProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F16DB41D362ECFE5FF3DE0 /* PlayGameProvider.swift */; };
+		FA11A004A1B2C3D4E5F60002 /* GameplayLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11A002A1B2C3D4E5F60001 /* GameplayLiveActivity.swift */; };
 		FDD9AF2030F21186E3E2EEDB /* GameNetWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C954B4D3AC3929BFAB4FA22C /* GameNetWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -83,7 +83,6 @@
 /* Begin PBXFileReference section */
 		378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayGameWidget.swift; sourceTree = "<group>"; };
 		A2F16DB41D362ECFE5FF3DE0 /* PlayGameProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayGameProvider.swift; sourceTree = "<group>"; };
-		FA11A002A1B2C3D4E5F60001 /* GameplayLiveActivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameplayLiveActivity.swift; sourceTree = "<group>"; };
 		A5357E902FCA1BA40094C91E /* GameNet.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = GameNet.icon; sourceTree = "<group>"; };
 		A53B6FBF2968B19500A0F09E /* GameNet.Watch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "GameNet.Watch Watch App.entitlements"; sourceTree = "<group>"; };
 		A550C6E02968ABF60043FE74 /* GameNet.Watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GameNet.Watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +105,7 @@
 		B7658B48209B6E50E676075F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		C954B4D3AC3929BFAB4FA22C /* GameNetWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GameNetWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D173891BBC0EB2AD9BFB91B0 /* Config.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = GameNet/Resources/Config.xcconfig; sourceTree = "<group>"; };
+		FA11A002A1B2C3D4E5F60001 /* GameplayLiveActivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameplayLiveActivity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -113,13 +113,13 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Presentation/Extensions/Date+Extensions.swift",
-				Shared/Widget/WidgetSharedStore.swift,
-				Shared/Widget/WidgetGameClient.swift,
-				Shared/Widget/ToggleGameplayIntent.swift,
-				Shared/Widget/StopGameplayLiveActivityIntent.swift,
 				Shared/LiveActivity/GameplayActivityAttributes.swift,
 				Shared/LiveActivity/GameplayLiveActivityManager.swift,
 				"Shared/LiveActivity/WidgetSharedStore+LiveActivity.swift",
+				Shared/Widget/StopGameplayLiveActivityIntent.swift,
+				Shared/Widget/ToggleGameplayIntent.swift,
+				Shared/Widget/WidgetGameClient.swift,
+				Shared/Widget/WidgetSharedStore.swift,
 			);
 			target = 43596BD1BDAE0BA6BAFAD581 /* GameNetWidget */;
 		};
@@ -607,7 +607,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -641,7 +641,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.3;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp.Watch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -674,7 +674,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.3;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp.Watch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = watchos;
@@ -873,7 +873,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.3;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -911,7 +911,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.3;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -941,7 +941,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
