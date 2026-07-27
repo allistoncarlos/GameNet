@@ -26,9 +26,12 @@ enum GameplayLiveActivityManager {
             platform: platform,
             coverURL: coverURL
         )
+        // `sessionStart` costuma vir de `timeZoneDate()` / API (horário local deslocado).
+        // O timer da Live Activity usa instante absoluto — desfaz o shift do fuso (UTC−3 em Goiânia).
+        let absoluteSessionStart = sessionStart.undoingTimeZoneDateShift()
         let state = GameplayActivityAttributes.ContentState(
             isPlaying: true,
-            sessionStart: sessionStart
+            sessionStart: absoluteSessionStart
         )
 
         // Se já existe activity para este jogo, só atualiza.

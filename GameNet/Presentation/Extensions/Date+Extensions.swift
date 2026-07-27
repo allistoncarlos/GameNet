@@ -37,6 +37,17 @@ extension Date {
         return Date(timeInterval: seconds, since: Date())
     }
 
+    /// Inverso de `timeZoneDate()`.
+    ///
+    /// `Date` é sempre um instante absoluto. `timeZoneDate()` desloca esse instante pelo
+    /// offset do fuso (ex.: −3h em Goiânia / `America/Sao_Paulo`) para a API tratar o
+    /// horário local como se fosse UTC. Timers e Live Activities precisam do instante real;
+    /// use este método antes de calcular tempo decorrido.
+    func undoingTimeZoneDateShift() -> Date {
+        let seconds = TimeInterval(TimeZone.current.secondsFromGMT(for: self))
+        return Date(timeInterval: -seconds, since: self)
+    }
+
     static func - (lhs: Date, rhs: Date) -> TimeInterval {
         return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
     }
