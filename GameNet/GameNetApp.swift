@@ -91,6 +91,9 @@ struct GameNetApp: App {
                         WatchConnectivityManager.shared.activateSession()
 #endif
                         WidgetSharedStore.syncFromKeychain()
+                        Task {
+                            await GameplayLiveActivityManager.syncFromStore()
+                        }
                     }
             } else {
                 ProgressView("Carregando...")

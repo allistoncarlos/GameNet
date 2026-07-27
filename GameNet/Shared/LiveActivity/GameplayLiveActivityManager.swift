@@ -2,7 +2,8 @@
 //  GameplayLiveActivityManager.swift
 //  GameNet
 //
-//  Inicia, atualiza e encerra Live Activities de sessão de gameplay.
+//  Única fonte de verdade para exibir/esconder a Live Activity de gameplay.
+//  Sempre derive o estado a partir da lista de jogos em andamento (App Group).
 //
 
 import ActivityKit
@@ -10,6 +11,32 @@ import Foundation
 
 @MainActor
 enum GameplayLiveActivityManager {
+
+    /// Sincroniza a Live Activity com a lista de jogos em andamento.
+    /// - Se houver sessão ativa (`isStarted`), inicia/atualiza a activity desse jogo.
+    /// - Se não houver nenhuma ativa, encerra todas as activities de gameplay.
+    static func sync(with games: [WidgetSharedPlayingGame]) async {
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
+
+        if let active = games.first(where: \.isStarted),
+           let sessionStart = active.latestStart {
+            await startOrUpdate(
+                userGameId: active.id,
+                gameName: active.name,
+                platform: active.platform,
+                coverURL: active.coverURL,
+                sessionStart: sessionStart
+            )
+        } else {
+            await endAll()
+        }
+    }
+
+    /// Lê o App Group e sincroniza (útil no launch do app).
+    static func syncFromStore() async {
+        await sync(with: WidgetSharedStore.loadPlayingGames())
+    }
+
     /// Inicia (ou atualiza) a Live Activity de um jogo em sessão.
     static func startOrUpdate(
         userGameId: String,
@@ -29,28 +56,32 @@ enum GameplayLiveActivityManager {
         // `sessionStart` costuma vir de `timeZoneDate()` / API (horário local deslocado).
         // O timer da Live Activity usa instante absoluto — desfaz o shift do fuso (UTC−3 em Goiânia).
         let absoluteSessionStart = sessionStart.undoingTimeZoneDateShift()
-        let state = GameplayActivityAttributes.ContentState(
-            isPlaying: true,
-            sessionStart: absoluteSessionStart
+        let content = ActivityContent(
+            state: GameplayActivityAttributes.ContentState(
+                isPlaying: true,
+                sessionStart: absoluteSessionStart
+            ),
+            staleDate: nil
         )
 
-        // Se já existe activity para este jogo, só atualiza.
         if let existing = Activity<GameplayActivityAttributes>.activities.first(where: {
             $0.attributes.userGameId == userGameId
         }) {
-            await existing.update(ActivityContent(state: state, staleDate: nil))
+            await existing.update(content)
+            // Encerra activities de outros jogos, se houver.
+            for activity in Activity<GameplayActivityAttributes>.activities
+            where activity.id != existing.id {
+                await activity.end(nil, dismissalPolicy: .immediate)
+            }
             return
         }
 
-        // Encerra outras activities de gameplay para manter uma por vez.
-        for activity in Activity<GameplayActivityAttributes>.activities {
-            await activity.end(nil, dismissalPolicy: .immediate)
-        }
+        await endAll()
 
         do {
             _ = try Activity.request(
                 attributes: attributes,
-                content: ActivityContent(state: state, staleDate: nil),
+                content: content,
                 pushType: nil
             )
         } catch {
@@ -58,7 +89,7 @@ enum GameplayLiveActivityManager {
         }
     }
 
-    /// Encerra a Live Activity do jogo (ou todas, se id nil).
+    /// Encerra a Live Activity do jogo (ou todas, se `userGameId` for nil).
     static func end(userGameId: String?) async {
         let activities = Activity<GameplayActivityAttributes>.activities.filter { activity in
             guard let userGameId else { return true }
@@ -72,8 +103,12 @@ enum GameplayLiveActivityManager {
             )
             await activity.end(
                 ActivityContent(state: finalState, staleDate: nil),
-                dismissalPolicy: .after(.now + 2)
+                dismissalPolicy: .immediate
             )
         }
+    }
+
+    static func endAll() async {
+        await end(userGameId: nil)
     }
 }

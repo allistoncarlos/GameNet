@@ -102,7 +102,7 @@ struct WidgetGameClient {
         let result = try decoder.decode(WidgetAPIResult<WidgetDashboardResponse>.self, from: data)
 
         let games = (result.data.playingGames ?? []).compactMap { $0.toShared() }
-        WidgetSharedStore.savePlayingGames(games)
+        await WidgetSharedStore.persistPlayingGamesAndSyncLiveActivity(games)
         return games
     }
 

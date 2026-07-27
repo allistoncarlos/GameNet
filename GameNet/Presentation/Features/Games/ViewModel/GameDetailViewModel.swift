@@ -145,17 +145,15 @@ class GameDetailViewModel: ObservableObject {
         if let result {
             state = .successSave(result)
 
-            if result.finish == nil {
-                await GameplayLiveActivityManager.startOrUpdate(
-                    userGameId: gameId,
-                    gameName: game?.name ?? preview?.name ?? "Jogo",
-                    platform: game?.platform ?? preview?.platform ?? "",
-                    coverURL: game?.cover ?? preview?.coverURL ?? "",
-                    sessionStart: result.start
-                )
-            } else {
-                await GameplayLiveActivityManager.end(userGameId: gameId)
-            }
+            await WidgetSharedStore.upsertSessionAndSyncLiveActivity(
+                userGameId: gameId,
+                name: game?.name ?? preview?.name ?? "Jogo",
+                platform: game?.platform ?? preview?.platform ?? "",
+                coverURL: game?.cover ?? preview?.coverURL ?? "",
+                sessionId: result.id,
+                start: result.start,
+                finish: result.finish
+            )
         } else {
             state = .error("Erro no salvamento de dados do servidor")
         }

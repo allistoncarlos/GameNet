@@ -120,6 +120,7 @@
 				Shared/Widget/WidgetSharedStore.swift,
 				Shared/LiveActivity/GameplayActivityAttributes.swift,
 				Shared/LiveActivity/GameplayLiveActivityManager.swift,
+				"Shared/LiveActivity/WidgetSharedStore+LiveActivity.swift",
 			);
 			target = 43596BD1BDAE0BA6BAFAD581 /* GameNetWidget */;
 		};

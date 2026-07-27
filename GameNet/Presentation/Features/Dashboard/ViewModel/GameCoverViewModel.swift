@@ -70,17 +70,15 @@ class GameCoverViewModel: ObservableObject {
         if let result {
             state = .success(result)
 
-            if result.finish == nil {
-                await GameplayLiveActivityManager.startOrUpdate(
-                    userGameId: playingGameId,
-                    gameName: playingGame.name,
-                    platform: playingGame.platform,
-                    coverURL: playingGame.coverURL,
-                    sessionStart: result.start
-                )
-            } else {
-                await GameplayLiveActivityManager.end(userGameId: playingGameId)
-            }
+            await WidgetSharedStore.upsertSessionAndSyncLiveActivity(
+                userGameId: playingGameId,
+                name: playingGame.name,
+                platform: playingGame.platform,
+                coverURL: playingGame.coverURL,
+                sessionId: result.id,
+                start: result.start,
+                finish: result.finish
+            )
 
             return !wasStarted
         } else {
@@ -104,7 +102,7 @@ class GameCoverViewModel: ObservableObject {
         if success {
             isStarted = false
             state = .idle
-            await GameplayLiveActivityManager.end(userGameId: playingGameId)
+            await WidgetSharedStore.markSessionStoppedAndSyncLiveActivity(userGameId: playingGameId)
             return true
         } else {
             state = .error("Erro ao finalizar o jogo")
@@ -127,7 +125,7 @@ class GameCoverViewModel: ObservableObject {
         if success {
             isStarted = false
             state = .idle
-            await GameplayLiveActivityManager.end(userGameId: playingGameId)
+            await WidgetSharedStore.markSessionStoppedAndSyncLiveActivity(userGameId: playingGameId)
             return true
         } else {
             state = .error("Erro ao parar de jogar")

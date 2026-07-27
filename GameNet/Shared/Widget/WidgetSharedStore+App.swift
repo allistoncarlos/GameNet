@@ -10,7 +10,8 @@ import Factory
 import Foundation
 
 extension WidgetSharedStore {
-    /// Persiste a lista de jogos em andamento vinda do dashboard e recarrega o widget.
+    /// Persiste a lista de jogos em andamento vinda do dashboard, sincroniza
+    /// a Live Activity e recarrega o widget.
     static func savePlayingGames(from playingGames: [PlayingGame]) {
         let mapped: [WidgetSharedPlayingGame] = playingGames.compactMap { game in
             guard let id = game.id else { return nil }
@@ -28,6 +29,10 @@ extension WidgetSharedStore {
 
         savePlayingGames(mapped)
         reloadWidget()
+
+        Task { @MainActor in
+            await GameplayLiveActivityManager.sync(with: mapped)
+        }
     }
 
     /// Sincroniza token e baseURL a partir do Keychain/Info.plist (uso no launch e login).
@@ -54,5 +59,9 @@ extension WidgetSharedStore {
         )
 
         reloadWidget()
+
+        Task { @MainActor in
+            await GameplayLiveActivityManager.syncFromStore()
+        }
     }
 }
