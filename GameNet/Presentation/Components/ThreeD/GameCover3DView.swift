@@ -78,6 +78,7 @@ struct GameCoverSceneKitView: UIViewRepresentable {
     let coverImage: UIImage
     var enablesMotion: Bool
     var autoRotate: Bool
+    var playsEntranceTransition: Bool
 
     func makeUIView(context: Context) -> SCNView {
         let scnView = SCNView()
@@ -92,7 +93,17 @@ struct GameCoverSceneKitView: UIViewRepresentable {
         context.coordinator.boxNode = scnView.scene?.rootNode.childNode(withName: "coverBox", recursively: false)
         context.coordinator.autoRotate = autoRotate
 
-        if enablesMotion {
+        if playsEntranceTransition, let box = context.coordinator.boxNode {
+            Cover3DSceneTransition.playEntrance(on: box)
+            // Inicia motion/auto-rotate após a entrada
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                if enablesMotion {
+                    context.coordinator.startMotion()
+                } else if autoRotate {
+                    context.coordinator.startAutoRotate()
+                }
+            }
+        } else if enablesMotion {
             context.coordinator.startMotion()
         } else if autoRotate {
             context.coordinator.startAutoRotate()
