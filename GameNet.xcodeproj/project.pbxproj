@@ -10,6 +10,7 @@
 		123B03B919E34BC4357C30B9 /* WidgetGameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC12F2BC319728F94EF8DFED /* WidgetGameClient.swift */; };
 		3BB0BCAA5BB4825C5914B69D /* ToggleGameplayIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAF41795FAFC28D4BC19D48 /* ToggleGameplayIntent.swift */; };
 		3E79A02693BA679E15F35427 /* PlayGameWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */; };
+		FA11A004A1B2C3D4E5F60002 /* GameplayLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11A002A1B2C3D4E5F60001 /* GameplayLiveActivity.swift */; };
 		581553562020A546DA5A3E0C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7658B48209B6E50E676075F /* Foundation.framework */; };
 		A5357E912FCA1BA40094C91E /* GameNet.icon in Resources */ = {isa = PBXBuildFile; fileRef = A5357E902FCA1BA40094C91E /* GameNet.icon */; };
 		A5357E922FCA1BA40094C91E /* GameNet.icon in Resources */ = {isa = PBXBuildFile; fileRef = A5357E902FCA1BA40094C91E /* GameNet.icon */; };
@@ -85,6 +86,7 @@
 		378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayGameWidget.swift; sourceTree = "<group>"; };
 		8EAF41795FAFC28D4BC19D48 /* ToggleGameplayIntent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ToggleGameplayIntent.swift; sourceTree = "<group>"; };
 		A2F16DB41D362ECFE5FF3DE0 /* PlayGameProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayGameProvider.swift; sourceTree = "<group>"; };
+		FA11A002A1B2C3D4E5F60001 /* GameplayLiveActivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameplayLiveActivity.swift; sourceTree = "<group>"; };
 		A5357E902FCA1BA40094C91E /* GameNet.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = GameNet.icon; sourceTree = "<group>"; };
 		A53B6FBF2968B19500A0F09E /* GameNet.Watch Watch App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "GameNet.Watch Watch App.entitlements"; sourceTree = "<group>"; };
 		A550C6E02968ABF60043FE74 /* GameNet.Watch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GameNet.Watch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +118,8 @@
 			membershipExceptions = (
 				"Presentation/Extensions/Date+Extensions.swift",
 				Shared/Widget/WidgetSharedStore.swift,
+				Shared/LiveActivity/GameplayActivityAttributes.swift,
+				Shared/LiveActivity/GameplayLiveActivityManager.swift,
 			);
 			target = 43596BD1BDAE0BA6BAFAD581 /* GameNetWidget */;
 		};
@@ -180,6 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */,
+				FA11A002A1B2C3D4E5F60001 /* GameplayLiveActivity.swift */,
 				A2F16DB41D362ECFE5FF3DE0 /* PlayGameProvider.swift */,
 				8EAF41795FAFC28D4BC19D48 /* ToggleGameplayIntent.swift */,
 				BC12F2BC319728F94EF8DFED /* WidgetGameClient.swift */,
@@ -534,6 +539,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3E79A02693BA679E15F35427 /* PlayGameWidget.swift in Sources */,
+				FA11A004A1B2C3D4E5F60002 /* GameplayLiveActivity.swift in Sources */,
 				B6CBFDB9B81E8C81964273D0 /* PlayGameProvider.swift in Sources */,
 				3BB0BCAA5BB4825C5914B69D /* ToggleGameplayIntent.swift in Sources */,
 				123B03B919E34BC4357C30B9 /* WidgetGameClient.swift in Sources */,
