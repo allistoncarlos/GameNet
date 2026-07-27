@@ -9,7 +9,9 @@ struct CurrencyTextField: View {
 
     var body: some View {
         TextField(title, text: $amountString)
+            #if os(iOS)
             .keyboardType(.numberPad)
+            #endif
             .onChange(of: amountString) { _, newValue in
                 let valueFormatted = format(string: newValue)
                 if amountString != valueFormatted {

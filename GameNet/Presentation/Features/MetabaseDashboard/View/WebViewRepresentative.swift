@@ -11,13 +11,13 @@ import WebKit
 
 class WebArchiveDataManager {
     let webArchiveDirectoryURL: URL
-    
+
     init() {
         let fileManager = FileManager.default
         guard let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
             fatalError("Unable to access document directory.")
         }
-        
+
         webArchiveDirectoryURL = documentDirectory.appendingPathComponent("WebArchives")
 
         if !fileManager.fileExists(
@@ -61,36 +61,65 @@ class WebArchiveDataManager {
     }
 }
 
+#if os(iOS)
 struct WebView: UIViewRepresentable {
     let webView: WKWebView
     let webArchiveDataManager: WebArchiveDataManager
-    
+
     init() {
         webView = WKWebView(frame: .zero)
         webArchiveDataManager = WebArchiveDataManager()
     }
-    
+
     func makeUIView(context: Context) -> WKWebView {
         webView.navigationDelegate = context.coordinator
         return webView
     }
-    
+
     func makeCoordinator() -> Coordinator {
         Coordinator(webView, webArchiveDataManager: webArchiveDataManager)
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
+        loadContent(into: webView)
+    }
+}
+#elseif os(macOS)
+struct WebView: NSViewRepresentable {
+    let webView: WKWebView
+    let webArchiveDataManager: WebArchiveDataManager
+
+    init() {
+        webView = WKWebView(frame: .zero)
+        webArchiveDataManager = WebArchiveDataManager()
+    }
+
+    func makeNSView(context: Context) -> WKWebView {
+        webView.navigationDelegate = context.coordinator
+        return webView
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(webView, webArchiveDataManager: webArchiveDataManager)
+    }
+
+    func updateNSView(_ nsView: WKWebView, context: Context) {
+        loadContent(into: webView)
+    }
+}
+#endif
+
+extension WebView {
+    func loadContent(into webView: WKWebView) {
         Task {
             let webArchiveId = "MetabaseDashboard"
-            
             let url = URL(string: Constants.metabaseDashboard)!
-
             let request = URLRequest(
                 url: url,
                 cachePolicy: .returnCacheDataElseLoad,
                 timeoutInterval: TimeInterval(30)
             )
-            
+
             if await urlIsReachable(request) {
                 webView.load(request)
                 webArchiveDataManager.saveWebArchive(from: webView, withName: webArchiveId)
@@ -115,10 +144,10 @@ struct WebView: UIViewRepresentable {
         } catch {
             return false
         }
-        
+
         return false
     }
-    
+
     class Coordinator: NSObject, WKNavigationDelegate {
         let parent: WKWebView
         let webArchiveDataManager: WebArchiveDataManager
@@ -127,20 +156,18 @@ struct WebView: UIViewRepresentable {
             self.parent = parent
             self.webArchiveDataManager = webArchiveDataManager
         }
-        
+
         func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
             print("WebView started loading")
         }
-        
+
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             print("WebView finished loading")
-
             webArchiveDataManager.saveWebArchive(from: parent, withName: "MetabaseDashboard")
         }
-        
+
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
             print("WebView failed with error: \(error)")
-
             webArchiveDataManager.loadWebArchive(named: "MetabaseDashboard", into: webView)
         }
     }

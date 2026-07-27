@@ -8,8 +8,13 @@
 import CachedAsyncImage
 import Factory
 import SwiftUI
-import TTProgressHUD
 import UniformTypeIdentifiers
+
+#if os(macOS)
+import AppKit
+#elseif os(iOS)
+import UIKit
+#endif
 
 // MARK: - GameDetailView
 
@@ -60,7 +65,7 @@ struct GameDetailView: View {
             }
         }
         .overlay(
-            TTProgressHUD($isCopied, config: TTProgressHUDConfig(
+            GameNetProgressHUD($isCopied, config: GameNetHUDConfig(
                 type: .success,
                 title: "Copiado",
                 shouldAutoHide: true,
@@ -69,7 +74,7 @@ struct GameDetailView: View {
             ))
         )
         .overlay(
-            TTProgressHUD($isSaving, config: GameNetApp.hudConfig)
+            GameNetProgressHUD($isSaving, config: GameNetApp.hudConfig)
         )
         .onChange(of: viewModel.isSaving) { _, isSaving in
             self.isSaving = isSaving
@@ -85,9 +90,7 @@ struct GameDetailView: View {
         }
         .task(id: displayCoverURL) {
             guard !displayCoverURL.isEmpty else { return }
-            #if os(iOS)
             coverAccentColor = await CoverAccentColor.from(urlString: displayCoverURL)
-            #endif
         }
     }
 
@@ -154,12 +157,18 @@ struct GameDetailView: View {
             .frame(height: 250)
             .shadow(color: .black.opacity(0.35), radius: 16, y: 8)
             .onTapGesture(count: 2) {
-                #if os(iOS)
+                #if os(macOS)
+                NSPasteboard.general.clearContents()
+                NSPasteboard.general.setString(
+                    viewModel.game?.id ?? viewModel.preview?.name ?? "",
+                    forType: .string
+                )
+                isCopied = true
+                #elseif os(iOS)
                 UIPasteboard.general.setValue(
                     viewModel.game?.id ?? viewModel.preview?.name ?? "",
                     forPasteboardType: UTType.plainText.identifier
                 )
-
                 isCopied = true
                 #endif
             }
@@ -173,8 +182,7 @@ struct GameDetailView: View {
                 }
                 .offset(x: -5, y: -5)
                 .buttonBorderShape(.circle)
-                .buttonStyle(.glassProminent)
-                .tint(coverAccentColor.opacity(0.5))
+                .gameNetGlassProminentButtonStyle(tint: coverAccentColor.opacity(0.5))
                 .animation(.smooth, value: coverAccentColor)
                 .confirmationDialog("", isPresented: $showingConfirmation) {
                     Button("Confirmar") {
@@ -241,7 +249,7 @@ struct GameDetailView: View {
             .padding(.leading, 8)
         }
         .padding(12)
-        .glassEffect(in: .rect(cornerRadius: 14))
+        .gameNetGlassEffect(in: .rect(cornerRadius: 14))
     }
 
     @ViewBuilder
@@ -260,7 +268,7 @@ struct GameDetailView: View {
             }
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .glassEffect(in: .rect(cornerRadius: 14))
+            .gameNetGlassEffect(in: .rect(cornerRadius: 14))
             .transition(.opacity)
         } else if viewModel.isLoadingGameplays {
             ProgressView()

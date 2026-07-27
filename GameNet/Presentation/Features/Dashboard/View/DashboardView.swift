@@ -7,7 +7,6 @@
 
 import Factory
 import SwiftUI
-import TTProgressHUD
 import CachedAsyncImage
 import StepperView
 
@@ -119,7 +118,7 @@ struct DashboardView: View {
                 .gameDetailZoomTransition(gameId: gameplaySession.userGameId)
             }
             .navigationDestination(for: String.self) { value in
-                #if os(iOS) && DEBUG
+                #if DEBUG && canImport(WebKit)
                 if value == "" {
                     viewModel.featureToggle()
                 } else if FirebaseRemoteConfig.metabaseDashboard {
@@ -128,7 +127,7 @@ struct DashboardView: View {
                 #endif
             }
             .toolbar {
-                #if os(iOS) && DEBUG
+                #if DEBUG && canImport(WebKit)
                 Button(action: {}) {
                     SwiftUI.NavigationLink(value: String()) {
                         Image(systemName: "gear")
@@ -145,14 +144,16 @@ struct DashboardView: View {
         }
         .gameCoverTransitionNamespace(gameCoverTransitionNamespace)
         .overlay(
-            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+            GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
         .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
         .onReceive(NotificationCenter.default.publisher(for: .gameplaySessionDidChangeFromWidget)) { _ in
             Task {
+                #if os(iOS)
                 await GameplayLiveActivityManager.syncFromStore()
+                #endif
                 if !FirebaseRemoteConfig.serverDrivenDashboard {
                     await viewModel.fetchData()
                 }
@@ -161,7 +162,9 @@ struct DashboardView: View {
         .onChange(of: scenePhase) { _, phase in
             guard phase == .active else { return }
             Task {
+                #if os(iOS)
                 await GameplayLiveActivityManager.syncFromStore()
+                #endif
                 if !FirebaseRemoteConfig.serverDrivenDashboard {
                     await viewModel.fetchData()
                 }
@@ -180,7 +183,10 @@ struct DashboardView: View {
     @State private var presentedViews = NavigationPath()
     @State private var selectedPlayingGameId: String?
     @Namespace private var gameCoverTransitionNamespace
-    var containerHeight: CGFloat = UIScreen.main.bounds.height
+
+    private var playingCardHeight: CGFloat {
+        min(PlatformScreen.height * 0.45, 420)
+    }
 
     private var orderedPlayingGames: [PlayingGame] {
         guard let playingGames = viewModel.dashboard?.playingGames else { return [] }
@@ -263,7 +269,7 @@ extension DashboardView {
             }
             .padding()
         }
-        .frame(height: containerHeight * 0.5)
+        .frame(height: playingCardHeight)
         .padding()
     }
 
@@ -333,8 +339,8 @@ extension DashboardView {
         }
         .foregroundStyle(.white)
         .padding(20)
-        .glassEffect(
-            .regular.tint(Color.secondaryCardBackground),
+        .gameNetGlassEffect(
+            .tinted(Color.secondaryCardBackground),
             in: .rect(cornerRadius: 20)
         )
         .padding()

@@ -29,7 +29,7 @@ struct GameItemView: View {
                 .padding(4)
                 .foregroundColor(.white)
                 .font(.system(size: 10))
-                .glassEffect()
+                .gameNetGlassEffect()
         }
     }
 }

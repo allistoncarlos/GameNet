@@ -6,6 +6,7 @@
 //  Sempre derive o estado a partir da lista de jogos em andamento (App Group).
 //
 
+#if os(iOS)
 import ActivityKit
 import Foundation
 
@@ -112,3 +113,4 @@ enum GameplayLiveActivityManager {
         await end(userGameId: nil)
     }
 }
+#endif

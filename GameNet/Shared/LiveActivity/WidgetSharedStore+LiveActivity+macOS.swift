@@ -1,29 +1,19 @@
 //
-//  WidgetSharedStore+LiveActivity.swift
+//  WidgetSharedStore+LiveActivity+macOS.swift
 //  GameNet
 //
-//  Ponte App Group ↔ Live Activity. Qualquer play/stop (app ou widget)
-//  deve passar por aqui para a activity aparecer/desaparecer de forma consistente.
-//
 
-#if os(iOS)
+#if os(macOS)
 import Foundation
 
 extension WidgetSharedStore {
-
-    /// Persiste a lista, sincroniza a Live Activity e recarrega o widget.
     @MainActor
     static func persistPlayingGamesAndSyncLiveActivity(
         _ games: [WidgetSharedPlayingGame]
     ) async {
         savePlayingGames(games)
-        await GameplayLiveActivityManager.sync(with: games)
-        reloadWidget()
     }
 
-    /// Atualiza (ou insere) a sessão de um jogo e sincroniza a Live Activity.
-    /// - `finish == nil` → sessão ativa → activity aparece
-    /// - `finish != nil` → sessão parada → activity desaparece
     @MainActor
     static func upsertSessionAndSyncLiveActivity(
         userGameId: String,
@@ -51,10 +41,9 @@ extension WidgetSharedStore {
             games.insert(updated, at: 0)
         }
 
-        await persistPlayingGamesAndSyncLiveActivity(games)
+        savePlayingGames(games)
     }
 
-    /// Marca a sessão do jogo como encerrada e sincroniza (activity some).
     @MainActor
     static func markSessionStoppedAndSyncLiveActivity(userGameId: String) async {
         var games = loadPlayingGames()
@@ -65,7 +54,7 @@ extension WidgetSharedStore {
             }
         }
 
-        await persistPlayingGamesAndSyncLiveActivity(games)
+        savePlayingGames(games)
     }
 }
 #endif

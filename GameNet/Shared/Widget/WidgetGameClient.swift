@@ -6,6 +6,7 @@
 //  em andamento e iniciar/parar gameplays, reaproveitando o token do App Group.
 //
 
+#if os(iOS)
 import Foundation
 
 // MARK: - API models (mínimos)
@@ -250,3 +251,4 @@ struct WidgetGameClient {
         return refreshed.accessToken
     }
 }
+#endif

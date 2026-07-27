@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TTProgressHUD
 
 // MARK: - ListDetailsView
 
@@ -32,7 +31,7 @@ struct ListDetailsView: View {
             .disabled(isLoading)
         }
         .overlay {
-            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+            GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
         }
         .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading

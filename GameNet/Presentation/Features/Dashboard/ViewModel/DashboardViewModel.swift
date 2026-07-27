@@ -265,7 +265,7 @@ extension DashboardViewModel {
         )
     }
     
-    #if os(iOS) && DEBUG
+    #if DEBUG && canImport(WebKit)
     func featureToggle() -> some View {
         return DashboardRouter.makeFeatureToggle()
     }

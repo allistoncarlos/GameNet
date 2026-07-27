@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import TTProgressHUD
 
 struct ServerDrivenPlatformsView: View {
     @ObservedObject var viewModel: ServerDrivenPlatformsViewModel
@@ -22,22 +21,18 @@ struct ServerDrivenPlatformsView: View {
             .disabled(isLoading)
             .padding(.top, 10)
             .navigationDestination(for: String.self) { platformId in
-                #if os(iOS)
-                    Text(platformId)
-                #endif
+                Text(platformId)
             }
             .navigationView(title: "Platformas")
             .toolbar {
-                #if os(iOS)
                 Button(action: {}) {
                     SwiftUI.NavigationLink(value: String()) {
                         Image(systemName: "plus")
                     }
                 }
-                #endif
             }
             .overlay(
-                TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+                GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
             )
             .onChange(of: presentedPlatforms) { _, newValue in
                 if newValue.isEmpty {

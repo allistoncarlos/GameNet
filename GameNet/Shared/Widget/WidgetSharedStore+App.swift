@@ -30,9 +30,11 @@ extension WidgetSharedStore {
         savePlayingGames(mapped)
         reloadWidget()
 
+        #if os(iOS)
         Task { @MainActor in
             await GameplayLiveActivityManager.sync(with: mapped)
         }
+        #endif
     }
 
     /// Sincroniza token e baseURL a partir do Keychain/Info.plist (uso no launch e login).
@@ -60,8 +62,10 @@ extension WidgetSharedStore {
 
         reloadWidget()
 
+        #if os(iOS)
         Task { @MainActor in
             await GameplayLiveActivityManager.syncFromStore()
         }
+        #endif
     }
 }

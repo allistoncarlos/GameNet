@@ -7,16 +7,10 @@
 //  onde `Activity.request` consegue iniciar a Live Activity.
 //
 
+#if os(iOS)
 import AppIntents
 import Foundation
 import WidgetKit
-
-public extension Notification.Name {
-    /// Publicado quando o widget/Island altera uma sessão — o app refresca o dashboard.
-    static let gameplaySessionDidChangeFromWidget = Notification.Name(
-        "com.alliston.GameNetApp.gameplaySessionDidChangeFromWidget"
-    )
-}
 
 struct ToggleGameplayIntent: AppIntent {
     static var title: LocalizedStringResource = "Iniciar ou parar gameplay"
@@ -83,3 +77,4 @@ struct ToggleGameplayIntent: AppIntent {
         return .result()
     }
 }
+#endif

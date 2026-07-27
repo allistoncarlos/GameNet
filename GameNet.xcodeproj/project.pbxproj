@@ -18,7 +18,7 @@
 		A550C6F62968AE3D0043FE74 /* PlayingGamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A550C6F52968AE3D0043FE74 /* PlayingGamesViewModel.swift */; };
 		A581484A296DF8AD00F52ED7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5814849296DF8AD00F52ED7 /* HomeView.swift */; };
 		A581484D296DF8CB00F52ED7 /* NotLoggedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A581484C296DF8CB00F52ED7 /* NotLoggedView.swift */; };
-		A59C4499296A10C90097E0F4 /* GameNet.Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A550C6E02968ABF60043FE74 /* GameNet.Watch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A59C4499296A10C90097E0F4 /* GameNet.Watch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A550C6E02968ABF60043FE74 /* GameNet.Watch Watch App.app */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A5DD63DD2FF305A500AEFDCB /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = A51AA6A32899539A0081AE4B /* Factory */; };
 		A5DD63DE2FF305A500AEFDCB /* OHHTTPStubs in Frameworks */ = {isa = PBXBuildFile; productRef = A536616A2899820700D52088 /* OHHTTPStubs */; };
 		A5DD63DF2FF305A500AEFDCB /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A536616C2899820700D52088 /* OHHTTPStubsSwift */; };
@@ -27,7 +27,7 @@
 		A5DD63E22FF305A500AEFDCB /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44D12CE4DAED00C0EC3B /* FirebaseCore */; };
 		A5DD63E32FF305A500AEFDCB /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = A54D44D32CE4DAED00C0EC3B /* FirebaseRemoteConfig */; };
 		A5DD63E42FF305A500AEFDCB /* StepperView in Frameworks */ = {isa = PBXBuildFile; productRef = A5AE543D2CE67BE8007EF068 /* StepperView */; };
-		A5DD63E52FF305A500AEFDCB /* TTProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = A5675A392E80851400AF066A /* TTProgressHUD */; };
+		A5DD63E52FF305A500AEFDCB /* TTProgressHUD in Frameworks */ = {isa = PBXBuildFile; platformFilter = ios; productRef = A5675A392E80851400AF066A /* TTProgressHUD */; };
 		A5F0B4112F006A1200420411 /* WatchConnectivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B2012F006A1200420201 /* WatchConnectivityManager.swift */; };
 		A5F0B4122F006A1200420412 /* WatchPlayingGamesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B2022F006A1200420202 /* WatchPlayingGamesService.swift */; };
 		A5F0B4132F006A1200420413 /* WatchConnectivityMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B1012F006A1200420101 /* WatchConnectivityMessages.swift */; };
@@ -35,7 +35,7 @@
 		A5F0B4152F006A1200420415 /* WatchColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F0B3012F006A1200420301 /* WatchColor.swift */; };
 		B6CBFDB9B81E8C81964273D0 /* PlayGameProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F16DB41D362ECFE5FF3DE0 /* PlayGameProvider.swift */; };
 		FA11A004A1B2C3D4E5F60002 /* GameplayLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11A002A1B2C3D4E5F60001 /* GameplayLiveActivity.swift */; };
-		FDD9AF2030F21186E3E2EEDB /* GameNetWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C954B4D3AC3929BFAB4FA22C /* GameNetWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FDD9AF2030F21186E3E2EEDB /* GameNetWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C954B4D3AC3929BFAB4FA22C /* GameNetWidget.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +65,9 @@
 				FDD9AF2030F21186E3E2EEDB /* GameNetWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
+			platformFilters = (
+				ios,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		A59C4498296A10C80097E0F4 /* Embed Watch Content */ = {
@@ -76,6 +79,9 @@
 				A59C4499296A10C90097E0F4 /* GameNet.Watch Watch App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
+			platformFilters = (
+				ios,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -113,6 +119,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Presentation/Extensions/Date+Extensions.swift",
+				Shared/GameNetNotifications.swift,
 				Shared/LiveActivity/GameplayActivityAttributes.swift,
 				Shared/LiveActivity/GameplayLiveActivityManager.swift,
 				"Shared/LiveActivity/WidgetSharedStore+LiveActivity.swift",
@@ -579,6 +586,7 @@
 		01A9561AD099747AAE63F3D5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = GameNetWidget;
+			platformFilter = ios;
 			target = 43596BD1BDAE0BA6BAFAD581 /* GameNetWidget */;
 			targetProxy = ED334272AD51777657338734 /* PBXContainerItemProxy */;
 		};
@@ -873,11 +881,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -911,11 +920,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alliston.GameNetApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "appletvos appletvsimulator iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

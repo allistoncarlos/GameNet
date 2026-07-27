@@ -7,7 +7,6 @@
 
 import Factory
 import SwiftUI
-import TTProgressHUD
 
 // MARK: - GamesView
 
@@ -27,9 +26,11 @@ struct GamesView: View {
 
     var body: some View {
         NavigationStack(path: navigationPath ?? $presentedGames) {
-            Group {
+            GeometryReader { geometry in
+                let columns = PlatformMetrics.gameGridColumns(for: geometry.size.width)
+
                 ScrollView {
-                    LazyVGrid(columns: adaptiveColumns, spacing: 20) {
+                    LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(search.isEmpty ? viewModel.data : viewModel.searchedGames, id: \.id) { game in
                             if origin == .home {
                                 if let gameId = game.id {
@@ -63,6 +64,9 @@ struct GamesView: View {
                             }
                         }
                     }
+                    .frame(maxWidth: PlatformMetrics.contentMaxWidth(for: geometry.size.width))
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, PlatformMetrics.horizontalPadding(for: geometry.size.width))
                 }
                 .navigationDestination(for: GameDetailRoute.self) { route in
                     viewModel.showGameDetailView(
@@ -110,7 +114,7 @@ struct GamesView: View {
         }
         .gameCoverTransitionNamespace(gameCoverTransitionNamespace)
         .overlay(
-            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+            GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
         .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
@@ -130,11 +134,6 @@ struct GamesView: View {
     // MARK: Private
 
     @State private var search: String = ""
-
-    private let adaptiveColumns = [
-        GridItem(.adaptive(minimum: 120))
-    ]
-
     @State var presentedGames = NavigationPath()
 }
 

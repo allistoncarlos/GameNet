@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if os(iOS)
 import WidgetKit
+#endif
 
 // MARK: - WidgetSharedPlayingGame
 
@@ -181,6 +183,8 @@ public enum WidgetSharedStore {
     // MARK: Reload
 
     public static func reloadWidget() {
+        #if os(iOS)
         WidgetCenter.shared.reloadTimelines(ofKind: widgetKind)
+        #endif
     }
 }

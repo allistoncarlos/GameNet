@@ -5,6 +5,7 @@
 //  Atributos compartilhados entre o app e a Widget Extension para Live Activity.
 //
 
+#if os(iOS)
 import ActivityKit
 import Foundation
 
@@ -38,3 +39,4 @@ public struct GameplayActivityAttributes: ActivityAttributes {
         self.coverURL = coverURL
     }
 }
+#endif

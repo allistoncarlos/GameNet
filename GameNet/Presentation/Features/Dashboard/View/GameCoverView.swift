@@ -61,8 +61,7 @@ struct GameCoverView: View {
                         }
                         .offset(x: -5, y: -5)
                         .buttonBorderShape(.circle)
-                        .buttonStyle(.glassProminent)
-                        .tint(coverAccentColor.opacity(0.5))
+                        .gameNetGlassProminentButtonStyle(tint: coverAccentColor.opacity(0.5))
                         .animation(.smooth, value: coverAccentColor)
                         .contextMenu {
                             Button {
@@ -148,9 +147,7 @@ struct GameCoverView: View {
         }
         .task(id: coverURL) {
             guard !coverURL.isEmpty else { return }
-            #if os(iOS)
             coverAccentColor = await CoverAccentColor.from(urlString: coverURL)
-            #endif
         }
     }
 

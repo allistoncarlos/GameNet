@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-// MARK: - Game Cover Transition
-
 private struct GameCoverTransitionNamespaceKey: EnvironmentKey {
     static let defaultValue: Namespace.ID? = nil
 }
@@ -38,11 +36,15 @@ extension View {
     }
 
     func gameDetailNavigationBar(color: Color = .main) -> some View {
+        #if os(macOS)
+        navigationTitle("")
+        #else
         navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarTitleDisplayMode(.inline)
             .toolbarBackground(.hidden, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
+        #endif
     }
 }
 
@@ -51,12 +53,16 @@ private struct GameCoverTransitionSourceModifier: ViewModifier {
     let id: String?
 
     func body(content: Content) -> some View {
-        if let id, let namespace {
+        #if os(iOS)
+        if #available(iOS 18.0, *), let id, let namespace {
             content
                 .matchedTransitionSource(id: id, in: namespace)
         } else {
             content
         }
+        #else
+        content
+        #endif
     }
 }
 
@@ -65,7 +71,8 @@ private struct GameDetailZoomTransitionModifier: ViewModifier {
     let gameId: String
 
     func body(content: Content) -> some View {
-        if let namespace {
+        #if os(iOS)
+        if #available(iOS 18.0, *), let namespace {
             content
                 .gameDetailNavigationBar()
                 .navigationTransition(.zoom(sourceID: gameId, in: namespace))
@@ -73,5 +80,9 @@ private struct GameDetailZoomTransitionModifier: ViewModifier {
             content
                 .gameDetailNavigationBar()
         }
+        #else
+        content
+            .gameDetailNavigationBar()
+        #endif
     }
 }

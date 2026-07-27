@@ -7,11 +7,38 @@
 
 import SwiftUI
 
+// MARK: - HomeSection
+
+private enum HomeSection: String, CaseIterable, Identifiable {
+    case dashboard
+    case games
+    case platforms
+    case lists
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .dashboard: return "Dashboard"
+        case .games: return "Games"
+        case .platforms: return "Plataformas"
+        case .lists: return "Listas"
+        }
+    }
+
+    var icon: String {
+        switch self {
+        case .dashboard: return "display"
+        case .games: return "gamecontroller"
+        case .platforms: return "laptopcomputer"
+        case .lists: return "list.bullet.rectangle.portrait"
+        }
+    }
+}
+
 // MARK: - HomeView
 
 struct HomeView: View {
-
-    // MARK: Lifecycle
 
     init(
         homeViewModel: HomeViewModel,
@@ -19,7 +46,6 @@ struct HomeView: View {
         platformsViewModel: PlatformsViewModel,
         gamesViewModel: GamesViewModel,
         listsViewModel: ListsViewModel,
-        
         serverDrivenPlatformsViewModel: ServerDrivenPlatformsViewModel
     ) {
         self.homeViewModel = homeViewModel
@@ -27,28 +53,52 @@ struct HomeView: View {
         self.platformsViewModel = platformsViewModel
         self.gamesViewModel = gamesViewModel
         self.listsViewModel = listsViewModel
-        
         self.serverDrivenPlatformsViewModel = serverDrivenPlatformsViewModel
     }
-
-    // MARK: Internal
 
     @ObservedObject var homeViewModel: HomeViewModel
     @ObservedObject var dashboardViewModel: DashboardViewModel
     @ObservedObject var platformsViewModel: PlatformsViewModel
     @ObservedObject var gamesViewModel: GamesViewModel
     @ObservedObject var listsViewModel: ListsViewModel
-    
     @ObservedObject var serverDrivenPlatformsViewModel: ServerDrivenPlatformsViewModel
 
+    #if os(macOS)
+    @State private var selectedSection: HomeSection = .dashboard
+    #endif
+
     var body: some View {
+        #if os(macOS)
+        TabView(selection: $selectedSection) {
+            DashboardView(viewModel: dashboardViewModel)
+                .tag(HomeSection.dashboard)
+                .tabItem { Label("Dashboard", systemImage: "display") }
+
+            GamesView(
+                viewModel: gamesViewModel,
+                selectedUserGameId: .constant(nil),
+                isPresented: .constant(false)
+            )
+            .tag(HomeSection.games)
+            .tabItem { Label("Games", systemImage: "gamecontroller") }
+
+            platforms
+                .tag(HomeSection.platforms)
+                .tabItem { Label("Plataformas", systemImage: "laptopcomputer") }
+
+            ListsView(viewModel: listsViewModel)
+                .tag(HomeSection.lists)
+                .tabItem { Label("Listas", systemImage: "list.bullet.rectangle") }
+        }
+        .tabViewStyle(.automatic)
+        .foregroundColor(.accentColor)
+        .macOSWindowStyle()
+        #else
         TabView {
             DashboardView(viewModel: dashboardViewModel)
                 .tabItem {
                     Label("Dashboard", systemImage: "display")
                 }
-            // TODO: tvOS
-//                .navigationBarTitle("Test", displayMode: .inline)
 
             GamesView(
                 viewModel: gamesViewModel,
@@ -66,11 +116,12 @@ struct HomeView: View {
 
             ListsView(viewModel: listsViewModel)
                 .tabItem {
-                    Label("Listas", systemImage: "list.bullet.rectangle.portrait")
+                    Label("Listas", systemImage: "list.bullet.rectangle")
                 }
         }
         .foregroundColor(.accentColor)
         .navigationViewStyle(.stack)
+        #endif
     }
 
     @ViewBuilder private var platforms: some View {
@@ -80,15 +131,12 @@ struct HomeView: View {
     }
 }
 
-// MARK: - Previews
-
 #Preview("Dark Mode") {
     let homeViewModel = HomeViewModel()
     let dashboardViewModel = DashboardViewModel()
     let platformsViewModel = PlatformsViewModel()
     let gamesViewModel = GamesViewModel()
     let listsViewModel = ListsViewModel()
-    
     let serverDrivenPlatformsViewModel = ServerDrivenPlatformsViewModel()
 
     HomeView(
@@ -97,7 +145,6 @@ struct HomeView: View {
         platformsViewModel: platformsViewModel,
         gamesViewModel: gamesViewModel,
         listsViewModel: listsViewModel,
-        
         serverDrivenPlatformsViewModel: serverDrivenPlatformsViewModel
     ).preferredColorScheme(.dark)
 }
@@ -108,7 +155,6 @@ struct HomeView: View {
     let platformsViewModel = PlatformsViewModel()
     let gamesViewModel = GamesViewModel()
     let listsViewModel = ListsViewModel()
-    
     let serverDrivenPlatformsViewModel = ServerDrivenPlatformsViewModel()
 
     HomeView(
@@ -117,7 +163,6 @@ struct HomeView: View {
         platformsViewModel: platformsViewModel,
         gamesViewModel: gamesViewModel,
         listsViewModel: listsViewModel,
-        
         serverDrivenPlatformsViewModel: serverDrivenPlatformsViewModel
     ).preferredColorScheme(.light)
 }

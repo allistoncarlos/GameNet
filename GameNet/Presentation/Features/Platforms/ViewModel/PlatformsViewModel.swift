@@ -53,7 +53,6 @@ class PlatformsViewModel: ObservableObject {
     private var cancellable = Set<AnyCancellable>()
 }
 
-#if os(iOS)
 extension PlatformsViewModel {
     func editPlatformView(navigationPath: Binding<NavigationPath>, platformId: String? = nil) -> some View {
         let platform = platforms?.first(where: { $0.id == platformId })
@@ -61,4 +60,3 @@ extension PlatformsViewModel {
         return PlatformRouter.makeEditPlatformView(navigationPath: navigationPath, platform: platform)
     }
 }
-#endif

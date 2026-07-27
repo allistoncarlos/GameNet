@@ -8,11 +8,7 @@
 import Charts
 import SwiftUI
 
-// MARK: - GameplayChartView
-
 struct GameplayChartView: View {
-
-    // MARK: Internal
 
     @Binding var data: [BarShape]
     @Binding var recentRegister: UUID?
@@ -28,65 +24,47 @@ struct GameplayChartView: View {
                 Text("A").tag(4)
             }
             .pickerStyle(.segmented)
-            ScrollViewReader { scrollPosition in
-                ScrollView(.horizontal) {
-                    Chart {
-                        ForEach($data.wrappedValue.sorted(by: { $0.sortDate < $1.sortDate })) { shape in
-                            BarMark(
-                                x: .value("Shape Type", shape.type),
-                                y: .value("Total Count", shape.count)
-                            )
+            GeometryReader { geometry in
+                let chartWidth = max(
+                    geometry.size.width,
+                    CGFloat(data.count) * barWidth
+                )
+
+                ScrollViewReader { scrollPosition in
+                    ScrollView(.horizontal) {
+                        Chart {
+                            ForEach(data.sorted(by: { $0.sortDate < $1.sortDate })) { shape in
+                                BarMark(
+                                    x: .value("Shape Type", shape.type),
+                                    y: .value("Total Count", shape.count)
+                                )
+                            }
                         }
+                        .foregroundColor(.main)
+                        .frame(width: chartWidth)
+                        .padding()
+                        .id(10001)
                     }
-                    .foregroundColor(.main)
-                    .frame(width: UIScreen.main.bounds.size.width < CGFloat($data.count) * barWidth ? CGFloat($data.count) * barWidth : UIScreen.main.bounds.size.width)
-                    .padding()
-                    .id(10001)
-                }
-                .scrollIndicators(.hidden)
-                .onAppear {
-                    scrollPosition.scrollTo(10001, anchor: .topTrailing)
+                    .scrollIndicators(.hidden)
+                    .onAppear {
+                        scrollPosition.scrollTo(10001, anchor: .topTrailing)
+                    }
                 }
             }
+            .frame(height: 220)
         }
     }
 
-    // MARK: Private
-
     @State private var selectedPeriod = 0
-
 }
-
-// MARK: - Previews
 
 #Preview("Dark Mode") {
     GameplayChartView(
         data: .constant([
             .init(type: "Cube", sortDate: Date(), count: 5),
             .init(type: "Sphere", sortDate: Date(), count: 4),
-            .init(type: "Pyramid", sortDate: Date(), count: 4),
-            .init(type: "Cube2", sortDate: Date(), count: 5),
-            .init(type: "Sphere2", sortDate: Date(), count: 4),
-            .init(type: "Pyramid2", sortDate: Date(), count: 4),
-            .init(type: "Pyramid3", sortDate: Date(), count: 4),
-            .init(type: "Pyramid4", sortDate: Date(), count: 4)
+            .init(type: "Pyramid", sortDate: Date(), count: 4)
         ]),
         recentRegister: .constant(UUID())
     ).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    GameplayChartView(
-        data: .constant([
-            .init(type: "Cube", sortDate: Date(), count: 5),
-            .init(type: "Sphere", sortDate: Date(), count: 4),
-            .init(type: "Pyramid", sortDate: Date(), count: 4),
-            .init(type: "Cube2", sortDate: Date(), count: 5),
-            .init(type: "Sphere2", sortDate: Date(), count: 4),
-            .init(type: "Pyramid2", sortDate: Date(), count: 4),
-            .init(type: "Pyramid3", sortDate: Date(), count: 4),
-            .init(type: "Pyramid4", sortDate: Date(), count: 4)
-        ]),
-        recentRegister: .constant(UUID())
-    ).preferredColorScheme(.light)
 }

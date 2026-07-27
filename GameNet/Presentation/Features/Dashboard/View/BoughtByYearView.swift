@@ -20,7 +20,7 @@ struct BoughtByYearView: View {
         VStack(alignment: .leading, spacing: 18) {
             header
 
-            GlassEffectContainer(spacing: 12) {
+            GameNetGlassContainer(spacing: 12) {
                 LazyVGrid(columns: columns, spacing: 12) {
                     ForEach(Array(displayedItems.enumerated()), id: \.element.year) { index, item in
                         yearCard(item, isHighlighted: index == 0)
@@ -96,8 +96,8 @@ struct BoughtByYearView: View {
             }
             .frame(maxWidth: .infinity, minHeight: 130, alignment: .topLeading)
             .padding(16)
-            .glassEffect(
-                .regular.tint(isHighlighted ? Color.main.opacity(0.35) : .white.opacity(0.12)),
+            .gameNetGlassEffect(
+                .tinted(isHighlighted ? Color.main : .white, opacity: isHighlighted ? 0.35 : 0.12),
                 in: .rect(cornerRadius: 18)
             )
             .overlay(

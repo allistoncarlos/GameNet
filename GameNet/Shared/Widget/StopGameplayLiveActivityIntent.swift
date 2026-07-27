@@ -7,6 +7,7 @@
 //  (AppIntent puro no botão da LA frequentemente não chama perform()).
 //
 
+#if os(iOS)
 import AppIntents
 import Foundation
 import WidgetKit
@@ -93,3 +94,4 @@ struct StopGameplayLiveActivityIntent: LiveActivityIntent {
         return .result()
     }
 }
+#endif

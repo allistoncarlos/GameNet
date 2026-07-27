@@ -5,11 +5,8 @@
 //  Created by Alliston Aleixo on 24/08/22.
 //
 
-#if os(iOS)
 import Factory
 import SwiftUI
-
-// MARK: - EditPlatformView
 
 struct EditPlatformView: View {
     @ObservedObject var viewModel: EditPlatformViewModel
@@ -18,7 +15,9 @@ struct EditPlatformView: View {
     var body: some View {
         Form {
             TextField("Plataforma", text: $viewModel.platform.name)
+                #if os(iOS)
                 .autocapitalization(.none)
+                #endif
                 .onSubmit {
                     Task {
                         await viewModel.save()
@@ -48,8 +47,6 @@ struct EditPlatformView: View {
     }
 }
 
-// MARK: - Previews
-
 #Preview("Dark Mode") {
     let _ = Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
     let platform = Platform(id: "1", name: "Nintendo Switch")
@@ -63,10 +60,9 @@ struct EditPlatformView: View {
 #Preview("Light Mode") {
     let _ = Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
     let platform = Platform(id: "1", name: "Nintendo Switch")
-    
+
     EditPlatformView(
         viewModel: EditPlatformViewModel(platform: platform),
         navigationPath: .constant(NavigationPath())
     ).preferredColorScheme(.light)
 }
-#endif

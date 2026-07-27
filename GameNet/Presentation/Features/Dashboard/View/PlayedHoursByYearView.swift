@@ -32,8 +32,8 @@ struct PlayedHoursByYearView: View {
         }
         .foregroundStyle(.white)
         .padding(20)
-        .glassEffect(
-            .regular.tint(Color.secondaryCardBackground),
+        .gameNetGlassEffect(
+            .tinted(Color.secondaryCardBackground),
             in: .rect(cornerRadius: 20)
         )
         .padding()
@@ -71,8 +71,8 @@ struct PlayedHoursByYearView: View {
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 8)
-            .glassEffect(
-                .regular.tint(.white.opacity(0.18)),
+            .gameNetGlassEffect(
+                .tinted(.white, opacity: 0.18),
                 in: .capsule
             )
 

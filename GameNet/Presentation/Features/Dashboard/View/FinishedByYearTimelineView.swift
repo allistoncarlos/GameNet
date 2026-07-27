@@ -20,7 +20,7 @@ struct FinishedByYearTimelineView: View {
         VStack(alignment: .leading, spacing: 18) {
             header
 
-            GlassEffectContainer(spacing: 12) {
+            GameNetGlassContainer(spacing: 12) {
                 LazyVStack(spacing: 0) {
                     ForEach(Array(displayedGames.enumerated()), id: \.element.year) { index, finishedGame in
                         TimelineItemView(
@@ -167,9 +167,9 @@ struct TimelineItemView: View {
             .font(.dashboardGameSubtitle)
             .foregroundStyle(.white)
             .frame(width: badgeSize, height: badgeSize)
-            .glassEffect(
-                .regular.tint(Color.main.opacity(isHighlighted ? 0.8 : 0.45)),
-                in: Circle()
+            .gameNetGlassEffect(
+                .tinted(Color.main, opacity: isHighlighted ? 0.8 : 0.45),
+                in: .circle
             )
             .overlay(
                 Circle()

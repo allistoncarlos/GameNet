@@ -7,7 +7,6 @@
 
 import Factory
 import SwiftUI
-import TTProgressHUD
 
 // MARK: - EditListView
 
@@ -23,7 +22,9 @@ struct EditListView: View {
         Form {
             Section(header: Text("Título")) {
                 TextField("Lista", text: $viewModel.listGame.name)
+                    #if os(iOS)
                     .autocapitalization(.none)
+                    #endif
                     .onSubmit {
                         Task {
                             await viewModel.save()
@@ -84,7 +85,7 @@ struct EditListView: View {
             )
         }
         .overlay(
-            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
+            GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
         .onChange(of: viewModel.state, { _, state in
             isLoading = state == .loading
