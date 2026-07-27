@@ -249,6 +249,13 @@ struct GameDetailView: View {
                 sessionsSummaryRow(totalGameplayTime: gameplays.totalGameplayTime)
 
                 if !viewModel.sortedGameplaySessions.isEmpty {
+                    GameplaySessionsMap3DView(
+                        sessions: viewModel.sortedGameplaySessions,
+                        accentColor: coverAccentColor,
+                        isActiveSession: { $0.finish == nil }
+                    )
+                    .padding(.top, 4)
+
                     sessionsHistoryExpander
                 }
             }
