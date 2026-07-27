@@ -280,7 +280,12 @@ extension DashboardView {
 extension DashboardView {
     var annualGameplayProgressCard: some View {
         AnnualGameplayProgressChartView(
-            series: viewModel.annualGameplayProgress
+            series: viewModel.annualGameplayProgress,
+            onSelectYear: { year in
+                if let sessions = viewModel.gameplaySessions?[year] {
+                    presentedViews.append(GameplaySessionNavigation(key: year, value: sessions))
+                }
+            }
         )
     }
 }

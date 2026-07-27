@@ -15,8 +15,10 @@ struct AnnualGameplayProgressChartView: View {
     // MARK: Internal
 
     let series: [AnnualGameplayProgressSeries]
+    var onSelectYear: ((Int) -> Void)? = nil
     @State var selectedPoint: AnnualGameplayProgressPoint? = nil
     @State var scrollPosition = 1
+    @State private var shows3DSurface = false
 
     var body: some View {
         ZStack {
@@ -24,17 +26,34 @@ struct AnnualGameplayProgressChartView: View {
                 .fill(Color.primaryCardBackground)
 
             VStack(alignment: .leading, spacing: 16) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(title)
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                        .font(.cardTitle)
+                HStack(alignment: .top) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(title)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                            .font(.cardTitle)
 
-                    if let subtitle {
-                        Text(subtitle)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                        if let subtitle {
+                            Text(subtitle)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                     }
 
+                    Picker("Modo", selection: $shows3DSurface) {
+                        Text("2D").tag(false)
+                        Text("3D").tag(true)
+                    }
+                    .pickerStyle(.segmented)
+                    .frame(width: 100)
+                }
+
+                if shows3DSurface {
+                    AnnualGameplaySurface3DView(
+                        series: series,
+                        onSelectYear: onSelectYear
+                    )
+                    .frame(height: 320)
+                } else {
                     GeometryReader { _ in
                         Chart(gameplayPoints) { point in
                             LineMark(
@@ -125,8 +144,8 @@ struct AnnualGameplayProgressChartView: View {
                             scrollPosition = initialScrollPosition
                         }
                     }
+                    .frame(height: 300)
                 }
-                .frame(height: 300)
             }
             .padding()
         }
