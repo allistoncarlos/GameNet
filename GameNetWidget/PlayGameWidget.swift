@@ -143,6 +143,7 @@ struct PlayGameWidget: Widget {
 struct GameNetWidgetBundle: WidgetBundle {
     var body: some Widget {
         PlayGameWidget()
+        GameplayLiveActivity()
     }
 }
 
