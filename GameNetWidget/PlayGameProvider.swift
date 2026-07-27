@@ -50,6 +50,8 @@ struct PlayGameProvider: TimelineProvider {
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<PlayGameEntry>) -> Void) {
         Task {
+            // Após um tap no botão, o cache local já está atualizado — prioriza ele
+            // e só então tenta rede (sem cache HTTP), sem sobrescrever sessão ativa recente.
             let entry = await makeEntry(refreshFromNetwork: true)
             let nextUpdate = Calendar.current.date(byAdding: .minute, value: 15, to: Date())
                 ?? Date().addingTimeInterval(15 * 60)
@@ -63,11 +65,20 @@ struct PlayGameProvider: TimelineProvider {
     private func makeEntry(refreshFromNetwork: Bool) async -> PlayGameEntry {
         let isLogged = WidgetSharedStore.isLogged
         var games = WidgetSharedStore.loadPlayingGames()
+        let localActive = games.first(where: \.isStarted)
 
         if isLogged, refreshFromNetwork {
             let client = WidgetGameClient()
             if let fresh = try? await client.fetchPlayingGames() {
-                games = fresh
+                // Se o local acabou de marcar sessão ativa e a rede ainda não refletiu,
+                // preserva o estado local para o widget/Live Activity não "voltarem atrás".
+                let remoteActive = fresh.first(where: \.isStarted)
+                if let localActive, remoteActive == nil {
+                    games = mergePreferringLocalActive(local: games, remote: fresh, active: localActive)
+                    await WidgetSharedStore.persistPlayingGamesAndSyncLiveActivity(games)
+                } else {
+                    games = fresh
+                }
             }
         }
 
@@ -80,6 +91,20 @@ struct PlayGameProvider: TimelineProvider {
             isLogged: isLogged,
             coverImageData: coverImageData
         )
+    }
+
+    private func mergePreferringLocalActive(
+        local: [WidgetSharedPlayingGame],
+        remote: [WidgetSharedPlayingGame],
+        active: WidgetSharedPlayingGame
+    ) -> [WidgetSharedPlayingGame] {
+        var merged = remote
+        if let index = merged.firstIndex(where: { $0.id == active.id }) {
+            merged[index] = active
+        } else {
+            merged.insert(active, at: 0)
+        }
+        return merged
     }
 
     private func selectGame(from games: [WidgetSharedPlayingGame]) -> WidgetSharedPlayingGame? {
@@ -97,6 +122,8 @@ struct PlayGameProvider: TimelineProvider {
             return nil
         }
 
-        return try? await URLSession.shared.data(from: url).0
+        var request = URLRequest(url: url)
+        request.cachePolicy = .reloadIgnoringLocalCacheData
+        return try? await URLSession.shared.data(for: request).0
     }
 }

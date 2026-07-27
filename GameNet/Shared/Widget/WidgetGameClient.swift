@@ -1,8 +1,8 @@
 //
 //  WidgetGameClient.swift
-//  GameNetWidget
+//  GameNet
 //
-//  Cliente de rede leve (URLSession) usado pelo widget para ler os jogos
+//  Cliente de rede leve (URLSession) usado pelo widget/Intent para ler os jogos
 //  em andamento e iniciar/parar gameplays, reaproveitando o token do App Group.
 //
 
@@ -48,11 +48,16 @@ private struct WidgetLatestGameplaySessionResponse: Decodable {
     let finish: Date?
 }
 
+/// Espelha `GameplaySessionResponseDTO` (campos extras opcionais para decode resiliente).
 private struct WidgetGameplaySessionResponse: Decodable {
     let id: String?
     let userGameId: String
     let start: Date
     let finish: Date?
+    let gameName: String?
+    let gameCover: String?
+    let platformName: String?
+    let totalGameplayTime: String?
 }
 
 private struct WidgetGameplaySessionRequest: Encodable {
@@ -128,15 +133,35 @@ struct WidgetGameClient {
         request.httpBody = try encoder.encode(body)
 
         let data = try await authorizedData(for: request)
-        let result = try decoder.decode(WidgetAPIResult<WidgetGameplaySessionResponse>.self, from: data)
 
-        guard result.ok else { throw ClientError.server }
+        // Tenta decode completo; se falhar mas HTTP ok, assume o estado enviado.
+        if let result = try? decoder.decode(WidgetAPIResult<WidgetGameplaySessionResponse>.self, from: data),
+           result.ok {
+            var updated = game
+            updated.latestSessionId = result.data.id
+            updated.latestStart = result.data.start
+            updated.latestFinish = result.data.finish
+            return updated
+        }
 
-        var updated = game
-        updated.latestSessionId = result.data.id
-        updated.latestStart = result.data.start
-        updated.latestFinish = result.data.finish
-        return updated
+        if let okOnly = try? decoder.decode(WidgetAPIResult<WidgetGameplaySessionResponse?>.self, from: data),
+           okOnly.ok {
+            var updated = game
+            updated.latestStart = start
+            updated.latestFinish = finish
+            return updated
+        }
+
+        // Último recurso: se o body tem "ok": true, aplica o estado local esperado.
+        if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+           (json["ok"] as? Bool) == true {
+            var updated = game
+            updated.latestStart = start
+            updated.latestFinish = finish
+            return updated
+        }
+
+        throw ClientError.server
     }
 
     // MARK: Private
@@ -160,6 +185,8 @@ struct WidgetGameClient {
         var request = URLRequest(url: url)
         request.httpMethod = method
         request.timeoutInterval = 15
+        // Evita que o GET do dashboard após o toggle sobrescreva o cache com resposta velha.
+        request.cachePolicy = .reloadIgnoringLocalCacheData
         return request
     }
 

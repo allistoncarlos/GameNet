@@ -150,6 +150,23 @@ struct DashboardView: View {
         .onChange(of: viewModel.state) { _, state in
             isLoading = state == .loading
         }
+        .onReceive(NotificationCenter.default.publisher(for: .gameplaySessionDidChangeFromWidget)) { _ in
+            Task {
+                await GameplayLiveActivityManager.syncFromStore()
+                if !FirebaseRemoteConfig.serverDrivenDashboard {
+                    await viewModel.fetchData()
+                }
+            }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active else { return }
+            Task {
+                await GameplayLiveActivityManager.syncFromStore()
+                if !FirebaseRemoteConfig.serverDrivenDashboard {
+                    await viewModel.fetchData()
+                }
+            }
+        }
         .task {
             if !FirebaseRemoteConfig.serverDrivenDashboard {
                 await viewModel.fetchData()
@@ -159,6 +176,7 @@ struct DashboardView: View {
 
     // MARK: Private
 
+    @Environment(\.scenePhase) private var scenePhase
     @State private var presentedViews = NavigationPath()
     @State private var selectedPlayingGameId: String?
     @Namespace private var gameCoverTransitionNamespace

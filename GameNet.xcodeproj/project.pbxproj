@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		123B03B919E34BC4357C30B9 /* WidgetGameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC12F2BC319728F94EF8DFED /* WidgetGameClient.swift */; };
-		3BB0BCAA5BB4825C5914B69D /* ToggleGameplayIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAF41795FAFC28D4BC19D48 /* ToggleGameplayIntent.swift */; };
 		3E79A02693BA679E15F35427 /* PlayGameWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */; };
 		FA11A004A1B2C3D4E5F60002 /* GameplayLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA11A002A1B2C3D4E5F60001 /* GameplayLiveActivity.swift */; };
 		581553562020A546DA5A3E0C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7658B48209B6E50E676075F /* Foundation.framework */; };
@@ -84,7 +82,6 @@
 
 /* Begin PBXFileReference section */
 		378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayGameWidget.swift; sourceTree = "<group>"; };
-		8EAF41795FAFC28D4BC19D48 /* ToggleGameplayIntent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ToggleGameplayIntent.swift; sourceTree = "<group>"; };
 		A2F16DB41D362ECFE5FF3DE0 /* PlayGameProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PlayGameProvider.swift; sourceTree = "<group>"; };
 		FA11A002A1B2C3D4E5F60001 /* GameplayLiveActivity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameplayLiveActivity.swift; sourceTree = "<group>"; };
 		A5357E902FCA1BA40094C91E /* GameNet.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = GameNet.icon; sourceTree = "<group>"; };
@@ -107,7 +104,6 @@
 		A5F0B2022F006A1200420202 /* WatchPlayingGamesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchPlayingGamesService.swift; sourceTree = "<group>"; };
 		A5F0B3012F006A1200420301 /* WatchColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchColor.swift; sourceTree = "<group>"; };
 		B7658B48209B6E50E676075F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		BC12F2BC319728F94EF8DFED /* WidgetGameClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetGameClient.swift; sourceTree = "<group>"; };
 		C954B4D3AC3929BFAB4FA22C /* GameNetWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = GameNetWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		D173891BBC0EB2AD9BFB91B0 /* Config.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = GameNet/Resources/Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -118,6 +114,8 @@
 			membershipExceptions = (
 				"Presentation/Extensions/Date+Extensions.swift",
 				Shared/Widget/WidgetSharedStore.swift,
+				Shared/Widget/WidgetGameClient.swift,
+				Shared/Widget/ToggleGameplayIntent.swift,
 				Shared/LiveActivity/GameplayActivityAttributes.swift,
 				Shared/LiveActivity/GameplayLiveActivityManager.swift,
 				"Shared/LiveActivity/WidgetSharedStore+LiveActivity.swift",
@@ -187,8 +185,6 @@
 				378FEBF74BF83FD55DF141C3 /* PlayGameWidget.swift */,
 				FA11A002A1B2C3D4E5F60001 /* GameplayLiveActivity.swift */,
 				A2F16DB41D362ECFE5FF3DE0 /* PlayGameProvider.swift */,
-				8EAF41795FAFC28D4BC19D48 /* ToggleGameplayIntent.swift */,
-				BC12F2BC319728F94EF8DFED /* WidgetGameClient.swift */,
 			);
 			path = GameNetWidget;
 			sourceTree = "<group>";
@@ -542,8 +538,6 @@
 				3E79A02693BA679E15F35427 /* PlayGameWidget.swift in Sources */,
 				FA11A004A1B2C3D4E5F60002 /* GameplayLiveActivity.swift in Sources */,
 				B6CBFDB9B81E8C81964273D0 /* PlayGameProvider.swift in Sources */,
-				3BB0BCAA5BB4825C5914B69D /* ToggleGameplayIntent.swift in Sources */,
-				123B03B919E34BC4357C30B9 /* WidgetGameClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
