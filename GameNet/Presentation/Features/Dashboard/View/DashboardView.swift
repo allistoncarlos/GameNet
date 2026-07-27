@@ -327,10 +327,19 @@ extension DashboardView {
 
 extension DashboardView {
     var finishedByYearTimelineCard: some View {
-        FinishedByYearTimelineView(
-            finishedGamesByYear: viewModel.dashboard?.finishedByYear ?? [],
-            onYearTapped: { finishedGame in
-                presentedViews.append(finishedGame)
+        YearTimeline3DView(
+            title: "Finalizados por Ano",
+            entries: (viewModel.dashboard?.finishedByYear ?? []).map {
+                YearTimelineEntry(
+                    year: $0.year,
+                    primaryValue: Double($0.total),
+                    secondaryLabel: $0.total == 1 ? "jogo" : "jogos"
+                )
+            },
+            onSelectYear: { year in
+                if let finished = viewModel.dashboard?.finishedByYear?.first(where: { $0.year == year }) {
+                    presentedViews.append(finished)
+                }
             }
         )
     }
@@ -384,48 +393,22 @@ extension DashboardView {
 
 extension DashboardView {
     var boughtByYearCard: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.tertiaryCardBackground)
-
-            VStack(alignment: .leading, spacing: 15) {
-                VStack {
-                    Text("Comprados por Ano")
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                        .font(.cardTitle)
-                }
-
-                VStack(alignment: .leading) {
-                    VStack(alignment: .leading) {
-                        if let boughtByYear = viewModel.dashboard?.boughtByYear {
-                            ForEach(boughtByYear, id: \.year) { boughtGame in
-                                SwiftUI.NavigationLink(value: boughtGame) {
-                                    HStack(spacing: 20) {
-                                        Text(
-                                            boughtGame.quantity
-                                                .toLeadingZerosString(decimalPlaces: 2)
-                                        )
-                                        .font(.dashboardGameTitle)
-
-                                        Text(String(boughtGame.year))
-                                            .font(.dashboardGameTitle)
-
-                                        Spacer()
-                                        
-                                        if let formattedTotalPrice = boughtGame.total.toCurrencyString() {
-                                            Text(String("\(formattedTotalPrice)"))
-                                                .font(.dashboardGameTitle)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+        YearTimeline3DView(
+            title: "Comprados por Ano",
+            entries: (viewModel.dashboard?.boughtByYear ?? []).map {
+                YearTimelineEntry(
+                    year: $0.year,
+                    primaryValue: Double($0.quantity),
+                    secondaryLabel: $0.total.toCurrencyString()
+                )
+            },
+            accentColor: .orange,
+            onSelectYear: { year in
+                if let bought = viewModel.dashboard?.boughtByYear?.first(where: { $0.year == year }) {
+                    presentedViews.append(bought)
                 }
             }
-            .padding()
-        }
-        .padding()
+        )
     }
 }
 
