@@ -9,12 +9,13 @@ import SwiftUI
 
 @main
 struct GameNet_Watch_Watch_AppApp: App {
+    init() {
+        WatchConnectivityManager.shared.activateSession()
+    }
+
     var body: some Scene {
         WindowGroup {
             HomeView()
-                .onAppear {
-                    WatchConnectivityManager.shared.activateSession()
-                }
         }
     }
 }

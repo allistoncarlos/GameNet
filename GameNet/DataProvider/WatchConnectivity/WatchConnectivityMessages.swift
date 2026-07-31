@@ -17,6 +17,7 @@ enum WatchMessageKey {
     static let authStatus = "AUTH_STATUS"
     static let fetchPlayingGames = "FETCH_PLAYING_GAMES"
     static let playingGames = "PLAYING_GAMES"
+    static let playingGameCovers = "PLAYING_GAME_COVERS"
     static let toggleGameplay = "TOGGLE_GAMEPLAY"
     static let gameplayUpdated = "GAMEPLAY_UPDATED"
     static let error = "ERROR"

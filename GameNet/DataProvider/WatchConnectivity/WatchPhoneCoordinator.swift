@@ -20,6 +20,12 @@ final class WatchPhoneCoordinator {
     @Injected(\.gameplaySessionRepository) private var gameplaySessionRepository
     @Injected(\.tokenDataSource) private var tokenDataSource
 
+    private var periodicSyncTask: Task<Void, Never>?
+    private let periodicSyncInterval: TimeInterval = 300
+
+    /// Limite prático seguro para `sendMessage` reply (~65KB oficial, deixamos margem).
+    private let sendMessageBudget = 55_000
+
     func handle(message: [String: Any]) async -> [String: Any] {
         if message[WatchMessageKey.checkAuth] != nil {
             return handleCheckAuth()
@@ -37,6 +43,40 @@ final class WatchPhoneCoordinator {
         return [:]
     }
 
+    /// Empurra jogos em andamento, status de auth e capas (já convertidas em JPEG) para
+    /// o Watch via application context — entrega confiável em uma única chamada.
+    func pushPlayingGamesToWatch() async {
+        guard WCSession.default.activationState == .activated,
+              WCSession.default.isPaired,
+              WCSession.default.isWatchAppInstalled else {
+            return
+        }
+
+        let authStatus: WatchAuthStatus = tokenDataSource.hasValidToken() ? .logged : .notLogged
+
+        guard authStatus == .logged else {
+            pushContext(games: [], authStatus: .notLogged, covers: [:])
+            return
+        }
+
+        let games = await loadPlayingGames()
+        let covers = games.isEmpty ? [:] : await WatchCoverImageExporter.thumbnails(for: games)
+        pushContext(games: games, authStatus: .logged, covers: covers)
+    }
+
+    func startPeriodicWatchSync() {
+        periodicSyncTask?.cancel()
+        periodicSyncTask = Task { [weak self] in
+            guard let self else { return }
+
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: UInt64(periodicSyncInterval * 1_000_000_000))
+                guard !Task.isCancelled else { return }
+                await pushPlayingGamesToWatch()
+            }
+        }
+    }
+
     // MARK: Private
 
     private func handleCheckAuth() -> [String: Any] {
@@ -46,20 +86,20 @@ final class WatchPhoneCoordinator {
 
     private func handleFetchPlayingGames() async -> [String: Any] {
         guard tokenDataSource.hasValidToken() else {
+            pushContext(games: [], authStatus: .notLogged, covers: [:])
             return [WatchMessageKey.authStatus: WatchAuthStatus.notLogged.rawValue]
         }
 
         let games = await loadPlayingGames()
-        cachePlayingGamesOnWatch(games)
+        let covers = games.isEmpty ? [:] : await WatchCoverImageExporter.thumbnails(for: games)
+        pushContext(games: games, authStatus: .logged, covers: covers)
 
-        return WatchConnectivityPayloadCodec.reply(
-            WatchMessageKey.playingGames,
-            value: WatchPlayingGamesPayload(games: games)
-        ) ?? [WatchMessageKey.error: "encode_failed"]
+        return buildFetchReply(games: games, covers: covers)
     }
 
     private func handleToggleGameplay(_ request: WatchToggleGameplayRequest) async -> [String: Any] {
         guard tokenDataSource.hasValidToken() else {
+            pushContext(games: [], authStatus: .notLogged, covers: [:])
             return [WatchMessageKey.authStatus: WatchAuthStatus.notLogged.rawValue]
         }
 
@@ -89,7 +129,8 @@ final class WatchPhoneCoordinator {
         }
 
         let games = await loadPlayingGames()
-        cachePlayingGamesOnWatch(games)
+        let covers = games.isEmpty ? [:] : await WatchCoverImageExporter.thumbnails(for: games)
+        pushContext(games: games, authStatus: .logged, covers: covers)
 
         let payload = WatchGameplayUpdatedPayload(
             userGameId: request.userGameId,
@@ -137,13 +178,45 @@ final class WatchPhoneCoordinator {
         }
     }
 
-    private func cachePlayingGamesOnWatch(_ games: [WatchPlayingGame]) {
+    /// Envia metadados + capas (JPEGs pequenos) em um único `updateApplicationContext`.
+    /// `updateApplicationContext` aceita ~262KB — cabe 20+ capas de ~10KB folgadamente.
+    private func pushContext(
+        games: [WatchPlayingGame],
+        authStatus: WatchAuthStatus,
+        covers: [String: Data]
+    ) {
         guard WCSession.default.activationState == .activated,
-              let data = WatchConnectivityPayloadCodec.encode(WatchPlayingGamesPayload(games: games)) else {
+              let gamesData = WatchConnectivityPayloadCodec.encode(WatchPlayingGamesPayload(games: games)) else {
             return
         }
 
-        try? WCSession.default.updateApplicationContext([WatchMessageKey.playingGames: data])
+        var context: [String: Any] = [
+            WatchMessageKey.authStatus: authStatus.rawValue,
+            WatchMessageKey.playingGames: gamesData
+        ]
+
+        if !covers.isEmpty {
+            context[WatchMessageKey.playingGameCovers] = covers as NSDictionary
+        }
+
+        try? WCSession.default.updateApplicationContext(context)
+    }
+
+    /// Monta o reply do `sendMessage`. Inclui capas se couberem no orçamento (~55KB),
+    /// senão o Watch continua tendo as capas via application context.
+    private func buildFetchReply(games: [WatchPlayingGame], covers: [String: Data]) -> [String: Any] {
+        guard let gamesData = WatchConnectivityPayloadCodec.encode(WatchPlayingGamesPayload(games: games)) else {
+            return [WatchMessageKey.error: "encode_failed"]
+        }
+
+        var reply: [String: Any] = [WatchMessageKey.playingGames: gamesData]
+
+        let coversSize = covers.values.reduce(0) { $0 + $1.count }
+        if !covers.isEmpty, coversSize + gamesData.count < sendMessageBudget {
+            reply[WatchMessageKey.playingGameCovers] = covers as NSDictionary
+        }
+
+        return reply
     }
 }
 #endif

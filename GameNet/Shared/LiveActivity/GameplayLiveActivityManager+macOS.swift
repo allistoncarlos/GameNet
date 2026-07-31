@@ -3,7 +3,7 @@
 //  GameNet
 //
 
-#if os(macOS)
+#if os(macOS) || os(tvOS)
 import Foundation
 
 @MainActor

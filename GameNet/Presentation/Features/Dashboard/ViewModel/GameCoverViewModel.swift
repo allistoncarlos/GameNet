@@ -80,6 +80,10 @@ class GameCoverViewModel: ObservableObject {
                 finish: result.finish
             )
 
+#if os(iOS) && canImport(WatchConnectivity)
+            await WatchPhoneCoordinator.shared.pushPlayingGamesToWatch()
+#endif
+
             return !wasStarted
         } else {
             state = .error("Erro no salvamento de dados do servidor")
@@ -103,6 +107,9 @@ class GameCoverViewModel: ObservableObject {
             isStarted = false
             state = .idle
             await WidgetSharedStore.markSessionStoppedAndSyncLiveActivity(userGameId: playingGameId)
+#if os(iOS) && canImport(WatchConnectivity)
+            await WatchPhoneCoordinator.shared.pushPlayingGamesToWatch()
+#endif
             return true
         } else {
             state = .error("Erro ao finalizar o jogo")
@@ -126,6 +133,9 @@ class GameCoverViewModel: ObservableObject {
             isStarted = false
             state = .idle
             await WidgetSharedStore.markSessionStoppedAndSyncLiveActivity(userGameId: playingGameId)
+#if os(iOS) && canImport(WatchConnectivity)
+            await WatchPhoneCoordinator.shared.pushPlayingGamesToWatch()
+#endif
             return true
         } else {
             state = .error("Erro ao parar de jogar")

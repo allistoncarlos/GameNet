@@ -6,9 +6,24 @@
 //
 
 import SwiftUI
+import WatchKit
+#if canImport(UIKit)
+import UIKit
+#endif
 
 struct PlayingGamesView: View {
     @ObservedObject var viewModel: PlayingGamesViewModel
+    @ObservedObject private var connectivity = WatchConnectivityManager.shared
+
+    /// Proporção estilo Apple Music: capa ocupa ~70% da largura da tela.
+    private var artworkSize: CGFloat {
+        let width = WKInterfaceDevice.current().screenBounds.width
+        let height = WKInterfaceDevice.current().screenBounds.height
+        
+        let ratio = 0.70
+        
+        return min(width * ratio, height * ratio)
+    }
 
     var body: some View {
         Group {
@@ -16,11 +31,20 @@ struct PlayingGamesView: View {
             case .loading:
                 ProgressView()
             case .notLogged:
-                notLoggedContent
+                statusView(
+                    title: "Login necessário",
+                    subtitle: "Abra o GameNet no iPhone e faça login."
+                )
             case .empty:
-                emptyContent
+                statusView(
+                    title: "Nenhum jogo em andamento",
+                    subtitle: "Adicione jogos na seção Jogando do iPhone."
+                )
             case .error(let message):
-                errorContent(message)
+                statusView(
+                    title: "Não foi possível carregar",
+                    subtitle: message
+                )
             case .content:
                 carouselContent
             }
@@ -30,104 +54,107 @@ struct PlayingGamesView: View {
         }
     }
 
+    // MARK: - Carrossel
+
     private var carouselContent: some View {
-        VStack(spacing: 8) {
+        VStack {
             TabView(selection: $viewModel.selectedGameIndex) {
                 ForEach(Array(viewModel.games.enumerated()), id: \.element.id) { index, game in
-                    gameCard(game)
+                    gamePage(game)
                         .tag(index)
                 }
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
-            .frame(height: 130)
 
-            pageIndicator
+            if viewModel.games.count > 1 {
+                pageIndicator
+            }
         }
     }
 
-    private func gameCard(_ game: WatchPlayingGame) -> some View {
-        VStack(spacing: 6) {
-            ZStack(alignment: .bottomTrailing) {
-                AsyncImage(url: URL(string: game.coverURL)) { phase in
-                    switch phase {
-                    case let .success(image):
-                        image
-                            .resizable()
-                            .scaledToFill()
-                    default:
-                        RoundedRectangle(cornerRadius: 14)
-                            .fill(Color.gray.opacity(0.25))
-                            .overlay {
-                                ProgressView()
-                            }
-                    }
-                }
-                .frame(width: 140, height: 140)
-                .clipShape(RoundedRectangle(cornerRadius: 14))
+    private func gamePage(_ game: WatchPlayingGame) -> some View {
+            artworkStack(for: game)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
 
-                Button {
-                    Task { await viewModel.toggleGameplay() }
-                } label: {
-                    Image(systemName: game.isStarted ? "stop.fill" : "play.fill")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(.white)
-                        .frame(width: 34, height: 34)
-                        .background(Color.gameNetMain)
-                        .clipShape(Circle())
-                }
-                .buttonStyle(.plain)
-                .disabled(viewModel.isSaving)
-                .offset(x: 4, y: 4)
-            }
-
-            Text(game.name)
-                .font(.headline)
-                .lineLimit(2)
-                .multilineTextAlignment(.center)
+    private func artworkStack(for game: WatchPlayingGame) -> some View {
+        ZStack(alignment: .bottomTrailing) {
+            gameCoverImage(for: game)
+            gameplayButton(for: game)
+                .padding(6)
         }
+        .frame(width: artworkSize, height: artworkSize)
+    }
+
+    @ViewBuilder
+    private func gameCoverImage(for game: WatchPlayingGame) -> some View {
+        if let data = connectivity.coverImageData(for: game.id),
+           let uiImage = UIImage(data: data) {
+            Image(uiImage: uiImage)
+                .resizable()
+                .scaledToFill()
+                .frame(width: artworkSize, height: artworkSize)
+                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                .id(connectivity.coverRevision)
+        } else {
+            coverPlaceholder
+                .frame(width: artworkSize, height: artworkSize)
+        }
+    }
+
+    private var coverPlaceholder: some View {
+        RoundedRectangle(cornerRadius: 8, style: .continuous)
+            .fill(Color.gray.opacity(0.22))
+            .overlay {
+                Image(systemName: "gamecontroller.fill")
+                    .font(.title3)
+                    .foregroundStyle(.secondary)
+            }
+    }
+
+    private func gameplayButton(for game: WatchPlayingGame) -> some View {
+        Button {
+            Task { await viewModel.toggleGameplay() }
+        } label: {
+            Image(systemName: game.isStarted ? "stop.fill" : "play.fill")
+                .font(.system(size: 13, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: 32, height: 32)
+                .background(Color.gameNetMain)
+                .clipShape(Circle())
+                .shadow(color: .black.opacity(0.35), radius: 3, x: 0, y: 1)
+        }
+        .buttonStyle(.plain)
+        .disabled(viewModel.isSaving)
     }
 
     private var pageIndicator: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 5) {
             ForEach(viewModel.games.indices, id: \.self) { index in
                 Circle()
-                    .fill(index == viewModel.selectedGameIndex ? Color.gameNetMain : Color.gray.opacity(0.4))
-                    .frame(width: 6, height: 6)
+                    .fill(
+                        index == viewModel.selectedGameIndex
+                            ? Color.gameNetMain
+                            : Color.gray.opacity(0.35)
+                    )
+                    .frame(width: 5, height: 5)
             }
         }
+        .animation(.easeInOut(duration: 0.2), value: viewModel.selectedGameIndex)
     }
 
-    private var notLoggedContent: some View {
-        VStack(spacing: 8) {
-            Text("Login necessário")
+    // MARK: - Status
+
+    private func statusView(title: String, subtitle: String) -> some View {
+        VStack(spacing: 6) {
+            Text(title)
                 .font(.headline)
-            Text("Abra o GameNet no iPhone e faça login.")
+            Text(subtitle)
                 .font(.caption2)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
         }
-    }
-
-    private var emptyContent: some View {
-        VStack(spacing: 8) {
-            Text("Nenhum jogo em andamento")
-                .font(.headline)
-            Text("Adicione jogos na seção Jogando do iPhone.")
-                .font(.caption2)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
-        }
-    }
-
-    private func errorContent(_ message: String) -> some View {
-        VStack(spacing: 8) {
-            Text("Não foi possível carregar")
-                .font(.headline)
-            Text(message)
-                .font(.caption2)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
-        }
+        .padding(.horizontal, 12)
     }
 }
 

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NotLoggedView: View {
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             Text("Login necessário")
                 .font(.headline)
             Text("Abra o GameNet no iPhone e faça login.")
@@ -17,6 +17,7 @@ struct NotLoggedView: View {
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.secondary)
         }
+        .padding(.horizontal, 12)
     }
 }
 

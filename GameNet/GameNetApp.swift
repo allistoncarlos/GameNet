@@ -9,6 +9,9 @@ import Combine
 import Factory
 import SwiftUI
 import FirebaseCore
+#if os(iOS)
+import UIKit
+#endif
 
 @main
 struct GameNetApp: App {
@@ -21,6 +24,15 @@ struct GameNetApp: App {
 
 #if canImport(WatchConnectivity) && os(iOS)
         WatchConnectivityManager.shared.activateSession()
+        NotificationCenter.default.addObserver(
+            forName: UIApplication.didBecomeActiveNotification,
+            object: nil,
+            queue: .main
+        ) { _ in
+            Task { @MainActor in
+                await WatchPhoneCoordinator.shared.pushPlayingGamesToWatch()
+            }
+        }
 #endif
     }
 
@@ -42,6 +54,9 @@ struct GameNetApp: App {
                     .onAppear {
 #if canImport(WatchConnectivity) && os(iOS)
                         WatchConnectivityManager.shared.activateSession()
+                        Task { @MainActor in
+                            await WatchPhoneCoordinator.shared.pushPlayingGamesToWatch()
+                        }
 #endif
                         WidgetSharedStore.syncFromKeychain()
                         #if os(iOS)

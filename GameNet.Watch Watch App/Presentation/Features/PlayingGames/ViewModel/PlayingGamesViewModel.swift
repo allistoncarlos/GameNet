@@ -36,6 +36,23 @@ final class PlayingGamesViewModel: ObservableObject {
                 self?.applyCachedGamesIfNeeded()
             }
             .store(in: &cancellables)
+
+        WatchConnectivityManager.shared.$cachedPayload
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.applyCachedGamesIfNeeded()
+            }
+            .store(in: &cancellables)
+
+        WatchConnectivityManager.shared.$cachedAuthStatus
+            .receive(on: RunLoop.main)
+            .sink { [weak self] status in
+                guard let self, let status else { return }
+                if status == .notLogged, games.isEmpty {
+                    uiState = .notLogged
+                }
+            }
+            .store(in: &cancellables)
     }
 
     var selectedGame: WatchPlayingGame? {
@@ -44,19 +61,16 @@ final class PlayingGamesViewModel: ObservableObject {
     }
 
     func load() async {
-        uiState = .loading
+        WatchConnectivityManager.shared.refreshCachedPayload()
+        applyCachedGamesIfNeeded()
 
-        do {
-            _ = try await service.checkAuth()
-            games = try await service.fetchPlayingGames()
-            uiState = games.isEmpty ? .empty : .content
-        } catch WatchPlayingGamesServiceError.notLogged {
-            games = []
-            uiState = .notLogged
-        } catch {
-            games = []
-            uiState = .error(error.localizedDescription)
+        if uiState == .content || uiState == .empty || uiState == .notLogged {
+            await refreshFromPhone()
+            return
         }
+
+        uiState = .loading
+        await refreshFromPhone()
     }
 
     func toggleGameplay() async {
@@ -71,12 +85,32 @@ final class PlayingGamesViewModel: ObservableObject {
                 habitDayISO: selectedHabitDayISO
             )
             replaceGame(updated)
+        } catch WatchPlayingGamesServiceError.notLogged {
+            uiState = .notLogged
         } catch {
-            uiState = .error(error.localizedDescription)
+            if games.isEmpty {
+                uiState = .error(error.localizedDescription)
+            }
         }
     }
 
     // MARK: Private
+
+    private func refreshFromPhone() async {
+        do {
+            try await service.checkAuth()
+            let fetched = try await service.fetchPlayingGames(forceRefresh: uiState == .loading)
+            games = fetched
+            uiState = fetched.isEmpty ? .empty : .content
+        } catch WatchPlayingGamesServiceError.notLogged {
+            games = []
+            uiState = .notLogged
+        } catch {
+            if games.isEmpty {
+                uiState = .error(error.localizedDescription)
+            }
+        }
+    }
 
     private func replaceGame(_ updated: WatchPlayingGame) {
         guard let index = games.firstIndex(where: { $0.id == updated.id }) else { return }
@@ -84,14 +118,17 @@ final class PlayingGamesViewModel: ObservableObject {
     }
 
     private func applyCachedGamesIfNeeded() {
-        guard let cached = WatchConnectivityManager.shared.playingGamesFromContext()?.games,
-              !cached.isEmpty else {
+        guard let cached = WatchConnectivityManager.shared.playingGamesFromContext()?.games else {
+            return
+        }
+
+        if WatchConnectivityManager.shared.cachedAuthStatus == .notLogged {
+            games = []
+            uiState = .notLogged
             return
         }
 
         games = cached
-        if uiState == .loading {
-            uiState = cached.isEmpty ? .empty : .content
-        }
+        uiState = cached.isEmpty ? .empty : .content
     }
 }

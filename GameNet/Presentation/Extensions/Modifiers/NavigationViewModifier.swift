@@ -17,7 +17,7 @@ struct NavigationViewModifier: ViewModifier {
             .navigationTitle(title ?? "")
             .toolbarBackground(color, for: .windowToolbar)
             .toolbarBackground(.visible, for: .windowToolbar)
-        #else
+        #elseif os(iOS)
         content
             .navigationTitle(title ?? "")
             .navigationBarTitleDisplayMode(.inline)
@@ -25,6 +25,9 @@ struct NavigationViewModifier: ViewModifier {
             .toolbarBackground(color, for: .navigationBar, .tabBar)
             .toolbarBackground(.visible, for: .navigationBar, .tabBar)
             .toolbarColorScheme(.dark, for: .navigationBar, .tabBar)
+        #else
+        content
+            .navigationTitle(title ?? "")
         #endif
     }
 }

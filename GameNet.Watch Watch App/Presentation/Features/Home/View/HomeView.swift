@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct HomeView: View {
+    @StateObject private var viewModel = PlayingGamesViewModel()
+
     var body: some View {
-        PlayingGamesView(viewModel: PlayingGamesViewModel())
+        PlayingGamesView(viewModel: viewModel)
     }
 }
 

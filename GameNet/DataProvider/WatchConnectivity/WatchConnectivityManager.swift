@@ -140,6 +140,15 @@ extension WatchConnectivityManager: WCSessionDelegate {
     ) {
         state = activationState
         print("[WATCH SESSION] - State: \(activationState)")
+
+        #if os(iOS)
+        if activationState == .activated {
+            Task { @MainActor in
+                await WatchPhoneCoordinator.shared.pushPlayingGamesToWatch()
+                WatchPhoneCoordinator.shared.startPeriodicWatchSync()
+            }
+        }
+        #endif
     }
 
     func session(

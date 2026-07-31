@@ -36,14 +36,14 @@ extension View {
     }
 
     func gameDetailNavigationBar(color: Color = .main) -> some View {
-        #if os(macOS)
-        navigationTitle("")
-        #else
+        #if os(iOS)
         navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarTitleDisplayMode(.inline)
             .toolbarBackground(.hidden, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
+        #else
+        navigationTitle("")
         #endif
     }
 }

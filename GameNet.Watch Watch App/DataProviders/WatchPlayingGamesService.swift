@@ -27,32 +27,55 @@ enum WatchPlayingGamesServiceError: LocalizedError {
     }
 }
 
+@MainActor
 final class WatchPlayingGamesService {
     func checkAuth() async throws {
-        try await Task.sleep(nanoseconds: 10_000_000)
-        
-        if WatchConnectivityManager.shared.state == .activated {
-            try await withCheckedThrowingContinuation { continuation in
-                WatchConnectivityManager.shared.sendMessage(
+        await WatchConnectivityManager.shared.waitForActivation()
+        WatchConnectivityManager.shared.refreshCachedPayload()
+
+        if let cachedStatus = WatchConnectivityManager.shared.cachedAuthStatus {
+            if cachedStatus == .notLogged {
+                throw WatchPlayingGamesServiceError.notLogged
+            }
+            return
+        }
+
+        guard WatchConnectivityManager.shared.isReachable else {
+            throw WatchPlayingGamesServiceError.unreachable
+        }
+
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            Task {
+                await WatchConnectivityManager.shared.sendMessageWithTimeout(
                     key: WatchMessageKey.checkAuth,
+                    timeout: 8,
                     replyHandler: { reply in
                         if reply[WatchMessageKey.authStatus] as? String == WatchAuthStatus.logged.rawValue {
-                            continuation.resume(returning: true)
+                            continuation.resume()
                         } else {
                             continuation.resume(throwing: WatchPlayingGamesServiceError.notLogged)
                         }
                     },
-                    errorHandler: { _ in
-                        continuation.resume(throwing: WatchPlayingGamesServiceError.unreachable)
+                    errorHandler: { error in
+                        continuation.resume(throwing: error)
                     }
                 )
             }
         }
     }
 
-    func fetchPlayingGames() async throws -> [WatchPlayingGame] {
-        if let cached = cachedPlayingGames(), !cached.isEmpty {
-            Task { await refreshPlayingGamesInBackground() }
+    func fetchPlayingGames(forceRefresh: Bool = false) async throws -> [WatchPlayingGame] {
+        await WatchConnectivityManager.shared.waitForActivation()
+        WatchConnectivityManager.shared.refreshCachedPayload()
+
+        if !forceRefresh, let cached = cachedPlayingGames() {
+            if WatchConnectivityManager.shared.isReachable {
+                Task { try? await requestPlayingGames() }
+            }
+            return cached
+        }
+
+        if let cached = cachedPlayingGames(), !WatchConnectivityManager.shared.isReachable {
             return cached
         }
 
@@ -63,6 +86,8 @@ final class WatchPlayingGamesService {
         game: WatchPlayingGame,
         habitDayISO: String
     ) async throws -> WatchPlayingGame {
+        await WatchConnectivityManager.shared.waitForActivation()
+
         let request = WatchToggleGameplayRequest(
             userGameId: game.id,
             isCurrentlyStarted: game.isStarted,
@@ -74,90 +99,117 @@ final class WatchPlayingGamesService {
             throw WatchPlayingGamesServiceError.invalidResponse
         }
 
+        guard WatchConnectivityManager.shared.isReachable else {
+            throw WatchPlayingGamesServiceError.unreachable
+        }
+
         return try await withCheckedThrowingContinuation { continuation in
-            WatchConnectivityManager.shared.sendMessage(
-                message: payload,
-                key: WatchMessageKey.toggleGameplay,
-                replyHandler: { reply in
-                    if reply[WatchMessageKey.authStatus] as? String == WatchAuthStatus.notLogged.rawValue {
-                        continuation.resume(throwing: WatchPlayingGamesServiceError.notLogged)
-                        return
-                    }
+            Task {
+                await WatchConnectivityManager.shared.sendMessageWithTimeout(
+                    message: payload,
+                    key: WatchMessageKey.toggleGameplay,
+                    timeout: 12,
+                    replyHandler: { reply in
+                        if reply[WatchMessageKey.authStatus] as? String == WatchAuthStatus.notLogged.rawValue {
+                            continuation.resume(throwing: WatchPlayingGamesServiceError.notLogged)
+                            return
+                        }
 
-                    if let errorMessage = reply[WatchMessageKey.error] as? String {
-                        continuation.resume(throwing: WatchPlayingGamesServiceError.server(errorMessage))
-                        return
-                    }
+                        if let errorMessage = reply[WatchMessageKey.error] as? String {
+                            continuation.resume(throwing: WatchPlayingGamesServiceError.server(errorMessage))
+                            return
+                        }
 
-                    guard let data = reply[WatchMessageKey.gameplayUpdated] as? Data,
-                          let updated = WatchConnectivityPayloadCodec.decode(
-                            WatchGameplayUpdatedPayload.self,
-                            from: data
-                          ) else {
-                        continuation.resume(throwing: WatchPlayingGamesServiceError.invalidResponse)
-                        return
-                    }
+                        guard let data = reply[WatchMessageKey.gameplayUpdated] as? Data,
+                              let updated = WatchConnectivityPayloadCodec.decode(
+                                WatchGameplayUpdatedPayload.self,
+                                from: data
+                              ) else {
+                            continuation.resume(throwing: WatchPlayingGamesServiceError.invalidResponse)
+                            return
+                        }
 
-                    let merged = WatchPlayingGame(
-                        id: game.id,
-                        name: game.name,
-                        coverURL: game.coverURL,
-                        latestSessionStartISO: updated.latestSessionStartISO,
-                        isSessionActive: updated.isSessionActive
-                    )
-                    continuation.resume(returning: merged)
-                },
-                errorHandler: { _ in
-                    continuation.resume(throwing: WatchPlayingGamesServiceError.unreachable)
-                }
-            )
+                        let merged = WatchPlayingGame(
+                            id: game.id,
+                            name: game.name,
+                            coverURL: game.coverURL,
+                            latestSessionStartISO: updated.latestSessionStartISO,
+                            isSessionActive: updated.isSessionActive
+                        )
+                        WatchConnectivityManager.shared.refreshCachedPayload()
+                        continuation.resume(returning: merged)
+                    },
+                    errorHandler: { error in
+                        if let cached = self.cachedPlayingGames()?.first(where: { $0.id == game.id }) {
+                            continuation.resume(returning: cached)
+                        } else {
+                            continuation.resume(throwing: error)
+                        }
+                    }
+                )
+            }
         }
     }
 
     // MARK: Private
 
-    private func refreshPlayingGamesInBackground() async {
-        _ = try? await requestPlayingGames()
-    }
-
     private func requestPlayingGames() async throws -> [WatchPlayingGame] {
-        try await withCheckedThrowingContinuation { continuation in
-            WatchConnectivityManager.shared.sendMessage(
-                key: WatchMessageKey.fetchPlayingGames,
-                replyHandler: { reply in
-                    if reply[WatchMessageKey.authStatus] as? String == WatchAuthStatus.notLogged.rawValue {
-                        continuation.resume(throwing: WatchPlayingGamesServiceError.notLogged)
-                        return
-                    }
+        if !WatchConnectivityManager.shared.isReachable {
+            if let cached = cachedPlayingGames() {
+                return cached
+            }
+            throw WatchPlayingGamesServiceError.unreachable
+        }
 
-                    if let errorMessage = reply[WatchMessageKey.error] as? String {
-                        continuation.resume(throwing: WatchPlayingGamesServiceError.server(errorMessage))
-                        return
-                    }
+        return try await withCheckedThrowingContinuation { continuation in
+            Task {
+                await WatchConnectivityManager.shared.sendMessageWithTimeout(
+                    key: WatchMessageKey.fetchPlayingGames,
+                    timeout: 8,
+                    replyHandler: { reply in
+                        if reply[WatchMessageKey.authStatus] as? String == WatchAuthStatus.notLogged.rawValue {
+                            continuation.resume(throwing: WatchPlayingGamesServiceError.notLogged)
+                            return
+                        }
 
-                    guard let data = reply[WatchMessageKey.playingGames] as? Data,
-                          let payload = WatchConnectivityPayloadCodec.decode(
-                            WatchPlayingGamesPayload.self,
-                            from: data
-                          ) else {
-                        continuation.resume(throwing: WatchPlayingGamesServiceError.invalidResponse)
-                        return
-                    }
+                        if let errorMessage = reply[WatchMessageKey.error] as? String {
+                            continuation.resume(throwing: WatchPlayingGamesServiceError.server(errorMessage))
+                            return
+                        }
 
-                    continuation.resume(returning: payload.games)
-                },
-                errorHandler: { [weak self] _ in
-                    if let cached = self?.cachedPlayingGames(), !cached.isEmpty {
-                        continuation.resume(returning: cached)
-                    } else {
-                        continuation.resume(throwing: WatchPlayingGamesServiceError.unreachable)
+                        guard let data = reply[WatchMessageKey.playingGames] as? Data,
+                              let payload = WatchConnectivityPayloadCodec.decode(
+                                WatchPlayingGamesPayload.self,
+                                from: data
+                              ) else {
+                            if let cached = self.cachedPlayingGames() {
+                                continuation.resume(returning: cached)
+                            } else {
+                                continuation.resume(throwing: WatchPlayingGamesServiceError.invalidResponse)
+                            }
+                            return
+                        }
+
+                        WatchConnectivityManager.shared.persistPayload(payload)
+                        WatchConnectivityManager.shared.ingestCovers(from: reply)
+                        continuation.resume(returning: payload.games)
+                    },
+                    errorHandler: { _ in
+                        if let cached = self.cachedPlayingGames() {
+                            continuation.resume(returning: cached)
+                        } else {
+                            continuation.resume(throwing: WatchPlayingGamesServiceError.unreachable)
+                        }
                     }
-                }
-            )
+                )
+            }
         }
     }
 
     private func cachedPlayingGames() -> [WatchPlayingGame]? {
-        WatchConnectivityManager.shared.playingGamesFromContext()?.games
+        guard let payload = WatchConnectivityManager.shared.playingGamesFromContext() else {
+            return nil
+        }
+        return payload.games
     }
 }

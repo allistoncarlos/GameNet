@@ -17,94 +17,123 @@ struct GameEditView: View {
     @State var isEmptyImage = true
 
     var body: some View {
-        Form {
-            Section("Escolha a imagem de capa") {
-                VStack {
-                    if let selectedImageData = viewModel.selectedImageData,
-                       let image = PlatformImage.swiftUIImage(from: selectedImageData) {
-                        image
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxWidth: .infinity, idealHeight: 240)
-                            .padding(20)
-                    }
-
-                    #if os(iOS)
-                    PhotosPicker(
-                        selection: $selectedImageItem,
-                        matching: .images,
-                        photoLibrary: .shared()
-                    ) {
-                        imagePickerLabel
-                    }
-                    .onChange(of: selectedImageItem) { _, newItem in
-                        Task {
-                            if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                viewModel.selectedImageData = data
-                                isEmptyImage = viewModel.selectedImageData == nil
-                            }
-                        }
-                    }
-                    #elseif os(macOS)
-                    Button("Escolher imagem") {
-                        pickImageOnMac()
-                    }
-                    #endif
-                }
+        formContent
+            .disabled(isLoading)
+            .navigationView(title: viewModel.isNewGame ? "Novo Jogo" : viewModel.game.name)
+            .toolbar {
+                saveToolbarButton
             }
+            .overlay(
+                GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
+            )
+            .onChange(of: viewModel.state) { _, state in
+                isLoading = state == .loading
+            }
+            .task {
+                await viewModel.fetchData()
+            }
+    }
 
-            Section("Dados do Jogo") {
-                TextField("Nome", text: $viewModel.game.name)
+    private var formContent: some View {
+        Form {
+            coverImageSection
+            gameDataSection
+        }
+    }
 
-                CurrencyTextField(title: "Preço (R$)", amountString: $viewModel.game.price)
+    private var coverImageSection: some View {
+        Section("Escolha a imagem de capa") {
+            VStack {
+                if let selectedImageData = viewModel.selectedImageData,
+                   let image = PlatformImage.swiftUIImage(from: selectedImageData) {
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, idealHeight: 240)
+                        .padding(20)
+                }
 
-                DatePicker(
-                    "Data de Compra",
-                    selection: $viewModel.game.boughtDate,
-                    displayedComponents: .date
-                )
-
-                Toggle("Digital", isOn: $viewModel.game.digital)
-                Toggle("Tenho", isOn: $viewModel.game.have)
-                Toggle("Original", isOn: $viewModel.game.original)
-
-                Picker(
-                    "Plataforma",
-                    selection: Binding($viewModel.game.platform, deselectTo: nil)
+                #if os(iOS)
+                PhotosPicker(
+                    selection: $selectedImageItem,
+                    matching: .images,
+                    photoLibrary: .shared()
                 ) {
-                    if let selectedPlatform = viewModel.game.platform {
-                        if !viewModel.platforms.contains(selectedPlatform) {
-                            Text(String()).tag(nil as Platform?)
+                    imagePickerLabel
+                }
+                .onChange(of: selectedImageItem) { _, newItem in
+                    Task {
+                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                            viewModel.selectedImageData = data
+                            isEmptyImage = viewModel.selectedImageData == nil
                         }
-                    } else {
+                    }
+                }
+                #elseif os(macOS)
+                Button("Escolher imagem") {
+                    pickImageOnMac()
+                }
+                #else
+                Text("Selecione a capa no iPhone ou Mac.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                #endif
+            }
+        }
+    }
+
+    private var gameDataSection: some View {
+        Section("Dados do Jogo") {
+            TextField("Nome", text: $viewModel.game.name)
+
+            CurrencyTextField(title: "Preço (R$)", amountString: $viewModel.game.price)
+
+            #if os(tvOS)
+            LabeledContent("Data de Compra") {
+                Text(
+                    viewModel.game.boughtDate,
+                    format: .dateTime.day().month().year()
+                )
+            }
+            #else
+            DatePicker(
+                "Data de Compra",
+                selection: $viewModel.game.boughtDate,
+                displayedComponents: .date
+            )
+            #endif
+
+            Toggle("Digital", isOn: $viewModel.game.digital)
+            Toggle("Tenho", isOn: $viewModel.game.have)
+            Toggle("Original", isOn: $viewModel.game.original)
+
+            Picker(
+                "Plataforma",
+                selection: Binding($viewModel.game.platform, deselectTo: nil)
+            ) {
+                if let selectedPlatform = viewModel.game.platform {
+                    if !viewModel.platforms.contains(selectedPlatform) {
                         Text(String()).tag(nil as Platform?)
                     }
+                } else {
+                    Text(String()).tag(nil as Platform?)
+                }
 
-                    ForEach(viewModel.platforms, id: \.id) { platform in
-                        Text(platform.name)
-                            .tag(platform as Platform?)
-                    }
-                }
-                .pickerStyle(.menu)
-            }
-        }
-        .disabled(isLoading)
-        .navigationView(title: viewModel.isNewGame ? "Novo Jogo" : viewModel.game.name)
-        .toolbar {
-            Button("Salvar") {
-                Task {
-                    await viewModel.save()
+                ForEach(viewModel.platforms, id: \.id) { platform in
+                    Text(platform.name)
+                        .tag(platform as Platform?)
                 }
             }
+            .pickerStyle(.menu)
         }
-        .overlay(
-            GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
-        )
-        .onChange(of: viewModel.state) { _, state in
-            isLoading = state == .loading
-        }
-        .task {
-            await viewModel.fetchData()
+    }
+
+    private var saveToolbarButton: some View {
+        Button("Salvar") {
+            Task {
+                await viewModel.save()
+            }
         }
     }
 

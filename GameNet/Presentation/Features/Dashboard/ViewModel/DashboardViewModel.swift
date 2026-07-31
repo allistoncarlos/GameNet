@@ -57,6 +57,11 @@ class DashboardViewModel: ObservableObject {
 
                     if let playingGames = dashboard.playingGames {
                         WidgetSharedStore.savePlayingGames(from: playingGames)
+#if os(iOS) && canImport(WatchConnectivity)
+                        Task { @MainActor in
+                            await WatchPhoneCoordinator.shared.pushPlayingGamesToWatch()
+                        }
+#endif
                     }
                 case let .successGameplay(year, gameplaySessions):
                     self?.gameplaySessions?[year] = gameplaySessions

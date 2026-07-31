@@ -62,6 +62,12 @@ class LoginViewModel: ObservableObject {
 
             WidgetSharedStore.syncFromKeychain()
 
+#if os(iOS) && canImport(WatchConnectivity)
+            Task { @MainActor in
+                await WatchPhoneCoordinator.shared.pushPlayingGamesToWatch()
+            }
+#endif
+
             DispatchQueue.main.async {
                 let message = [
                     id,
