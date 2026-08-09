@@ -95,8 +95,6 @@ struct DashboardView: View {
                 #if DEBUG && canImport(WebKit)
                 if value == "" {
                     viewModel.featureToggle()
-                } else if FirebaseRemoteConfig.metabaseDashboard {
-                    viewModel.metabaseDashboard()
                 }
                 #endif
             }
@@ -105,12 +103,6 @@ struct DashboardView: View {
                 Button(action: {}) {
                     SwiftUI.NavigationLink(value: String()) {
                         Image(systemName: "gear")
-                    }
-                }
-
-                Button(action: {}) {
-                    SwiftUI.NavigationLink(value: "metabaseDashboard") {
-                        Image(systemName: "chart.pie")
                     }
                 }
                 #endif

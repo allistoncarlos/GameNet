@@ -15,8 +15,6 @@ enum RemoteConfigParameters: String, CaseIterable, Identifiable {
     case stepperView = "StepperView"
     case serverDrivenDashboard = "ServerDrivenDashboard"
     case serverDrivenPlatforms = "ServerDrivenPlatforms"
-
-    case metabaseDashboard = "MetabaseDashboard"
 }
 
 @MainActor
@@ -25,8 +23,6 @@ class FirebaseRemoteConfig {
     static private(set) var stepperView: Bool = false
     static private(set) var serverDrivenDashboard: Bool = false
     static private(set) var serverDrivenPlatforms: Bool = false
-
-    static private(set) var metabaseDashboard: Bool = false
     
     static var overrideRemoteConfigs: Bool {
         let defaults = UserDefaults.standard
@@ -48,10 +44,6 @@ class FirebaseRemoteConfig {
 
         FirebaseRemoteConfig.serverDrivenPlatforms =
             remoteConfig[RemoteConfigParameters.serverDrivenPlatforms.rawValue]
-            .boolValue
-
-        FirebaseRemoteConfig.metabaseDashboard =
-            remoteConfig[RemoteConfigParameters.metabaseDashboard.rawValue]
             .boolValue
     }
     
@@ -81,12 +73,6 @@ class FirebaseRemoteConfig {
                 RemoteConfigParameters.serverDrivenPlatforms.rawValue
             }) {
                 FirebaseRemoteConfig.serverDrivenPlatforms = serverDrivenPlatforms.enabled
-            }
-
-            if let metabaseDashboard = debugConfigs.first(where: { $0.featureToggle ==
-                RemoteConfigParameters.metabaseDashboard.rawValue
-            }) {
-                FirebaseRemoteConfig.metabaseDashboard = metabaseDashboard.enabled
             }
         }
     }

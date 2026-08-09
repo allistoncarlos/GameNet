@@ -274,9 +274,5 @@ extension DashboardViewModel {
     func featureToggle() -> some View {
         return DashboardRouter.makeFeatureToggle()
     }
-
-    func metabaseDashboard() -> some View {
-        return DashboardRouter.makeMetabaseDashboard()
-    }
     #endif
 }

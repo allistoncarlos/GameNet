@@ -40,21 +40,9 @@ enum DashboardRouter {
         navigationPath.wrappedValue.removeLast(navigationPath.wrappedValue.count - 1)
     }
     
-    #if os(iOS) && DEBUG && canImport(WebKit)
+    #if (os(iOS) || os(macOS)) && DEBUG && canImport(WebKit)
     static func makeFeatureToggle() -> some View {
         return FeatureToggleView(viewModel: FeatureToggleViewModel(), overrideRemoteConfigs: FirebaseRemoteConfig.overrideRemoteConfigs)
-    }
-
-    static func makeMetabaseDashboard() -> some View {
-        return MetabaseDashboardView(viewModel: MetabaseDashboardViewModel())
-    }
-    #elseif os(macOS) && DEBUG && canImport(WebKit)
-    static func makeFeatureToggle() -> some View {
-        return FeatureToggleView(viewModel: FeatureToggleViewModel(), overrideRemoteConfigs: FirebaseRemoteConfig.overrideRemoteConfigs)
-    }
-
-    static func makeMetabaseDashboard() -> some View {
-        return MetabaseDashboardView(viewModel: MetabaseDashboardViewModel())
     }
     #endif
 }
