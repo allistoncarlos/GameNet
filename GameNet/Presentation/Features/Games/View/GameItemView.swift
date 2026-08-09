@@ -38,16 +38,12 @@ struct GameItemView: View {
 
 #Preview("Dark Mode") {
     let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
-    
-    if let game = MockGameRepository().fetchData(id: "1") {
-        GameItemView(name: game.name, coverURL: game.cover).preferredColorScheme(.dark)
-    }
+    let game = MockGameRepository.previewGameDetail
+    GameItemView(name: game.name, coverURL: game.cover).preferredColorScheme(.dark)
 }
 
 #Preview("Light Mode") {
     let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
-    
-    if let game = MockGameRepository().fetchData(id: "1") {
-        GameItemView(name: game.name, coverURL: game.cover).preferredColorScheme(.light)
-    }
+    let game = MockGameRepository.previewGameDetail
+    GameItemView(name: game.name, coverURL: game.cover).preferredColorScheme(.light)
 }

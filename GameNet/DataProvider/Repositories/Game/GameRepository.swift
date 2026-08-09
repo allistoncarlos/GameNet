@@ -15,6 +15,9 @@ protocol GameRepositoryProtocol {
     func fetchData(id: String) async -> GameDetail?
     func fetchGameplaySessions(id: String) async -> GameplaySessions?
     func save(data: Game, userGameData: UserGame) async -> Bool
+    func beginGameplay(userGameId: String, start: Date) async -> GameDetail?
+    func finishGameplay(userGameId: String, finish: Date) async -> GameDetail?
+    func dropGameplay(userGameId: String) async -> GameDetail?
 }
 
 // MARK: - GameRepository
@@ -37,6 +40,18 @@ struct GameRepository: GameRepositoryProtocol {
 
     func save(data: Game, userGameData: UserGame) async -> Bool {
         return await dataSource.save(data: data, userGameData: userGameData)
+    }
+
+    func beginGameplay(userGameId: String, start: Date) async -> GameDetail? {
+        return await dataSource.beginGameplay(userGameId: userGameId, start: start)
+    }
+
+    func finishGameplay(userGameId: String, finish: Date) async -> GameDetail? {
+        return await dataSource.finishGameplay(userGameId: userGameId, finish: finish)
+    }
+
+    func dropGameplay(userGameId: String) async -> GameDetail? {
+        return await dataSource.dropGameplay(userGameId: userGameId)
     }
 
     // MARK: Private

@@ -17,20 +17,83 @@ struct MockGameRepository: GameRepositoryProtocol {
         gameDetail = Defaults.gameDetail
     }
 
+    static var previewGameDetail: GameDetail { gameDetail }
+    static var previewGameplaySessions: GameplaySessions { gameplaySessions }
+
     func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>? {
         return MockGameRepository.pagedGames
     }
 
-    func fetchData(id: String) -> GameDetail? {
+    func fetchData(id: String) async -> GameDetail? {
         return MockGameRepository.gameDetail
     }
 
-    func fetchGameplaySessions(id: String) -> GameplaySessions? {
+    func fetchGameplaySessions(id: String) async -> GameplaySessions? {
         return MockGameRepository.gameplaySessions
     }
     
     func save(data: Game, userGameData: UserGame) async -> Bool {
         return true
+    }
+
+    func beginGameplay(userGameId: String, start: Date) async -> GameDetail? {
+        var detail = MockGameRepository.gameDetail
+        var gameplays = detail.gameplays ?? []
+        gameplays.append(Gameplay(start: start, finish: nil))
+        detail = GameDetail(
+            id: detail.id,
+            name: detail.name,
+            cover: detail.cover,
+            platform: detail.platform,
+            value: detail.value,
+            boughtDate: detail.boughtDate,
+            gameplays: gameplays
+        )
+        MockGameRepository.gameDetail = detail
+        return detail
+    }
+
+    func finishGameplay(userGameId: String, finish: Date) async -> GameDetail? {
+        var detail = MockGameRepository.gameDetail
+        guard var gameplays = detail.gameplays,
+              let activeIndex = gameplays.lastIndex(where: { $0.finish == nil }) else {
+            return nil
+        }
+
+        let active = gameplays[activeIndex]
+        gameplays[activeIndex] = Gameplay(start: active.start, finish: finish)
+        detail = GameDetail(
+            id: detail.id,
+            name: detail.name,
+            cover: detail.cover,
+            platform: detail.platform,
+            value: detail.value,
+            boughtDate: detail.boughtDate,
+            gameplays: gameplays
+        )
+        MockGameRepository.gameDetail = detail
+        return detail
+    }
+
+    func dropGameplay(userGameId: String) async -> GameDetail? {
+        var detail = MockGameRepository.gameDetail
+        guard var gameplays = detail.gameplays,
+              let activeIndex = gameplays.lastIndex(where: { $0.finish == nil }) else {
+            return nil
+        }
+
+        gameplays.remove(at: activeIndex)
+        detail = GameDetail(
+            id: detail.id,
+            name: detail.name,
+            cover: detail.cover,
+            platform: detail.platform,
+            value: detail.value,
+            boughtDate: detail.boughtDate,
+            gameplays: gameplays
+        )
+        MockGameRepository.gameDetail = detail
+        return detail
     }
 
     // MARK: Private
@@ -145,6 +208,6 @@ struct MockGameRepository: GameRepositoryProtocol {
 
     private static var games = Defaults.games
     private static var pagedGames = Defaults.pagedGames
-    private static var gameDetail = Defaults.gameDetail
+    fileprivate static var gameDetail = Defaults.gameDetail
     private static var gameplaySessions = Defaults.gameplaySessions
 }

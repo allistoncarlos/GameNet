@@ -145,6 +145,9 @@ public enum GameNetAPI {
     case gameplays(id: String)
     case gameplaysByYear(year: Int, month: Int? = nil)
     case saveGameplaySession(data: GameplaySessionRequest)
+    case beginUserGameGameplay(userGameId: String, start: Date)
+    case finishUserGameGameplay(userGameId: String, finish: Date)
+    case dropUserGameGameplay(userGameId: String)
     case finishGame(userGameId: String)
     case dropGameplay(userGameId: String)
     
@@ -229,6 +232,12 @@ public enum GameNetAPI {
             }
 
             return APIConstants.gameplaySessionResource
+        case let .beginUserGameGameplay(userGameId, _):
+            return "\(APIConstants.gameResource)/\(userGameId)/gameplay"
+        case let .finishUserGameGameplay(userGameId, _):
+            return "\(APIConstants.gameResource)/\(userGameId)/gameplay"
+        case let .dropUserGameGameplay(userGameId):
+            return "\(APIConstants.gameResource)/\(userGameId)/gameplay"
         case let .finishGame(userGameId):
             return "\(APIConstants.gameResource)/finish-gameplay/\(userGameId)"
         case let .dropGameplay(userGameId):
@@ -271,17 +280,21 @@ public enum GameNetAPI {
 
             return .post
         case .saveGame,
-             .saveUserGame:
+             .saveUserGame,
+             .beginUserGameGameplay:
             return .post
         case let .saveGameplaySession(request):
             if request.finish != nil {
                 return .put
             }
-                
+
             return .post
-        case .finishGame,
+        case .finishUserGameGameplay,
+             .finishGame,
              .dropGameplay:
             return .put
+        case .dropUserGameGameplay:
+            return .delete
         }
     }
 
@@ -320,6 +333,10 @@ public enum GameNetAPI {
             return try parameterEncoder.encode(parameters, into: request)
         case let .saveGameplaySession(parameters):
             return try parameterEncoder.encode(parameters, into: request)
+        case let .beginUserGameGameplay(_, start):
+            return try parameterEncoder.encode(UserGameGameplayStartRequest(start: start), into: request)
+        case let .finishUserGameGameplay(_, finish):
+            return try parameterEncoder.encode(UserGameGameplayFinishRequest(finish: finish), into: request)
         case .dashboard,
              .platforms,
              .platform,
@@ -333,6 +350,8 @@ public enum GameNetAPI {
              .game,
              .gameplays,
              .gameplaysByYear,
+             .finishUserGameGameplay,
+             .dropUserGameGameplay,
              .finishGame,
              .dropGameplay,
             

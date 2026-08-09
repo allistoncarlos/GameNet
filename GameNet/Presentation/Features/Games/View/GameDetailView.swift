@@ -16,6 +16,23 @@ import AppKit
 import UIKit
 #endif
 
+private enum GameDetailGameplayAction: Identifiable {
+    case begin(start: Date)
+    case finish
+    case drop
+
+    var id: String {
+        switch self {
+        case let .begin(start):
+            return "begin-\(start.timeIntervalSince1970)"
+        case .finish:
+            return "finish"
+        case .drop:
+            return "drop"
+        }
+    }
+}
+
 // MARK: - GameDetailView
 
 struct GameDetailView: View {
@@ -30,6 +47,8 @@ struct GameDetailView: View {
     @State var showingConfirmation = false
     @State var buttonImage = "play.fill"
     @State var confirmText = "iniciar"
+    @State private var activeGameplayAction: GameDetailGameplayAction?
+    @State private var macContextMenuSession: GameplaySession?
 
     var body: some View {
         ZStack {
@@ -91,6 +110,46 @@ struct GameDetailView: View {
         .task(id: displayCoverURL) {
             guard !displayCoverURL.isEmpty else { return }
             coverAccentColor = await CoverAccentColor.from(urlString: displayCoverURL)
+        }
+        .confirmationDialog(
+            "",
+            isPresented: Binding(
+                get: { activeGameplayAction != nil },
+                set: { isPresented in
+                    if !isPresented { activeGameplayAction = nil }
+                }
+            ),
+            presenting: activeGameplayAction
+        ) { action in
+            switch action {
+            case let .begin(start):
+                Button("Iniciar Gameplay") {
+                    Task {
+                        _ = await viewModel.beginGameplay(start: start)
+                    }
+                }
+            case .finish:
+                Button("Finalizar Gameplay") {
+                    Task {
+                        _ = await viewModel.finishGameplay()
+                    }
+                }
+            case .drop:
+                Button("Dropar Gameplay", role: .destructive) {
+                    Task {
+                        _ = await viewModel.dropUserGameplay()
+                    }
+                }
+            }
+        } message: { action in
+            switch action {
+            case .begin:
+                Text("Deseja iniciar um gameplay para \(displayName)?")
+            case .finish:
+                Text("Deseja finalizar o gameplay ativo de \(displayName)?")
+            case .drop:
+                Text("Deseja dropar o gameplay ativo de \(displayName)?")
+            }
         }
     }
 
@@ -293,8 +352,42 @@ struct GameDetailView: View {
                 value: totalGameplayTime,
                 detail: "Tempo de jogo"
             )
-            .padding(.leading, 10)
+            .padding(.horizontal, 10)
+
+            if viewModel.hasActiveGameplay {
+                sessionsSummaryDivider
+
+                dropGameplaySummaryColumn
+                    .padding(.leading, 10)
+            }
         }
+    }
+
+    private var dropGameplaySummaryColumn: some View {
+        Button {
+            activeGameplayAction = .drop
+        } label: {
+            VStack(spacing: 4) {
+                Image(systemName: "xmark.circle")
+                    .font(.system(size: 12))
+                    .foregroundStyle(.secondary)
+
+                Text("Dropar")
+                    .font(.system(size: 13, weight: .semibold))
+                    .multilineTextAlignment(.center)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+
+                Text("Gameplay")
+                    .font(.system(size: 10))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.85)
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(.plain)
     }
 
     private var sessionsHistoryExpander: some View {
@@ -417,6 +510,19 @@ struct GameDetailView: View {
 
     @ViewBuilder
     private func gameplaySessionRow(for session: GameplaySession, index: Int) -> some View {
+        gameplaySessionRowContent(for: session, index: index)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 7)
+            .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 10))
+            .gameNetPointerContextMenu(
+                isPresented: macContextMenuIsPresented(for: session),
+                onPointerMenu: { macContextMenuSession = session },
+                menu: { gameplaySessionContextMenu(for: session) }
+            )
+    }
+
+    @ViewBuilder
+    private func gameplaySessionRowContent(for session: GameplaySession, index: Int) -> some View {
         HStack(alignment: .center, spacing: 8) {
             Text("\(index)")
                 .font(.system(size: 10, weight: .medium, design: .rounded))
@@ -457,9 +563,38 @@ struct GameDetailView: View {
                     .background(.white.opacity(0.1), in: Capsule())
             }
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 7)
-        .background(.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 10))
+    }
+
+    @ViewBuilder
+    private func gameplaySessionContextMenu(for session: GameplaySession) -> some View {
+        if !viewModel.hasActiveGameplay {
+            Button {
+                macContextMenuSession = nil
+                activeGameplayAction = .begin(start: session.start)
+            } label: {
+                Label("Iniciar Gameplay", systemImage: "play.circle.fill")
+            }
+        }
+
+        if viewModel.hasActiveGameplay {
+            Button {
+                macContextMenuSession = nil
+                activeGameplayAction = .finish
+            } label: {
+                Label("Finalizar Gameplay", systemImage: "stop.circle.fill")
+            }
+        }
+    }
+
+    private func macContextMenuIsPresented(for session: GameplaySession) -> Binding<Bool> {
+        Binding(
+            get: { macContextMenuSession == session },
+            set: { isPresented in
+                if !isPresented {
+                    macContextMenuSession = nil
+                }
+            }
+        )
     }
 }
 

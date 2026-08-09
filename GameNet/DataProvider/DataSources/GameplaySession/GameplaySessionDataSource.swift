@@ -68,7 +68,7 @@ class GameplaySessionDataSource: GameplaySessionDataSourceProtocol {
         if let apiResult = await NetworkManager.shared
             .performRequest(
                 responseType: APIResult<EmptyDataResponse>.self,
-                endpoint: .dropGameplay(userGameId: userGameId)
+                endpoint: .dropUserGameGameplay(userGameId: userGameId)
             ) {
             return apiResult.ok
         }

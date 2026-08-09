@@ -15,6 +15,9 @@ protocol GameDataSourceProtocol {
     func fetchData(id: String) async -> GameDetail?
     func fetchGameplaySessions(id: String) async -> GameplaySessions?
     func save(data: Game, userGameData: UserGame) async -> Bool
+    func beginGameplay(userGameId: String, start: Date) async -> GameDetail?
+    func finishGameplay(userGameId: String, finish: Date) async -> GameDetail?
+    func dropGameplay(userGameId: String) async -> GameDetail?
 }
 
 // MARK: - GameDataSource
@@ -103,6 +106,48 @@ class GameDataSource: GameDataSourceProtocol {
         }
 
         return false
+    }
+
+    func beginGameplay(userGameId: String, start: Date) async -> GameDetail? {
+        if let apiResult = await NetworkManager.shared
+            .performRequest(
+                responseType: APIResult<GameDetailResponseDTO>.self,
+                endpoint: .beginUserGameGameplay(userGameId: userGameId, start: start)
+            ) {
+            if apiResult.ok {
+                return apiResult.data.toGameDetail()
+            }
+        }
+
+        return nil
+    }
+
+    func finishGameplay(userGameId: String, finish: Date) async -> GameDetail? {
+        if let apiResult = await NetworkManager.shared
+            .performRequest(
+                responseType: APIResult<GameDetailResponseDTO>.self,
+                endpoint: .finishUserGameGameplay(userGameId: userGameId, finish: finish)
+            ) {
+            if apiResult.ok {
+                return apiResult.data.toGameDetail()
+            }
+        }
+
+        return nil
+    }
+
+    func dropGameplay(userGameId: String) async -> GameDetail? {
+        if let apiResult = await NetworkManager.shared
+            .performRequest(
+                responseType: APIResult<GameDetailResponseDTO>.self,
+                endpoint: .dropUserGameGameplay(userGameId: userGameId)
+            ) {
+            if apiResult.ok {
+                return apiResult.data.toGameDetail()
+            }
+        }
+
+        return nil
     }
 
     // MARK: Private

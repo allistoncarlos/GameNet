@@ -113,7 +113,7 @@ struct GameplaySessionDetailView: View {
 // MARK: - Previews
 
 #Preview("Dark Mode") {
-    let sessions = MockGameRepository().fetchGameplaySessions(id: "1")!
+    let sessions = MockGameRepository.previewGameplaySessions
 
     let gameplaySessionNavigation = GameplaySessionNavigation(
         key: Calendar.current.component(.year, from: Date()),
@@ -129,7 +129,7 @@ struct GameplaySessionDetailView: View {
 }
 
 #Preview("Light Mode") {
-    let sessions = MockGameRepository().fetchGameplaySessions(id: "1")!
+    let sessions = MockGameRepository.previewGameplaySessions
 
     let gameplaySessionNavigation = GameplaySessionNavigation(
         key: Calendar.current.component(.year, from: Date()),

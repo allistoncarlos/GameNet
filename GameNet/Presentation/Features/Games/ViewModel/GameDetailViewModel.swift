@@ -59,6 +59,10 @@ class GameDetailViewModel: ObservableObject {
 
     let preview: GameDetailPreview?
 
+    var hasActiveGameplay: Bool {
+        game?.gameplays?.contains(where: { $0.finish == nil }) ?? false
+    }
+
     var sortedGameplaySessions: [GameplaySession] {
         guard let gameplays else { return [] }
 
@@ -159,6 +163,54 @@ class GameDetailViewModel: ObservableObject {
         }
 
         isSaving = false
+    }
+
+    func beginGameplay(start: Date) async -> Bool {
+        isSaving = true
+
+        if let result = await repository.beginGameplay(userGameId: gameId, start: start) {
+            game = result
+            state = .successGame(result)
+            isSaving = false
+            return true
+        }
+
+        state = .error("Erro ao iniciar gameplay no servidor")
+        isSaving = false
+        return false
+    }
+
+    func finishGameplay() async -> Bool {
+        isSaving = true
+
+        if let result = await repository.finishGameplay(
+            userGameId: gameId,
+            finish: Date.timeZoneDate()
+        ) {
+            game = result
+            state = .successGame(result)
+            isSaving = false
+            return true
+        }
+
+        state = .error("Erro ao finalizar gameplay no servidor")
+        isSaving = false
+        return false
+    }
+
+    func dropUserGameplay() async -> Bool {
+        isSaving = true
+
+        if let result = await repository.dropGameplay(userGameId: gameId) {
+            game = result
+            state = .successGame(result)
+            isSaving = false
+            return true
+        }
+
+        state = .error("Erro ao dropar gameplay no servidor")
+        isSaving = false
+        return false
     }
 
     // MARK: Private
