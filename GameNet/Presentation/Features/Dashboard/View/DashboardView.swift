@@ -18,6 +18,7 @@ struct DashboardView: View {
 
     @ObservedObject var viewModel: DashboardViewModel
     @State var isLoading = false
+    @State private var availableWidth = PlatformScreen.width
 
     var body: some View {
         NavigationStack(path: $presentedViews) {
@@ -25,40 +26,13 @@ struct DashboardView: View {
                 if FirebaseRemoteConfig.serverDrivenDashboard {
                     ServerDrivenDashboardView(viewModel: ServerDrivenDashboardViewModel())
                 } else {
-                    VStack(spacing: -20) {
-                        if viewModel.dashboard?.playingGames != nil {
-                            playingCard
-                        }
-                        
-                        if viewModel.gameplaySessions != nil {
-                            if !FirebaseRemoteConfig.stepperView {
-                                gameplaySessions
-                            } else {
-                                gameplaySessionsStepperView
-                            }
-                        }
-                        
-                        annualGameplayProgressCard
-                        
-                        if viewModel.dashboard?.totalGames != nil {
-                            physicalDigitalCard
-                        }
-
-                        if viewModel.dashboard?.finishedByYear != nil {
-                           finishedByYearTimelineCard
-                       }
-                        
-                        if viewModel.dashboard?.boughtByYear != nil {
-                            boughtByYearCard
-                        }
-                        
-                        if viewModel.dashboard?.gamesByPlatform != nil {
-                            gamesByPlatformCard
-                        }
-
-                        appVersionFooter
-                    }
+                    dashboardContent
                 }
+            }
+            .onGeometryChange(for: CGFloat.self) { proxy in
+                proxy.size.width
+            } action: { newWidth in
+                availableWidth = newWidth
             }
             .refreshable {
                 if !FirebaseRemoteConfig.serverDrivenDashboard {
@@ -184,8 +158,125 @@ struct DashboardView: View {
     @State private var selectedPlayingGameId: String?
     @Namespace private var gameCoverTransitionNamespace
 
+    private var usesCompactLayout: Bool {
+        PlatformMetrics.dashboardUsesCompactLayout(width: availableWidth)
+    }
+
+    @ViewBuilder
+    private var dashboardContent: some View {
+        if usesCompactLayout {
+            compactDashboardContent
+                .environment(\.dashboardUsesOuterPadding, true)
+        } else {
+            regularDashboardContent
+                .environment(\.dashboardUsesOuterPadding, false)
+                .padding(.horizontal, PlatformMetrics.horizontalPadding(for: availableWidth))
+        }
+    }
+
+    @ViewBuilder
+    private var compactDashboardContent: some View {
+        VStack(spacing: -20) {
+            if viewModel.dashboard?.playingGames != nil {
+                playingCard
+            }
+
+            if viewModel.gameplaySessions != nil {
+                if !FirebaseRemoteConfig.stepperView {
+                    gameplaySessions
+                } else {
+                    gameplaySessionsStepperView
+                }
+            }
+
+            annualGameplayProgressCard
+
+            if viewModel.dashboard?.totalGames != nil {
+                physicalDigitalCard
+            }
+
+            if viewModel.dashboard?.finishedByYear != nil {
+                finishedByYearTimelineCard
+            }
+
+            if viewModel.dashboard?.boughtByYear != nil {
+                boughtByYearCard
+            }
+
+            if viewModel.dashboard?.gamesByPlatform != nil {
+                gamesByPlatformCard
+            }
+
+            appVersionFooter
+        }
+    }
+
+    @ViewBuilder
+    private var regularDashboardContent: some View {
+        let columnCount = PlatformMetrics.dashboardCardColumns(for: availableWidth)
+        let gridColumns = Array(
+            repeating: GridItem(.flexible(), spacing: 16),
+            count: columnCount
+        )
+
+        VStack(spacing: 16) {
+            if viewModel.dashboard?.playingGames != nil {
+                playingCard
+            }
+
+            HStack(alignment: .top, spacing: 16) {
+                if viewModel.gameplaySessions != nil {
+                    Group {
+                        if !FirebaseRemoteConfig.stepperView {
+                            gameplaySessions
+                        } else {
+                            gameplaySessionsStepperView
+                        }
+                    }
+                    .frame(maxWidth: .infinity, alignment: .top)
+                }
+
+                if viewModel.dashboard?.totalGames != nil {
+                    physicalDigitalCard
+                        .frame(maxWidth: .infinity, alignment: .top)
+                }
+            }
+
+            annualGameplayProgressCard
+
+            LazyVGrid(columns: gridColumns, alignment: .leading, spacing: 16) {
+                if viewModel.dashboard?.finishedByYear != nil {
+                    finishedByYearTimelineCard
+                }
+
+                if viewModel.dashboard?.boughtByYear != nil {
+                    boughtByYearCard
+                }
+
+                if viewModel.dashboard?.gamesByPlatform != nil {
+                    gamesByPlatformCard
+                }
+            }
+
+            appVersionFooter
+        }
+        .padding(.vertical, 8)
+    }
+
     private var playingCardHeight: CGFloat {
-        min(PlatformScreen.height * 0.45, 420)
+        PlatformMetrics.playingCardHeight(for: availableWidth, compact: usesCompactLayout)
+    }
+
+    private var playingCoverMaxWidth: CGFloat? {
+        PlatformMetrics.playingCoverMaxWidth(
+            for: availableWidth,
+            cardHeight: playingCardHeight,
+            compact: usesCompactLayout
+        )
+    }
+
+    private var annualChartHeight: CGFloat {
+        usesCompactLayout ? 300 : 380
     }
 
     private var orderedPlayingGames: [PlayingGame] {
@@ -236,25 +327,7 @@ extension DashboardView {
                 }
                 
                 VStack(spacing: 12) {
-                    ScrollView(.horizontal) {
-                        LazyHStack(spacing: 0) {
-                            ForEach(orderedPlayingGames, id: \.id) { playingGame in
-                                GameCoverView(
-                                    viewModel: GameCoverViewModel(
-                                        playingGame: playingGame
-                                    ),
-                                    onRefresh: {
-                                        await viewModel.fetchData()
-                                    }
-                                )
-                                .id(playingGame.id)
-                            }
-                        }
-                        .scrollTargetLayout()
-                    }
-                    .scrollTargetBehavior(.paging)
-                    .scrollPosition(id: $selectedPlayingGameId)
-                    .scrollIndicators(.hidden)
+                    playingGamesScrollView
 
                     if !orderedPlayingGames.isEmpty {
                         playingGamesPageIndicator
@@ -270,7 +343,30 @@ extension DashboardView {
             .padding()
         }
         .frame(height: playingCardHeight)
-        .padding()
+        .dashboardOuterPadding()
+    }
+
+    private var playingGamesScrollView: some View {
+        ScrollView(.horizontal) {
+            LazyHStack(spacing: 0) {
+                ForEach(orderedPlayingGames, id: \.id) { playingGame in
+                    GameCoverView(
+                        viewModel: GameCoverViewModel(
+                            playingGame: playingGame
+                        ),
+                        maxCoverWidth: playingCoverMaxWidth,
+                        onRefresh: {
+                            await viewModel.fetchData()
+                        }
+                    )
+                    .id(playingGame.id)
+                }
+            }
+            .scrollTargetLayout()
+        }
+        .scrollTargetBehavior(.paging)
+        .scrollPosition(id: $selectedPlayingGameId)
+        .scrollIndicators(.hidden)
     }
 
     private var playingGamesPageIndicator: some View {
@@ -304,7 +400,8 @@ extension DashboardView {
 extension DashboardView {
     var annualGameplayProgressCard: some View {
         AnnualGameplayProgressChartView(
-            series: viewModel.annualGameplayProgress
+            series: viewModel.annualGameplayProgress,
+            chartHeight: annualChartHeight
         )
     }
 }
@@ -343,7 +440,7 @@ extension DashboardView {
             .tinted(Color.secondaryCardBackground),
             in: .rect(cornerRadius: 20)
         )
-        .padding()
+        .dashboardOuterPadding()
     }
 
     private var physicalDigitalHeader: some View {
@@ -472,7 +569,7 @@ extension DashboardView {
                 }
             }
         }
-        .padding()
+        .dashboardOuterPadding()
     }
 }
 
@@ -516,7 +613,7 @@ extension DashboardView {
             }
             .padding()
         }
-        .padding()
+        .dashboardOuterPadding()
     }
 }
 
@@ -577,7 +674,7 @@ extension DashboardView {
             }
             .padding()
         }
-        .padding()
+        .dashboardOuterPadding()
     }
 }
 

@@ -46,7 +46,7 @@ struct FinishedByYearTimelineView: View {
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.tertiaryCardBackground)
         )
-        .padding()
+        .dashboardOuterPadding()
     }
 
     // MARK: Private

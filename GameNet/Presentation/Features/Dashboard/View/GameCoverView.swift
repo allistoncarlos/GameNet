@@ -24,6 +24,7 @@ private enum GameCoverAction: Identifiable {
 
 struct GameCoverView: View {
     @ObservedObject var viewModel: GameCoverViewModel
+    var maxCoverWidth: CGFloat?
     var onRefresh: () async -> Void = {}
     @State private var activeAction: GameCoverAction?
     @State private var coverAccentColor = Color.main
@@ -132,6 +133,8 @@ struct GameCoverView: View {
                     .font(.dashboardGameSubtitle)
                     .multilineTextAlignment(.center)
             }
+            .frame(maxWidth: maxCoverWidth)
+            .frame(maxWidth: .infinity)
         }
         .containerRelativeFrame(.horizontal)
         .scrollTransition(axis: .horizontal) { content, phase in

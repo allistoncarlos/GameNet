@@ -15,6 +15,7 @@ struct AnnualGameplayProgressChartView: View {
     // MARK: Internal
 
     let series: [AnnualGameplayProgressSeries]
+    var chartHeight: CGFloat = 300
     @State var scrollPosition = 1
     @State private var selectedPoint: AnnualGameplayProgressPoint?
     @State private var chartProxy: ChartProxy?
@@ -126,13 +127,13 @@ struct AnnualGameplayProgressChartView: View {
                         }
                     }
                 }
-                .frame(height: 300)
+                .frame(height: chartHeight)
 
                 legend
             }
             .padding()
         }
-        .padding()
+        .dashboardOuterPadding()
     }
 
     private var legend: some View {

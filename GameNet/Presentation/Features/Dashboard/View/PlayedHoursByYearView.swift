@@ -36,7 +36,7 @@ struct PlayedHoursByYearView: View {
             .tinted(Color.secondaryCardBackground),
             in: .rect(cornerRadius: 20)
         )
-        .padding()
+        .dashboardOuterPadding()
     }
 
     // MARK: Private

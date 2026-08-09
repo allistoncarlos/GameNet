@@ -78,6 +78,54 @@ enum PlatformMetrics {
             return 3
         }
     }
+
+    static var isPhone: Bool {
+        #if os(iOS) && canImport(UIKit)
+        return UIDevice.current.userInterfaceIdiom == .phone
+        #else
+        return false
+        #endif
+    }
+
+    static func dashboardUsesCompactLayout(width: CGFloat) -> Bool {
+        #if os(iOS) && canImport(UIKit)
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return true
+        }
+        #endif
+        return width < 600
+    }
+
+    static func playingCoverMaxWidth(for width: CGFloat, cardHeight: CGFloat, compact: Bool) -> CGFloat? {
+        guard !compact else { return nil }
+
+        let availableHeight = cardHeight - 100
+        let heightBasedWidth = availableHeight * (2.0 / 3.0)
+
+        switch width {
+        case ..<900:
+            return min(heightBasedWidth, 280)
+        case 900..<1200:
+            return min(heightBasedWidth, 340)
+        default:
+            return min(heightBasedWidth, 400)
+        }
+    }
+
+    static func playingCardHeight(for width: CGFloat, compact: Bool) -> CGFloat {
+        if compact {
+            return min(PlatformScreen.height * 0.45, 420)
+        }
+
+        switch width {
+        case ..<900:
+            return 480
+        case 900..<1200:
+            return 520
+        default:
+            return 560
+        }
+    }
 }
 
 private struct ContentWidthModifier: ViewModifier {

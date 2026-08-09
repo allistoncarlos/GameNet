@@ -11,10 +11,19 @@ private struct GameCoverTransitionNamespaceKey: EnvironmentKey {
     static let defaultValue: Namespace.ID? = nil
 }
 
+private struct DashboardUsesOuterPaddingKey: EnvironmentKey {
+    static let defaultValue = true
+}
+
 extension EnvironmentValues {
     var gameCoverTransitionNamespace: Namespace.ID? {
         get { self[GameCoverTransitionNamespaceKey.self] }
         set { self[GameCoverTransitionNamespaceKey.self] = newValue }
+    }
+
+    var dashboardUsesOuterPadding: Bool {
+        get { self[DashboardUsesOuterPaddingKey.self] }
+        set { self[DashboardUsesOuterPaddingKey.self] = newValue }
     }
 }
 
@@ -25,6 +34,11 @@ extension View {
 
     func gameCoverTransitionNamespace(_ namespace: Namespace.ID) -> some View {
         environment(\.gameCoverTransitionNamespace, namespace)
+    }
+
+    @ViewBuilder
+    func dashboardOuterPadding() -> some View {
+        modifier(DashboardOuterPaddingModifier())
     }
 
     func gameCoverTransitionSource(id: String?) -> some View {
@@ -45,6 +59,18 @@ extension View {
         #else
         navigationTitle("")
         #endif
+    }
+}
+
+private struct DashboardOuterPaddingModifier: ViewModifier {
+    @Environment(\.dashboardUsesOuterPadding) private var usesOuterPadding
+
+    func body(content: Content) -> some View {
+        if usesOuterPadding {
+            content.padding()
+        } else {
+            content
+        }
     }
 }
 
