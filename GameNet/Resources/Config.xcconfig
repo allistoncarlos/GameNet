@@ -7,6 +7,6 @@
 
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
-//API_PATH=http:/$()/mac-mini-de-alliston.tail56b10b.ts.net:3011/api
-API_PATH=http:/$()/localhost:3000/api
+API_PATH=http:/$()/mac-mini-de-alliston.tail56b10b.ts.net:3011/api
+//API_PATH=http:/$()/localhost:3000/api
 BEARER=2ru5NUHsDoF9tceIUVWX1XwEekD_4EmXJuRcSYbsa7BnrXZ5u
