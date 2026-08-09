@@ -33,17 +33,3 @@ struct GameItemView: View {
         }
     }
 }
-
-// MARK: - Previews
-
-#Preview("Dark Mode") {
-    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
-    let game = MockGameRepository.previewGameDetail
-    GameItemView(name: game.name, coverURL: game.cover).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
-    let game = MockGameRepository.previewGameDetail
-    GameItemView(name: game.name, coverURL: game.cover).preferredColorScheme(.light)
-}

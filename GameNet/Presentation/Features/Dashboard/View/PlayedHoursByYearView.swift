@@ -126,24 +126,3 @@ struct PlayedHoursByYearView: View {
         return "\(hours):\(String(format: "%02d", minutes))"
     }
 }
-
-// MARK: - Preview
-
-#Preview("Played Hours") {
-    let sample: [Int: GameplaySessions] = [
-        2024: GameplaySessions(id: "2024", sessions: [], totalGameplayTime: "182:30", averageGameplayTime: "02:10"),
-        2023: GameplaySessions(id: "2023", sessions: [], totalGameplayTime: "150:45", averageGameplayTime: "01:55"),
-        2022: GameplaySessions(id: "2022", sessions: [], totalGameplayTime: "98:20", averageGameplayTime: "01:30"),
-        2021: GameplaySessions(id: "2021", sessions: [], totalGameplayTime: "120:00", averageGameplayTime: "01:40"),
-        2020: GameplaySessions(id: "2020", sessions: [], totalGameplayTime: "75:10", averageGameplayTime: "01:20"),
-        2019: GameplaySessions(id: "2019", sessions: [], totalGameplayTime: "60:05", averageGameplayTime: "01:05")
-    ]
-
-    ScrollView {
-        PlayedHoursByYearView(
-            gameplaySessions: sample,
-            onYearTapped: { _ in }
-        )
-    }
-    .preferredColorScheme(.dark)
-}

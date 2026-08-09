@@ -42,23 +42,3 @@ struct ListDetailsView: View {
         }
     }
 }
-
-// MARK: - Previews
-
-#Preview("Dark Mode") {
-    ListDetailsView(
-        viewModel: ListDetailsViewModel(
-            originFlow: .finishedByYear(2023)
-        ),
-        navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    ListDetailsView(
-        viewModel: ListDetailsViewModel(
-            originFlow: .finishedByYear(2023)
-        ),
-        navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.light)
-}

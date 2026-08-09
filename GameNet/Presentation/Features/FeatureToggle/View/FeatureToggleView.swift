@@ -53,7 +53,3 @@ struct FeatureToggleView: View {
         .padding(.bottom)
     }
 }
-
-#Preview {
-    FeatureToggleView(viewModel: FeatureToggleViewModel(), overrideRemoteConfigs: false)
-}

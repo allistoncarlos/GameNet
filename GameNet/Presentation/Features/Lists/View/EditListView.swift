@@ -115,26 +115,3 @@ struct EditListView: View {
     @State private var selectedUserGameId: String? = nil
 
 }
-
-// MARK: - Previews
-
-#Preview("Dark Mode") {
-    let _ = Container.shared.listRepository.register(factory: { MockListRepository() })
-    let list = GameNet.List(id: "1", name: "Próximos Jogos")
-
-    EditListView(
-        viewModel: EditListViewModel(list: list),
-        navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let _ = Container.shared.listRepository.register(factory: { MockListRepository() })
-    let list = GameNet.List(id: "1", name: "Próximos Jogos")
-
-    EditListView(
-        viewModel: EditListViewModel(list: list),
-        navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.light)
-}
-

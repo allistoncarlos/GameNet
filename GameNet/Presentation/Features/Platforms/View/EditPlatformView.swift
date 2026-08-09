@@ -46,23 +46,3 @@ struct EditPlatformView: View {
             "Nova Plataforma" : viewModel.platform.name)
     }
 }
-
-#Preview("Dark Mode") {
-    let _ = Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
-    let platform = Platform(id: "1", name: "Nintendo Switch")
-
-    EditPlatformView(
-        viewModel: EditPlatformViewModel(platform: platform),
-        navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let _ = Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
-    let platform = Platform(id: "1", name: "Nintendo Switch")
-
-    EditPlatformView(
-        viewModel: EditPlatformViewModel(platform: platform),
-        navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.light)
-}

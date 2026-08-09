@@ -83,6 +83,7 @@ struct LoginView: View {
         .ignoresSafeArea()
     }
 
+
     private var loginCard: some View {
         VStack(alignment: .leading, spacing: 24) {
             header
@@ -200,17 +201,4 @@ struct LoginView: View {
         max(24, (height - 380) / 3)
         #endif
     }
-}
-
-#Preview("Dark Mode") {
-    LoginView(viewModel: LoginViewModel()).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    LoginView(viewModel: LoginViewModel()).preferredColorScheme(.light)
-}
-
-#Preview("macOS") {
-    LoginView(viewModel: LoginViewModel())
-        .frame(width: 900, height: 640)
 }

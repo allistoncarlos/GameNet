@@ -17,9 +17,3 @@ struct NavigationLink<Label>: View where Label : View {
         }
     }
 }
-
-#Preview {
-    NavigationLink(value: "properties") {
-        Text("properties")
-    }
-}

@@ -36,11 +36,3 @@ struct Card: View {
         .padding()
     }
 }
-
-#Preview {
-    Card(
-        title: "Horas jogadas por ano",
-        color: .secondaryCardBackground,
-        elements: []
-    )
-}

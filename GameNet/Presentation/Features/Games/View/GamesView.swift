@@ -136,25 +136,3 @@ struct GamesView: View {
     @State private var search: String = ""
     @State var presentedGames = NavigationPath()
 }
-
-// MARK: - Previews
-
-#Preview("Dark Mode") {
-    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
-    
-    GamesView(
-        viewModel: GamesViewModel(),
-        selectedUserGameId: .constant(nil),
-        isPresented: .constant(false)
-    ).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
-    
-    GamesView(
-        viewModel: GamesViewModel(),
-        selectedUserGameId: .constant(nil),
-        isPresented: .constant(false)
-    ).preferredColorScheme(.light)
-}

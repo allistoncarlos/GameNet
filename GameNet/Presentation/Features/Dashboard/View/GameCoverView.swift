@@ -160,15 +160,3 @@ struct GameCoverView: View {
             .redacted(reason: .placeholder)
     }
 }
-
-#Preview {
-    GameCoverView(
-        viewModel: GameCoverViewModel(playingGame: .init(
-            id: "1",
-            name: "The Legend of Zelda: Tears of the Kingdom",
-            platform: "Nintendo Switch",
-            coverURL: "https://placehold.co/400",
-            latestGameplaySession: nil)
-        )
-    )
-}

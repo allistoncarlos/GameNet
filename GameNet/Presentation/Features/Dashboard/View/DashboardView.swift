@@ -669,17 +669,3 @@ extension DashboardView {
         .dashboardOuterPadding()
     }
 }
-
-// MARK: - Previews
-
-#Preview("Dark Mode") {
-    let _ = Container.shared.dashboardRepository.register(factory: { MockDashboardRepository() })
-    
-    DashboardView(viewModel: DashboardViewModel()).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let _ = Container.shared.dashboardRepository.register(factory: { MockDashboardRepository() })
-    
-    DashboardView(viewModel: DashboardViewModel()).preferredColorScheme(.light)
-}

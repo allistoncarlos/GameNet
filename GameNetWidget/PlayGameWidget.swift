@@ -146,12 +146,3 @@ struct GameNetWidgetBundle: WidgetBundle {
         GameplayLiveActivity()
     }
 }
-
-// MARK: - Preview
-
-#Preview(as: .systemSmall) {
-    PlayGameWidget()
-} timeline: {
-    PlayGameEntry(date: .now, game: .preview, isLogged: true, coverImageData: nil)
-    PlayGameEntry(date: .now, game: nil, isLogged: false, coverImageData: nil)
-}

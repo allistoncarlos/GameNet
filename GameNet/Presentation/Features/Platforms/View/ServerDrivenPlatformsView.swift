@@ -52,7 +52,3 @@ struct ServerDrivenPlatformsView: View {
     
     @State private var presentedPlatforms = NavigationPath()
 }
-
-#Preview {
-    ServerDrivenPlatformsView(viewModel: ServerDrivenPlatformsViewModel())
-}

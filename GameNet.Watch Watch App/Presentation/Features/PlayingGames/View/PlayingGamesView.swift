@@ -157,7 +157,3 @@ struct PlayingGamesView: View {
         .padding(.horizontal, 12)
     }
 }
-
-#Preview {
-    PlayingGamesView(viewModel: PlayingGamesViewModel())
-}

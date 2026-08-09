@@ -82,17 +82,3 @@ struct ListsView: View {
 
     @State private var presentedLists = NavigationPath()
 }
-
-// MARK: - Previews
-
-#Preview("Dark Mode") {
-    let _ = Container.shared.listRepository.register(factory: { MockListRepository() })
-
-    ListsView(viewModel: ListsViewModel()).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let _ = Container.shared.listRepository.register(factory: { MockListRepository() })
-
-    ListsView(viewModel: ListsViewModel()).preferredColorScheme(.light)
-}

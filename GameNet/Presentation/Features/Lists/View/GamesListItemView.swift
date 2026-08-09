@@ -51,21 +51,3 @@ struct GamesListItemView: View {
         .frame(height: fixedHeight)
     }
 }
-
-// MARK: - Previews
-
-#Preview("Dark Mode") {
-    let listGame = MockListRepository().fetchData(id: "1")
-
-    GamesListItemView(
-        game: listGame?.games?[0]
-    ).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let listGame = MockListRepository().fetchData(id: "1")
-
-    GamesListItemView(
-        game: listGame?.games?[0]
-    ).preferredColorScheme(.light)
-}

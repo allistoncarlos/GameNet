@@ -20,7 +20,3 @@ struct NotLoggedView: View {
         .padding(.horizontal, 12)
     }
 }
-
-#Preview {
-    NotLoggedView()
-}

@@ -57,14 +57,3 @@ struct GameplayChartView: View {
 
     @State private var selectedPeriod = 0
 }
-
-#Preview("Dark Mode") {
-    GameplayChartView(
-        data: .constant([
-            .init(type: "Cube", sortDate: Date(), count: 5),
-            .init(type: "Sphere", sortDate: Date(), count: 4),
-            .init(type: "Pyramid", sortDate: Date(), count: 4)
-        ]),
-        recentRegister: .constant(UUID())
-    ).preferredColorScheme(.dark)
-}

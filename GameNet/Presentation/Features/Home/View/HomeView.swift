@@ -130,39 +130,3 @@ struct HomeView: View {
             AnyView(PlatformsView(viewModel: platformsViewModel))
     }
 }
-
-#Preview("Dark Mode") {
-    let homeViewModel = HomeViewModel()
-    let dashboardViewModel = DashboardViewModel()
-    let platformsViewModel = PlatformsViewModel()
-    let gamesViewModel = GamesViewModel()
-    let listsViewModel = ListsViewModel()
-    let serverDrivenPlatformsViewModel = ServerDrivenPlatformsViewModel()
-
-    HomeView(
-        homeViewModel: homeViewModel,
-        dashboardViewModel: dashboardViewModel,
-        platformsViewModel: platformsViewModel,
-        gamesViewModel: gamesViewModel,
-        listsViewModel: listsViewModel,
-        serverDrivenPlatformsViewModel: serverDrivenPlatformsViewModel
-    ).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let homeViewModel = HomeViewModel()
-    let dashboardViewModel = DashboardViewModel()
-    let platformsViewModel = PlatformsViewModel()
-    let gamesViewModel = GamesViewModel()
-    let listsViewModel = ListsViewModel()
-    let serverDrivenPlatformsViewModel = ServerDrivenPlatformsViewModel()
-
-    HomeView(
-        homeViewModel: homeViewModel,
-        dashboardViewModel: dashboardViewModel,
-        platformsViewModel: platformsViewModel,
-        gamesViewModel: gamesViewModel,
-        listsViewModel: listsViewModel,
-        serverDrivenPlatformsViewModel: serverDrivenPlatformsViewModel
-    ).preferredColorScheme(.light)
-}

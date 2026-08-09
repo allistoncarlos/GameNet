@@ -109,37 +109,3 @@ struct GameplaySessionDetailView: View {
     }
 
 }
-
-// MARK: - Previews
-
-#Preview("Dark Mode") {
-    let sessions = MockGameRepository.previewGameplaySessions
-
-    let gameplaySessionNavigation = GameplaySessionNavigation(
-        key: Calendar.current.component(.year, from: Date()),
-        value: sessions
-    )
-
-    let viewModel = GameplaySessionDetailViewModel(gameplaySession: gameplaySessionNavigation)
-
-    GameplaySessionDetailView(
-        viewModel: viewModel,
-        navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let sessions = MockGameRepository.previewGameplaySessions
-
-    let gameplaySessionNavigation = GameplaySessionNavigation(
-        key: Calendar.current.component(.year, from: Date()),
-        value: sessions
-    )
-
-    let viewModel = GameplaySessionDetailViewModel(gameplaySession: gameplaySessionNavigation)
-
-    GameplaySessionDetailView(
-        viewModel: viewModel,
-        navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.light)
-}

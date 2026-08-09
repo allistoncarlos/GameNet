@@ -170,14 +170,6 @@ struct GameEditView: View {
     #endif
 }
 
-#Preview("Dark Mode") {
-    GameEditView(viewModel: GameEditViewModel(), navigationPath: .constant(NavigationPath())).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    GameEditView(viewModel: GameEditViewModel(), navigationPath: .constant(NavigationPath())).preferredColorScheme(.light)
-}
-
 #if os(macOS)
 import AppKit
 #endif

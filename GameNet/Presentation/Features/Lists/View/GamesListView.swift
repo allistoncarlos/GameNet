@@ -33,17 +33,3 @@ struct GamesListView: View {
         moveAction?(source, destination)
     }
 }
-
-// MARK: - Previews
-
-#Preview("Dark Mode") {
-    let listGame = MockListRepository().fetchData(id: "1")
-
-    GamesListView(games: listGame?.games).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let listGame = MockListRepository().fetchData(id: "1")
-
-    GamesListView(games: listGame?.games).preferredColorScheme(.light)
-}

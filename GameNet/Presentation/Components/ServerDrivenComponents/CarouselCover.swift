@@ -72,14 +72,3 @@ struct CarouselCover: View {
         }
     }
 }
-
-#Preview {
-    CarouselCover(
-        properties: .init(
-            id: "2",
-            title: "The Legend of Zelda: Breath of the Wild",
-            value: "01/01/2024 10:00",
-            url: "https://assets.reedpopcdn.com/148430785862.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/148430785862.jpg"
-        )
-    )
-}

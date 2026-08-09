@@ -14,7 +14,3 @@ struct HomeView: View {
         PlayingGamesView(viewModel: viewModel)
     }
 }
-
-#Preview {
-    HomeView()
-}

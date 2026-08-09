@@ -30,7 +30,3 @@ struct ServerDrivenDashboardView: View {
         }
     }
 }
-
-#Preview {
-    ServerDrivenDashboardView(viewModel: ServerDrivenDashboardViewModel())
-}

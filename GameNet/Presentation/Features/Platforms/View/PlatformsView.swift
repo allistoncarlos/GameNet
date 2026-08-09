@@ -64,15 +64,3 @@ struct PlatformsView: View {
 
     @State private var presentedPlatforms = NavigationPath()
 }
-
-#Preview("Dark Mode") {
-    let _ = Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
-
-    PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let _ = Container.shared.platformRepository.register(factory: { MockPlatformRepository() })
-
-    PlatformsView(viewModel: PlatformsViewModel()).preferredColorScheme(.light)
-}

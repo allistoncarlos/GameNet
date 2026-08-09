@@ -597,25 +597,3 @@ struct GameDetailView: View {
         )
     }
 }
-
-// MARK: - Previews
-
-#Preview("Dark Mode") {
-    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
-    let _ = Container.shared.funRepository.register(factory: { FunRepository() })
-
-    GameDetailView(
-        viewModel: GameDetailViewModel(gameId: "1"),
-        navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.dark)
-}
-
-#Preview("Light Mode") {
-    let _ = Container.shared.gameRepository.register(factory: { MockGameRepository() })
-    let _ = Container.shared.funRepository.register(factory: { FunRepository() })
-
-    GameDetailView(
-        viewModel: GameDetailViewModel(gameId: "1"),
-        navigationPath: .constant(NavigationPath())
-    ).preferredColorScheme(.light)
-}

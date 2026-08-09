@@ -131,24 +131,3 @@ struct BoughtByYearView: View {
         .buttonStyle(.plain)
     }
 }
-
-// MARK: - Preview
-
-#Preview("Bought By Year") {
-    let sample = [
-        BoughtGamesByYearTotal(year: 2024, total: 1850.90, quantity: 24),
-        BoughtGamesByYearTotal(year: 2023, total: 1320.00, quantity: 18),
-        BoughtGamesByYearTotal(year: 2022, total: 980.50, quantity: 12),
-        BoughtGamesByYearTotal(year: 2021, total: 2100.00, quantity: 30),
-        BoughtGamesByYearTotal(year: 2020, total: 760.00, quantity: 9),
-        BoughtGamesByYearTotal(year: 2019, total: 540.25, quantity: 7)
-    ]
-
-    ScrollView {
-        BoughtByYearView(
-            boughtByYear: sample,
-            onYearTapped: { _ in }
-        )
-    }
-    .preferredColorScheme(.dark)
-}
