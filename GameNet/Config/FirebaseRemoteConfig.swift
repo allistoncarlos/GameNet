@@ -11,7 +11,6 @@ import FirebaseRemoteConfig
 enum RemoteConfigParameters: String, CaseIterable, Identifiable {
     var id : String { UUID().uuidString }
     
-    case toggleGameplaySession = "ToggleGameplaySession"
     case stepperView = "StepperView"
     case serverDrivenDashboard = "ServerDrivenDashboard"
     case serverDrivenPlatforms = "ServerDrivenPlatforms"
@@ -19,7 +18,6 @@ enum RemoteConfigParameters: String, CaseIterable, Identifiable {
 
 @MainActor
 class FirebaseRemoteConfig {
-    static private(set) var toggleGameplaySession: Bool = false
     static private(set) var stepperView: Bool = false
     static private(set) var serverDrivenDashboard: Bool = false
     static private(set) var serverDrivenPlatforms: Bool = false
@@ -30,10 +28,6 @@ class FirebaseRemoteConfig {
     }
     
     private static func setConfigs(_ remoteConfig: RemoteConfig) {
-        FirebaseRemoteConfig.toggleGameplaySession =
-            remoteConfig[RemoteConfigParameters.toggleGameplaySession.rawValue]
-            .boolValue
-
         FirebaseRemoteConfig.stepperView =
             remoteConfig[RemoteConfigParameters.stepperView.rawValue]
             .boolValue
@@ -51,12 +45,6 @@ class FirebaseRemoteConfig {
         let decoder = JSONDecoder()
         if let savedData = UserDefaults.standard.data(forKey: "featureToggles"),
            let debugConfigs = try? decoder.decode([RemoteConfigModel].self, from: savedData) {
-            if let toggleGameplaySession = debugConfigs.first(where: { $0.featureToggle ==
-                RemoteConfigParameters.toggleGameplaySession.rawValue
-            }) {
-                FirebaseRemoteConfig.toggleGameplaySession = toggleGameplaySession.enabled
-            }
-
             if let stepperView = debugConfigs.first(where: { $0.featureToggle ==
                 RemoteConfigParameters.stepperView.rawValue
             }) {

@@ -232,7 +232,7 @@ struct GameDetailView: View {
                 #endif
             }
 
-            if FirebaseRemoteConfig.toggleGameplaySession, viewModel.game != nil {
+            if viewModel.game != nil {
                 Button {
                     showingConfirmation = true
                 } label: {

@@ -53,75 +53,73 @@ struct GameCoverView: View {
                 }
                 .clipShape(RoundedRectangle(cornerRadius: 12))
                 .gameCoverTransitionSource(id: viewModel.playingGame.id)
-                    if FirebaseRemoteConfig.toggleGameplaySession {
+                    Button {
+                        activeAction = .toggle
+                    } label: {
+                        Image(systemName: buttonImage)
+                            .frame(width: 40, height: 40)
+                    }
+                    .offset(x: -5, y: -5)
+                    .buttonBorderShape(.circle)
+                    .gameNetGlassProminentButtonStyle(tint: coverAccentColor.opacity(0.5))
+                    .animation(.smooth, value: coverAccentColor)
+                    .contextMenu {
                         Button {
-                            activeAction = .toggle
+                            activeAction = .finishGame
                         } label: {
-                            Image(systemName: buttonImage)
-                                .frame(width: 40, height: 40)
+                            Label("Zerei o Jogo", systemImage: "checkmark.seal.fill")
                         }
-                        .offset(x: -5, y: -5)
-                        .buttonBorderShape(.circle)
-                        .gameNetGlassProminentButtonStyle(tint: coverAccentColor.opacity(0.5))
-                        .animation(.smooth, value: coverAccentColor)
-                        .contextMenu {
-                            Button {
-                                activeAction = .finishGame
-                            } label: {
-                                Label("Zerei o Jogo", systemImage: "checkmark.seal.fill")
-                            }
 
-                            Button(role: .destructive) {
-                                activeAction = .dropGameplay
-                            } label: {
-                                Label("Parar de Jogar", systemImage: "xmark.circle.fill")
+                        Button(role: .destructive) {
+                            activeAction = .dropGameplay
+                        } label: {
+                            Label("Parar de Jogar", systemImage: "xmark.circle.fill")
+                        }
+                    }
+                    .confirmationDialog(
+                        "",
+                        isPresented: Binding(
+                            get: { activeAction != nil },
+                            set: { isPresented in
+                                if !isPresented { activeAction = nil }
+                            }
+                        ),
+                        presenting: activeAction
+                    ) { action in
+                        switch action {
+                        case .toggle:
+                            Button("Confirmar") {
+                                Task {
+                                    if await viewModel.save() {
+                                        await onRefresh()
+                                    }
+                                }
+                            }
+                        case .finishGame:
+                            Button("Zerei o Jogo") {
+                                Task {
+                                    if await viewModel.finishGame() {
+                                        await onRefresh()
+                                    }
+                                }
+                            }
+                        case .dropGameplay:
+                            Button("Parar de Jogar", role: .destructive) {
+                                Task {
+                                    if await viewModel.dropGameplay() {
+                                        await onRefresh()
+                                    }
+                                }
                             }
                         }
-                        .confirmationDialog(
-                            "",
-                            isPresented: Binding(
-                                get: { activeAction != nil },
-                                set: { isPresented in
-                                    if !isPresented { activeAction = nil }
-                                }
-                            ),
-                            presenting: activeAction
-                        ) { action in
-                            switch action {
-                            case .toggle:
-                                Button("Confirmar") {
-                                    Task {
-                                        if await viewModel.save() {
-                                            await onRefresh()
-                                        }
-                                    }
-                                }
-                            case .finishGame:
-                                Button("Zerei o Jogo") {
-                                    Task {
-                                        if await viewModel.finishGame() {
-                                            await onRefresh()
-                                        }
-                                    }
-                                }
-                            case .dropGameplay:
-                                Button("Parar de Jogar", role: .destructive) {
-                                    Task {
-                                        if await viewModel.dropGameplay() {
-                                            await onRefresh()
-                                        }
-                                    }
-                                }
-                            }
-                        } message: { action in
-                            switch action {
-                            case .toggle:
-                                Text("Deseja \(confirmText) o jogo \(viewModel.playingGame.name)?")
-                            case .finishGame:
-                                Text("Deseja marcar o jogo \(viewModel.playingGame.name) como zerado?")
-                            case .dropGameplay:
-                                Text("Deseja parar de jogar o jogo \(viewModel.playingGame.name)?")
-                            }
+                    } message: { action in
+                        switch action {
+                        case .toggle:
+                            Text("Deseja \(confirmText) o jogo \(viewModel.playingGame.name)?")
+                        case .finishGame:
+                            Text("Deseja marcar o jogo \(viewModel.playingGame.name) como zerado?")
+                        case .dropGameplay:
+                            Text("Deseja parar de jogar o jogo \(viewModel.playingGame.name)?")
                         }
                     }
                 }
