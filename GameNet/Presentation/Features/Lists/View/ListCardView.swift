@@ -85,7 +85,10 @@ struct ListCardView: View {
 
     private func coverSlice(coverURL: String?, showsOverflow: Bool) -> some View {
         GeometryReader { geometry in
-            CachedAsyncImage(url: URL(string: coverURL ?? "")) { phase in
+            CachedAsyncImage(
+                url: URL(string: coverURL ?? ""),
+                urlCache: CoverImageCache.urlCache
+            ) { phase in
                 switch phase {
                 case .success(let image):
                     image

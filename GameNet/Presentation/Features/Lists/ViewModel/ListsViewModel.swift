@@ -45,7 +45,7 @@ class ListsViewModel: ObservableObject {
             lists = result
             listCards = result.map { ListCardModel(list: $0, games: []) }
             state = .success(result)
-            await fetchListPreviews(for: result)
+            await fetchListPreviews(for: result, cache: cache)
         } else {
             state = .error("Erro no carregamento de dados do servidor")
         }
@@ -56,13 +56,13 @@ class ListsViewModel: ObservableObject {
     @Injected(\.listRepository) private var repository
     private var cancellable = Set<AnyCancellable>()
 
-    private func fetchListPreviews(for lists: [GameNet.List]) async {
+    private func fetchListPreviews(for lists: [GameNet.List], cache: Bool) async {
         await withTaskGroup(of: (String, [ListItem]).self) { group in
             for list in lists {
                 guard let id = list.id else { continue }
 
                 group.addTask {
-                    let games = await self.repository.fetchData(id: id)?.games ?? []
+                    let games = await self.repository.fetchData(id: id, cache: cache)?.games ?? []
                     let orderedGames = games.sorted { ($0.order ?? 0) < ($1.order ?? 0) }
                     return (id, orderedGames)
                 }
@@ -72,6 +72,10 @@ class ListsViewModel: ObservableObject {
                 if let index = listCards.firstIndex(where: { $0.list.id == id }) {
                     listCards[index].games = games
                 }
+
+                CoverImageCache.prefetch(
+                    urls: games.prefix(3).compactMap(\.cover)
+                )
             }
         }
     }

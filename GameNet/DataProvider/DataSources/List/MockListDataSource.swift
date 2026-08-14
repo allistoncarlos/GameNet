@@ -20,7 +20,7 @@ class MockListDataSource: ListDataSourceProtocol {
         return MockListDataSource.lists
     }
 
-    func fetchData(id: String) async -> ListGame? {
+    func fetchData(id: String, cache: Bool = true) async -> ListGame? {
         MockListDataSource.listsGames.first { list in
             list.id == id
         }

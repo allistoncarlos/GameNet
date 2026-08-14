@@ -11,10 +11,16 @@ import Foundation
 
 protocol ListDataSourceProtocol {
     func fetchData(cache: Bool) async -> [List]?
-    func fetchData(id: String) async -> ListGame?
+    func fetchData(id: String, cache: Bool) async -> ListGame?
     func fetchFinishedByYearData(id: Int) async -> [ListItem]?
     func fetchBoughtByYearData(id: Int) async -> [ListItem]?
     func saveList(id: String?, userId: String?, list: ListGame) async -> List?
+}
+
+extension ListDataSourceProtocol {
+    func fetchData(id: String) async -> ListGame? {
+        await fetchData(id: id, cache: true)
+    }
 }
 
 // MARK: - ListDataSource
@@ -37,11 +43,12 @@ class ListDataSource: ListDataSourceProtocol {
         return nil
     }
 
-    func fetchData(id: String) async -> ListGame? {
+    func fetchData(id: String, cache: Bool = true) async -> ListGame? {
         if let apiResult = await NetworkManager.shared
             .performRequest(
                 responseType: APIResult<ListGameResponseDTO>.self,
-                endpoint: .list(id: id)
+                endpoint: .list(id: id),
+                cache: cache
             ) {
             if apiResult.ok {
                 return apiResult.data.toListGame()

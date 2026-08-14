@@ -20,7 +20,7 @@ struct MockListRepository: ListRepositoryProtocol {
         return MockListRepository.lists
     }
 
-    func fetchData(id: String) -> ListGame? {
+    func fetchData(id: String, cache: Bool = true) -> ListGame? {
         MockListRepository.listGames.first { list in
             list.id == id
         }
