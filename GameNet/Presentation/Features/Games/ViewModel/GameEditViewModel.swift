@@ -34,6 +34,11 @@ class GameEditViewModel: ObservableObject {
     @Published var platforms: [Platform] = []
     @Published var state: GameEditState = .idle
     @Published var selectedImageData: Data? = nil
+    @Published var isImportPresented = false
+    @Published var importQuery = ""
+    @Published var importResults: [TheGamesDBGame] = []
+    @Published var isImporting = false
+    @Published var importMessage: String?
 
     @Published var game: UserGameModel = .init()
 
@@ -70,11 +75,56 @@ class GameEditViewModel: ObservableObject {
         }
     }
 
+    func openImport() {
+        importQuery = game.name
+        importResults = []
+        importMessage = nil
+        isImportPresented = true
+    }
+
+    func searchImport() async {
+        let name = importQuery.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !name.isEmpty else { return }
+
+        guard catalogRepository.hasAPIKey else {
+            importMessage = "Configure THEGAMESDB_API_KEY no Config.xcconfig."
+            importResults = []
+            return
+        }
+
+        isImporting = true
+        importMessage = nil
+        let coverName = game.platform.map { PlatformCoverResolver.parse($0.name).coverSearchName }
+        importResults = await catalogRepository.searchGames(name: name, coverPlatformName: coverName)
+        if importResults.isEmpty {
+            importMessage = "Nenhum jogo encontrado na TheGamesDB."
+        }
+        isImporting = false
+    }
+
+    func applyImport(_ catalogGame: TheGamesDBGame) async {
+        isImporting = true
+        importMessage = nil
+
+        guard let boxartURL = await catalogRepository.boxartURL(gameId: catalogGame.id),
+              let data = await catalogRepository.downloadImage(from: boxartURL) else {
+            importMessage = "Não foi possível baixar a boxart."
+            isImporting = false
+            return
+        }
+
+        game.name = catalogGame.name
+        selectedImageData = data
+        isImporting = false
+        isImportPresented = false
+    }
+
     // MARK: Private
 
     private var gameId: String?
     @Injected(\.gameRepository) private var repository
     @Injected(\.platformRepository) private var platformRepository
+    @Injected(\.theGamesDBRepository) private var catalogRepository
     private var cancellable = Set<AnyCancellable>()
 
     private func handleViewModelState(_ state: GameEditState) {

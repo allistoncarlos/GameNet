@@ -18,4 +18,5 @@ extension Container {
     var serverDrivenDataSource: Factory<ServerDrivenDataSourceProtocol> { self { ServerDrivenDataSource() } }
     var funDataSource: Factory<FunDataSourceProtocol> { self { FunDataSource() } }
     var tokenDataSource: Factory<TokenDataSourceProtocol> { self { TokenDataSource() } }
+    var theGamesDBDataSource: Factory<TheGamesDBDataSourceProtocol> { self { TheGamesDBDataSource() } }
 }

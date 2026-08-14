@@ -11,10 +11,15 @@ struct MockGameRepository: GameRepositoryProtocol {
 
     // MARK: Internal
 
+    static var lastSavedGame: Game?
+    static var lastSavedUserGame: UserGame?
+
     static func reset() {
         games = Defaults.games
         pagedGames = Defaults.pagedGames
         gameDetail = Defaults.gameDetail
+        lastSavedGame = nil
+        lastSavedUserGame = nil
     }
 
     static var previewGameDetail: GameDetail { gameDetail }
@@ -50,6 +55,8 @@ struct MockGameRepository: GameRepositoryProtocol {
     }
     
     func save(data: Game, userGameData: UserGame) async -> Bool {
+        MockGameRepository.lastSavedGame = data
+        MockGameRepository.lastSavedUserGame = userGameData
         return true
     }
 

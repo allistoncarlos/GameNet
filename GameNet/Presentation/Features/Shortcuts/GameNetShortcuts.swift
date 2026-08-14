@@ -21,6 +21,15 @@ struct GameNetShortcuts: AppShortcutsProvider {
             shortTitle: "Add to List",
             systemImageName: "text.badge.plus"
         )
+        AppShortcut(
+            intent: CreateGameIntent(),
+            phrases: [
+                "Create game on \(\.$platform) with \(.applicationName)",
+                "Add game on \(\.$platform) with \(.applicationName)"
+            ],
+            shortTitle: "Create Game",
+            systemImageName: "plus.square.on.square"
+        )
     }
 }
 #endif

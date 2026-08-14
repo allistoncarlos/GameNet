@@ -10,12 +10,15 @@ import Foundation
 struct MockPlatformRepository: PlatformRepositoryProtocol {
     // MARK: Internal
 
+    static var platformsOverride: [Platform]?
+
     static func reset() {
         platforms = Defaults.platforms
+        platformsOverride = nil
     }
 
     func fetchData(cache: Bool = true) async -> [Platform]? {
-        return MockPlatformRepository.platforms
+        return MockPlatformRepository.platformsOverride ?? MockPlatformRepository.platforms
     }
 
     func fetchData(id: String) async -> Platform? {

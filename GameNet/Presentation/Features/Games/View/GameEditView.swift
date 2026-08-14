@@ -21,6 +21,9 @@ struct GameEditView: View {
             .disabled(isLoading)
             .navigationView(title: viewModel.isNewGame ? "Novo Jogo" : viewModel.game.name)
             .toolbar {
+                if viewModel.isNewGame {
+                    importToolbarButton
+                }
                 saveToolbarButton
             }
             .overlay(
@@ -28,6 +31,12 @@ struct GameEditView: View {
             )
             .onChange(of: viewModel.state) { _, state in
                 isLoading = state == .loading
+            }
+            .onChange(of: viewModel.selectedImageData) { _, data in
+                isEmptyImage = data == nil
+            }
+            .sheet(isPresented: $viewModel.isImportPresented) {
+                GameImportSheet(viewModel: viewModel)
             }
             .task {
                 await viewModel.fetchData()
@@ -38,6 +47,7 @@ struct GameEditView: View {
         Form {
             coverImageSection
             gameDataSection
+            userDataSection
         }
     }
 
@@ -87,27 +97,6 @@ struct GameEditView: View {
         Section("Dados do Jogo") {
             TextField("Nome", text: $viewModel.game.name)
 
-            CurrencyTextField(title: "Preço (R$)", amountString: $viewModel.game.price)
-
-            #if os(tvOS)
-            LabeledContent("Data de Compra") {
-                Text(
-                    viewModel.game.boughtDate,
-                    format: .dateTime.day().month().year()
-                )
-            }
-            #else
-            DatePicker(
-                "Data de Compra",
-                selection: $viewModel.game.boughtDate,
-                displayedComponents: .date
-            )
-            #endif
-
-            Toggle("Digital", isOn: $viewModel.game.digital)
-            Toggle("Tenho", isOn: $viewModel.game.have)
-            Toggle("Original", isOn: $viewModel.game.original)
-
             Picker(
                 "Plataforma",
                 selection: Binding($viewModel.game.platform, deselectTo: nil)
@@ -129,11 +118,42 @@ struct GameEditView: View {
         }
     }
 
+    private var userDataSection: some View {
+        Section("Dados do Usuário") {
+            CurrencyTextField(title: "Preço (R$)", amountString: $viewModel.game.price)
+
+            #if os(tvOS)
+            LabeledContent("Data de Compra") {
+                Text(
+                    viewModel.game.boughtDate,
+                    format: .dateTime.day().month().year()
+                )
+            }
+            #else
+            DatePicker(
+                "Data de Compra",
+                selection: $viewModel.game.boughtDate,
+                displayedComponents: .date
+            )
+            #endif
+
+            Toggle("Digital", isOn: $viewModel.game.digital)
+            Toggle("Tenho", isOn: $viewModel.game.have)
+            Toggle("Original", isOn: $viewModel.game.original)
+        }
+    }
+
     private var saveToolbarButton: some View {
         Button("Salvar") {
             Task {
                 await viewModel.save()
             }
+        }
+    }
+
+    private var importToolbarButton: some View {
+        Button("Importar") {
+            viewModel.openImport()
         }
     }
 

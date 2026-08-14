@@ -10,3 +10,4 @@
 API_PATH=http:/$()/mac-mini-de-alliston.tail56b10b.ts.net:3011/api
 //API_PATH=http:/$()/localhost:3000/api
 BEARER=2ru5NUHsDoF9tceIUVWX1XwEekD_4EmXJuRcSYbsa7BnrXZ5u
+THEGAMESDB_API_KEY=87e3fa3cbedc8cd78667b4fe99cdb54dc44c74ae11ecb5e46bbae1d9635a4e57
