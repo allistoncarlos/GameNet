@@ -4,3 +4,5 @@ GameNet.xcodeproj/xcuserdata/
 build/
 
 scripts/
+
+.derivedData/

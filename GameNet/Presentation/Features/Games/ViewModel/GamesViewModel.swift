@@ -25,10 +25,21 @@ class GamesViewModel: ObservableObject {
 
     let platformId: String?
     @Published var filter: GameListFilter = .all
+    @Published var selectedPlatformIds: Set<String> = []
+    @Published var platforms: [Platform] = []
     @Published var pagedList: PagedList<Game>? = nil
     @Published var data: [Game] = []
     @Published var searchedGames: [Game] = []
     @Published var state: GamesState = .idle
+
+    var showsPlatformFilter: Bool { platformId == nil }
+
+    func fetchPlatforms() async {
+        guard showsPlatformFilter, platforms.isEmpty else { return }
+
+        let result = await platformRepository.fetchData(cache: true)
+        platforms = result ?? []
+    }
 
     func fetchData(
         origin: GameRouter.Origin = .home,
@@ -39,21 +50,25 @@ class GamesViewModel: ObservableObject {
         if clear {
             data = []
             searchedGames = []
+            currentPage = 0
+            isFetchingNextPage = false
+            canLoadMore = true
         }
 
         if origin == .home {
-            state = .loading
+            let isPaging = !clear && page > 0
+            if !isPaging {
+                state = .loading
+            }
 
-            let pagedList = await repository.fetchData(
-                search: search,
-                page: page,
-                pageSize: GameNetApp.pageSize,
-                platformId: platformId,
-                gameType: filter.queryValue
-            )
+            isFetchingNextPage = true
+            let pagedList = await fetchPagedGames(search: search, page: page)
+            isFetchingNextPage = false
 
             if let pagedList {
                 self.pagedList = pagedList
+                currentPage = pagedList.page ?? page
+                canLoadMore = !pagedList.result.isEmpty && displayedCount(for: search) < pagedList.totalCount
 
                 if let search, !search.isEmpty {
                     searchedGames += pagedList.result
@@ -63,6 +78,7 @@ class GamesViewModel: ObservableObject {
 
                 state = .success
             } else {
+                canLoadMore = false
                 state = .error("Erro no carregamento de dados do servidor")
             }
         } else {
@@ -70,28 +86,121 @@ class GamesViewModel: ObservableObject {
         }
     }
 
-    func loadNextPage(currentGame: Game) async {
-        if pagedList?.search == nil {
-            let thresholdIndex = data.index(data.endIndex, offsetBy: -5)
+    func loadNextPage(currentGame: Game, origin: GameRouter.Origin = .home) async {
+        guard origin == .home else { return }
+        guard !isFetchingNextPage else { return }
+        guard hasMorePages else { return }
 
-            if data.firstIndex(where: { $0.id == currentGame.id }) == thresholdIndex {
-                let page = pagedList?.page ?? 0
-                await fetchData(search: pagedList?.search, page: page + 1)
-            }
-        } else {
-            let thresholdIndex = searchedGames.index(searchedGames.endIndex, offsetBy: -5)
+        let games = displayedGames
+        guard let index = games.firstIndex(where: { $0.id == currentGame.id }) else { return }
 
-            if searchedGames.firstIndex(where: { $0.id == currentGame.id }) == thresholdIndex {
-                let page = pagedList?.page ?? 0
-                await fetchData(search: pagedList?.search, page: page + 1)
-            }
-        }
+        let threshold = max(games.count - 5, 0)
+        guard index >= threshold else { return }
+
+        await fetchData(
+            origin: origin,
+            search: pagedList?.search,
+            page: currentPage + 1
+        )
     }
 
     // MARK: Private
 
     @Injected(\.gameRepository) private var repository
+    @Injected(\.platformRepository) private var platformRepository
     private var cancellable = Set<AnyCancellable>()
+    private var isFetchingNextPage = false
+    private var currentPage = 0
+    private var canLoadMore = true
+
+    private var displayedGames: [Game] {
+        displayedList(for: pagedList?.search)
+    }
+
+    private var hasMorePages: Bool {
+        canLoadMore && displayedGames.count < (pagedList?.totalCount ?? 0)
+    }
+
+    private func displayedList(for search: String?) -> [Game] {
+        let query = search ?? ""
+        return query.isEmpty ? data : searchedGames
+    }
+
+    private func displayedCount(for search: String?) -> Int {
+        displayedList(for: search).count
+    }
+
+    private var effectivePlatformIds: [String] {
+        if let platformId {
+            return [platformId]
+        }
+
+        return selectedPlatformIds.sorted()
+    }
+
+    private func fetchPagedGames(search: String?, page: Int) async -> PagedList<Game>? {
+        let platformIds = effectivePlatformIds
+
+        if platformIds.count <= 1 {
+            return await repository.fetchData(
+                search: search,
+                page: page,
+                pageSize: GameNetApp.pageSize,
+                platformId: platformIds.first,
+                gameType: filter.queryValue
+            )
+        }
+
+        return await fetchGamesForMultiplePlatforms(
+            platformIds: platformIds,
+            search: search,
+            page: page
+        )
+    }
+
+    private func fetchGamesForMultiplePlatforms(
+        platformIds: [String],
+        search: String?,
+        page: Int
+    ) async -> PagedList<Game>? {
+        let pageSize = GameNetApp.pageSize
+
+        var results: [PagedList<Game>] = []
+        results.reserveCapacity(platformIds.count)
+
+        for platformId in platformIds {
+            if let result = await repository.fetchData(
+                search: search,
+                page: page,
+                pageSize: pageSize,
+                platformId: platformId,
+                gameType: filter.queryValue
+            ) {
+                results.append(result)
+            }
+        }
+
+        guard !results.isEmpty else { return nil }
+
+        var seenIds = Set<String>()
+        let merged = results
+            .flatMap(\.result)
+            .filter { game in
+                guard let id = game.id else { return true }
+                return seenIds.insert(id).inserted
+            }
+            .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+
+        return PagedList<Game>(
+            count: merged.count,
+            totalCount: results.reduce(0) { $0 + $1.totalCount },
+            page: page,
+            pageSize: pageSize,
+            totalPages: results.map(\.totalPages).max() ?? 1,
+            search: search,
+            result: merged
+        )
+    }
 }
 
 extension GamesViewModel {

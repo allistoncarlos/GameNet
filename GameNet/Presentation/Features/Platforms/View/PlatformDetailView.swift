@@ -22,9 +22,9 @@ struct PlatformDetailView: View {
             let columns = PlatformMetrics.gameGridColumns(for: geometry.size.width)
 
             ScrollView {
-                VStack(spacing: 16) {
+                LazyVStack(spacing: 16) {
                     header
-                    filterChips
+                    GameListFilterBar(filter: $viewModel.filter)
                     searchField
 
                     LazyVGrid(columns: columns, spacing: 20) {
@@ -122,27 +122,6 @@ struct PlatformDetailView: View {
     private var gamesCountText: String {
         let count = viewModel.pagedList?.totalCount ?? viewModel.data.count
         return count == 1 ? "1 jogo" : "\(count) jogos"
-    }
-
-    private var filterChips: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(GameListFilter.allCases) { filter in
-                    Button {
-                        viewModel.filter = filter
-                    } label: {
-                        Text(filter.title)
-                            .font(.subheadline.weight(.semibold))
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 8)
-                            .foregroundStyle(viewModel.filter == filter ? Color.white : Color.primary)
-                            .background(viewModel.filter == filter ? Color.main : Color.secondary.opacity(0.18))
-                            .clipShape(Capsule())
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-        }
     }
 
     private var searchField: some View {

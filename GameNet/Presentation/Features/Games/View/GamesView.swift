@@ -30,43 +30,65 @@ struct GamesView: View {
                 let columns = PlatformMetrics.gameGridColumns(for: geometry.size.width)
 
                 ScrollView {
-                    LazyVGrid(columns: columns, spacing: 20) {
-                        ForEach(search.isEmpty ? viewModel.data : viewModel.searchedGames, id: \.id) { game in
-                            if origin == .home {
-                                if let gameId = game.id {
-                                    SwiftUI.NavigationLink(
-                                        value: GameDetailRoute(
-                                            id: gameId,
-                                            preview: GameDetailPreview(game: game)
-                                        )
-                                    ) {
-                                        GameItemView(
-                                            name: game.name,
-                                            coverURL: game.coverURL ?? "",
-                                            gameId: gameId
-                                        )
-                                    }
-                                    .onAppear {
-                                        Task {
-                                            await viewModel.loadNextPage(currentGame: game)
-                                        }
-                                    }
-                                }
-                            } else {
-                                Button(action: {
-                                    if let gameId = game.id {
-                                        self.selectedUserGameId = gameId
-                                        self.isPresented = false
-                                    }
-                                }) {
-                                    GameItemView(name: game.name, coverURL: game.coverURL ?? "")
+                    LazyVStack(spacing: 16) {
+                        GameListFilterBar(
+                            filter: $viewModel.filter,
+                            selectedPlatformCount: viewModel.selectedPlatformIds.count,
+                            showsPlatformFilter: viewModel.showsPlatformFilter,
+                            onPlatformFilterTap: {
+                                Task {
+                                    await viewModel.fetchPlatforms()
+                                    isPlatformFilterPresented = true
                                 }
                             }
+                        )
+
+                        LazyVGrid(columns: columns, spacing: 20) {
+                            ForEach(displayedGames, id: \.id) { game in
+                                if origin == .home {
+                                    if let gameId = game.id {
+                                        SwiftUI.NavigationLink(
+                                            value: GameDetailRoute(
+                                                id: gameId,
+                                                preview: GameDetailPreview(game: game)
+                                            )
+                                        ) {
+                                            GameItemView(
+                                                name: game.name,
+                                                coverURL: game.coverURL ?? "",
+                                                gameId: gameId
+                                            )
+                                        }
+                                        .onAppear {
+                                            Task {
+                                                await viewModel.loadNextPage(currentGame: game, origin: origin)
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    Button(action: {
+                                        if let gameId = game.id {
+                                            self.selectedUserGameId = gameId
+                                            self.isPresented = false
+                                        }
+                                    }) {
+                                        GameItemView(name: game.name, coverURL: game.coverURL ?? "")
+                                    }
+                                }
+                            }
+                        }
+
+                        if !isLoading, displayedGames.isEmpty {
+                            Text("Nenhum jogo encontrado")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                                .padding(.top, 24)
                         }
                     }
                     .frame(maxWidth: PlatformMetrics.contentMaxWidth(for: geometry.size.width))
                     .frame(maxWidth: .infinity)
                     .padding(.horizontal, PlatformMetrics.horizontalPadding(for: geometry.size.width))
+                    .padding(.top, 8)
                 }
                 .navigationDestination(for: GameDetailRoute.self) { route in
                     viewModel.showGameDetailView(
@@ -85,18 +107,31 @@ struct GamesView: View {
                         Task { await viewModel.fetchData(origin: origin, clear: true) }
                     }
                 }
+                .onChange(of: viewModel.filter) { _, _ in
+                    Task {
+                        await viewModel.fetchData(origin: origin, search: search, clear: true)
+                    }
+                }
                 .onSubmit(of: .search) {
                     Task {
-                        await viewModel.fetchData(search: search, clear: true)
+                        await viewModel.fetchData(origin: origin, search: search, clear: true)
                     }
                 }
                 .refreshable {
+                    await viewModel.fetchData(origin: origin, search: search, clear: true)
+                }
+                .sheet(isPresented: $isPlatformFilterPresented, onDismiss: {
                     Task {
-                        await viewModel.fetchData(origin: origin)
+                        await viewModel.fetchData(origin: origin, search: search, clear: true)
                     }
+                }) {
+                    GamePlatformFilterSheet(
+                        platforms: viewModel.platforms,
+                        selectedPlatformIds: $viewModel.selectedPlatformIds
+                    )
                 }
             }
-            .disabled(isLoading)
+            .disabled(isLoading && displayedGames.isEmpty && search.isEmpty && viewModel.filter == .all && viewModel.selectedPlatformIds.isEmpty)
             .navigationView(title: "Games")
             .toolbar {
                 if origin == .home {
@@ -127,6 +162,7 @@ struct GamesView: View {
             }
         }
         .task {
+            await viewModel.fetchPlatforms()
             await viewModel.fetchData(origin: origin)
         }
     }
@@ -134,5 +170,10 @@ struct GamesView: View {
     // MARK: Private
 
     @State private var search: String = ""
+    @State private var isPlatformFilterPresented = false
     @State var presentedGames = NavigationPath()
+
+    private var displayedGames: [Game] {
+        search.isEmpty ? viewModel.data : viewModel.searchedGames
+    }
 }
