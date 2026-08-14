@@ -12,25 +12,45 @@ struct PlatformsView: View {
 
     @ObservedObject var viewModel: PlatformsViewModel
     @State var isLoading = true
+    @State private var search: String = ""
+    @State private var presentedPlatforms = NavigationPath()
 
     var body: some View {
         NavigationStack(path: $presentedPlatforms) {
-            VStack {
-                if let platforms = viewModel.platforms {
-                    SwiftUI.List(platforms, id: \.id) { platform in
-                        SwiftUI.NavigationLink(platform.name, value: platform.id)
+            GeometryReader { geometry in
+                let columns = PlatformMetrics.gameGridColumns(for: geometry.size.width)
+
+                ScrollView {
+                    LazyVGrid(columns: columns, spacing: 20) {
+                        ForEach(displayedPlatforms, id: \.id) { platform in
+                            if let platformId = platform.id {
+                                SwiftUI.NavigationLink(value: platformId) {
+                                    PlatformItemView(
+                                        name: platform.name,
+                                        imageURL: PlatformIllustration.url(for: platform.name)
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
                     }
+                    .frame(maxWidth: PlatformMetrics.contentMaxWidth(for: geometry.size.width))
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, PlatformMetrics.horizontalPadding(for: geometry.size.width))
                 }
             }
             .disabled(isLoading)
-            .padding(.top, 10)
             .navigationDestination(for: String.self) { platformId in
                 viewModel.editPlatformView(
                     navigationPath: $presentedPlatforms,
                     platformId: platformId.isEmpty ? nil : platformId
                 )
             }
-            .navigationView(title: "Platformas")
+            .searchable(
+                text: $search,
+                prompt: Text("Buscar")
+            )
+            .navigationView(title: "Plataformas")
             .toolbar {
                 Button(action: {}) {
                     SwiftUI.NavigationLink(value: String()) {
@@ -62,5 +82,9 @@ struct PlatformsView: View {
         }
     }
 
-    @State private var presentedPlatforms = NavigationPath()
+    private var displayedPlatforms: [Platform] {
+        let platforms = viewModel.platforms ?? []
+        guard !search.isEmpty else { return platforms }
+        return platforms.filter { $0.name.localizedCaseInsensitiveContains(search) }
+    }
 }
