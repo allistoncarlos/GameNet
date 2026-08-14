@@ -22,8 +22,10 @@ struct PlatformDetailView: View {
             let columns = PlatformMetrics.gameGridColumns(for: geometry.size.width)
 
             ScrollView {
-                VStack(spacing: 20) {
+                VStack(spacing: 16) {
                     header
+                    filterChips
+                    searchField
 
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(displayedGames, id: \.id) { game in
@@ -62,15 +64,14 @@ struct PlatformDetailView: View {
                 .padding(.top, 8)
             }
         }
-        .disabled(isLoading)
+        .disabled(isLoading && displayedGames.isEmpty && search.isEmpty && viewModel.filter == .all)
         .navigationView(title: "")
-        .searchable(text: $search, prompt: Text("Buscar"))
         .onChange(of: search) { _, search in
             if search.isEmpty {
                 Task { await viewModel.fetchData(clear: true) }
             }
         }
-        .onSubmit(of: .search) {
+        .onChange(of: viewModel.filter) { _, _ in
             Task {
                 await viewModel.fetchData(search: search, clear: true)
             }
@@ -121,6 +122,57 @@ struct PlatformDetailView: View {
     private var gamesCountText: String {
         let count = viewModel.pagedList?.totalCount ?? viewModel.data.count
         return count == 1 ? "1 jogo" : "\(count) jogos"
+    }
+
+    private var filterChips: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                ForEach(GameListFilter.allCases) { filter in
+                    Button {
+                        viewModel.filter = filter
+                    } label: {
+                        Text(filter.title)
+                            .font(.subheadline.weight(.semibold))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 8)
+                            .foregroundStyle(viewModel.filter == filter ? Color.white : Color.primary)
+                            .background(viewModel.filter == filter ? Color.main : Color.secondary.opacity(0.18))
+                            .clipShape(Capsule())
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
+    private var searchField: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .foregroundStyle(.secondary)
+            TextField("Buscar jogos", text: $search)
+                #if os(iOS)
+                .textInputAutocapitalization(.never)
+                .disableAutocorrection(true)
+                #endif
+                .onSubmit {
+                    Task {
+                        await viewModel.fetchData(search: search, clear: true)
+                    }
+                }
+            if !search.isEmpty {
+                Button {
+                    search = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundStyle(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .background(Color.secondary.opacity(0.12))
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
 
     private var header: some View {

@@ -138,7 +138,7 @@ public enum GameNetAPI {
     case list(id: String)
     case saveList(id: String?, data: ListGameRequest)
 
-    case games(search: String?, page: Int?, pageSize: Int?, platformId: String? = nil)
+    case games(search: String?, page: Int?, pageSize: Int?, platformId: String? = nil, gameType: String? = nil)
     case game(id: String)
     case saveGame(data: GameEditRequest)
     case saveUserGame(data: UserGameEditRequest)
@@ -196,10 +196,10 @@ public enum GameNetAPI {
 
             return APIConstants.listResource
 
-        case let .games(search, page, pageSize, platformId):
+        case let .games(search, page, pageSize, platformId, gameType):
             var resultUrl = "\(APIConstants.gameResource)?"
 
-            if let search = search {
+            if let search = search, !search.isEmpty {
                 resultUrl = "\(resultUrl)search=\(search)&"
             }
 
@@ -213,6 +213,10 @@ public enum GameNetAPI {
 
             if let platformId, !platformId.isEmpty {
                 resultUrl = "\(resultUrl)platformId=\(platformId)&"
+            }
+
+            if let gameType, !gameType.isEmpty {
+                resultUrl = "\(resultUrl)gameType=\(gameType)&"
             }
 
             return resultUrl

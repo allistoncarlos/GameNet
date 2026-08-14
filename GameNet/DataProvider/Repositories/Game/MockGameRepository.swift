@@ -25,7 +25,7 @@ struct MockGameRepository: GameRepositoryProtocol {
     static var previewGameDetail: GameDetail { gameDetail }
     static var previewGameplaySessions: GameplaySessions { gameplaySessions }
 
-    func fetchData(search: String?, page: Int?, pageSize: Int?, platformId: String?) async -> PagedList<Game>? {
+    func fetchData(search: String?, page: Int?, pageSize: Int?, platformId: String?, gameType: String?) async -> PagedList<Game>? {
         let allGames = MockGameRepository.games
         var filtered = allGames
 

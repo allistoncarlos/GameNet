@@ -24,6 +24,7 @@ class GamesViewModel: ObservableObject {
     // MARK: Internal
 
     let platformId: String?
+    @Published var filter: GameListFilter = .all
     @Published var pagedList: PagedList<Game>? = nil
     @Published var data: [Game] = []
     @Published var searchedGames: [Game] = []
@@ -47,7 +48,8 @@ class GamesViewModel: ObservableObject {
                 search: search,
                 page: page,
                 pageSize: GameNetApp.pageSize,
-                platformId: platformId
+                platformId: platformId,
+                gameType: filter.queryValue
             )
 
             if let pagedList {
