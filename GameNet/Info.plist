@@ -11,6 +11,8 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSSiriUsageDescription</key>
+	<string>GameNet uses Siri and Shortcuts to add games to your lists.</string>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
 </dict>

@@ -45,6 +45,9 @@ class ListsViewModel: ObservableObject {
             lists = result
             listCards = result.map { ListCardModel(list: $0, games: []) }
             state = .success(result)
+            #if os(iOS)
+            GameNetShortcuts.updateAppShortcutParameters()
+            #endif
             await fetchListPreviews(for: result, cache: cache)
         } else {
             state = .error("Erro no carregamento de dados do servidor")

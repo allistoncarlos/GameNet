@@ -61,6 +61,9 @@ class LoginViewModel: ObservableObject {
             tokenDataSource.save(login: session)
 
             WidgetSharedStore.syncFromKeychain()
+            #if os(iOS)
+            GameNetShortcuts.updateAppShortcutParameters()
+            #endif
 
 #if os(iOS) && canImport(WatchConnectivity)
             Task { @MainActor in

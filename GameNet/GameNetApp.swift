@@ -63,6 +63,7 @@ struct GameNetApp: App {
                         Task {
                             await GameplayLiveActivityManager.syncFromStore()
                         }
+                        GameNetShortcuts.updateAppShortcutParameters()
                         #endif
                     }
                     #if os(macOS)

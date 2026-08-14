@@ -21,7 +21,24 @@ struct MockGameRepository: GameRepositoryProtocol {
     static var previewGameplaySessions: GameplaySessions { gameplaySessions }
 
     func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>? {
-        return MockGameRepository.pagedGames
+        let allGames = MockGameRepository.games
+        let filtered: [Game]
+        if let search, !search.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            let needle = search.lowercased()
+            filtered = allGames.filter { $0.name.lowercased().contains(needle) }
+        } else {
+            filtered = allGames
+        }
+
+        return PagedList<Game>(
+            count: filtered.count,
+            totalCount: filtered.count,
+            page: page ?? 0,
+            pageSize: pageSize ?? filtered.count,
+            totalPages: 1,
+            search: search,
+            result: filtered
+        )
     }
 
     func fetchData(id: String) async -> GameDetail? {
