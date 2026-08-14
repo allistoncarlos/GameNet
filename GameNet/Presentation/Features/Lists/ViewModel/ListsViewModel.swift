@@ -10,7 +10,7 @@ import Factory
 import Foundation
 import SwiftUI
 
-// MARK: - PlatformsViewModel
+// MARK: - ListsViewModel
 
 @MainActor
 class ListsViewModel: ObservableObject {
@@ -33,6 +33,7 @@ class ListsViewModel: ObservableObject {
     // MARK: Internal
 
     @Published var lists: [GameNet.List]? = nil
+    @Published var listCards: [ListCardModel] = []
     @Published var state: ListsState = .idle
 
     func fetchData(cache: Bool = true) async {
@@ -41,7 +42,10 @@ class ListsViewModel: ObservableObject {
         let result = await repository.fetchData(cache: cache)
 
         if let result {
+            lists = result
+            listCards = result.map { ListCardModel(list: $0, games: []) }
             state = .success(result)
+            await fetchListPreviews(for: result)
         } else {
             state = .error("Erro no carregamento de dados do servidor")
         }
@@ -51,6 +55,26 @@ class ListsViewModel: ObservableObject {
 
     @Injected(\.listRepository) private var repository
     private var cancellable = Set<AnyCancellable>()
+
+    private func fetchListPreviews(for lists: [GameNet.List]) async {
+        await withTaskGroup(of: (String, [ListItem]).self) { group in
+            for list in lists {
+                guard let id = list.id else { continue }
+
+                group.addTask {
+                    let games = await self.repository.fetchData(id: id)?.games ?? []
+                    let orderedGames = games.sorted { ($0.order ?? 0) < ($1.order ?? 0) }
+                    return (id, orderedGames)
+                }
+            }
+
+            for await (id, games) in group {
+                if let index = listCards.firstIndex(where: { $0.list.id == id }) {
+                    listCards[index].games = games
+                }
+            }
+        }
+    }
 }
 
 extension ListsViewModel {

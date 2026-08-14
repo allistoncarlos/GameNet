@@ -59,37 +59,51 @@ struct MockListRepository: ListRepositoryProtocol {
                 id: "1",
                 name: "Lista Padrão",
                 games: [
-                    ListItem(
-                        id: "1",
-                        name: "The Legend of Zelda: Tears of the Kingdom",
-                        platform: "Nintendo Switch",
-                        userGameId: "123",
-                        year: 2023,
-                        boughtDate: nil,
-                        value: 0,
-                        start: nil,
-                        finish: nil,
-                        cover: "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg",
-                        order: 1,
-                        comment: "No comment"
-                    ),
-                    ListItem(
-                        id: "2",
+                    item(id: "1", name: "The Legend of Zelda: Tears of the Kingdom", userGameId: "123", order: 1),
+                    item(id: "2", name: "The Legend of Zelda: Breath of the Wild", userGameId: "456", order: 2),
+                    item(id: "3", name: "Super Mario Odyssey", userGameId: "789", order: 3),
+                    item(id: "4", name: "Kirby and the Forgotten Land", userGameId: "101", order: 4),
+                    item(id: "5", name: "Splatoon 3", userGameId: "112", order: 5)
+                ]
+            ),
+            ListGame(
+                id: "2",
+                name: "Melhores Zeldas",
+                games: [
+                    item(
+                        id: "6",
                         name: "The Legend of Zelda: Breath of the Wild",
-                        platform: "Nintendo Switch",
                         userGameId: "456",
-                        year: 2023,
-                        boughtDate: nil,
-                        value: 0,
-                        start: nil,
-                        finish: nil,
                         cover: "https://assets.reedpopcdn.com/148430785862.jpg/BROK/resize/1920x1920%3E/format/jpg/quality/80/148430785862.jpg",
-                        order: 2,
-                        comment: "No comment"
-                    )
+                        order: 1
+                    ),
+                    item(id: "7", name: "The Legend of Zelda: Tears of the Kingdom", userGameId: "123", order: 2)
                 ]
             )
         ]
+
+        static func item(
+            id: String,
+            name: String,
+            userGameId: String,
+            cover: String = "https://images.nintendolife.com/da314926e706f/switch-tloz-totk-boxart-011.large.jpg",
+            order: Int
+        ) -> ListItem {
+            ListItem(
+                id: id,
+                name: name,
+                platform: "Nintendo Switch",
+                userGameId: userGameId,
+                year: 2023,
+                boughtDate: nil,
+                value: 0,
+                start: nil,
+                finish: nil,
+                cover: cover,
+                order: order,
+                comment: "No comment"
+            )
+        }
     }
 
     private static var lists = Defaults.lists

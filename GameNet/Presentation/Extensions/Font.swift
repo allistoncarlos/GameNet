@@ -14,4 +14,6 @@ extension Font {
     static let listItemCellGameName = Font.custom("AvenirNext-DemiBold", size: 24)
     static let listItemCellPlatform = Font.custom("AvenirNext-DemiBold", size: 18)
     static let listItemCellDetail = Font.custom("AvenirNext-Regular", size: 16)
+    static let listCardTitle = Font.custom("AvenirNext-DemiBold", size: 20)
+    static let listCardOverflow = Font.custom("AvenirNext-DemiBold", size: 22)
 }

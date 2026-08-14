@@ -17,8 +17,10 @@ class ListsViewModelTests: XCTestCase {
 
     override func setUp() async throws {
         Container.shared.reset()
+        MockListRepository.reset()
 
         cancellables = Set<AnyCancellable>()
+        viewModel = ListsViewModel()
     }
 
     override func tearDown() {
@@ -54,10 +56,32 @@ class ListsViewModelTests: XCTestCase {
         await fulfillment(of: [listsLoadedExpectation], timeout: 30)
     }
 
+    func testLists_ValidData_ShouldLoadGamePreviewsOnCards() async {
+        // Given
+        Container.shared.listRepository.register(factory: { MockListRepository() })
+
+        // When
+        await viewModel.fetchData()
+
+        // Then
+        XCTAssertEqual(viewModel.listCards.count, 2)
+
+        let proximos = viewModel.listCards.first { $0.list.id == "1" }
+        XCTAssertEqual(proximos?.name, "Próximos Jogos")
+        XCTAssertEqual(proximos?.games.count, 5)
+        XCTAssertEqual(proximos?.previewGames.count, 3)
+        XCTAssertEqual(proximos?.overflowCount, 3)
+
+        let zeldas = viewModel.listCards.first { $0.list.id == "2" }
+        XCTAssertEqual(zeldas?.games.count, 2)
+        XCTAssertEqual(zeldas?.previewGames.count, 2)
+        XCTAssertNil(zeldas?.overflowCount)
+    }
+
     // MARK: Private
 
     private let mock = ListResponseMock()
     private let stubRequests = StubRequests()
-    private var viewModel = ListsViewModel()
+    private var viewModel: ListsViewModel!
     private var cancellables: Set<AnyCancellable>!
 }

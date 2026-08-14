@@ -20,10 +20,21 @@ struct ListsView: View {
 
     var body: some View {
         NavigationStack(path: $presentedLists) {
-            VStack {
-                if let lists = viewModel.lists {
-                    SwiftUI.List(lists, id: \.id) { list in
-                        SwiftUI.NavigationLink(list.name, value: list.id)
+            GeometryReader { geometry in
+                ScrollView {
+                    if !viewModel.listCards.isEmpty {
+                        LazyVStack(spacing: 12) {
+                            ForEach(viewModel.listCards) { card in
+                                SwiftUI.NavigationLink(value: card.list.id ?? "") {
+                                    ListCardView(model: card)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                        .frame(maxWidth: PlatformMetrics.contentMaxWidth(for: geometry.size.width))
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, PlatformMetrics.horizontalPadding(for: geometry.size.width))
+                        .padding(.vertical, 8)
                     }
                 }
             }
