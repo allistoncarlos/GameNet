@@ -11,7 +11,7 @@ import Foundation
 // MARK: - GameRepositoryProtocol
 
 protocol GameRepositoryProtocol {
-    func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>?
+    func fetchData(search: String?, page: Int?, pageSize: Int?, platformId: String?) async -> PagedList<Game>?
     func fetchData(id: String) async -> GameDetail?
     func fetchGameplaySessions(id: String) async -> GameplaySessions?
     func save(data: Game, userGameData: UserGame) async -> Bool
@@ -20,14 +20,20 @@ protocol GameRepositoryProtocol {
     func dropGameplay(userGameId: String) async -> GameDetail?
 }
 
+extension GameRepositoryProtocol {
+    func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>? {
+        await fetchData(search: search, page: page, pageSize: pageSize, platformId: nil)
+    }
+}
+
 // MARK: - GameRepository
 
 struct GameRepository: GameRepositoryProtocol {
 
     // MARK: Internal
 
-    func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>? {
-        return await dataSource.fetchData(search: search, page: page, pageSize: pageSize)
+    func fetchData(search: String?, page: Int?, pageSize: Int?, platformId: String?) async -> PagedList<Game>? {
+        return await dataSource.fetchData(search: search, page: page, pageSize: pageSize, platformId: platformId)
     }
 
     func fetchData(id: String) async -> GameDetail? {

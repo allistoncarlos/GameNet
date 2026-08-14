@@ -18,6 +18,7 @@ struct EditPlatformView: View {
                 #if os(iOS)
                 .autocapitalization(.none)
                 #endif
+                .disabled(viewModel.platform.id != nil)
                 .onSubmit {
                     Task {
                         await viewModel.save()
@@ -31,7 +32,11 @@ struct EditPlatformView: View {
                         await viewModel.save()
                     }
                 }
-                .disabled(viewModel.platform.name.isEmpty || viewModel.state == .loading)
+                .disabled(
+                    viewModel.platform.name.isEmpty
+                        || viewModel.platform.id != nil
+                        || viewModel.state == .loading
+                )
                 .buttonStyle(MainButtonStyle())
             ) {
                 EmptyView()
@@ -42,7 +47,6 @@ struct EditPlatformView: View {
                 viewModel.goBackToPlatforms(navigationPath: $navigationPath)
             }
         }
-        .navigationView(title: viewModel.platform.name.isEmpty ?
-            "Nova Plataforma" : viewModel.platform.name)
+        .navigationView(title: "Nova Plataforma")
     }
 }

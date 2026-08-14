@@ -15,8 +15,15 @@ import SwiftUI
 @MainActor
 class GamesViewModel: ObservableObject {
 
+    // MARK: Lifecycle
+
+    init(platformId: String? = nil) {
+        self.platformId = platformId
+    }
+
     // MARK: Internal
 
+    let platformId: String?
     @Published var pagedList: PagedList<Game>? = nil
     @Published var data: [Game] = []
     @Published var searchedGames: [Game] = []
@@ -36,7 +43,12 @@ class GamesViewModel: ObservableObject {
         if origin == .home {
             state = .loading
 
-            let pagedList = await repository.fetchData(search: search, page: page, pageSize: GameNetApp.pageSize)
+            let pagedList = await repository.fetchData(
+                search: search,
+                page: page,
+                pageSize: GameNetApp.pageSize,
+                platformId: platformId
+            )
 
             if let pagedList {
                 self.pagedList = pagedList

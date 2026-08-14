@@ -11,7 +11,7 @@ import Foundation
 // MARK: - GameDataSourceProtocol
 
 protocol GameDataSourceProtocol {
-    func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>?
+    func fetchData(search: String?, page: Int?, pageSize: Int?, platformId: String?) async -> PagedList<Game>?
     func fetchData(id: String) async -> GameDetail?
     func fetchGameplaySessions(id: String) async -> GameplaySessions?
     func save(data: Game, userGameData: UserGame) async -> Bool
@@ -28,11 +28,11 @@ class GameDataSource: GameDataSourceProtocol {
 
     @Injected(\.tokenDataSource) private var tokenDataSource
 
-    func fetchData(search: String?, page: Int?, pageSize: Int?) async -> PagedList<Game>? {
+    func fetchData(search: String?, page: Int?, pageSize: Int?, platformId: String?) async -> PagedList<Game>? {
         if let apiResult = await NetworkManager.shared
             .performRequest(
                 responseType: APIResult<PagedResult<GameResponseDTO>>.self,
-                endpoint: .games(search: search, page: page, pageSize: pageSize)
+                endpoint: .games(search: search, page: page, pageSize: pageSize, platformId: platformId)
             ) {
             if apiResult.ok {
                 let pagedResult = apiResult.data

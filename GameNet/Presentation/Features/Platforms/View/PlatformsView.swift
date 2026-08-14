@@ -24,7 +24,7 @@ struct PlatformsView: View {
                     LazyVGrid(columns: columns, spacing: 20) {
                         ForEach(displayedPlatforms, id: \.id) { platform in
                             if let platformId = platform.id {
-                                SwiftUI.NavigationLink(value: platformId) {
+                                SwiftUI.NavigationLink(value: PlatformRoute.detail(id: platformId)) {
                                     PlatformItemView(
                                         name: platform.name,
                                         imageURL: PlatformIllustration.url(for: platform.name)
@@ -40,11 +40,16 @@ struct PlatformsView: View {
                 }
             }
             .disabled(isLoading)
-            .navigationDestination(for: String.self) { platformId in
-                viewModel.editPlatformView(
-                    navigationPath: $presentedPlatforms,
-                    platformId: platformId.isEmpty ? nil : platformId
-                )
+            .navigationDestination(for: PlatformRoute.self) { route in
+                switch route {
+                case .create:
+                    viewModel.createPlatformView(navigationPath: $presentedPlatforms)
+                case let .detail(platformId):
+                    viewModel.platformDetailView(
+                        navigationPath: $presentedPlatforms,
+                        platformId: platformId
+                    )
+                }
             }
             .searchable(
                 text: $search,
@@ -53,7 +58,7 @@ struct PlatformsView: View {
             .navigationView(title: "Plataformas")
             .toolbar {
                 Button(action: {}) {
-                    SwiftUI.NavigationLink(value: String()) {
+                    SwiftUI.NavigationLink(value: PlatformRoute.create) {
                         Image(systemName: "plus")
                     }
                 }

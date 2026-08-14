@@ -9,11 +9,21 @@ import SwiftUI
 
 @MainActor
 enum PlatformRouter {
-    static func makeEditPlatformView(navigationPath: Binding<NavigationPath>, platform: Platform?) -> some View {
-        let emptyPlatform = Platform(id: nil, name: String())
-        let editPlatformViewModel = EditPlatformViewModel(platform: platform ?? emptyPlatform)
+    static func makeCreatePlatformView(navigationPath: Binding<NavigationPath>) -> some View {
+        let editPlatformViewModel = EditPlatformViewModel(platform: Platform(id: nil, name: String()))
 
         return EditPlatformView(viewModel: editPlatformViewModel, navigationPath: navigationPath)
+    }
+
+    static func makePlatformDetailView(
+        navigationPath: Binding<NavigationPath>,
+        platform: Platform
+    ) -> some View {
+        return PlatformDetailView(
+            platform: platform,
+            viewModel: GamesViewModel(platformId: platform.id),
+            navigationPath: navigationPath
+        )
     }
 
     static func goBackToPlatforms(navigationPath: Binding<NavigationPath>) {
