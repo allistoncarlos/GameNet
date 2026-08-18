@@ -200,7 +200,7 @@ public enum GameNetAPI {
             var resultUrl = "\(APIConstants.gameResource)?"
 
             if let search = search, !search.isEmpty {
-                resultUrl = "\(resultUrl)search=\(search)&"
+                resultUrl = "\(resultUrl)search=\(encodedQueryValue(search))&"
             }
 
             if let page = page {
@@ -253,6 +253,12 @@ public enum GameNetAPI {
         case let .serverDriven(slug):
             return "\(APIConstants.serverDrivenResource)/\(slug)"
         }
+    }
+
+    private func encodedQueryValue(_ value: String) -> String {
+        var allowed = CharacterSet.urlQueryAllowed
+        allowed.remove(charactersIn: ":#[]@!$&'()*+,;=")
+        return value.addingPercentEncoding(withAllowedCharacters: allowed) ?? value
     }
 
     var method: HTTPMethod {

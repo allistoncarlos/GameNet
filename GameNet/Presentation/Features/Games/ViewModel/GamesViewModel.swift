@@ -42,7 +42,7 @@ class GamesViewModel: ObservableObject {
     }
 
     func fetchData(
-        origin: GameRouter.Origin = .home,
+        origin _: GameRouter.Origin = .home,
         search: String? = "",
         page: Int = 0,
         clear: Bool = false
@@ -53,41 +53,41 @@ class GamesViewModel: ObservableObject {
             currentPage = 0
             isFetchingNextPage = false
             canLoadMore = true
+            fetchGeneration += 1
         }
 
-        if origin == .home {
-            let isPaging = !clear && page > 0
-            if !isPaging {
-                state = .loading
-            }
+        let generation = fetchGeneration
+        let isPaging = !clear && page > 0
+        if !isPaging {
+            state = .loading
+        }
 
-            isFetchingNextPage = true
-            let pagedList = await fetchPagedGames(search: search, page: page)
-            isFetchingNextPage = false
+        isFetchingNextPage = true
+        let pagedList = await fetchPagedGames(search: search, page: page)
 
-            if let pagedList {
-                self.pagedList = pagedList
-                currentPage = pagedList.page ?? page
-                canLoadMore = !pagedList.result.isEmpty && displayedCount(for: search) < pagedList.totalCount
+        guard generation == fetchGeneration else { return }
 
-                if let search, !search.isEmpty {
-                    searchedGames += pagedList.result
-                } else {
-                    data += pagedList.result
-                }
+        isFetchingNextPage = false
 
-                state = .success
+        if let pagedList {
+            self.pagedList = pagedList
+            currentPage = pagedList.page ?? page
+            canLoadMore = !pagedList.result.isEmpty && displayedCount(for: search) < pagedList.totalCount
+
+            if let search, !search.isEmpty {
+                searchedGames += pagedList.result
             } else {
-                canLoadMore = false
-                state = .error("Erro no carregamento de dados do servidor")
+                data += pagedList.result
             }
-        } else {
+
             state = .success
+        } else {
+            canLoadMore = false
+            state = .error("Erro no carregamento de dados do servidor")
         }
     }
 
     func loadNextPage(currentGame: Game, origin: GameRouter.Origin = .home) async {
-        guard origin == .home else { return }
         guard !isFetchingNextPage else { return }
         guard hasMorePages else { return }
 
@@ -112,6 +112,7 @@ class GamesViewModel: ObservableObject {
     private var isFetchingNextPage = false
     private var currentPage = 0
     private var canLoadMore = true
+    private var fetchGeneration = 0
 
     private var displayedGames: [Game] {
         displayedList(for: pagedList?.search)

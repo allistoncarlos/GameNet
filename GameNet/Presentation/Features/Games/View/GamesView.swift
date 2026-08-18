@@ -45,36 +45,12 @@ struct GamesView: View {
 
                         LazyVGrid(columns: columns, spacing: 20) {
                             ForEach(displayedGames, id: \.id) { game in
-                                if origin == .home {
-                                    if let gameId = game.id {
-                                        SwiftUI.NavigationLink(
-                                            value: GameDetailRoute(
-                                                id: gameId,
-                                                preview: GameDetailPreview(game: game)
-                                            )
-                                        ) {
-                                            GameItemView(
-                                                name: game.name,
-                                                coverURL: game.coverURL ?? "",
-                                                gameId: gameId
-                                            )
-                                        }
-                                        .onAppear {
-                                            Task {
-                                                await viewModel.loadNextPage(currentGame: game, origin: origin)
-                                            }
+                                gameCell(for: game)
+                                    .onAppear {
+                                        Task {
+                                            await viewModel.loadNextPage(currentGame: game, origin: origin)
                                         }
                                     }
-                                } else {
-                                    Button(action: {
-                                        if let gameId = game.id {
-                                            self.selectedUserGameId = gameId
-                                            self.isPresented = false
-                                        }
-                                    }) {
-                                        GameItemView(name: game.name, coverURL: game.coverURL ?? "")
-                                    }
-                                }
                             }
                         }
 
@@ -103,8 +79,8 @@ struct GamesView: View {
                     prompt: Text("Buscar")
                 )
                 .onChange(of: search) { _, search in
-                    if search.isEmpty {
-                        Task { await viewModel.fetchData(origin: origin, clear: true) }
+                    Task {
+                        await viewModel.fetchData(origin: origin, search: search, clear: true)
                     }
                 }
                 .onChange(of: viewModel.filter) { _, _ in
@@ -175,5 +151,34 @@ struct GamesView: View {
 
     private var displayedGames: [Game] {
         search.isEmpty ? viewModel.data : viewModel.searchedGames
+    }
+
+    @ViewBuilder
+    private func gameCell(for game: Game) -> some View {
+        if origin == .home {
+            if let gameId = game.id {
+                SwiftUI.NavigationLink(
+                    value: GameDetailRoute(
+                        id: gameId,
+                        preview: GameDetailPreview(game: game)
+                    )
+                ) {
+                    GameItemView(
+                        name: game.name,
+                        coverURL: game.coverURL ?? "",
+                        gameId: gameId
+                    )
+                }
+            }
+        } else {
+            Button(action: {
+                if let gameId = game.id {
+                    selectedUserGameId = gameId
+                    isPresented = false
+                }
+            }) {
+                GameItemView(name: game.name, coverURL: game.coverURL ?? "")
+            }
+        }
     }
 }
