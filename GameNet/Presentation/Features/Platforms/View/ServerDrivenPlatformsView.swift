@@ -34,14 +34,14 @@ struct ServerDrivenPlatformsView: View {
             .overlay(
                 GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
             )
-            .onChange(of: presentedPlatforms) { _, newValue in
-                if newValue.isEmpty {
+            .onChangeCompat(of: presentedPlatforms.isEmpty) { isEmpty in
+                if isEmpty {
                     Task {
                         await viewModel.fetchData()
                     }
                 }
             }
-            .onChange(of: viewModel.state) { _, state in
+            .onChangeCompat(of: viewModel.state) { state in
                 isLoading = state == .loading
             }
             .task {

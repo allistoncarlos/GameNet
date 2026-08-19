@@ -111,7 +111,7 @@ struct BoughtByYearView: View {
 
     private var expanderButton: some View {
         Button {
-            withAnimation(.snappy) {
+            withAnimation(.gameNetSnappy) {
                 isExpanded.toggle()
             }
         } label: {

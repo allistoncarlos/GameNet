@@ -51,7 +51,7 @@ struct LoginView: View {
         .overlay {
             GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
         }
-        .onChange(of: viewModel.state) { _, state in
+        .onChangeCompat(of: viewModel.state) { state in
             isLoading = state == .loading
 
             if case .error = state {

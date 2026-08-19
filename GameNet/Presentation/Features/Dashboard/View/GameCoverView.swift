@@ -60,9 +60,9 @@ struct GameCoverView: View {
                             .frame(width: 40, height: 40)
                     }
                     .offset(x: -5, y: -5)
-                    .buttonBorderShape(.circle)
+                    .gameNetCircleButtonBorder()
                     .gameNetGlassProminentButtonStyle(tint: coverAccentColor.opacity(0.5))
-                    .animation(.smooth, value: coverAccentColor)
+                    .animation(.gameNetSmooth, value: coverAccentColor)
                     .contextMenu {
                         Button {
                             activeAction = .finishGame
@@ -134,15 +134,8 @@ struct GameCoverView: View {
             .frame(maxWidth: maxCoverWidth)
             .frame(maxWidth: .infinity)
         }
-        .containerRelativeFrame(.horizontal)
-        .scrollTransition(axis: .horizontal) { content, phase in
-            content
-                .scaleEffect(
-                    x: phase.isIdentity ? 1 : 0.8,
-                    y: phase.isIdentity ? 1 : 0.8
-                )
-        }
-        .onChange(of: viewModel.isStarted) { oldValue, newValue in
+        .pagingCarouselItem()
+        .onChangeCompat(of: viewModel.isStarted) { newValue in
             self.buttonImage = newValue ? "stop.fill" : "play.fill"
             self.confirmText = newValue ? "finalizar" : "iniciar"
         }

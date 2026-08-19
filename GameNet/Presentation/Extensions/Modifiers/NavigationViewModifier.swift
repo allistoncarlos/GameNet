@@ -21,7 +21,7 @@ struct NavigationViewModifier: ViewModifier {
         content
             .navigationTitle(title ?? "")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarTitleDisplayMode(.inline)
+            .gameNetInlineToolbarTitle()
             .toolbarBackground(color, for: .navigationBar, .tabBar)
             .toolbarBackground(.visible, for: .navigationBar, .tabBar)
             .toolbarColorScheme(.dark, for: .navigationBar, .tabBar)

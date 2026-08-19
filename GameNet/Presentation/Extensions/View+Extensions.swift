@@ -53,7 +53,7 @@ extension View {
         #if os(iOS)
         navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
-            .toolbarTitleDisplayMode(.inline)
+            .gameNetInlineToolbarTitle()
             .toolbarBackground(.hidden, for: .navigationBar)
             .toolbarColorScheme(.dark, for: .navigationBar)
         #else

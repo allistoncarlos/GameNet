@@ -80,7 +80,7 @@ struct GameDetailView: View {
                     gameSessionsSection
                 }
                 .padding(10)
-                .animation(.smooth, value: viewModel.game != nil)
+                .animation(.gameNetSmooth, value: viewModel.game != nil)
             }
         }
         .overlay(
@@ -95,10 +95,10 @@ struct GameDetailView: View {
         .overlay(
             GameNetProgressHUD($isSaving, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.isSaving) { _, isSaving in
+        .onChangeCompat(of: viewModel.isSaving) { isSaving in
             self.isSaving = isSaving
         }
-        .onChange(of: viewModel.isStarted) { oldValue, newValue in
+        .onChangeCompat(of: viewModel.isStarted) { newValue in
             self.buttonImage = newValue ? "stop.fill" : "play.fill"
             self.confirmText = newValue ? "finalizar" : "iniciar"
         }
@@ -240,9 +240,9 @@ struct GameDetailView: View {
                         .frame(width: 40, height: 40)
                 }
                 .offset(x: -5, y: -5)
-                .buttonBorderShape(.circle)
+                .gameNetCircleButtonBorder()
                 .gameNetGlassProminentButtonStyle(tint: coverAccentColor.opacity(0.5))
-                .animation(.smooth, value: coverAccentColor)
+                .animation(.gameNetSmooth, value: coverAccentColor)
                 .confirmationDialog("", isPresented: $showingConfirmation) {
                     Button("Confirmar") {
                         Task {
@@ -398,7 +398,7 @@ struct GameDetailView: View {
                 .padding(.vertical, 8)
 
             Button {
-                withAnimation(.smooth) {
+                withAnimation(.gameNetSmooth) {
                     isSessionsExpanded.toggle()
                 }
             } label: {

@@ -58,14 +58,8 @@ struct CarouselCover: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: 400)
-            .scrollTransition(axis: .horizontal) { content, phase in
-                content
-                    .scaleEffect(
-                        x: phase.isIdentity ? 1 : 0.8,
-                        y: phase.isIdentity ? 1 : 0.8
-                    )
-            }
-            .onChange(of: isStarted) { oldValue, newValue in
+            .pagingCarouselItem()
+            .onChangeCompat(of: isStarted) { newValue in
                 self.buttonImage = newValue ? "stop.fill" : "play.fill"
                 self.confirmText = newValue ? "finalizar" : "iniciar"
             }

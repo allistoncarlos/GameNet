@@ -40,91 +40,7 @@ struct AnnualGameplayProgressChartView: View {
                     }
 
                     GeometryReader { geometryProxy in
-                        Chart(gameplayPoints) { point in
-                            LineMark(
-                                x: .value("Dia", point.day),
-                                y: .value("Minutos", point.value)
-                            )
-                            .foregroundStyle(by: .value("Ano", point.yearLabel))
-                            .lineStyle(StrokeStyle(lineWidth: 2))
-                            .symbol(.circle)
-                        }
-                        .chartForegroundStyleScale(
-                            domain: yearColors.map { $0.0 },
-                            range: yearColors.map { $0.1 }
-                        )
-                        .chartXAxis {
-                            AxisMarks(values: .stride(by: 5)) { value in
-                                AxisGridLine()
-                                AxisTick()
-                                AxisValueLabel {
-                                    if let day = value.as(Int.self),
-                                       let label = dayAxisLabel(forDay: day) {
-                                        Text(label)
-                                    }
-                                }
-                            }
-                        }
-                        .chartYAxis {
-                            AxisMarks(position: .leading) { value in
-                                AxisGridLine()
-                                AxisValueLabel {
-                                    if let minutes = value.as(Double.self) {
-                                        Text("\(formattedMinutes(minutes)) min")
-                                    }
-                                }
-                            }
-                        }
-                        .chartLegend(.hidden)
-                        .chartScrollableAxes(.horizontal)
-                        .chartXVisibleDomain(length: visibleDomainLength)
-                        .chartScrollPosition(x: $scrollPosition)
-                        .scrollIndicators(.hidden)
-                        .chartBackground { proxy in
-                            Color.clear
-                                .allowsHitTesting(false)
-                                .onAppear { chartProxy = proxy }
-                                .onChange(of: scrollPosition) { _, _ in chartProxy = proxy }
-                                .onChange(of: visibleDomainLength) { _, _ in chartProxy = proxy }
-                        }
-#if os(iOS)
-                        .simultaneousGesture(
-                            MagnifyGesture()
-                                .onChanged { value in
-                                    let base = visibleDomainLengthAtGestureStart ?? visibleDomainLength
-                                    if visibleDomainLengthAtGestureStart == nil {
-                                        visibleDomainLengthAtGestureStart = visibleDomainLength
-                                    }
-
-                                    let proposedLength = Double(base) / value.magnification
-                                    visibleDomainLength = clampedVisibleDomainLength(Int(proposedLength.rounded()))
-                                }
-                                .onEnded { _ in
-                                    visibleDomainLengthAtGestureStart = nil
-                                }
-                        )
-                        .simultaneousGesture(
-                            SpatialTapGesture()
-                                .onEnded { value in
-                                    selectPoint(at: value.location, geometryProxy: geometryProxy)
-                                }
-                        )
-#endif
-                        .overlay(alignment: .topLeading) {
-                            if let selectedPoint {
-                                AnnualGameplayChartHintView(
-                                    title: "Dia \(selectedPoint.dayLabel) - \(selectedPoint.yearLabel)",
-                                    value: selectedPoint.value
-                                )
-                                .padding(8)
-                            }
-                        }
-                        .onAppear {
-                            scrollPosition = initialScrollPosition
-                        }
-                        .onChange(of: maxVisibleDay) { _, _ in
-                            scrollPosition = initialScrollPosition
-                        }
+                        gameplayChart(in: geometryProxy)
                     }
                 }
                 .frame(height: chartHeight)
@@ -162,6 +78,120 @@ struct AnnualGameplayProgressChartView: View {
         }
     }
 
+    @ViewBuilder
+    private func gameplayChart(in geometryProxy: GeometryProxy) -> some View {
+        if #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *) {
+            scrollableGameplayChart(in: geometryProxy)
+        } else {
+            staticGameplayChart
+        }
+    }
+
+    private var baseGameplayChart: some View {
+        Chart(gameplayPoints) { point in
+            LineMark(
+                x: .value("Dia", point.day),
+                y: .value("Minutos", point.value)
+            )
+            .foregroundStyle(by: .value("Ano", point.yearLabel))
+            .lineStyle(StrokeStyle(lineWidth: 2))
+            .symbol(.circle)
+        }
+        .chartForegroundStyleScale(
+            domain: yearColors.map { $0.0 },
+            range: yearColors.map { $0.1 }
+        )
+        .chartXAxis {
+            AxisMarks(values: .stride(by: 5)) { value in
+                AxisGridLine()
+                AxisTick()
+                AxisValueLabel {
+                    if let day = value.as(Int.self),
+                       let label = dayAxisLabel(forDay: day) {
+                        Text(label)
+                    }
+                }
+            }
+        }
+        .chartYAxis {
+            AxisMarks(position: .leading) { value in
+                AxisGridLine()
+                AxisValueLabel {
+                    if let minutes = value.as(Double.self) {
+                        Text("\(formattedMinutes(minutes)) min")
+                    }
+                }
+            }
+        }
+        .chartLegend(.hidden)
+    }
+
+    private var staticGameplayChart: some View {
+        baseGameplayChart
+            .overlay(alignment: .topLeading) {
+                selectedPointHint
+            }
+    }
+
+    @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
+    private func scrollableGameplayChart(in geometryProxy: GeometryProxy) -> some View {
+        baseGameplayChart
+            .chartScrollableAxes(.horizontal)
+            .chartXVisibleDomain(length: visibleDomainLength)
+            .chartScrollPosition(x: $scrollPosition)
+            .scrollIndicators(.hidden)
+            .chartBackground { proxy in
+                Color.clear
+                    .allowsHitTesting(false)
+                    .onAppear { chartProxy = proxy }
+                    .onChangeCompat(of: scrollPosition) { _ in chartProxy = proxy }
+                    .onChangeCompat(of: visibleDomainLength) { _ in chartProxy = proxy }
+            }
+#if os(iOS)
+            .simultaneousGesture(
+                MagnifyGesture()
+                    .onChanged { value in
+                        let base = visibleDomainLengthAtGestureStart ?? visibleDomainLength
+                        if visibleDomainLengthAtGestureStart == nil {
+                            visibleDomainLengthAtGestureStart = visibleDomainLength
+                        }
+
+                        let proposedLength = Double(base) / value.magnification
+                        visibleDomainLength = clampedVisibleDomainLength(Int(proposedLength.rounded()))
+                    }
+                    .onEnded { _ in
+                        visibleDomainLengthAtGestureStart = nil
+                    }
+            )
+            .simultaneousGesture(
+                SpatialTapGesture()
+                    .onEnded { value in
+                        selectPoint(at: value.location, geometryProxy: geometryProxy)
+                    }
+            )
+#endif
+            .overlay(alignment: .topLeading) {
+                selectedPointHint
+            }
+            .onAppear {
+                scrollPosition = initialScrollPosition
+            }
+            .onChangeCompat(of: maxVisibleDay) { _ in
+                scrollPosition = initialScrollPosition
+            }
+    }
+
+    @ViewBuilder
+    private var selectedPointHint: some View {
+        if let selectedPoint {
+            AnnualGameplayChartHintView(
+                title: "Dia \(selectedPoint.dayLabel) - \(selectedPoint.yearLabel)",
+                value: selectedPoint.value
+            )
+            .padding(8)
+        }
+    }
+
     // MARK: Private
 
     private var gameplayPoints: [AnnualGameplayProgressPoint] {
@@ -193,6 +223,7 @@ struct AnnualGameplayProgressChartView: View {
         return date.toFormattedString(dateFormat: "dd/MM")
     }
 
+    @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
     private func selectPoint(at location: CGPoint, geometryProxy: GeometryProxy) {
         guard let proxy = chartProxy else {
             selectedPoint = nil

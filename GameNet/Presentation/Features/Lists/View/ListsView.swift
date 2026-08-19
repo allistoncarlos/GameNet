@@ -69,11 +69,11 @@ struct ListsView: View {
         .overlay(
             GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state) { _, state in
+        .onChangeCompat(of: viewModel.state) { state in
             isLoading = state == .loading
         }
-        .onChange(of: presentedLists) { _, newValue in
-            if newValue.isEmpty {
+        .onChangeCompat(of: presentedLists.isEmpty) { isEmpty in
+            if isEmpty {
                 Task {
                     await viewModel.fetchData()
                 }

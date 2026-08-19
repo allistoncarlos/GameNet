@@ -66,12 +66,12 @@ struct PlatformDetailView: View {
         }
         .disabled(isLoading && displayedGames.isEmpty && search.isEmpty && viewModel.filter == .all)
         .navigationView(title: "")
-        .onChange(of: search) { _, search in
+        .onChangeCompat(of: search) { search in
             if search.isEmpty {
                 Task { await viewModel.fetchData(clear: true) }
             }
         }
-        .onChange(of: viewModel.filter) { _, _ in
+        .onChangeCompat(of: viewModel.filter) { _ in
             Task {
                 await viewModel.fetchData(search: search, clear: true)
             }
@@ -93,10 +93,10 @@ struct PlatformDetailView: View {
         .overlay(
             GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state) { _, state in
+        .onChangeCompat(of: viewModel.state) { state in
             isLoading = state == .loading
         }
-        .onChange(of: viewModel.data) { _, games in
+        .onChangeCompat(of: viewModel.data) { games in
             CoverImageCache.prefetch(urls: games.compactMap(\.coverURL))
             refreshPreviewGames(from: games)
         }

@@ -12,7 +12,7 @@ struct CurrencyTextField: View {
             #if os(iOS)
             .keyboardType(.numberPad)
             #endif
-            .onChange(of: amountString) { _, newValue in
+            .onChangeCompat(of: amountString) { newValue in
                 let valueFormatted = format(string: newValue)
                 if amountString != valueFormatted {
                     amountString = valueFormatted

@@ -12,6 +12,7 @@ import AppIntents
 import Foundation
 import WidgetKit
 
+@available(iOS 17.2, *)
 struct StopGameplayLiveActivityIntent: LiveActivityIntent {
     static var title: LocalizedStringResource = "Parar gameplay"
     static var description = IntentDescription("Encerra a sessão de gameplay ativa.")

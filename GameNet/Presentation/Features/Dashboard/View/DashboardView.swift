@@ -29,9 +29,7 @@ struct DashboardView: View {
                     dashboardContent
                 }
             }
-            .onGeometryChange(for: CGFloat.self) { proxy in
-                proxy.size.width
-            } action: { newWidth in
+            .onWidthChange { newWidth in
                 availableWidth = newWidth
             }
             .refreshable {
@@ -112,7 +110,7 @@ struct DashboardView: View {
         .overlay(
             GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state) { _, state in
+        .onChangeCompat(of: viewModel.state) { state in
             isLoading = state == .loading
         }
         .onReceive(NotificationCenter.default.publisher(for: .gameplaySessionDidChangeFromWidget)) { _ in
@@ -125,7 +123,7 @@ struct DashboardView: View {
                 }
             }
         }
-        .onChange(of: scenePhase) { _, phase in
+        .onChangeCompat(of: scenePhase) { phase in
             guard phase == .active else { return }
             Task {
                 #if os(iOS)
@@ -328,7 +326,7 @@ extension DashboardView {
                 .onAppear {
                     syncSelectedPlayingGame()
                 }
-                .onChange(of: viewModel.dashboard?.playingGames) { _, _ in
+                .onChangeCompat(of: viewModel.dashboard?.playingGames) { _ in
                     syncSelectedPlayingGame()
                 }
             }
@@ -338,27 +336,41 @@ extension DashboardView {
         .dashboardOuterPadding()
     }
 
+    @ViewBuilder
     private var playingGamesScrollView: some View {
-        ScrollView(.horizontal) {
-            LazyHStack(spacing: 0) {
-                ForEach(orderedPlayingGames, id: \.id) { playingGame in
-                    GameCoverView(
-                        viewModel: GameCoverViewModel(
-                            playingGame: playingGame
-                        ),
-                        maxCoverWidth: playingCoverMaxWidth,
-                        onRefresh: {
-                            await viewModel.fetchData()
-                        }
-                    )
-                    .id(playingGame.id)
+        if #available(iOS 17.0, macOS 14.0, tvOS 17.0, *) {
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 0) {
+                    playingGameCovers
                 }
+                .scrollTargetLayout()
             }
-            .scrollTargetLayout()
+            .scrollTargetBehavior(.paging)
+            .scrollPosition(id: $selectedPlayingGameId)
+            .scrollIndicators(.hidden)
+        } else {
+            TabView(selection: $selectedPlayingGameId) {
+                playingGameCovers
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
         }
-        .scrollTargetBehavior(.paging)
-        .scrollPosition(id: $selectedPlayingGameId)
-        .scrollIndicators(.hidden)
+    }
+
+    @ViewBuilder
+    private var playingGameCovers: some View {
+        ForEach(orderedPlayingGames, id: \.id) { playingGame in
+            GameCoverView(
+                viewModel: GameCoverViewModel(
+                    playingGame: playingGame
+                ),
+                maxCoverWidth: playingCoverMaxWidth,
+                onRefresh: {
+                    await viewModel.fetchData()
+                }
+            )
+            .id(playingGame.id)
+            .tag(playingGame.id)
+        }
     }
 
     private var playingGamesPageIndicator: some View {

@@ -29,10 +29,10 @@ struct GameEditView: View {
             .overlay(
                 GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
             )
-            .onChange(of: viewModel.state) { _, state in
+            .onChangeCompat(of: viewModel.state) { state in
                 isLoading = state == .loading
             }
-            .onChange(of: viewModel.selectedImageData) { _, data in
+            .onChangeCompat(of: viewModel.selectedImageData) { data in
                 isEmptyImage = data == nil
             }
             .sheet(isPresented: $viewModel.isImportPresented) {
@@ -71,7 +71,7 @@ struct GameEditView: View {
                 ) {
                     imagePickerLabel
                 }
-                .onChange(of: selectedImageItem) { _, newItem in
+                .onChangeCompat(of: selectedImageItem) { newItem in
                     Task {
                         if let data = try? await newItem?.loadTransferable(type: Data.self) {
                             viewModel.selectedImageData = data

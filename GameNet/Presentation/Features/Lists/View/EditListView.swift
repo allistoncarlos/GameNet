@@ -87,15 +87,15 @@ struct EditListView: View {
         .overlay(
             GameNetProgressHUD($isLoading, config: GameNetApp.hudConfig)
         )
-        .onChange(of: viewModel.state, { _, state in
+        .onChangeCompat(of: viewModel.state) { state in
             isLoading = state == .loading
-        })
-        .onChange(of: selectedUserGameId, { _, newValue in
+        }
+        .onChangeCompat(of: selectedUserGameId) { _ in
             Task {
                 await viewModel.addUserGame(selectedUserGameId: $selectedUserGameId)
                 self.selectedUserGameId = nil
             }
-        })
+        }
         .task {
             await viewModel.fetchGames()
         }

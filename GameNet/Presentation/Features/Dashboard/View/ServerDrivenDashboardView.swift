@@ -22,7 +22,7 @@ struct ServerDrivenDashboardView: View {
 //        .overlay(
 //            TTProgressHUD($isLoading, config: GameNetApp.hudConfig)
 //        )
-        .onChange(of: viewModel.state) { _, state in
+        .onChangeCompat(of: viewModel.state) { state in
             isLoading = state == .loading
         }
         .task {
