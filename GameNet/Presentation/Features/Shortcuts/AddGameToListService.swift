@@ -29,7 +29,7 @@ struct AddGameToListService {
     }
 
     func lists() async -> [List] {
-        await listRepository.fetchData(cache: true) ?? []
+        await listRepository.fetchData() ?? []
     }
 
     func searchGames(matching query: String) async -> [Game] {
@@ -67,7 +67,7 @@ struct AddGameToListService {
             return .notLoggedIn
         }
 
-        guard let listGame = await listRepository.fetchData(id: listId, cache: false) else {
+        guard let listGame = await listRepository.fetchData(id: listId) else {
             return .listNotFound
         }
 

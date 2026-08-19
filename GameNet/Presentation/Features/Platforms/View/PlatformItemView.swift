@@ -15,7 +15,7 @@ struct PlatformItemView: View {
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color.secondary.opacity(0.12))
 
-            CachedAsyncImage(url: imageURL, urlCache: CoverImageCache.urlCache) { phase in
+            CachedAsyncImage(url: imageURL) { phase in
                 switch phase {
                 case let .success(image):
                     image

@@ -21,7 +21,7 @@ class ListDataSourceTests: XCTestCase {
         Container.shared.listDataSource.register(factory: { MockListDataSource() })
 
         // When
-        let result = await Container.shared.listDataSource().fetchData(cache: false)
+        let result = await Container.shared.listDataSource().fetchData()
 
         // Then
         XCTAssertNotNil(result)

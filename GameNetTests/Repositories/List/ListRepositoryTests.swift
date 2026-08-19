@@ -21,7 +21,7 @@ class ListRepositoryTests: XCTestCase {
         Container.shared.listRepository.register(factory: { MockListRepository() })
 
         // When
-        let result = await Container.shared.listRepository().fetchData(cache: false)
+        let result = await Container.shared.listRepository().fetchData()
 
         // Then
         XCTAssertNotNil(result)

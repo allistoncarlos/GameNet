@@ -10,28 +10,21 @@ import Foundation
 // MARK: - ListDataSourceProtocol
 
 protocol ListDataSourceProtocol {
-    func fetchData(cache: Bool) async -> [List]?
-    func fetchData(id: String, cache: Bool) async -> ListGame?
+    func fetchData() async -> [List]?
+    func fetchData(id: String) async -> ListGame?
     func fetchFinishedByYearData(id: Int) async -> [ListItem]?
     func fetchBoughtByYearData(id: Int) async -> [ListItem]?
     func saveList(id: String?, userId: String?, list: ListGame) async -> List?
 }
 
-extension ListDataSourceProtocol {
-    func fetchData(id: String) async -> ListGame? {
-        await fetchData(id: id, cache: true)
-    }
-}
-
 // MARK: - ListDataSource
 
 class ListDataSource: ListDataSourceProtocol {
-    func fetchData(cache: Bool = true) async -> [List]? {
+    func fetchData() async -> [List]? {
         if let apiResult = await NetworkManager.shared
             .performRequest(
                 responseType: APIResult<PagedResult<ListResponseDTO>>.self,
-                endpoint: .lists,
-                cache: cache
+                endpoint: .lists
             ) {
             if apiResult.ok {
                 return apiResult.data.result
@@ -43,12 +36,11 @@ class ListDataSource: ListDataSourceProtocol {
         return nil
     }
 
-    func fetchData(id: String, cache: Bool = true) async -> ListGame? {
+    func fetchData(id: String) async -> ListGame? {
         if let apiResult = await NetworkManager.shared
             .performRequest(
                 responseType: APIResult<ListGameResponseDTO>.self,
-                endpoint: .list(id: id),
-                cache: cache
+                endpoint: .list(id: id)
             ) {
             if apiResult.ok {
                 return apiResult.data.toListGame()

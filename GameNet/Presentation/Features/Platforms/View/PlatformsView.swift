@@ -79,7 +79,7 @@ struct PlatformsView: View {
         }
         .refreshable {
             Task {
-                await viewModel.fetchData(cache: false)
+                await viewModel.fetchData()
             }
         }
         .task {

@@ -37,7 +37,7 @@ class GamesViewModel: ObservableObject {
     func fetchPlatforms() async {
         guard showsPlatformFilter, platforms.isEmpty else { return }
 
-        let result = await platformRepository.fetchData(cache: true)
+        let result = await platformRepository.fetchData()
         platforms = result ?? []
     }
 

@@ -24,7 +24,6 @@ class PlatformsViewModel: ObservableObject {
                 switch state {
                 case let .success(platforms):
                     self?.platforms = platforms
-                    self?.prefetchIllustrations(platforms)
                 default:
                     break
                 }
@@ -36,10 +35,10 @@ class PlatformsViewModel: ObservableObject {
     @Published var platforms: [Platform]? = nil
     @Published var state: PlatformsState = .idle
 
-    func fetchData(cache: Bool = true) async {
+    func fetchData() async {
         state = .loading
 
-        let result = await repository.fetchData(cache: cache)
+        let result = await repository.fetchData()
 
         if let result {
             state = .success(result)
@@ -52,11 +51,6 @@ class PlatformsViewModel: ObservableObject {
 
     @Injected(\.platformRepository) private var repository
     private var cancellable = Set<AnyCancellable>()
-
-    private func prefetchIllustrations(_ platforms: [Platform]) {
-        let urls = platforms.compactMap { PlatformIllustration.urlString(for: $0.name) }
-        CoverImageCache.prefetch(urls: urls)
-    }
 }
 
 extension PlatformsViewModel {

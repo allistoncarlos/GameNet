@@ -77,7 +77,7 @@ final class AddGameToListServiceTests: XCTestCase {
             )
         )
 
-        let list = await Container.shared.listRepository().fetchData(id: "1", cache: false)
+        let list = await Container.shared.listRepository().fetchData(id: "1")
         XCTAssertEqual(list?.games?.count, 6)
         XCTAssertEqual(list?.games?.last?.userGameId, "1")
     }
@@ -96,7 +96,7 @@ final class AddGameToListServiceTests: XCTestCase {
             )
         )
 
-        let list = await Container.shared.listRepository().fetchData(id: "1", cache: false)
+        let list = await Container.shared.listRepository().fetchData(id: "1")
         XCTAssertEqual(list?.games?.count, 6)
     }
 

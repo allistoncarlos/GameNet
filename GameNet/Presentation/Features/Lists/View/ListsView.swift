@@ -81,7 +81,7 @@ struct ListsView: View {
         }
         .refreshable {
             Task {
-                await viewModel.fetchData(cache: false)
+                await viewModel.fetchData()
             }
         }
         .task {

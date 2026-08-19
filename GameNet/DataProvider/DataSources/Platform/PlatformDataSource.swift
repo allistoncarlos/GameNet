@@ -10,7 +10,7 @@ import Foundation
 // MARK: - PlatformDataSourceProtocol
 
 protocol PlatformDataSourceProtocol {
-    func fetchData(cache: Bool) async -> [Platform]?
+    func fetchData() async -> [Platform]?
     func fetchData(id: String) async -> Platform?
     func savePlatform(id: String?, platform: Platform) async -> Platform?
 }
@@ -18,12 +18,11 @@ protocol PlatformDataSourceProtocol {
 // MARK: - PlatformDataSource
 
 class PlatformDataSource: PlatformDataSourceProtocol {
-    func fetchData(cache: Bool = true) async -> [Platform]? {
+    func fetchData() async -> [Platform]? {
         if let apiResult = await NetworkManager.shared
             .performRequest(
                 responseType: APIResult<PagedResult<PlatformResponseDTO>>.self,
-                endpoint: .platforms,
-                cache: cache
+                endpoint: .platforms
             ) {
             if apiResult.ok {
                 return apiResult.data.result

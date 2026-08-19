@@ -58,12 +58,11 @@ public class NetworkManager {
     public func performRequest<T: Decodable>(
         responseType: T.Type,
         endpoint: GameNetAPI,
-        cache: Bool = false,
         retryCount: Int = 0
     ) async -> T? {
         do {
             var urlRequest = try endpoint.asURLRequest()
-            urlRequest.cachePolicy = cache ? .returnCacheDataElseLoad : .reloadIgnoringLocalCacheData
+            urlRequest.cachePolicy = .reloadIgnoringLocalCacheData
 
             if let accessToken = tokenDataSource.accessToken {
                 urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
@@ -90,7 +89,6 @@ public class NetworkManager {
                     return await performRequest(
                         responseType: responseType,
                         endpoint: endpoint,
-                        cache: cache,
                         retryCount: retryCount + 1
                     )
                 }
@@ -100,7 +98,6 @@ public class NetworkManager {
                 return await performRequest(
                     responseType: responseType,
                     endpoint: endpoint,
-                    cache: cache,
                     retryCount: retryCount + 1
                 )
 
@@ -159,7 +156,7 @@ public class NetworkManager {
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 30
         configuration.timeoutIntervalForResource = 60
-        configuration.requestCachePolicy = .returnCacheDataElseLoad
+        configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
 
         return URLSession(configuration: configuration)
     }()

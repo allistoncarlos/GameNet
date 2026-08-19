@@ -14,7 +14,7 @@ class MockPlatformDataSource: PlatformDataSourceProtocol {
         platforms = Defaults.platforms
     }
 
-    func fetchData(cache: Bool = true) async -> [Platform]? {
+    func fetchData() async -> [Platform]? {
         return MockPlatformDataSource.platforms
     }
 

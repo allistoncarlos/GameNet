@@ -97,7 +97,6 @@ struct PlatformDetailView: View {
             isLoading = state == .loading
         }
         .onChangeCompat(of: viewModel.data) { games in
-            CoverImageCache.prefetch(urls: games.compactMap(\.coverURL))
             refreshPreviewGames(from: games)
         }
         .task {
@@ -196,8 +195,7 @@ struct PlatformDetailView: View {
 
     private var platformIllustration: some View {
         CachedAsyncImage(
-            url: PlatformIllustration.url(for: platform.name),
-            urlCache: CoverImageCache.urlCache
+            url: PlatformIllustration.url(for: platform.name)
         ) { phase in
             switch phase {
             case let .success(image):
@@ -245,8 +243,7 @@ struct PlatformDetailView: View {
     private func coverSlice(coverURL: String?) -> some View {
         GeometryReader { geometry in
             CachedAsyncImage(
-                url: URL(string: coverURL ?? ""),
-                urlCache: CoverImageCache.urlCache
+                url: URL(string: coverURL ?? "")
             ) { phase in
                 switch phase {
                 case .success(let image):

@@ -16,11 +16,11 @@ struct MockListRepository: ListRepositoryProtocol {
         listGames = Defaults.listGames
     }
 
-    func fetchData(cache: Bool = true) -> [List]? {
+    func fetchData() -> [List]? {
         return MockListRepository.lists
     }
 
-    func fetchData(id: String, cache: Bool = true) -> ListGame? {
+    func fetchData(id: String) -> ListGame? {
         MockListRepository.listGames.first { list in
             list.id == id
         }

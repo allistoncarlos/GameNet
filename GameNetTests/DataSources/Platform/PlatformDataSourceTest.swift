@@ -21,7 +21,7 @@ class PlatformDataSourceTests: XCTestCase {
         Container.shared.platformDataSource.register(factory: { MockPlatformDataSource() })
 
         // When
-        let result = await Container.shared.platformDataSource().fetchData(cache: false)
+        let result = await Container.shared.platformDataSource().fetchData()
 
         // Then
         XCTAssertNotNil(result)

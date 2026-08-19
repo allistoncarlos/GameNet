@@ -33,7 +33,7 @@ struct CreateGameService {
     }
 
     func platforms() async -> [Platform] {
-        await platformRepository.fetchData(cache: true) ?? []
+        await platformRepository.fetchData() ?? []
     }
 
     func matchingPlatforms(query: String) async -> [Platform] {

@@ -11,17 +11,11 @@ import Foundation
 // MARK: - ListRepositoryProtocol
 
 protocol ListRepositoryProtocol {
-    func fetchData(cache: Bool) async -> [List]?
-    func fetchData(id: String, cache: Bool) async -> ListGame?
+    func fetchData() async -> [List]?
+    func fetchData(id: String) async -> ListGame?
     func fetchFinishedByYearData(id: Int) async -> [ListItem]?
     func fetchBoughtByYearData(id: Int) async -> [ListItem]?
     func saveList(id: String?, userId: String?, list: ListGame) async -> List?
-}
-
-extension ListRepositoryProtocol {
-    func fetchData(id: String) async -> ListGame? {
-        await fetchData(id: id, cache: true)
-    }
 }
 
 // MARK: - ListRepository
@@ -30,12 +24,12 @@ struct ListRepository: ListRepositoryProtocol {
 
     // MARK: Internal
 
-    func fetchData(cache: Bool = true) async -> [List]? {
-        return await dataSource.fetchData(cache: cache)
+    func fetchData() async -> [List]? {
+        return await dataSource.fetchData()
     }
 
-    func fetchData(id: String, cache: Bool = true) async -> ListGame? {
-        return await dataSource.fetchData(id: id, cache: cache)
+    func fetchData(id: String) async -> ListGame? {
+        return await dataSource.fetchData(id: id)
     }
     
     func fetchFinishedByYearData(id: Int) async -> [ListItem]? {

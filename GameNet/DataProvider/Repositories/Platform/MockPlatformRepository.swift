@@ -17,7 +17,7 @@ struct MockPlatformRepository: PlatformRepositoryProtocol {
         platformsOverride = nil
     }
 
-    func fetchData(cache: Bool = true) async -> [Platform]? {
+    func fetchData() async -> [Platform]? {
         return MockPlatformRepository.platformsOverride ?? MockPlatformRepository.platforms
     }
 

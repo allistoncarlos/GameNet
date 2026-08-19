@@ -16,11 +16,11 @@ class MockListDataSource: ListDataSourceProtocol {
         listsGames = Defaults.listsGames
     }
 
-    func fetchData(cache: Bool = true) async -> [List]? {
+    func fetchData() async -> [List]? {
         return MockListDataSource.lists
     }
 
-    func fetchData(id: String, cache: Bool = true) async -> ListGame? {
+    func fetchData(id: String) async -> ListGame? {
         MockListDataSource.listsGames.first { list in
             list.id == id
         }
