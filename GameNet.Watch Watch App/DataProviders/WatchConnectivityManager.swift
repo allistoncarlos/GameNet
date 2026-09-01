@@ -5,6 +5,7 @@
 //  Created by Alliston Aleixo on 23/05/26.
 //
 
+import CoreGraphics
 import Foundation
 import WatchConnectivity
 #if canImport(UIKit)
@@ -66,6 +67,9 @@ private enum WatchPlayingGamesCache {
 final class WatchConnectivityManager: NSObject, ObservableObject {
     override private init() {
         super.init()
+        decodedCovers.countLimit = 16
+        displayCovers.countLimit = 16
+        displayCovers.totalCostLimit = 8 * 1024 * 1024
     }
 
     static let shared = WatchConnectivityManager()
@@ -78,6 +82,9 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
     @Published private(set) var coverRevision = 0
 
     private var activationContinuations: [CheckedContinuation<Void, Never>] = []
+    private let decodedCovers = NSCache<NSString, UIImage>()
+    private let displayCovers = NSCache<NSString, UIImage>()
+    private var displayCoverKeys: [String: NSString] = [:]
 
     func activateSession() {
         guard WCSession.isSupported() else { return }
@@ -182,6 +189,44 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
         }
     }
 
+    func coverImage(for gameId: String) -> UIImage? {
+        let key = gameId as NSString
+        if let cached = decodedCovers.object(forKey: key) {
+            return cached
+        }
+
+        guard let data = WatchCoverImageCache.load(gameId: gameId),
+              let image = UIImage(data: data) else {
+            return nil
+        }
+
+        decodedCovers.setObject(image, forKey: key)
+        return image
+    }
+
+    /// Capa já recortada e redimensionada para o tamanho de tela — o scroll não escala bitmap.
+    func displayCover(for gameId: String, size: CGSize, scale: CGFloat) -> UIImage? {
+        let cacheKey = displayCoverKey(gameId: gameId, size: size, scale: scale)
+        if let cached = displayCovers.object(forKey: cacheKey) {
+            return cached
+        }
+
+        guard let source = coverImage(for: gameId),
+              let rendered = Self.rasterizeCover(source, to: size, scale: scale) else {
+            return nil
+        }
+
+        displayCovers.setObject(rendered, forKey: cacheKey, cost: rasterCost(for: size, scale: scale))
+        displayCoverKeys[gameId] = cacheKey
+        return rendered
+    }
+
+    func preloadDisplayCovers(for gameIds: [String], size: CGSize, scale: CGFloat) {
+        for gameId in gameIds {
+            _ = displayCover(for: gameId, size: size, scale: scale)
+        }
+    }
+
     func coverImageData(for gameId: String) -> Data? {
         WatchCoverImageCache.load(gameId: gameId)
     }
@@ -203,13 +248,17 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
         var didSaveAny = false
         for (gameId, data) in covers {
             #if canImport(UIKit)
-            guard UIImage(data: data) != nil else { continue }
+            guard let image = UIImage(data: data) else { continue }
+            decodedCovers.setObject(image, forKey: gameId as NSString)
             #endif
             WatchCoverImageCache.save(gameId: gameId, data: data)
             didSaveAny = true
         }
 
         if didSaveAny {
+            for gameId in covers.keys {
+                invalidateDisplayCover(for: gameId)
+            }
             coverRevision &+= 1
         }
     }
@@ -219,15 +268,18 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
         let mergedContext = applicationContext.isEmpty ? context : applicationContext
 
         if let statusRaw = mergedContext[WatchMessageKey.authStatus] as? String,
-           let status = WatchAuthStatus(rawValue: statusRaw) {
+           let status = WatchAuthStatus(rawValue: statusRaw),
+           cachedAuthStatus != status {
             cachedAuthStatus = status
         }
 
         if let data = mergedContext[WatchMessageKey.playingGames] as? Data,
            let payload = WatchConnectivityPayloadCodec.decode(WatchPlayingGamesPayload.self, from: data) {
-            cachedPayload = payload
-            WatchPlayingGamesCache.save(payload)
-        } else if let diskPayload = WatchPlayingGamesCache.load() {
+            if cachedPayload != payload {
+                cachedPayload = payload
+                WatchPlayingGamesCache.save(payload)
+            }
+        } else if cachedPayload == nil, let diskPayload = WatchPlayingGamesCache.load() {
             cachedPayload = diskPayload
         }
 
@@ -240,6 +292,102 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
     }
 
     // MARK: Private
+
+    private func displayCoverKey(gameId: String, size: CGSize, scale: CGFloat) -> NSString {
+        "v2-\(gameId)-\(Int(size.width * scale))x\(Int(size.height * scale))" as NSString
+    }
+
+    private func invalidateDisplayCover(for gameId: String) {
+        if let key = displayCoverKeys.removeValue(forKey: gameId) {
+            displayCovers.removeObject(forKey: key)
+        }
+    }
+
+    private func rasterCost(for size: CGSize, scale: CGFloat) -> Int {
+        Int(size.width * scale * size.height * scale * 4)
+    }
+
+    /// watchOS não tem `UIGraphicsImageRenderer`. Desenha em coordenadas Quartz
+    /// (origem embaixo) para o `CGImage` não nascer invertido.
+    nonisolated private static func rasterizeCover(_ source: UIImage, to size: CGSize, scale: CGFloat) -> UIImage? {
+        guard size.width > 0, size.height > 0, scale > 0 else { return nil }
+        guard let sourceImage = source.cgImage else { return nil }
+
+        let pixelWidth = max(1, Int((size.width * scale).rounded()))
+        let pixelHeight = max(1, Int((size.height * scale).rounded()))
+        let pixelSize = CGSize(width: CGFloat(pixelWidth), height: CGFloat(pixelHeight))
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let bitmapInfo = CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.premultipliedFirst.rawValue
+
+        guard let ctx = CGContext(
+            data: nil,
+            width: pixelWidth,
+            height: pixelHeight,
+            bitsPerComponent: 8,
+            bytesPerRow: 0,
+            space: colorSpace,
+            bitmapInfo: bitmapInfo
+        ) else {
+            return nil
+        }
+
+        ctx.setShouldAntialias(true)
+        ctx.setFillColor(gray: 0, alpha: 1)
+        ctx.fill(CGRect(origin: .zero, size: pixelSize))
+
+        let corner = 10 * scale
+        ctx.addPath(
+            CGPath(
+                roundedRect: CGRect(origin: .zero, size: pixelSize),
+                cornerWidth: corner,
+                cornerHeight: corner,
+                transform: nil
+            )
+        )
+        ctx.clip()
+
+        let imagePixelSize = CGSize(
+            width: CGFloat(sourceImage.width),
+            height: CGFloat(sourceImage.height)
+        )
+        guard imagePixelSize.width > 0, imagePixelSize.height > 0 else { return nil }
+
+        let fillScale = max(
+            pixelSize.width / imagePixelSize.width,
+            pixelSize.height / imagePixelSize.height
+        )
+        let drawSize = CGSize(
+            width: imagePixelSize.width * fillScale,
+            height: imagePixelSize.height * fillScale
+        )
+        let drawRect = CGRect(
+            x: (pixelSize.width - drawSize.width) / 2,
+            y: (pixelSize.height - drawSize.height) / 2,
+            width: drawSize.width,
+            height: drawSize.height
+        )
+        ctx.draw(sourceImage, in: drawRect)
+
+        let gradientColors = [
+            UIColor.clear.cgColor,
+            UIColor.black.withAlphaComponent(0.72).cgColor
+        ] as CFArray
+        if let gradient = CGGradient(
+            colorsSpace: colorSpace,
+            colors: gradientColors,
+            locations: [0.42, 1]
+        ) {
+            ctx.drawLinearGradient(
+                gradient,
+                start: CGPoint(x: 0, y: pixelSize.height * 0.58),
+                end: CGPoint(x: 0, y: 0),
+                options: []
+            )
+        }
+
+        guard let output = ctx.makeImage() else { return nil }
+        return UIImage(cgImage: output, scale: scale, orientation: .up)
+    }
 
     private func finishActivation() {
         state = WCSession.default.activationState

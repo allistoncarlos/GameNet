@@ -20,7 +20,6 @@ enum PlayingGamesUIState: Equatable {
 final class PlayingGamesViewModel: ObservableObject {
     @Published var games: [WatchPlayingGame] = []
     @Published var uiState: PlayingGamesUIState = .loading
-    @Published var selectedGameIndex: Int = 0
     @Published var selectedHabitDayISO: String = WatchConnectivityDateCodec.habitDayOptions().first ?? ""
     @Published var isSaving = false
 
@@ -30,13 +29,6 @@ final class PlayingGamesViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     init() {
-        WatchConnectivityManager.shared.$context
-            .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                self?.applyCachedGamesIfNeeded()
-            }
-            .store(in: &cancellables)
-
         WatchConnectivityManager.shared.$cachedPayload
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
@@ -55,11 +47,6 @@ final class PlayingGamesViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 
-    var selectedGame: WatchPlayingGame? {
-        guard games.indices.contains(selectedGameIndex) else { return nil }
-        return games[selectedGameIndex]
-    }
-
     func load() async {
         WatchConnectivityManager.shared.refreshCachedPayload()
         applyCachedGamesIfNeeded()
@@ -73,8 +60,8 @@ final class PlayingGamesViewModel: ObservableObject {
         await refreshFromPhone()
     }
 
-    func toggleGameplay() async {
-        guard let game = selectedGame, !isSaving else { return }
+    func toggleGameplay(gameId: String) async {
+        guard let game = games.first(where: { $0.id == gameId }), !isSaving else { return }
 
         isSaving = true
         defer { isSaving = false }
@@ -100,8 +87,7 @@ final class PlayingGamesViewModel: ObservableObject {
         do {
             try await service.checkAuth()
             let fetched = try await service.fetchPlayingGames(forceRefresh: uiState == .loading)
-            games = fetched
-            uiState = fetched.isEmpty ? .empty : .content
+            replaceGames(fetched)
         } catch WatchPlayingGamesServiceError.notLogged {
             games = []
             uiState = .notLogged
@@ -118,17 +104,29 @@ final class PlayingGamesViewModel: ObservableObject {
     }
 
     private func applyCachedGamesIfNeeded() {
-        guard let cached = WatchConnectivityManager.shared.playingGamesFromContext()?.games else {
+        guard let cached = WatchConnectivityManager.shared.cachedPayload?.games else {
             return
         }
 
         if WatchConnectivityManager.shared.cachedAuthStatus == .notLogged {
-            games = []
-            uiState = .notLogged
+            if !games.isEmpty || uiState != .notLogged {
+                games = []
+                uiState = .notLogged
+            }
             return
         }
 
-        games = cached
-        uiState = cached.isEmpty ? .empty : .content
+        replaceGames(cached)
+    }
+
+    private func replaceGames(_ newGames: [WatchPlayingGame]) {
+        if games != newGames {
+            games = newGames
+        }
+
+        let nextState: PlayingGamesUIState = newGames.isEmpty ? .empty : .content
+        if uiState != nextState {
+            uiState = nextState
+        }
     }
 }

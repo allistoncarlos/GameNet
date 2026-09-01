@@ -33,7 +33,7 @@ struct WatchPlayingGame: Codable, Identifiable, Equatable {
     var isStarted: Bool { isSessionActive }
 }
 
-struct WatchPlayingGamesPayload: Codable {
+struct WatchPlayingGamesPayload: Codable, Equatable {
     let games: [WatchPlayingGame]
 }
 

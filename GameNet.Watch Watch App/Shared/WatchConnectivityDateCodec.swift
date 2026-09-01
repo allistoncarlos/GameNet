@@ -39,6 +39,11 @@ enum WatchConnectivityDateCodec {
         return ISO8601DateFormatter().date(from: iso)
     }
 
+    static func displayString(fromISO iso: String) -> String {
+        guard let date = date(fromISO: iso) else { return iso }
+        return displayFormatter.string(from: date)
+    }
+
     static func displayString(forHabitDayISO iso: String) -> String {
         guard let date = habitDayFormatter.date(from: iso) else { return iso }
         return displayFormatter.string(from: date)
