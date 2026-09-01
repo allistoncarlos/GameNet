@@ -349,10 +349,19 @@ extension DashboardView {
             .scrollPosition(id: $selectedPlayingGameId)
             .scrollIndicators(.hidden)
         } else {
+            #if os(macOS)
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 0) {
+                    playingGameCovers
+                }
+            }
+            .scrollIndicators(.hidden)
+            #else
             TabView(selection: $selectedPlayingGameId) {
                 playingGameCovers
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
+            #endif
         }
     }
 
