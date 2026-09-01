@@ -40,6 +40,9 @@ struct GameEditView: View {
             }
             .sheet(isPresented: $viewModel.isImportPresented) {
                 GameImportSheet(viewModel: viewModel)
+                    #if os(macOS)
+                    .frame(minWidth: 520, minHeight: 480)
+                    #endif
             }
             .task {
                 await viewModel.fetchData()
