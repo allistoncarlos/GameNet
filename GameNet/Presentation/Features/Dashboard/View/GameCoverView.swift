@@ -6,124 +6,37 @@
 //
 
 import SwiftUI
-import CachedAsyncImage
-
-private enum GameCoverAction: Identifiable {
-    case toggle
-    case finishGame
-    case dropGameplay
-
-    var id: Int {
-        switch self {
-        case .toggle: return 0
-        case .finishGame: return 1
-        case .dropGameplay: return 2
-        }
-    }
-}
 
 struct GameCoverView: View {
     @ObservedObject var viewModel: GameCoverViewModel
     var maxCoverWidth: CGFloat?
     var onRefresh: () async -> Void = {}
-    @State private var activeAction: GameCoverAction?
     @State private var coverAccentColor = Color.main
-    
-    @State var buttonImage = "play.fill"
-    @State var confirmText = "iniciar"
-    
+
     private var coverURL: String {
         viewModel.playingGame.coverURL
     }
-    
+
     var body: some View {
         SwiftUI.NavigationLink(value: viewModel.playingGame) {
             VStack(alignment: .center) {
                 ZStack(alignment: .bottomTrailing) {
-                    
-                CachedAsyncImage(url: URL(string: coverURL)) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                    default:
-                        coverImageSkeleton
-                    }
-                }
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .gameCoverTransitionSource(id: viewModel.playingGame.id)
-                    Button {
-                        activeAction = .toggle
-                    } label: {
-                        Image(systemName: buttonImage)
-                            .frame(width: 40, height: 40)
-                    }
-                    .offset(x: -5, y: -5)
-                    .gameNetCircleButtonBorder()
-                    .gameNetGlassProminentButtonStyle(tint: coverAccentColor.opacity(0.5))
-                    .animation(.gameNetSmooth, value: coverAccentColor)
-                    .contextMenu {
-                        Button {
-                            activeAction = .finishGame
-                        } label: {
-                            Label("Zerei o Jogo", systemImage: "checkmark.seal.fill")
-                        }
+                    PlayingGameCoverArtwork(
+                        coverURL: coverURL,
+                        cornerRadius: 12,
+                        contentMode: .fit,
+                        transitionId: viewModel.playingGame.id
+                    )
 
-                        Button(role: .destructive) {
-                            activeAction = .dropGameplay
-                        } label: {
-                            Label("Parar de Jogar", systemImage: "xmark.circle.fill")
-                        }
-                    }
-                    .confirmationDialog(
-                        "",
-                        isPresented: Binding(
-                            get: { activeAction != nil },
-                            set: { isPresented in
-                                if !isPresented { activeAction = nil }
-                            }
-                        ),
-                        presenting: activeAction
-                    ) { action in
-                        switch action {
-                        case .toggle:
-                            Button("Confirmar") {
-                                Task {
-                                    if await viewModel.save() {
-                                        await onRefresh()
-                                    }
-                                }
-                            }
-                        case .finishGame:
-                            Button("Zerei o Jogo") {
-                                Task {
-                                    if await viewModel.finishGame() {
-                                        await onRefresh()
-                                    }
-                                }
-                            }
-                        case .dropGameplay:
-                            Button("Parar de Jogar", role: .destructive) {
-                                Task {
-                                    if await viewModel.dropGameplay() {
-                                        await onRefresh()
-                                    }
-                                }
-                            }
-                        }
-                    } message: { action in
-                        switch action {
-                        case .toggle:
-                            Text("Deseja \(confirmText) o jogo \(viewModel.playingGame.name)?")
-                        case .finishGame:
-                            Text("Deseja marcar o jogo \(viewModel.playingGame.name) como zerado?")
-                        case .dropGameplay:
-                            Text("Deseja parar de jogar o jogo \(viewModel.playingGame.name)?")
-                        }
-                    }
+                    PlayingGameSessionControls(
+                        viewModel: viewModel,
+                        onRefresh: onRefresh,
+                        buttonSize: 40,
+                        tint: coverAccentColor
+                    )
+                    .offset(x: -5, y: -5)
                 }
-                
+
                 Text(viewModel.playingGame.name)
                     .font(.dashboardGameTitle)
                     .multilineTextAlignment(.center)
@@ -135,21 +48,9 @@ struct GameCoverView: View {
             .frame(maxWidth: .infinity)
         }
         .pagingCarouselItem()
-        .onChangeCompat(of: viewModel.isStarted) { newValue in
-            self.buttonImage = newValue ? "stop.fill" : "play.fill"
-            self.confirmText = newValue ? "finalizar" : "iniciar"
-        }
         .task(id: coverURL) {
             guard !coverURL.isEmpty else { return }
             coverAccentColor = await CoverAccentColor.from(urlString: coverURL)
         }
-    }
-
-    private var coverImageSkeleton: some View {
-        RoundedRectangle(cornerRadius: 12)
-            .fill(Color.secondary.opacity(0.2))
-            .aspectRatio(2 / 3, contentMode: .fit)
-            .frame(maxWidth: .infinity)
-            .redacted(reason: .placeholder)
     }
 }

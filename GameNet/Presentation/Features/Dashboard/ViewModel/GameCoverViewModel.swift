@@ -39,12 +39,16 @@ class GameCoverViewModel: ObservableObject {
     @Published var playingGame: PlayingGame
     @Published var state: GameCoverState = .idle
 
-    /// Retorna `true` quando o dashboard deve ser recarregado (ao iniciar uma nova gameplay).
+    func applyPlayingGame(_ playingGame: PlayingGame) {
+        self.playingGame = playingGame
+        updateStarted()
+    }
+
+    /// Retorna `true` quando a sessão foi salva com sucesso.
     @discardableResult
     func save() async -> Bool {
         state = .loading
 
-        let wasStarted = isStarted
         var start = Date.timeZoneDate()
         
         if isStarted {
@@ -84,7 +88,7 @@ class GameCoverViewModel: ObservableObject {
             await WatchPhoneCoordinator.shared.pushPlayingGamesToWatch()
 #endif
 
-            return !wasStarted
+            return true
         } else {
             state = .error("Erro no salvamento de dados do servidor")
             return false

@@ -7,7 +7,6 @@
 
 import Factory
 import SwiftUI
-import CachedAsyncImage
 import StepperView
 
 // MARK: - DashboardView
@@ -145,7 +144,6 @@ struct DashboardView: View {
 
     @Environment(\.scenePhase) private var scenePhase
     @State private var presentedViews = NavigationPath()
-    @State private var selectedPlayingGameId: String?
     @Namespace private var gameCoverTransitionNamespace
 
     private var usesCompactLayout: Bool {
@@ -167,9 +165,7 @@ struct DashboardView: View {
     @ViewBuilder
     private var compactDashboardContent: some View {
         VStack(spacing: -20) {
-            if viewModel.dashboard?.playingGames != nil {
-                playingCard
-            }
+            playingLibraryCards
 
             if viewModel.gameplaySessions != nil {
                 if !FirebaseRemoteConfig.stepperView {
@@ -210,9 +206,7 @@ struct DashboardView: View {
         )
 
         VStack(spacing: 16) {
-            if viewModel.dashboard?.playingGames != nil {
-                playingCard
-            }
+            playingLibraryCards
 
             HStack(alignment: .top, spacing: 16) {
                 if viewModel.gameplaySessions != nil {
@@ -253,18 +247,6 @@ struct DashboardView: View {
         .padding(.vertical, 8)
     }
 
-    private var playingCardHeight: CGFloat {
-        PlatformMetrics.playingCardHeight(for: availableWidth, compact: usesCompactLayout)
-    }
-
-    private var playingCoverMaxWidth: CGFloat? {
-        PlatformMetrics.playingCoverMaxWidth(
-            for: availableWidth,
-            cardHeight: playingCardHeight,
-            compact: usesCompactLayout
-        )
-    }
-
     private var annualChartHeight: CGFloat {
         usesCompactLayout ? 300 : 380
     }
@@ -281,15 +263,6 @@ struct DashboardView: View {
             return true
         })
     }
-
-    private var selectedPlayingGameIndex: Int {
-        guard let selectedPlayingGameId,
-              let index = orderedPlayingGames.firstIndex(where: { $0.id == selectedPlayingGameId }) else {
-            return 0
-        }
-
-        return index
-    }
 }
 
 extension DashboardView {
@@ -304,109 +277,18 @@ extension DashboardView {
 }
 
 extension DashboardView {
-    var playingCard: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.primaryCardBackground)
-            
-            VStack(alignment: .leading, spacing: 15) {
-                VStack {
-                    Text("Jogando")
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                        .font(.cardTitle)
-                }
-                
-                VStack(spacing: 12) {
-                    playingGamesScrollView
-
-                    if !orderedPlayingGames.isEmpty {
-                        playingGamesPageIndicator
-                    }
-                }
-                .onAppear {
-                    syncSelectedPlayingGame()
-                }
-                .onChangeCompat(of: viewModel.dashboard?.playingGames) { _ in
-                    syncSelectedPlayingGame()
-                }
-            }
-            .padding()
-        }
-        .frame(height: playingCardHeight)
-        .dashboardOuterPadding()
-    }
-
     @ViewBuilder
-    private var playingGamesScrollView: some View {
-        if #available(iOS 17.0, macOS 14.0, tvOS 17.0, *) {
-            ScrollView(.horizontal) {
-                LazyHStack(spacing: 0) {
-                    playingGameCovers
-                }
-                .scrollTargetLayout()
-            }
-            .scrollTargetBehavior(.paging)
-            .scrollPosition(id: $selectedPlayingGameId)
-            .scrollIndicators(.hidden)
-        } else {
-            #if os(macOS)
-            ScrollView(.horizontal) {
-                LazyHStack(spacing: 0) {
-                    playingGameCovers
-                }
-            }
-            .scrollIndicators(.hidden)
-            #else
-            TabView(selection: $selectedPlayingGameId) {
-                playingGameCovers
-            }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            #endif
-        }
-    }
-
-    @ViewBuilder
-    private var playingGameCovers: some View {
-        ForEach(orderedPlayingGames, id: \.id) { playingGame in
-            GameCoverView(
-                viewModel: GameCoverViewModel(
-                    playingGame: playingGame
-                ),
-                maxCoverWidth: playingCoverMaxWidth,
+    var playingLibraryCards: some View {
+        if viewModel.dashboard?.playingGames != nil {
+            PlayingGamesLibraryCarousel(
+                games: orderedPlayingGames,
+                compact: usesCompactLayout,
                 onRefresh: {
                     await viewModel.fetchData()
                 }
             )
-            .id(playingGame.id)
-            .tag(playingGame.id)
+            .dashboardOuterPadding()
         }
-    }
-
-    private var playingGamesPageIndicator: some View {
-        HStack(spacing: 6) {
-            ForEach(orderedPlayingGames.indices, id: \.self) { index in
-                Circle()
-                    .fill(index == selectedPlayingGameIndex ? Color.main : Color.gray.opacity(0.4))
-                    .frame(width: 6, height: 6)
-            }
-        }
-        .frame(maxWidth: .infinity)
-    }
-
-    private func syncSelectedPlayingGame() {
-        let games = orderedPlayingGames
-
-        guard !games.isEmpty else {
-            selectedPlayingGameId = nil
-            return
-        }
-
-        if let selectedPlayingGameId,
-           games.contains(where: { $0.id == selectedPlayingGameId }) {
-            return
-        }
-
-        self.selectedPlayingGameId = games.first?.id
     }
 }
 
