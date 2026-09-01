@@ -28,6 +28,7 @@ struct DashboardView: View {
                     dashboardContent
                 }
             }
+            .dashboardScrollTopInset()
             .onWidthChange { newWidth in
                 availableWidth = newWidth
             }
@@ -287,7 +288,9 @@ extension DashboardView {
                     await viewModel.fetchData()
                 }
             )
-            .dashboardOuterPadding()
+            .padding(.horizontal)
+            .padding(.bottom, 8)
+            .padding(.top, 0)
         }
     }
 }

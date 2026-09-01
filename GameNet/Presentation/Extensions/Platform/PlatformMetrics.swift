@@ -126,6 +126,34 @@ enum PlatformMetrics {
             return 560
         }
     }
+
+    /// Pôster 2:3 da vitrine. A altura é limitada pela tela — em paisagem a largura
+    /// do card não pode gerar um pôster maior que o viewport.
+    static func vitrineCoverSize(
+        cardWidth: CGFloat,
+        inset: CGFloat,
+        compact: Bool,
+        isLandscape: Bool,
+        screenHeight: CGFloat
+    ) -> CGSize {
+        let availableWidth = max(cardWidth - inset * 2, 120)
+        let shortSide = min(PlatformScreen.width, screenHeight)
+        let longSide = max(PlatformScreen.width, screenHeight)
+
+        let maxHeight: CGFloat
+        if isLandscape {
+            maxHeight = min(max(shortSide - 210, 140), 168)
+        } else if compact {
+            // iPhone 14 Pro Max (~932pt): pôster ~390pt, o quadro azul ocupa o vão
+            // abaixo da nav sem voltar ao width×1.5 (~560pt) que estourava a tela.
+            maxHeight = min(longSide * 0.42, 400)
+        } else {
+            maxHeight = min(longSide * 0.34, 340)
+        }
+
+        let width = min(availableWidth, (maxHeight * 2 / 3).rounded())
+        return CGSize(width: width, height: (width * 1.5).rounded())
+    }
 }
 
 private struct ContentWidthModifier: ViewModifier {

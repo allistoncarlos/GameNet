@@ -12,15 +12,20 @@ struct PlayingGamesLibraryCarousel: View {
     var compact: Bool = true
     var onRefresh: () async -> Void = {}
 
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
     @State private var selectedGameId: String?
     @State private var cardWidth = PlatformScreen.width
 
     private let cardInset: CGFloat = 16
 
+    private var isLandscape: Bool {
+        verticalSizeClass == .compact
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: isLandscape ? 8 : 12) {
             Text("Jogando")
-                .font(.cardTitle)
+                .font(isLandscape ? .dashboardGameTitle : .cardTitle)
                 .padding(.horizontal, cardInset)
 
             if games.isEmpty {
@@ -33,7 +38,8 @@ struct PlayingGamesLibraryCarousel: View {
                 vitrineCarousel
             }
         }
-        .padding(.vertical, cardInset)
+        .padding(.top, isLandscape ? 10 : 10)
+        .padding(.bottom, isLandscape ? 10 : 12)
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(Color.primaryCardBackground)
@@ -91,22 +97,30 @@ struct PlayingGamesLibraryCarousel: View {
 }
 
 private extension PlayingGamesLibraryCarousel {
+    var vitrineCoverSize: CGSize {
+        PlatformMetrics.vitrineCoverSize(
+            cardWidth: cardWidth,
+            inset: cardInset,
+            compact: compact,
+            isLandscape: isLandscape,
+            screenHeight: PlatformScreen.height
+        )
+    }
+
     var vitrineItemWidth: CGFloat {
-        let availableWidth = max(cardWidth - cardInset * 2, 160)
-
-        if compact {
-            return availableWidth
-        }
-
-        return min(availableWidth, 340)
+        vitrineCoverSize.width
     }
 
     var vitrineHeight: CGFloat {
-        vitrineItemWidth * 1.5
+        vitrineCoverSize.height
     }
 
     var vitrineSideInset: CGFloat {
         max((cardWidth - vitrineItemWidth) / 2, cardInset)
+    }
+
+    var playButtonSize: CGFloat {
+        isLandscape ? 32 : 40
     }
 
     var vitrineCarousel: some View {
@@ -127,7 +141,7 @@ private extension PlayingGamesLibraryCarousel {
                             }
                         )
                     }
-                    .frame(width: vitrineItemWidth)
+                    .frame(width: vitrineItemWidth, height: vitrineHeight)
                     .libraryScrollIdentity(id)
                     .zIndex(isFocused ? 1 : 0)
                     .libraryCoverFlowTransition()
@@ -181,11 +195,11 @@ private extension PlayingGamesLibraryCarousel {
                 PlayingGameSessionControls(
                     viewModel: viewModel,
                     onRefresh: onRefresh,
-                    buttonSize: 40,
+                    buttonSize: playButtonSize,
                     tint: .main
                 )
-                .padding(.trailing, 10)
-                .padding(.bottom, 10)
+                .padding(.trailing, isLandscape ? 8 : 10)
+                .padding(.bottom, isLandscape ? 8 : 10)
             }
         }
     }
@@ -210,21 +224,22 @@ private extension PlayingGamesLibraryCarousel {
             .allowsHitTesting(false)
         }
         .overlay(alignment: .bottomLeading) {
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: isLandscape ? 2 : 4) {
                 Text(game.name)
                     .font(.dashboardGameTitle)
                     .foregroundStyle(.white)
                     .multilineTextAlignment(.leading)
                     .lineLimit(2)
+                    .minimumScaleFactor(0.85)
 
                 Text(sessionCaption(for: game, isStarted: viewModel.isStarted))
                     .font(.dashboardGameSubtitle)
                     .foregroundStyle(.white.opacity(0.85))
                     .lineLimit(1)
             }
-            .padding(.leading, 12)
-            .padding(.trailing, 56)
-            .padding(.bottom, 14)
+            .padding(.leading, isLandscape ? 10 : 12)
+            .padding(.trailing, isLandscape ? 44 : 56)
+            .padding(.bottom, isLandscape ? 10 : 14)
         }
         .shadow(
             color: .black.opacity(isFocused ? 0.28 : 0.1),

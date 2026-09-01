@@ -41,6 +41,15 @@ extension View {
         modifier(DashboardOuterPaddingModifier())
     }
 
+    @ViewBuilder
+    func dashboardScrollTopInset() -> some View {
+        if #available(iOS 17.0, macOS 14.0, *) {
+            contentMargins(.top, 0, for: .scrollContent)
+        } else {
+            self
+        }
+    }
+
     func gameCoverTransitionSource(id: String?) -> some View {
         modifier(GameCoverTransitionSourceModifier(id: id))
     }
