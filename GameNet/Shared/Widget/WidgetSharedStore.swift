@@ -45,9 +45,37 @@ public struct WidgetSharedPlayingGame: Codable, Identifiable, Hashable {
         latestStart != nil && latestFinish == nil
     }
 
-    /// Critério para "último jogado": data de atividade mais recente.
+    /// Critério para "último jogado": o instante mais recente entre início e término.
     public var lastActivityDate: Date {
-        latestFinish ?? latestStart ?? .distantPast
+        [latestFinish, latestStart].compactMap { $0 }.max() ?? .distantPast
+    }
+
+    /// Jogo do widget: o de GameplaySession mais recente (start ou finish),
+    /// inclusive se outro jogo ainda tiver sessão aberta antiga.
+    public static func preferredForWidget(from games: [WidgetSharedPlayingGame]) -> WidgetSharedPlayingGame? {
+        games.max { lhs, rhs in
+            if lhs.lastActivityDate != rhs.lastActivityDate {
+                return lhs.lastActivityDate < rhs.lastActivityDate
+            }
+
+            if lhs.isStarted != rhs.isStarted {
+                return !lhs.isStarted
+            }
+
+            return false
+        }
+    }
+
+    /// Preserva sessão ativa local só quando ela é pelo menos tão recente quanto
+    /// a atividade mais nova da rede — evita sessão aberta velha "grudar" no widget.
+    public static func shouldKeepLocalActive(
+        _ local: WidgetSharedPlayingGame,
+        over remote: [WidgetSharedPlayingGame]
+    ) -> Bool {
+        guard local.isStarted else { return false }
+
+        let remoteLatest = remote.map(\.lastActivityDate).max() ?? .distantPast
+        return local.lastActivityDate >= remoteLatest
     }
 }
 

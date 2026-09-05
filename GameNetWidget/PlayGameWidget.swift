@@ -15,10 +15,17 @@ struct PlayGameWidgetView: View {
     var entry: PlayGameEntry
 
     var body: some View {
-        content
-            .containerBackground(for: .widget) {
+        if #available(iOS 17.0, *) {
+            content
+                .containerBackground(for: .widget) {
+                    background
+                }
+        } else {
+            ZStack {
                 background
+                content
             }
+        }
     }
 
     // MARK: Content states
@@ -65,18 +72,21 @@ struct PlayGameWidgetView: View {
         }
     }
 
+    @ViewBuilder
     private func toggleButton(_ game: WidgetSharedPlayingGame) -> some View {
-        Button(intent: ToggleGameplayIntent(userGameId: game.id)) {
-            Image(systemName: game.isStarted ? "stop.fill" : "play.fill")
-                .font(.title3.weight(.bold))
-                .foregroundStyle(.white)
-                .frame(width: 46, height: 46)
-                .background(
-                    Circle().fill(game.isStarted ? Color.red : Color.green)
-                )
-                .shadow(radius: 6)
+        if #available(iOS 17.0, *) {
+            Button(intent: ToggleGameplayIntent(userGameId: game.id)) {
+                Image(systemName: game.isStarted ? "stop.fill" : "play.fill")
+                    .font(.title3.weight(.bold))
+                    .foregroundStyle(.white)
+                    .frame(width: 46, height: 46)
+                    .background(
+                        Circle().fill(game.isStarted ? Color.red : Color.green)
+                    )
+                    .shadow(radius: 6)
+            }
+            .buttonStyle(.plain)
         }
-        .buttonStyle(.plain)
     }
 
     private func messageView(icon: String, title: String, subtitle: String) -> some View {

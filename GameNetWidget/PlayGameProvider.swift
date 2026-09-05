@@ -3,7 +3,7 @@
 //  GameNetWidget
 //
 //  TimelineProvider: lê o cache do App Group, tenta atualizar pela rede,
-//  escolhe o jogo-alvo (sessão aberta > último jogado) e baixa a capa.
+//  escolhe o jogo da GameplaySession mais recente e baixa a capa.
 //
 
 import WidgetKit
@@ -65,15 +65,20 @@ struct PlayGameProvider: TimelineProvider {
     private func makeEntry(refreshFromNetwork: Bool) async -> PlayGameEntry {
         let isLogged = WidgetSharedStore.isLogged
         var games = WidgetSharedStore.loadPlayingGames()
-        let localActive = games.first(where: \.isStarted)
+        let localActive = games
+            .filter(\.isStarted)
+            .max { $0.lastActivityDate < $1.lastActivityDate }
 
         if isLogged, refreshFromNetwork {
             let client = WidgetGameClient()
             if let fresh = try? await client.fetchPlayingGames() {
                 // Se o local acabou de marcar sessão ativa e a rede ainda não refletiu,
                 // preserva o estado local para o widget/Live Activity não "voltarem atrás".
+                // Não preserva sessão aberta antiga quando a rede já tem atividade mais nova.
                 let remoteActive = fresh.first(where: \.isStarted)
-                if let localActive, remoteActive == nil {
+                if let localActive,
+                   remoteActive == nil,
+                   WidgetSharedPlayingGame.shouldKeepLocalActive(localActive, over: fresh) {
                     games = mergePreferringLocalActive(local: games, remote: fresh, active: localActive)
                     await WidgetSharedStore.persistPlayingGamesAndSyncLiveActivity(games)
                 } else {
@@ -82,7 +87,7 @@ struct PlayGameProvider: TimelineProvider {
             }
         }
 
-        let game = selectGame(from: games)
+        let game = WidgetSharedPlayingGame.preferredForWidget(from: games)
         let coverImageData = await loadCover(game?.coverURL)
 
         return PlayGameEntry(
@@ -105,14 +110,6 @@ struct PlayGameProvider: TimelineProvider {
             merged.insert(active, at: 0)
         }
         return merged
-    }
-
-    private func selectGame(from games: [WidgetSharedPlayingGame]) -> WidgetSharedPlayingGame? {
-        if let active = games.first(where: { $0.isStarted }) {
-            return active
-        }
-
-        return games.max(by: { $0.lastActivityDate < $1.lastActivityDate })
     }
 
     private func loadCover(_ urlString: String?) async -> Data? {

@@ -59,20 +59,13 @@ struct GameplayLiveActivity: Widget {
                             .foregroundStyle(.secondary)
                         Spacer()
                         if context.state.isPlaying {
-                            Button(
-                                intent: StopGameplayLiveActivityIntent(
-                                    userGameId: context.attributes.userGameId,
-                                    gameName: context.attributes.gameName,
-                                    platform: context.attributes.platform,
-                                    coverURL: context.attributes.coverURL
-                                )
-                            ) {
-                                Image(systemName: "stop.fill")
-                                    .foregroundStyle(.white)
-                                    .frame(width: 28, height: 28)
-                                    .background(Circle().fill(GameNetLiveActivityStyle.purple))
-                            }
-                            .buttonStyle(.plain)
+                            stopButton(
+                                userGameId: context.attributes.userGameId,
+                                gameName: context.attributes.gameName,
+                                platform: context.attributes.platform,
+                                coverURL: context.attributes.coverURL,
+                                size: 28
+                            )
                         }
                     }
                 }
@@ -127,24 +120,41 @@ struct GameplayLiveActivity: Widget {
             Spacer(minLength: 0)
 
             if context.state.isPlaying {
-                Button(
-                    intent: StopGameplayLiveActivityIntent(
-                        userGameId: context.attributes.userGameId,
-                        gameName: context.attributes.gameName,
-                        platform: context.attributes.platform,
-                        coverURL: context.attributes.coverURL
-                    )
-                ) {
-                    Image(systemName: "stop.fill")
-                        .font(.body.weight(.bold))
-                        .foregroundStyle(.white)
-                        .frame(width: 40, height: 40)
-                        .background(Circle().fill(GameNetLiveActivityStyle.purple))
-                }
-                .buttonStyle(.plain)
+                stopButton(
+                    userGameId: context.attributes.userGameId,
+                    gameName: context.attributes.gameName,
+                    platform: context.attributes.platform,
+                    coverURL: context.attributes.coverURL,
+                    size: 40
+                )
             }
         }
         .padding(16)
         .activityBackgroundTint(GameNetLiveActivityStyle.purple.opacity(0.22))
+    }
+
+    @ViewBuilder
+    private func stopButton(
+        userGameId: String,
+        gameName: String,
+        platform: String,
+        coverURL: String,
+        size: CGFloat
+    ) -> some View {
+        Button(
+            intent: StopGameplayLiveActivityIntent(
+                userGameId: userGameId,
+                gameName: gameName,
+                platform: platform,
+                coverURL: coverURL
+            )
+        ) {
+            Image(systemName: "stop.fill")
+                .font(.body.weight(.bold))
+                .foregroundStyle(.white)
+                .frame(width: size, height: size)
+                .background(Circle().fill(GameNetLiveActivityStyle.purple))
+        }
+        .buttonStyle(.plain)
     }
 }
