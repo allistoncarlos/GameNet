@@ -14,18 +14,18 @@ import Foundation
 enum GameplayLiveActivityManager {
 
     /// Sincroniza a Live Activity com a lista de jogos em andamento.
-    /// - Se houver sessão ativa (`isStarted`), inicia/atualiza a activity desse jogo.
-    /// - Se não houver nenhuma ativa, encerra todas as activities de gameplay.
+    /// Só exibe activity se o jogo da sessão mais recente ainda estiver ativo.
     static func sync(with games: [WidgetSharedPlayingGame]) async {
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
 
-        if let active = games.first(where: \.isStarted),
-           let sessionStart = active.latestStart {
+        if let preferred = WidgetSharedPlayingGame.preferredForWidget(from: games),
+           preferred.isStarted,
+           let sessionStart = preferred.latestStart {
             await startOrUpdate(
-                userGameId: active.id,
-                gameName: active.name,
-                platform: active.platform,
-                coverURL: active.coverURL,
+                userGameId: preferred.id,
+                gameName: preferred.name,
+                platform: preferred.platform,
+                coverURL: preferred.coverURL,
                 sessionStart: sessionStart
             )
         } else {
