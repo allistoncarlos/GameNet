@@ -60,6 +60,17 @@ struct PlayingGamesLibraryCarousel: View {
         game.id ?? game.name
     }
 
+    /// Item em foco. Enquanto o `scrollPosition` não resolve a seleção inicial
+    /// (fica `nil`), o primeiro item conta como focado — senão nenhum card
+    /// mostraria os controles antes da primeira rolagem.
+    private var focusedGameId: String? {
+        if let selectedGameId {
+            return selectedGameId
+        }
+
+        return games.first.map { itemId(for: $0) }
+    }
+
     private func syncSelection() {
         guard !games.isEmpty else {
             selectedGameId = nil
@@ -85,6 +96,17 @@ struct PlayingGamesLibraryCarousel: View {
         return itemId(for: game) == highlightedGameId
     }
 
+    /// Início absoluto da sessão aberta do jogo destacado, para o cronômetro.
+    private func nowPlayingStart(for game: PlayingGame) -> Date? {
+        guard isHighlighted(game),
+              let session = game.latestGameplaySession,
+              session.finish == nil else {
+            return nil
+        }
+
+        return session.start.undoingTimeZoneDateShift()
+    }
+
     private func sessionCaption(for game: PlayingGame, isStarted: Bool) -> String {
         if isStarted {
             return "Em sessão"
@@ -105,8 +127,8 @@ struct PlayingGamesLibraryCarousel: View {
         return false
     }
 
-    private func showsPlayButton(isFocused: Bool) -> Bool {
-        !focusesOneCover || isFocused
+    private func showsPlayButton(for game: PlayingGame, isFocused: Bool) -> Bool {
+        !focusesOneCover || isFocused || isHighlighted(game)
     }
 }
 
@@ -142,7 +164,7 @@ private extension PlayingGamesLibraryCarousel {
             libraryScroll {
                 ForEach(games, id: \.id) { game in
                     let id = itemId(for: game)
-                    let isFocused = id == selectedGameId
+                    let isFocused = id == focusedGameId
 
                     PlayingLibraryItem(playingGame: game, onRefresh: onRefresh) { viewModel, onRefresh in
                         vitrinePoster(
@@ -205,7 +227,7 @@ private extension PlayingGamesLibraryCarousel {
                 }
             }
 
-            if showsPlayButton(isFocused: isFocused) {
+            if showsPlayButton(for: game, isFocused: isFocused) {
                 PlayingGameSessionControls(
                     viewModel: viewModel,
                     onRefresh: onRefresh,
@@ -246,24 +268,29 @@ private extension PlayingGamesLibraryCarousel {
                     .lineLimit(2)
                     .minimumScaleFactor(0.85)
 
-                Text(sessionCaption(for: game, isStarted: viewModel.isStarted))
-                    .font(.dashboardGameSubtitle)
-                    .foregroundStyle(.white.opacity(0.85))
-                    .lineLimit(1)
+                if viewModel.isStarted, let sessionStart = nowPlayingStart(for: game) {
+                    NowPlayingSessionTimer(start: sessionStart, font: .dashboardGameSubtitle)
+                        .foregroundStyle(.white.opacity(0.95))
+                } else {
+                    Text(sessionCaption(for: game, isStarted: viewModel.isStarted))
+                        .font(.dashboardGameSubtitle)
+                        .foregroundStyle(.white.opacity(0.85))
+                        .lineLimit(1)
+                }
             }
             .padding(.leading, isLandscape ? 10 : 12)
             .padding(.trailing, isLandscape ? 44 : 56)
             .padding(.bottom, isLandscape ? 10 : 14)
         }
         .overlay(alignment: .topLeading) {
-            if isHighlighted(game) {
+            if isHighlighted(game), viewModel.isStarted {
                 nowPlayingBadge
                     .padding(.leading, isLandscape ? 10 : 12)
                     .padding(.top, isLandscape ? 10 : 12)
             }
         }
         .overlay {
-            if isHighlighted(game) {
+            if isHighlighted(game), viewModel.isStarted {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .strokeBorder(Color.main, lineWidth: 2)
                     .allowsHitTesting(false)

@@ -131,10 +131,14 @@ class DashboardViewModel: ObservableObject {
     // MARK: Private
 
     private func updateNowPlayingHighlight() {
-        nowPlayingHighlight = NowPlayingHighlight.make(
+        let highlight = NowPlayingHighlight.make(
             gameplaySessionsByYear: gameplaySessions ?? [:],
             playingGames: dashboard?.playingGames
         )
+
+        nowPlayingHighlight = highlight
+        // As demais abas leem o destaque daqui — o Dashboard varre todos os anos.
+        NowPlayingCenter.shared.update(highlight)
     }
 
     @Injected(\.dashboardRepository) private var repository

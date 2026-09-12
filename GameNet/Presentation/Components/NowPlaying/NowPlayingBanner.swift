@@ -2,7 +2,7 @@
 //  NowPlayingBanner.swift
 //  GameNet
 //
-//  Destaque em faixa compacta do jogo com sessão em andamento.
+//  Faixa compacta do jogo com sessão em andamento.
 //
 
 import SwiftUI
@@ -22,7 +22,12 @@ struct NowPlayingBanner: View {
 
     private func banner(viewModel: GameCoverViewModel, onRefresh: @escaping () async -> Void) -> some View {
         HStack(spacing: 12) {
-            cover
+            PlayingGameCoverArtwork(
+                coverURL: highlight.coverURL,
+                cornerRadius: 8,
+                contentMode: .fill
+            )
+            .frame(width: 42)
 
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 6) {
@@ -57,27 +62,6 @@ struct NowPlayingBanner: View {
             .tinted(Color.primaryCardBackground),
             in: .rect(cornerRadius: 18)
         )
-        .dashboardOuterPadding()
-    }
-
-    @ViewBuilder
-    private var cover: some View {
-        if highlight.playingGame.id != nil {
-            NavigationLink(value: highlight.playingGame) {
-                coverArtwork
-            }
-            .buttonStyle(.plain)
-        } else {
-            coverArtwork
-        }
-    }
-
-    private var coverArtwork: some View {
-        PlayingGameCoverArtwork(
-            coverURL: highlight.coverURL,
-            cornerRadius: 8,
-            contentMode: .fill
-        )
-        .frame(width: 42)
+        .shadow(color: .black.opacity(0.22), radius: 10, y: 4)
     }
 }

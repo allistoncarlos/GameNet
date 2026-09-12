@@ -79,14 +79,17 @@ struct HomeView: View {
                 selectedUserGameId: .constant(nil),
                 isPresented: .constant(false)
             )
+            .nowPlayingBanner()
             .tag(HomeSection.games)
             .tabItem { Label("Games", systemImage: "gamecontroller") }
 
             platforms
+                .nowPlayingBanner()
                 .tag(HomeSection.platforms)
                 .tabItem { Label("Plataformas", systemImage: "laptopcomputer") }
 
             ListsView(viewModel: listsViewModel)
+                .nowPlayingBanner()
                 .tag(HomeSection.lists)
                 .tabItem { Label("Listas", systemImage: "list.bullet.rectangle") }
         }
@@ -105,16 +108,19 @@ struct HomeView: View {
                 selectedUserGameId: .constant(nil),
                 isPresented: .constant(false)
             )
+            .nowPlayingBanner()
             .tabItem {
                 Label("Games", systemImage: "gamecontroller")
             }
 
             platforms
+                .nowPlayingBanner()
                 .tabItem {
                     Label("Plataformas", systemImage: "laptopcomputer")
                 }
 
             ListsView(viewModel: listsViewModel)
+                .nowPlayingBanner()
                 .tabItem {
                     Label("Listas", systemImage: "list.bullet.rectangle")
                 }
