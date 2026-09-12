@@ -24,6 +24,8 @@ struct PlayingGameSessionControls: View {
     var onRefresh: () async -> Void = {}
     var buttonSize: CGFloat = 40
     var tint: Color = .main
+    /// Quando informado, adiciona "Compartilhar Story" ao menu de contexto.
+    var onShareStory: (() -> Void)? = nil
 
     @State private var activeAction: GameCoverAction?
     @State private var buttonImage = "play.fill"
@@ -40,6 +42,12 @@ struct PlayingGameSessionControls: View {
         .gameNetGlassProminentButtonStyle(tint: tint.opacity(0.5))
         .animation(.gameNetSmooth, value: tint)
         .contextMenu {
+            if let onShareStory {
+                Button(action: onShareStory) {
+                    Label("Compartilhar Story", systemImage: "square.and.arrow.up")
+                }
+            }
+
             Button {
                 activeAction = .finishGame
             } label: {

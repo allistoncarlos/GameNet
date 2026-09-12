@@ -16,9 +16,12 @@ struct NowPlayingBanner: View {
             banner(viewModel: viewModel, onRefresh: refresh)
         }
         .accessibilityIdentifier("now-playing-banner")
+        .gameStoryShareSheet($storyContent)
     }
 
     // MARK: Private
+
+    @State private var storyContent: GameStoryContent?
 
     private func banner(viewModel: GameCoverViewModel, onRefresh: @escaping () async -> Void) -> some View {
         HStack(spacing: 12) {
@@ -48,11 +51,22 @@ struct NowPlayingBanner: View {
 
             NowPlayingSessionTimer(start: highlight.absoluteStart, font: .dashboardGameSubtitle)
 
+            Button {
+                storyContent = GameStoryContent(highlight: highlight)
+            } label: {
+                ShareStoryLabel(size: 34)
+            }
+            .gameNetCircleButtonBorder()
+            .gameNetGlassProminentButtonStyle(tint: Color.white.opacity(0.18))
+            .accessibilityLabel("Compartilhar story")
+            .accessibilityIdentifier("now-playing-share-story")
+
             PlayingGameSessionControls(
                 viewModel: viewModel,
                 onRefresh: onRefresh,
                 buttonSize: 34,
-                tint: .main
+                tint: .main,
+                onShareStory: { storyContent = GameStoryContent(highlight: highlight) }
             )
         }
         .foregroundStyle(.white)

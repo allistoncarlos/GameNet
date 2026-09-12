@@ -17,6 +17,7 @@ struct PlayingGamesLibraryCarousel: View {
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @State private var selectedGameId: String?
     @State private var cardWidth = PlatformScreen.width
+    @State private var storyContent: GameStoryContent?
 
     private let cardInset: CGFloat = 16
 
@@ -54,6 +55,7 @@ struct PlayingGamesLibraryCarousel: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("playing-library-vitrine")
+        .gameStoryShareSheet($storyContent)
     }
 
     private func itemId(for game: PlayingGame) -> String {
@@ -232,12 +234,36 @@ private extension PlayingGamesLibraryCarousel {
                     viewModel: viewModel,
                     onRefresh: onRefresh,
                     buttonSize: playButtonSize,
-                    tint: .main
+                    tint: .main,
+                    onShareStory: { shareStory(for: viewModel.playingGame) }
                 )
                 .padding(.trailing, isLandscape ? 8 : 10)
                 .padding(.bottom, isLandscape ? 8 : 10)
             }
         }
+        .overlay(alignment: .topTrailing) {
+            if isFocused {
+                shareStoryButton(for: viewModel.playingGame)
+                    .padding(.trailing, isLandscape ? 8 : 10)
+                    .padding(.top, isLandscape ? 8 : 10)
+            }
+        }
+    }
+
+    func shareStoryButton(for game: PlayingGame) -> some View {
+        Button {
+            shareStory(for: game)
+        } label: {
+            ShareStoryLabel(size: playButtonSize * 0.8)
+        }
+        .gameNetCircleButtonBorder()
+        .gameNetGlassProminentButtonStyle(tint: Color.black.opacity(0.35))
+        .accessibilityLabel("Compartilhar story")
+        .accessibilityIdentifier("playing-library-share-story")
+    }
+
+    func shareStory(for game: PlayingGame) {
+        storyContent = GameStoryContent(playingGame: game)
     }
 
     func vitrineArtwork(

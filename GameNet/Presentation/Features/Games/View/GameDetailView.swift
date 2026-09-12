@@ -49,6 +49,7 @@ struct GameDetailView: View {
     @State var confirmText = "iniciar"
     @State private var activeGameplayAction: GameDetailGameplayAction?
     @State private var macContextMenuSession: GameplaySession?
+    @State private var storyContent: GameStoryContent?
 
     var body: some View {
         ZStack {
@@ -102,6 +103,7 @@ struct GameDetailView: View {
             self.buttonImage = newValue ? "stop.fill" : "play.fill"
             self.confirmText = newValue ? "finalizar" : "iniciar"
         }
+        .gameStoryShareSheet($storyContent)
         .task {
             async let gameData: Void = viewModel.fetchData()
             async let funRating: Void = viewModel.fetchFunRating()
@@ -233,27 +235,56 @@ struct GameDetailView: View {
             }
 
             if viewModel.game != nil {
-                Button {
-                    showingConfirmation = true
-                } label: {
-                    Image(systemName: buttonImage)
-                        .frame(width: 40, height: 40)
+                HStack(spacing: 8) {
+                    shareStoryButton
+
+                    Button {
+                        showingConfirmation = true
+                    } label: {
+                        Image(systemName: buttonImage)
+                            .frame(width: 40, height: 40)
+                    }
+                    .gameNetCircleButtonBorder()
+                    .gameNetGlassProminentButtonStyle(tint: coverAccentColor.opacity(0.5))
+                    .animation(.gameNetSmooth, value: coverAccentColor)
+                    .confirmationDialog("", isPresented: $showingConfirmation) {
+                        Button("Confirmar") {
+                            Task {
+                                await viewModel.save()
+                            }
+                        }
+                    } message: {
+                        Text("Deseja \(confirmText) o jogo \(displayName)?")
+                    }
                 }
                 .offset(x: -5, y: -5)
-                .gameNetCircleButtonBorder()
-                .gameNetGlassProminentButtonStyle(tint: coverAccentColor.opacity(0.5))
-                .animation(.gameNetSmooth, value: coverAccentColor)
-                .confirmationDialog("", isPresented: $showingConfirmation) {
-                    Button("Confirmar") {
-                        Task {
-                            await viewModel.save()
-                        }
-                    }
-                } message: {
-                    Text("Deseja \(confirmText) o jogo \(displayName)?")
-                }
             }
         }
+    }
+
+    /// Story do jogo: vira "jogando agora" quando existe sessão aberta.
+    private var detailStoryContent: GameStoryContent {
+        let openSession = viewModel.sortedGameplaySessions.first(where: { $0.finish == nil })
+
+        return GameStoryContent(
+            gameName: displayName,
+            platform: displayPlatform,
+            coverURL: displayCoverURL,
+            sessionStart: openSession?.start.undoingTimeZoneDateShift(),
+            totalGameplayTime: viewModel.gameplays?.totalGameplayTime
+        )
+    }
+
+    private var shareStoryButton: some View {
+        Button {
+            storyContent = detailStoryContent
+        } label: {
+            ShareStoryLabel(size: 40)
+        }
+        .gameNetCircleButtonBorder()
+        .gameNetGlassProminentButtonStyle(tint: Color.black.opacity(0.35))
+        .accessibilityLabel("Compartilhar story")
+        .accessibilityIdentifier("game-detail-share-story")
     }
 
     private var coverImageSkeleton: some View {
