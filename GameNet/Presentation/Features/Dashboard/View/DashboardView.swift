@@ -18,6 +18,8 @@ struct DashboardView: View {
     @ObservedObject var viewModel: DashboardViewModel
     @State var isLoading = false
     @State private var availableWidth = PlatformScreen.width
+    @AppStorage(NowPlayingHighlightStyle.storageKey)
+    private var nowPlayingStyleRawValue = NowPlayingHighlightStyle.hero.rawValue
 
     var body: some View {
         NavigationStack(path: $presentedViews) {
@@ -166,6 +168,10 @@ struct DashboardView: View {
     @ViewBuilder
     private var compactDashboardContent: some View {
         VStack(spacing: -20) {
+            nowPlayingStyleDebugPicker
+
+            nowPlayingHighlightSection
+
             playingLibraryCards
 
             if viewModel.gameplaySessions != nil {
@@ -207,6 +213,10 @@ struct DashboardView: View {
         )
 
         VStack(spacing: 16) {
+            nowPlayingStyleDebugPicker
+
+            nowPlayingHighlightSection
+
             playingLibraryCards
 
             HStack(alignment: .top, spacing: 16) {
@@ -252,6 +262,35 @@ struct DashboardView: View {
         usesCompactLayout ? 300 : 380
     }
 
+    private var nowPlayingStyle: NowPlayingHighlightStyle {
+        NowPlayingHighlightStyle(rawValue: nowPlayingStyleRawValue) ?? .hero
+    }
+
+    /// Jogos do carrossel. No estilo `.carousel`, o jogo em sessão entra na frente
+    /// mesmo quando não está em `playingGames` (sessão sem Gameplay aberto).
+    private var carouselGames: [PlayingGame] {
+        var games = orderedPlayingGames
+
+        guard nowPlayingStyle == .carousel,
+              let highlightedGame = viewModel.nowPlayingHighlight?.playingGame else {
+            return games
+        }
+
+        games.removeAll { $0.id == highlightedGame.id }
+        games.insert(highlightedGame, at: 0)
+
+        return games
+    }
+
+    private var carouselHighlightedGameId: String? {
+        guard nowPlayingStyle == .carousel,
+              let highlightedGame = viewModel.nowPlayingHighlight?.playingGame else {
+            return nil
+        }
+
+        return highlightedGame.id ?? highlightedGame.name
+    }
+
     private var orderedPlayingGames: [PlayingGame] {
         guard let playingGames = viewModel.dashboard?.playingGames else { return [] }
 
@@ -280,10 +319,11 @@ extension DashboardView {
 extension DashboardView {
     @ViewBuilder
     var playingLibraryCards: some View {
-        if viewModel.dashboard?.playingGames != nil {
+        if viewModel.dashboard?.playingGames != nil || carouselHighlightedGameId != nil {
             PlayingGamesLibraryCarousel(
-                games: orderedPlayingGames,
+                games: carouselGames,
                 compact: usesCompactLayout,
+                highlightedGameId: carouselHighlightedGameId,
                 onRefresh: {
                     await viewModel.fetchData()
                 }
@@ -292,6 +332,49 @@ extension DashboardView {
             .padding(.bottom, 8)
             .padding(.top, 0)
         }
+    }
+}
+
+// MARK: - Jogando agora
+
+extension DashboardView {
+    @ViewBuilder
+    var nowPlayingHighlightSection: some View {
+        if let highlight = viewModel.nowPlayingHighlight {
+            Group {
+                switch nowPlayingStyle {
+                case .hero:
+                    NowPlayingHeroCard(
+                        highlight: highlight,
+                        compact: usesCompactLayout,
+                        onRefresh: {
+                            await viewModel.fetchData()
+                        }
+                    )
+                case .banner:
+                    NowPlayingBanner(
+                        highlight: highlight,
+                        onRefresh: {
+                            await viewModel.fetchData()
+                        }
+                    )
+                case .carousel:
+                    EmptyView()
+                }
+            }
+            // Compensa o `spacing: -20` do empilhamento compacto.
+            .padding(.bottom, usesCompactLayout ? 20 : 0)
+        }
+    }
+
+    @ViewBuilder
+    var nowPlayingStyleDebugPicker: some View {
+        #if DEBUG && (os(iOS) || os(macOS))
+        if viewModel.nowPlayingHighlight != nil {
+            NowPlayingStylePicker(rawValue: $nowPlayingStyleRawValue)
+            .padding(.bottom, usesCompactLayout ? 20 : 0)
+        }
+        #endif
     }
 }
 

@@ -54,6 +54,7 @@ class DashboardViewModel: ObservableObject {
                     self?.dashboard = dashboard
                     self?.gameplaySessions = [:]
                     self?.annualGameplayProgress = []
+                    self?.nowPlayingHighlight = nil
 
                     if let playingGames = dashboard.playingGames {
                         WidgetSharedStore.savePlayingGames(from: playingGames)
@@ -68,6 +69,7 @@ class DashboardViewModel: ObservableObject {
                     self?.annualGameplayProgress = Self.makeAnnualGameplayProgress(
                         gameplaySessionsByYear: self?.gameplaySessions ?? [:]
                     )
+                    self?.updateNowPlayingHighlight()
                 default:
                     break
                 }
@@ -79,6 +81,8 @@ class DashboardViewModel: ObservableObject {
     @Published var dashboard: Dashboard? = nil
     @Published var gameplaySessions: [Int: GameplaySessions]? = nil
     @Published var annualGameplayProgress: [AnnualGameplayProgressSeries] = []
+    /// Jogo com sessão de gameplay aberta (pode não estar em `dashboard.playingGames`).
+    @Published var nowPlayingHighlight: NowPlayingHighlight? = nil
     @Published var state: DashboardState = .idle
 
     var appVersion: String {
@@ -125,6 +129,13 @@ class DashboardViewModel: ObservableObject {
     }
 
     // MARK: Private
+
+    private func updateNowPlayingHighlight() {
+        nowPlayingHighlight = NowPlayingHighlight.make(
+            gameplaySessionsByYear: gameplaySessions ?? [:],
+            playingGames: dashboard?.playingGames
+        )
+    }
 
     @Injected(\.dashboardRepository) private var repository
     @Injected(\.gameplaySessionRepository) private var gameplaySessionRepository

@@ -10,6 +10,8 @@ import SwiftUI
 struct PlayingGamesLibraryCarousel: View {
     let games: [PlayingGame]
     var compact: Bool = true
+    /// Identificador do jogo com sessão em andamento, destacado com selo e seleção inicial.
+    var highlightedGameId: String? = nil
     var onRefresh: () async -> Void = {}
 
     @Environment(\.verticalSizeClass) private var verticalSizeClass
@@ -68,7 +70,19 @@ struct PlayingGamesLibraryCarousel: View {
             return
         }
 
+        if let highlightedGameId,
+           let highlighted = games.first(where: { itemId(for: $0) == highlightedGameId }) {
+            selectedGameId = itemId(for: highlighted)
+            return
+        }
+
         selectedGameId = itemId(for: games[0])
+    }
+
+    private func isHighlighted(_ game: PlayingGame) -> Bool {
+        guard let highlightedGameId else { return false }
+
+        return itemId(for: game) == highlightedGameId
     }
 
     private func sessionCaption(for game: PlayingGame, isStarted: Bool) -> String {
@@ -241,11 +255,39 @@ private extension PlayingGamesLibraryCarousel {
             .padding(.trailing, isLandscape ? 44 : 56)
             .padding(.bottom, isLandscape ? 10 : 14)
         }
+        .overlay(alignment: .topLeading) {
+            if isHighlighted(game) {
+                nowPlayingBadge
+                    .padding(.leading, isLandscape ? 10 : 12)
+                    .padding(.top, isLandscape ? 10 : 12)
+            }
+        }
+        .overlay {
+            if isHighlighted(game) {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(Color.main, lineWidth: 2)
+                    .allowsHitTesting(false)
+            }
+        }
         .shadow(
             color: .black.opacity(isFocused ? 0.28 : 0.1),
             radius: isFocused ? 12 : 4,
             y: isFocused ? 6 : 2
         )
+    }
+
+    var nowPlayingBadge: some View {
+        HStack(spacing: 5) {
+            NowPlayingPulseDot(size: 6, color: .white)
+
+            Text("Jogando agora")
+                .font(.dashboardGameSubtitle)
+                .foregroundStyle(.white)
+                .lineLimit(1)
+        }
+        .padding(.vertical, 4)
+        .padding(.horizontal, 8)
+        .background(Capsule().fill(Color.main.opacity(0.85)))
     }
 
     @ViewBuilder
