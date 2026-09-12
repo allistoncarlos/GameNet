@@ -364,11 +364,10 @@ public enum GameNetAPI {
              .game,
              .gameplays,
              .gameplaysByYear,
-             .finishUserGameGameplay,
              .dropUserGameGameplay,
              .finishGame,
              .dropGameplay,
-            
+
              .serverDriven:
             return request
         }

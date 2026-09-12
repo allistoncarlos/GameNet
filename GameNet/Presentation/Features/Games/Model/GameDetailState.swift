@@ -27,7 +27,7 @@ extension GameDetailPreview {
 
     init(listItem: ListItem) {
         coverURL = listItem.cover ?? ""
-        name = listItem.name ?? ""
+        name = listItem.name
         platform = listItem.platform ?? ""
     }
 
@@ -38,8 +38,8 @@ extension GameDetailPreview {
     }
 
     init(gameplaySession: GameplaySession) {
-        coverURL = gameplaySession.gameCover ?? ""
-        name = gameplaySession.gameName ?? ""
+        coverURL = gameplaySession.gameCover
+        name = gameplaySession.gameName
         platform = ""
     }
 }

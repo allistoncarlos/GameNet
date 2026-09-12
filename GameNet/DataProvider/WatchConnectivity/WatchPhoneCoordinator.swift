@@ -141,7 +141,7 @@ final class WatchPhoneCoordinator {
         return WatchConnectivityPayloadCodec.reply(
             WatchMessageKey.gameplayUpdated,
             value: payload
-        ) ?? [WatchMessageKey.error: "encode_failed"]
+        )
     }
 
     private func loadPlayingGames() async -> [WatchPlayingGame] {
