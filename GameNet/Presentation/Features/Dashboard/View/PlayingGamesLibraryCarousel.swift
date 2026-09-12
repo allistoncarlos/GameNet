@@ -129,8 +129,12 @@ struct PlayingGamesLibraryCarousel: View {
         return false
     }
 
-    private func showsPlayButton(for game: PlayingGame, isFocused: Bool) -> Bool {
-        !focusesOneCover || isFocused || isHighlighted(game)
+    /// Controles do pôster (iniciar/parar e compartilhar story).
+    ///
+    /// Ficam sempre visíveis no jogo em sessão — `isStarted` cobre a sessão
+    /// recém-iniciada no próprio card, antes do dashboard recalcular o destaque.
+    private func showsControls(for game: PlayingGame, isFocused: Bool, isStarted: Bool) -> Bool {
+        !focusesOneCover || isFocused || isStarted || isHighlighted(game)
     }
 }
 
@@ -229,7 +233,7 @@ private extension PlayingGamesLibraryCarousel {
                 }
             }
 
-            if showsPlayButton(for: game, isFocused: isFocused) {
+            if showsControls(for: game, isFocused: isFocused, isStarted: viewModel.isStarted) {
                 PlayingGameSessionControls(
                     viewModel: viewModel,
                     onRefresh: onRefresh,
@@ -242,7 +246,7 @@ private extension PlayingGamesLibraryCarousel {
             }
         }
         .overlay(alignment: .topTrailing) {
-            if isFocused {
+            if showsControls(for: game, isFocused: isFocused, isStarted: viewModel.isStarted) {
                 shareStoryButton(for: viewModel.playingGame)
                     .padding(.trailing, isLandscape ? 8 : 10)
                     .padding(.top, isLandscape ? 8 : 10)
