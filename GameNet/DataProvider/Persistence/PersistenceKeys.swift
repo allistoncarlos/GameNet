@@ -5,4 +5,6 @@ enum PersistenceKeys: String, CustomStringConvertible {
     case accessToken = "access_token"
     case refreshToken = "refresh_token"
     case expiresIn = "expires_in"
+    case annualChartVisibleDomainLength = "annual_chart_visible_domain_length"
+    case annualChartHiddenYears = "annual_chart_hidden_years"
 }

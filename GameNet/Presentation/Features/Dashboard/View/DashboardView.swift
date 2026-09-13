@@ -249,7 +249,7 @@ struct DashboardView: View {
     }
 
     private var annualChartHeight: CGFloat {
-        usesCompactLayout ? 300 : 380
+        usesCompactLayout ? 340 : 420
     }
 
     /// Jogos do carrossel: o jogo em sessão entra na frente mesmo quando não

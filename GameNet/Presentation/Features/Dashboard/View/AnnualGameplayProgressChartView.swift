@@ -6,6 +6,7 @@
 //
 
 import Charts
+import Factory
 import SwiftUI
 
 // MARK: - AnnualGameplayProgressChartView
@@ -15,12 +16,15 @@ struct AnnualGameplayProgressChartView: View {
     // MARK: Internal
 
     let series: [AnnualGameplayProgressSeries]
-    var chartHeight: CGFloat = 300
+    var chartHeight: CGFloat = 340
     @State var scrollPosition = 1
     @State private var selectedPoint: AnnualGameplayProgressPoint?
     @State private var chartProxy: ChartProxy?
     @State private var visibleDomainLength = AnnualGameplayProgressChartView.defaultVisibleDomainLength
     @State private var visibleDomainLengthAtGestureStart: Int?
+    @State private var hiddenYears: Set<Int> = []
+    @State private var scrollableYDomain: ClosedRange<Double> = 0 ... 100
+    @Injected(\.persistence) private var persistence: PersistenceManagerProtocol
 
     var body: some View {
         ZStack {
@@ -45,11 +49,18 @@ struct AnnualGameplayProgressChartView: View {
                 }
                 .frame(height: chartHeight)
 
+                Text("Toque em um ano na legenda para ocultar/mostrar")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+
                 legend
             }
             .padding()
         }
         .dashboardOuterPadding()
+        .onAppear {
+            restorePersistedPreferences()
+        }
     }
 
     private var legend: some View {
@@ -59,22 +70,40 @@ struct AnnualGameplayProgressChartView: View {
             spacing: 8
         ) {
             ForEach(legendEntries, id: \.year) { entry in
-                HStack(spacing: 8) {
-                    Circle()
-                        .fill(entry.color)
-                        .frame(width: 10, height: 10)
+                legendRow(entry)
+            }
+        }
+    }
 
-                    Text(String(entry.year))
-                        .font(.caption)
+    private func legendRow(_ entry: (year: Int, color: Color, totalMinutes: Double)) -> some View {
+        HStack(spacing: 8) {
+            Circle()
+                .fill(entry.color)
+                .frame(width: 10, height: 10)
+
+            Text(String(entry.year))
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .strikethrough(hiddenYears.contains(entry.year))
+
+            Spacer(minLength: 4)
+
+            VStack(alignment: .trailing, spacing: 0) {
+                Text(formattedDuration(entry.totalMinutes))
+                    .font(.caption)
+                    .fontWeight(.semibold)
+
+                if let delta = deltaLabel(for: entry.year, totalMinutes: entry.totalMinutes) {
+                    Text(delta)
+                        .font(.caption2)
                         .foregroundStyle(.secondary)
-
-                    Spacer(minLength: 4)
-
-                    Text(formattedDuration(entry.totalMinutes))
-                        .font(.caption)
-                        .fontWeight(.semibold)
                 }
             }
+        }
+        .opacity(hiddenYears.contains(entry.year) ? 0.35 : 1)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            toggleLegendEntry(for: entry.year)
         }
     }
 
@@ -87,8 +116,8 @@ struct AnnualGameplayProgressChartView: View {
         }
     }
 
-    private var baseGameplayChart: some View {
-        Chart(gameplayPoints) { point in
+    private var chartMarks: some View {
+        Chart(visiblePoints) { point in
             LineMark(
                 x: .value("Dia", point.day),
                 y: .value("Minutos", point.value)
@@ -117,8 +146,8 @@ struct AnnualGameplayProgressChartView: View {
             AxisMarks(position: .leading) { value in
                 AxisGridLine()
                 AxisValueLabel {
-                    if let minutes = value.as(Double.self) {
-                        Text("\(formattedMinutes(minutes)) min")
+                    if let raw = value.as(Double.self) {
+                        Text("\(formattedMinutes(raw)) min")
                     }
                 }
             }
@@ -126,8 +155,12 @@ struct AnnualGameplayProgressChartView: View {
         .chartLegend(.hidden)
     }
 
+    private func scaledChart(domain: ClosedRange<Double>) -> some View {
+        chartMarks.chartYScale(domain: domain)
+    }
+
     private var staticGameplayChart: some View {
-        baseGameplayChart
+        scaledChart(domain: paddedDomain(for: visiblePoints))
             .overlay(alignment: .topLeading) {
                 selectedPointHint
             }
@@ -135,7 +168,10 @@ struct AnnualGameplayProgressChartView: View {
 
     @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
     private func scrollableGameplayChart(in geometryProxy: GeometryProxy) -> some View {
-        baseGameplayChart
+        // O domínio do eixo Y fica num @State separado (scrollableYDomain), recalculado com
+        // debounce em vez de a cada frame do scroll/pinch — recalcular (e o relayout que o
+        // Swift Charts faz) a cada frame é o que deixava o gesto lento.
+        scaledChart(domain: scrollableYDomain)
             .chartScrollableAxes(.horizontal)
             .chartXVisibleDomain(length: visibleDomainLength)
             .chartScrollPosition(x: $scrollPosition)
@@ -161,6 +197,11 @@ struct AnnualGameplayProgressChartView: View {
                     }
                     .onEnded { _ in
                         visibleDomainLengthAtGestureStart = nil
+                        persistence.persist(
+                            visibleDomainLength,
+                            key: .annualChartVisibleDomainLength,
+                            storageType: .userDefaults
+                        )
                     }
             )
             .simultaneousGesture(
@@ -173,11 +214,23 @@ struct AnnualGameplayProgressChartView: View {
             .overlay(alignment: .topLeading) {
                 selectedPointHint
             }
+            .task(id: domainRecalcKey) {
+                try? await Task.sleep(nanoseconds: 180_000_000)
+
+                guard !Task.isCancelled else {
+                    return
+                }
+
+                scrollableYDomain = paddedDomain(for: windowedPoints)
+            }
             .onAppear {
+                visibleDomainLength = loadedVisibleDomainLength
                 scrollPosition = initialScrollPosition
+                scrollableYDomain = paddedDomain(for: windowedPoints)
             }
             .onChangeCompat(of: maxVisibleDay) { _ in
                 scrollPosition = initialScrollPosition
+                scrollableYDomain = paddedDomain(for: windowedPoints)
             }
     }
 
@@ -194,24 +247,83 @@ struct AnnualGameplayProgressChartView: View {
 
     // MARK: Private
 
-    private var gameplayPoints: [AnnualGameplayProgressPoint] {
+    private static let defaultVisibleDomainLength = 15
+    private static let minVisibleDomainLength = 5
+
+    /// Todos os pontos de todos os anos, independente de estarem ocultos ou não.
+    /// Usado para o eixo X e limites de navegação, que não devem mudar ao ocultar um ano.
+    private var allPoints: [AnnualGameplayProgressPoint] {
         series
             .sorted(by: { $0.year < $1.year })
             .flatMap { $0.points }
     }
 
+    /// Pontos realmente desenhados no gráfico — respeita os anos ocultados pela legenda.
+    private var visiblePoints: [AnnualGameplayProgressPoint] {
+        allPoints.filter { !hiddenYears.contains($0.year) }
+    }
+
     private var legendEntries: [(year: Int, color: Color, totalMinutes: Double)] {
         series
             .sorted(by: { $0.year < $1.year })
-            .map { (year: $0.year, color: color(for: $0.year), totalMinutes: $0.totalMinutes) }
+            .map { (year: $0.year, color: paletteColor(for: $0.year), totalMinutes: $0.totalMinutes) }
+    }
+
+    private func toggleLegendEntry(for year: Int) {
+        if hiddenYears.contains(year) {
+            hiddenYears.remove(year)
+        } else {
+            hiddenYears.insert(year)
+        }
+
+        persistence.persist(hiddenYears, key: .annualChartHiddenYears, storageType: .userDefaults)
+    }
+
+    private func totalMinutes(forYear year: Int) -> Double? {
+        series.first(where: { $0.year == year })?.totalMinutes
+    }
+
+    private func paddedDomain(for points: [AnnualGameplayProgressPoint]) -> ClosedRange<Double> {
+        let values = points.map(\.value)
+
+        guard let minValue = values.min(), let maxValue = values.max() else {
+            return 0 ... 100
+        }
+
+        let range = max(maxValue - minValue, 0)
+        let padding = max(range * 0.12, maxValue * 0.03, 1)
+        let lowerBound = max(0, minValue - padding)
+        let upperBound = maxValue + padding
+
+        return lowerBound ... max(upperBound, lowerBound + 1)
+    }
+
+    /// Janela de dias atualmente visível na tela (considera o scroll horizontal e o zoom).
+    private var visibleDayWindow: ClosedRange<Int> {
+        let lower = max(1, min(scrollPosition, maxVisibleDay))
+        let upper = min(maxVisibleDay, max(lower, scrollPosition + visibleDomainLength - 1))
+        return lower ... upper
+    }
+
+    /// Pontos dentro da janela visível — usados só para calcular a escala do eixo Y,
+    /// pra não desperdiçar espaço vertical com o range do ano inteiro quando o usuário
+    /// deu scroll/zoom pra um trecho onde os valores acumulados ainda são baixos.
+    private var windowedPoints: [AnnualGameplayProgressPoint] {
+        visiblePoints.filter { visibleDayWindow.contains($0.day) }
+    }
+
+    /// Chave que resume tudo que afeta o domínio do eixo Y da variante com scroll — usada
+    /// só pra disparar o recálculo com debounce (ver scrollableGameplayChart).
+    private var domainRecalcKey: String {
+        "\(scrollPosition)|\(visibleDomainLength)|\(hiddenYears.sorted())"
     }
 
     private func dayAxisLabel(forDay day: Int) -> String? {
-        if let referenceDate = gameplayPoints.first(where: { $0.day == day })?.referenceDate {
+        if let referenceDate = allPoints.first(where: { $0.day == day })?.referenceDate {
             return referenceDate.toFormattedString(dateFormat: "dd/MM")
         }
 
-        guard let anchor = gameplayPoints.first,
+        guard let anchor = allPoints.first,
               let date = Calendar.current.date(
                   byAdding: .day,
                   value: day - anchor.day,
@@ -246,7 +358,7 @@ struct AnnualGameplayProgressChartView: View {
             return
         }
 
-        let candidates = gameplayPoints.filter { $0.day == day }
+        let candidates = visiblePoints.filter { $0.day == day }
 
         selectedPoint = candidates.min(by: {
             abs($0.value - yValue) < abs($1.value - yValue)
@@ -254,11 +366,8 @@ struct AnnualGameplayProgressChartView: View {
     }
 
     private var maxVisibleDay: Int {
-        gameplayPoints.map(\.day).max() ?? 1
+        allPoints.map(\.day).max() ?? 1
     }
-
-    private static let defaultVisibleDomainLength = 15
-    private static let minVisibleDomainLength = 5
 
     private var initialScrollPosition: Int {
         max(1, maxVisibleDay - (visibleDomainLength - 1))
@@ -267,6 +376,26 @@ struct AnnualGameplayProgressChartView: View {
     private func clampedVisibleDomainLength(_ length: Int) -> Int {
         let upperBound = max(Self.minVisibleDomainLength, maxVisibleDay)
         return min(max(length, Self.minVisibleDomainLength), upperBound)
+    }
+
+    /// Nível de zoom (dias visíveis) salvo pelo usuário na última vez que deu pinch no gráfico.
+    private var loadedVisibleDomainLength: Int {
+        let saved: Int? = persistence.retrieve(.annualChartVisibleDomainLength, storageType: .userDefaults)
+
+        guard let saved else {
+            return Self.defaultVisibleDomainLength
+        }
+
+        return clampedVisibleDomainLength(saved)
+    }
+
+    /// Restaura os anos ocultos salvos — chamado uma vez quando o card aparece. O zoom é
+    /// restaurado à parte, só na variante com scroll (iOS 17+), em loadedVisibleDomainLength.
+    /// A posição horizontal sempre volta pro dia atual (não é lembrada).
+    private func restorePersistedPreferences() {
+        if let savedHiddenYears: Set<Int> = persistence.retrieve(.annualChartHiddenYears, storageType: .userDefaults) {
+            hiddenYears = savedHiddenYears
+        }
     }
 
     private var title: String {
@@ -287,14 +416,14 @@ struct AnnualGameplayProgressChartView: View {
     }
 
     private var yearColors: [(String, Color)] {
-        let years = Set(gameplayPoints.map(\.year)).sorted()
+        let years = Set(visiblePoints.map(\.year)).sorted()
 
         return years.map { year in
-            (String(year), color(for: year))
+            (String(year), paletteColor(for: year))
         }
     }
 
-    private func color(for year: Int) -> Color {
+    private func paletteColor(for year: Int) -> Color {
         let palette: [Color] = [
             Color.orange,
             Color.yellow,
@@ -326,6 +455,44 @@ struct AnnualGameplayProgressChartView: View {
         }
 
         return "\(remainingMinutes)m"
+    }
+
+    /// Ano atual — a base de comparação pra saber se os outros anos estão à frente ou atrás.
+    private var baselineYear: Int {
+        series.map(\.year).max() ?? 0
+    }
+
+    private var baselineTotalMinutes: Double? {
+        totalMinutes(forYear: baselineYear)
+    }
+
+    /// "+1h3m" quando esse ano está atrás do ano atual (jogou menos até o mesmo dia do ano),
+    /// "-2h35m" quando está à frente. Não mostra nada pro próprio ano atual.
+    private func deltaLabel(for year: Int, totalMinutes: Double) -> String? {
+        guard year != baselineYear, let baseline = baselineTotalMinutes else {
+            return nil
+        }
+
+        return formattedSignedDuration(totalMinutes - baseline)
+    }
+
+    private func formattedSignedDuration(_ minutes: Double) -> String {
+        let rounded = Int(minutes.rounded())
+
+        if rounded == 0 {
+            return "0m"
+        }
+
+        let sign = rounded > 0 ? "+" : "-"
+        let absMinutes = abs(rounded)
+        let hours = absMinutes / 60
+        let remainingMinutes = absMinutes % 60
+
+        if hours > 0 {
+            return "\(sign)\(hours)h\(remainingMinutes)m"
+        }
+
+        return "\(sign)\(remainingMinutes)m"
     }
 }
 
