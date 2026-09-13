@@ -39,12 +39,6 @@ enum DashboardRouter {
     static func goBackToDashboard(navigationPath: Binding<NavigationPath>) {
         navigationPath.wrappedValue.removeLast(navigationPath.wrappedValue.count - 1)
     }
-    
-    #if (os(iOS) || os(macOS)) && DEBUG && canImport(WebKit)
-    static func makeFeatureToggle() -> some View {
-        return FeatureToggleView(viewModel: FeatureToggleViewModel(), overrideRemoteConfigs: FirebaseRemoteConfig.overrideRemoteConfigs)
-    }
-    #endif
 }
 
 // MARK: - GameplaySessionNavigation

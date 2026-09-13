@@ -17,16 +17,12 @@ enum LoginRouter {
         let gamesViewModel = GamesViewModel()
         let listsViewModel = ListsViewModel()
 
-        let serverDrivenPlatformsViewModel = ServerDrivenPlatformsViewModel()
-
         return HomeView(
             homeViewModel: homeViewModel,
             dashboardViewModel: dashboardViewModel,
             platformsViewModel: platformsViewModel,
             gamesViewModel: gamesViewModel,
-            listsViewModel: listsViewModel,
-            
-            serverDrivenPlatformsViewModel: serverDrivenPlatformsViewModel
+            listsViewModel: listsViewModel
         )
     }
 

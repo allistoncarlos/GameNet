@@ -8,20 +8,13 @@
 import Combine
 import Factory
 import SwiftUI
-import FirebaseCore
 #if os(iOS)
 import UIKit
 #endif
 
 @main
 struct GameNetApp: App {
-    @State private var isRemoteConfigLoaded = false
-
     init() {
-        if FirebaseApp.app() == nil {
-            FirebaseApp.configure()
-        }
-
 #if canImport(WatchConnectivity) && os(iOS)
         WatchConnectivityManager.shared.activateSession()
         NotificationCenter.default.addObserver(
@@ -49,33 +42,25 @@ struct GameNetApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if isRemoteConfigLoaded {
-                resultView()
-                    .onAppear {
+            resultView()
+                .onAppear {
 #if canImport(WatchConnectivity) && os(iOS)
-                        WatchConnectivityManager.shared.activateSession()
-                        Task { @MainActor in
-                            await WatchPhoneCoordinator.shared.pushPlayingGamesToWatch()
-                        }
+                    WatchConnectivityManager.shared.activateSession()
+                    Task { @MainActor in
+                        await WatchPhoneCoordinator.shared.pushPlayingGamesToWatch()
+                    }
 #endif
-                        WidgetSharedStore.syncFromKeychain()
-                        #if os(iOS)
-                        Task {
-                            await GameplayLiveActivityManager.syncFromStore()
-                        }
-                        GameNetShortcuts.updateAppShortcutParameters()
-                        #endif
+                    WidgetSharedStore.syncFromKeychain()
+                    #if os(iOS)
+                    Task {
+                        await GameplayLiveActivityManager.syncFromStore()
                     }
-                    #if os(macOS)
-                    .macOSWindowStyle()
+                    GameNetShortcuts.updateAppShortcutParameters()
                     #endif
-            } else {
-                ProgressView("Carregando...")
-                    .task {
-                        await FirebaseRemoteConfig.loadRemoteConfigValues()
-                        isRemoteConfigLoaded = true
-                    }
-            }
+                }
+                #if os(macOS)
+                .macOSWindowStyle()
+                #endif
         }
         #if os(macOS)
         .defaultSize(width: 1100, height: 720)

@@ -1,0 +1,51 @@
+{
+  "originHash" : "3c0147f3a08fa3bb37cdfbb70a8b2c24af09136285cc9c3444f2cf6ad959c98e",
+  "pins" : [
+    {
+      "identity" : "factory",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hmlongco/Factory",
+      "state" : {
+        "branch" : "main",
+        "revision" : "bcca76f9243ace59477c8d077d25a97795eab5c4"
+      }
+    },
+    {
+      "identity" : "ohhttpstubs",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AliSoftware/OHHTTPStubs.git",
+      "state" : {
+        "revision" : "12f19662426d0434d6c330c6974d53e2eb10ecd9",
+        "version" : "9.1.0"
+      }
+    },
+    {
+      "identity" : "swiftui-cached-async-image",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lorenzofiamingo/swiftui-cached-async-image",
+      "state" : {
+        "branch" : "main",
+        "revision" : "f94be38411297c71aa8df69c6875127e6d8d7a92"
+      }
+    },
+    {
+      "identity" : "swiftui-visual-effects",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/allistoncarlos/swiftui-visual-effects",
+      "state" : {
+        "branch" : "feature/tvOS",
+        "revision" : "40811ea11d46a9458c6f3aeb1a475472e7150878"
+      }
+    },
+    {
+      "identity" : "ttprogresshud",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/allistoncarlos/TTProgressHUD",
+      "state" : {
+        "branch" : "feature/tvOS",
+        "revision" : "9dd3a6e24f0ca107c7f26ef8f302ad82f900980c"
+      }
+    }
+  ],
+  "version" : 3
+}

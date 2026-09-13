@@ -22,11 +22,4 @@ extension Color {
     static let secondaryCardBackground = Color(CustomColor.secondaryCardBackground.rawValue)
     static let tertiaryCardBackground = Color(CustomColor.tertiaryCardBackground.rawValue)
 
-    static func from(name: String) -> Color {
-        if let customColor = CustomColor(rawValue: name) {
-                return Color(customColor.rawValue)
-            } else {
-                return .white
-            }
-        }
 }

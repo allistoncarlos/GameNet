@@ -15,7 +15,6 @@ extension Container {
     var gameRepository: Factory<GameRepositoryProtocol> { self { GameRepository() } }
     var listRepository: Factory<ListRepositoryProtocol> { self { ListRepository() } }
     var gameplaySessionRepository: Factory<GameplaySessionRepositoryProtocol> { self { GameplaySessionRepository() } }
-    var serverDrivenRepository: Factory<ServerDrivenRepositoryProtocol> { self { ServerDrivenRepository() } }
     var funRepository: Factory<FunRepositoryProtocol> { self { FunRepository() } }
     var theGamesDBRepository: Factory<TheGamesDBRepositoryProtocol> { self { TheGamesDBRepository() } }
 }

@@ -45,15 +45,13 @@ struct HomeView: View {
         dashboardViewModel: DashboardViewModel,
         platformsViewModel: PlatformsViewModel,
         gamesViewModel: GamesViewModel,
-        listsViewModel: ListsViewModel,
-        serverDrivenPlatformsViewModel: ServerDrivenPlatformsViewModel
+        listsViewModel: ListsViewModel
     ) {
         self.homeViewModel = homeViewModel
         self.dashboardViewModel = dashboardViewModel
         self.platformsViewModel = platformsViewModel
         self.gamesViewModel = gamesViewModel
         self.listsViewModel = listsViewModel
-        self.serverDrivenPlatformsViewModel = serverDrivenPlatformsViewModel
     }
 
     @ObservedObject var homeViewModel: HomeViewModel
@@ -61,7 +59,6 @@ struct HomeView: View {
     @ObservedObject var platformsViewModel: PlatformsViewModel
     @ObservedObject var gamesViewModel: GamesViewModel
     @ObservedObject var listsViewModel: ListsViewModel
-    @ObservedObject var serverDrivenPlatformsViewModel: ServerDrivenPlatformsViewModel
 
     #if os(macOS)
     @State private var selectedSection: HomeSection = .dashboard
@@ -130,9 +127,7 @@ struct HomeView: View {
         #endif
     }
 
-    @ViewBuilder private var platforms: some View {
-        FirebaseRemoteConfig.serverDrivenPlatforms ?
-            AnyView(ServerDrivenPlatformsView(viewModel: serverDrivenPlatformsViewModel)) :
-            AnyView(PlatformsView(viewModel: platformsViewModel))
+    private var platforms: some View {
+        PlatformsView(viewModel: platformsViewModel)
     }
 }

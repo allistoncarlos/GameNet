@@ -7,7 +7,6 @@
 
 import Factory
 import SwiftUI
-import StepperView
 
 // MARK: - DashboardView
 
@@ -22,24 +21,18 @@ struct DashboardView: View {
     var body: some View {
         NavigationStack(path: $presentedViews) {
             ScrollView {
-                if FirebaseRemoteConfig.serverDrivenDashboard {
-                    ServerDrivenDashboardView(viewModel: ServerDrivenDashboardViewModel())
-                } else {
-                    dashboardContent
-                }
+                dashboardContent
             }
             .dashboardScrollTopInset()
             .onWidthChange { newWidth in
                 availableWidth = newWidth
             }
             .refreshable {
-                if !FirebaseRemoteConfig.serverDrivenDashboard {
-                    // Roda em um Task desacoplado do ciclo de vida do `.refreshable`
-                    // para que desabilitar o ScrollView (isLoading) não cancele a
-                    // requisição (explicitlyCancelled). O `await .value` mantém o
-                    // indicador nativo visível até o carregamento terminar.
-                    await Task { await viewModel.fetchData() }.value
-                }
+                // Roda em um Task desacoplado do ciclo de vida do `.refreshable`
+                // para que desabilitar o ScrollView (isLoading) não cancele a
+                // requisição (explicitlyCancelled). O `await .value` mantém o
+                // indicador nativo visível até o carregamento terminar.
+                await Task { await viewModel.fetchData() }.value
             }
             .disabled(isLoading)
             .navigationView(title: "Dashboard")
@@ -89,22 +82,6 @@ struct DashboardView: View {
                 )
                 .gameDetailZoomTransition(gameId: gameplaySession.userGameId)
             }
-            .navigationDestination(for: String.self) { value in
-                #if DEBUG && canImport(WebKit)
-                if value == "" {
-                    viewModel.featureToggle()
-                }
-                #endif
-            }
-            .toolbar {
-                #if DEBUG && canImport(WebKit)
-                Button(action: {}) {
-                    SwiftUI.NavigationLink(value: String()) {
-                        Image(systemName: "gear")
-                    }
-                }
-                #endif
-            }
         }
         .gameCoverTransitionNamespace(gameCoverTransitionNamespace)
         .overlay(
@@ -118,9 +95,7 @@ struct DashboardView: View {
                 #if os(iOS)
                 await GameplayLiveActivityManager.syncFromStore()
                 #endif
-                if !FirebaseRemoteConfig.serverDrivenDashboard {
-                    await viewModel.fetchData()
-                }
+                await viewModel.fetchData()
             }
         }
         .onChangeCompat(of: scenePhase) { phase in
@@ -129,15 +104,11 @@ struct DashboardView: View {
                 #if os(iOS)
                 await GameplayLiveActivityManager.syncFromStore()
                 #endif
-                if !FirebaseRemoteConfig.serverDrivenDashboard {
-                    await viewModel.fetchData()
-                }
+                await viewModel.fetchData()
             }
         }
         .task {
-            if !FirebaseRemoteConfig.serverDrivenDashboard {
-                await viewModel.fetchData()
-            }
+            await viewModel.fetchData()
         }
     }
 
@@ -169,11 +140,7 @@ struct DashboardView: View {
             playingLibraryCards
 
             if viewModel.gameplaySessions != nil {
-                if !FirebaseRemoteConfig.stepperView {
-                    gameplaySessions
-                } else {
-                    gameplaySessionsStepperView
-                }
+                gameplaySessions
             }
 
             annualGameplayProgressCard
@@ -211,14 +178,8 @@ struct DashboardView: View {
 
             HStack(alignment: .top, spacing: 16) {
                 if viewModel.gameplaySessions != nil {
-                    Group {
-                        if !FirebaseRemoteConfig.stepperView {
-                            gameplaySessions
-                        } else {
-                            gameplaySessionsStepperView
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .top)
+                    gameplaySessions
+                        .frame(maxWidth: .infinity, alignment: .top)
                 }
 
                 if viewModel.dashboard?.totalGames != nil {
@@ -450,52 +411,6 @@ extension DashboardView {
 }
 
 extension DashboardView {
-    var finishedByYearCardStepperView: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.tertiaryCardBackground)
-
-            VStack {
-                VStack {
-                    Text("Finalizados por Ano")
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                        .font(.cardTitle)
-                        .padding([.top, .horizontal])
-                }
-
-                if let finishedGamesByYear = viewModel.dashboard?.finishedByYear {
-                    let steps = finishedGamesByYear.map { finishedGame in
-                        Text(String(finishedGame.year))
-                    }
-
-                    let indicationTypes = finishedGamesByYear.map { finishedGame in
-                        StepperIndicationType.custom(
-                            NumberedCircleView(text: finishedGame.total.toLeadingZerosString(decimalPlaces: 2), color: .main)
-                            // TODO: Testar pra ver se eu consigo colocar um Text normal aqui, do SwiftUI mesmo
-                        )
-                    }
-                    
-                    ScrollView(.horizontal) {
-                        StepperView()
-                            .addSteps(steps)
-                            .indicators(indicationTypes)
-                            .stepIndicatorMode(StepperMode.horizontal)
-                            .spacing(30)
-                            .lineOptions(
-                                StepperLineOptions.custom(1, Colors.black.rawValue)
-                            )
-                            .padding(.horizontal)
-                            .padding(.top, 40)
-                    }
-                    .padding([.horizontal, .bottom])
-                }
-            }
-        }
-        .dashboardOuterPadding()
-    }
-}
-
-extension DashboardView {
     var boughtByYearCard: some View {
         BoughtByYearView(
             boughtByYear: viewModel.dashboard?.boughtByYear ?? [],
@@ -552,50 +467,3 @@ extension DashboardView {
     }
 }
 
-extension DashboardView {
-    var gameplaySessionsStepperView: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .fill(Color.secondaryCardBackground)
-
-            VStack(alignment: .center, spacing: 15) {
-                VStack {
-                    Text("Horas Jogadas por Ano")
-                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
-                        .font(.cardTitle)
-                }
-
-                if let gameplaySessions = viewModel.gameplaySessions {
-                    let steps = gameplaySessions.map {
-                        Text(String($0.key))
-                            .font(.dashboardGameTitle)
-                    }
-
-                    let indicationTypes = gameplaySessions.map { _ in
-                        StepperIndicationType.custom(
-                            NumberedCircleView(text: "999:99", width: 80).eraseToAnyView()
-//                                Text("999:99")
-//                                    .background(.red)
-//                                    .frame(width: 80, height: 80)
-                        )
-                    }
-                    
-                    ScrollView(.horizontal) {
-                        StepperView()
-                            .addSteps(steps)
-                            .indicators(indicationTypes)
-                            .stepIndicatorMode(StepperMode.horizontal)
-                            .spacing(30)
-                            .lineOptions(
-                                StepperLineOptions.custom(5, Colors.black.rawValue)
-                            )
-//                            .padding(.top, 40)
-                    }
-                    .frame(minHeight: 70)
-                }
-            }
-            .padding()
-        }
-        .dashboardOuterPadding()
-    }
-}

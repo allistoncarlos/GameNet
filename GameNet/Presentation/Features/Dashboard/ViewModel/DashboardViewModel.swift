@@ -284,10 +284,4 @@ extension DashboardViewModel {
             gameplaySession: gameplaySession
         )
     }
-    
-    #if DEBUG && canImport(WebKit)
-    func featureToggle() -> some View {
-        return DashboardRouter.makeFeatureToggle()
-    }
-    #endif
 }

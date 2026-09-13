@@ -119,7 +119,6 @@ internal enum APIConstants {
     static let gameplaySessionResource = "gameplaysession"
     static let platformResource = "platform"
     static let listResource = "list"
-    static let serverDrivenResource = "serverdriven"
 }
 
 // MARK: - GameNetAPI
@@ -150,8 +149,6 @@ public enum GameNetAPI {
     case dropUserGameGameplay(userGameId: String)
     case finishGame(userGameId: String)
     case dropGameplay(userGameId: String)
-    
-    case serverDriven(slug: String)
 
     // MARK: Internal
 
@@ -250,8 +247,6 @@ public enum GameNetAPI {
             return "\(APIConstants.gameResource)/finish-gameplay/\(userGameId)"
         case let .dropGameplay(userGameId):
             return "\(APIConstants.gameResource)/drop-gameplay/\(userGameId)"
-        case let .serverDriven(slug):
-            return "\(APIConstants.serverDrivenResource)/\(slug)"
         }
     }
 
@@ -275,8 +270,7 @@ public enum GameNetAPI {
              .games,
              .game,
              .gameplays,
-             .gameplaysByYear,
-             .serverDriven:
+             .gameplaysByYear:
             return .get
         case .login,
              .refreshToken:
@@ -366,9 +360,7 @@ public enum GameNetAPI {
              .gameplaysByYear,
              .dropUserGameGameplay,
              .finishGame,
-             .dropGameplay,
-
-             .serverDriven:
+             .dropGameplay:
             return request
         }
     }
