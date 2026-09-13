@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.alliston.GameNet</string>
+	<string>com.alliston.GameNetApp</string>
 	<key>PROJECT_ID</key>
 	<string>gamenet-33a81</string>
 	<key>STORAGE_BUCKET</key>
