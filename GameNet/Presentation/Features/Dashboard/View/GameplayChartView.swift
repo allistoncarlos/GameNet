@@ -62,6 +62,77 @@ struct GameplayChartBar: Identifiable {
     var id: Date { startDate }
 }
 
+// MARK: - GameplayChartSnapshot
+
+/// Tudo que uma aba precisa para desenhar, calculado uma vez só. Antes cada
+/// acesso a `bars` refazia agrupamento, ordenação e formatação de datas — e o
+/// `body` acessava dezenas de vezes (e mais uma vez por barra).
+struct GameplayChartSnapshot {
+    let bars: [GameplayChartBar]
+    let labels: [String]
+    let totalMinutes: Double
+    let averageLabel: String
+    let averageMinutes: Double
+    let maxMinutes: Double
+
+    static let empty = GameplayChartSnapshot(
+        bars: [],
+        labels: [],
+        totalMinutes: 0,
+        averageLabel: "Média",
+        averageMinutes: 0,
+        maxMinutes: 0
+    )
+}
+
+// MARK: - GameplayChartSummary
+
+struct GameplayChartSummary {
+    /// Muda só quando os dados mudam de fato (os `BarShape` ganham UUID novo a
+    /// cada criação, então não servem de identidade).
+    struct Signature: Equatable {
+        let count: Int
+        let firstDate: Date?
+        let lastDate: Date?
+        let totalMinutes: Double
+
+        init(_ data: [BarShape]) {
+            count = data.count
+            firstDate = data.first?.sortDate
+            lastDate = data.last?.sortDate
+            totalMinutes = data.reduce(0) { $0 + $1.count }
+        }
+    }
+
+    struct BestDay {
+        let date: Date
+        let minutes: Double
+        let title: String
+    }
+
+    let signature: Signature
+    let snapshots: [GameplayChartPeriod: GameplayChartSnapshot]
+    let bestDay: BestDay?
+
+    init(data: [BarShape]) {
+        signature = Signature(data)
+
+        var snapshots: [GameplayChartPeriod: GameplayChartSnapshot] = [:]
+        for period in GameplayChartPeriod.allCases {
+            snapshots[period] = GameplayChartView.makeSnapshot(from: data, period: period)
+        }
+        self.snapshots = snapshots
+
+        bestDay = GameplayChartView.findBestDay(in: data).map {
+            BestDay(
+                date: $0.sortDate,
+                minutes: $0.count,
+                title: GameplayChartView.bestDayTitle(for: $0.sortDate)
+            )
+        }
+    }
+}
+
 // MARK: - GameplayChartView
 
 struct GameplayChartView: View {
@@ -72,13 +143,19 @@ struct GameplayChartView: View {
     @Binding var recentRegister: UUID?
     let barWidth: CGFloat = 56
 
+    init(data: Binding<[BarShape]>, recentRegister: Binding<UUID?>) {
+        _data = data
+        _recentRegister = recentRegister
+        _summary = State(initialValue: GameplayChartSummary(data: data.wrappedValue))
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             periodSelector
 
             selectionHeader
 
-            if bars.isEmpty {
+            if snapshot.bars.isEmpty {
                 emptyState
             } else {
                 chart
@@ -95,6 +172,10 @@ struct GameplayChartView: View {
         .onChangeCompat(of: selectedPeriod) { _ in
             selectedBarId = nil
         }
+        .onChangeCompat(of: GameplayChartSummary.Signature(data)) { _ in
+            summary = GameplayChartSummary(data: data)
+            selectedBarId = nil
+        }
     }
 
     // MARK: Private
@@ -105,35 +186,26 @@ struct GameplayChartView: View {
     @State private var selectedPeriod: GameplayChartPeriod = .day
     /// Barra tocada. Enquanto houver uma, o cabeçalho mostra o detalhamento dela.
     @State private var selectedBarId: Date?
+    @State private var summary: GameplayChartSummary
     @Namespace private var periodSelection
 
-    private var bars: [GameplayChartBar] {
-        Self.makeBars(from: data, period: selectedPeriod)
+    private var snapshot: GameplayChartSnapshot {
+        summary.snapshots[selectedPeriod] ?? .empty
     }
 
     private var selectedBar: GameplayChartBar? {
         guard let selectedBarId else { return nil }
-        return bars.first(where: { $0.id == selectedBarId })
-    }
-
-    private var totalMinutes: Double {
-        bars.reduce(0) { $0 + $1.minutes }
-    }
-
-    /// Média por barra do período escolhido. Na aba A (uma barra só) cai para a
-    /// média por dia, que é o que ainda diz alguma coisa.
-    private var average: (label: String, minutes: Double) {
-        if selectedPeriod == .year {
-            let days = max(data.count, 1)
-            return ("Média por dia", totalMinutes / Double(days))
-        }
-
-        return ("Média por \(selectedPeriod.name)", totalMinutes / Double(max(bars.count, 1)))
+        return snapshot.bars.first(where: { $0.id == selectedBarId })
     }
 
     /// Maior dia do ano, independente da aba — sempre olhando os dados diários.
-    private var bestDay: BarShape? {
-        Self.bestDay(in: data)
+    private var bestDay: GameplayChartSummary.BestDay? {
+        summary.bestDay
+    }
+
+    /// Barra que leva o troféu (só na aba D).
+    private var bestBarId: Date? {
+        selectedPeriod == .day ? bestDay?.date : nil
     }
 
     private var unitName: String {
@@ -228,8 +300,9 @@ struct GameplayChartView: View {
 
     /// "12% do total" — não faz sentido na aba A, que só tem uma barra.
     private func shareOfTotal(for bar: GameplayChartBar) -> String? {
-        guard selectedPeriod != .year, totalMinutes > 0 else { return nil }
-        let percent = Int((bar.minutes / totalMinutes * 100).rounded())
+        let total = snapshot.totalMinutes
+        guard selectedPeriod != .year, total > 0 else { return nil }
+        let percent = Int((bar.minutes / total * 100).rounded())
         return "\(percent)% do total"
     }
 
@@ -237,53 +310,80 @@ struct GameplayChartView: View {
 
     private var chart: some View {
         GeometryReader { geometry in
-            let chartWidth = max(
-                geometry.size.width,
-                CGFloat(bars.count) * barWidth
-            )
+            let visibleCount = max(1, Int(geometry.size.width / barWidth))
 
-            ScrollViewReader { scrollPosition in
-                ScrollView(.horizontal) {
+            if #available(iOS 17.0, macOS 14.0, tvOS 17.0, *) {
+                if snapshot.bars.count > visibleCount {
+                    nativeScrollingChart(visibleCount: visibleCount)
+                } else {
                     chartContent
-                        .frame(width: chartWidth)
                         .padding(.top, 8)
-                        .id(Self.chartScrollId)
                 }
-                .scrollIndicators(.hidden)
-                .onAppear {
-                    scrollPosition.scrollTo(Self.chartScrollId, anchor: .topTrailing)
-                }
-                .onChangeCompat(of: selectedPeriod) { _ in
-                    // Ao trocar de aba, volta para o período mais recente.
-                    scrollPosition.scrollTo(Self.chartScrollId, anchor: .topTrailing)
-                }
+            } else {
+                legacyScrollingChart(width: geometry.size.width)
             }
         }
         .frame(height: Self.chartHeight)
     }
 
+    /// iOS 17+: rolagem do próprio Swift Charts, que só desenha a janela visível.
+    /// Antes o gráfico inteiro (365 barras × 56pt ≈ 20.000pt de largura) era
+    /// renderizado dentro de um ScrollView.
+    @available(iOS 17.0, macOS 14.0, tvOS 17.0, *)
+    private func nativeScrollingChart(visibleCount: Int) -> some View {
+        let labels = snapshot.labels
+        let initialLabel = labels[max(0, labels.count - visibleCount)]
+
+        return chartContent
+            .chartScrollableAxes(.horizontal)
+            .chartXVisibleDomain(length: visibleCount)
+            .chartScrollPosition(initialX: initialLabel)
+            .padding(.top, 8)
+            // Recria o gráfico ao trocar de aba para voltar ao período mais recente.
+            .id(selectedPeriod)
+    }
+
+    /// iOS 16: sem rolagem nativa nos gráficos, mantém o ScrollView.
+    private func legacyScrollingChart(width: CGFloat) -> some View {
+        let chartWidth = max(width, CGFloat(snapshot.bars.count) * barWidth)
+
+        return ScrollViewReader { scrollPosition in
+            ScrollView(.horizontal) {
+                chartContent
+                    .frame(width: chartWidth)
+                    .padding(.top, 8)
+                    .id(Self.chartScrollId)
+            }
+            .scrollIndicators(.hidden)
+            .onAppear {
+                scrollPosition.scrollTo(Self.chartScrollId, anchor: .topTrailing)
+            }
+            .onChangeCompat(of: selectedPeriod) { _ in
+                // Ao trocar de aba, volta para o período mais recente.
+                scrollPosition.scrollTo(Self.chartScrollId, anchor: .topTrailing)
+            }
+        }
+    }
+
     private var chartContent: some View {
         Chart {
-            ForEach(bars) { bar in
-                BarMark(
-                    x: .value("Período", bar.label),
-                    y: .value(unitName, value(forMinutes: bar.minutes)),
-                    width: .ratio(0.6)
-                )
-                .cornerRadius(6)
-                .foregroundStyle(barGradient(isSelected: bar.id == selectedBarId))
-                .opacity(selectedBarId == nil || selectedBarId == bar.id ? 1 : 0.35)
-                .annotation(position: .top, spacing: 4) {
-                    if isBestDayBar(bar) {
-                        Image(systemName: "trophy.fill")
-                            .font(.caption2)
-                            .foregroundStyle(.yellow)
-                    }
+            ForEach(snapshot.bars) { bar in
+                // Só a barra do maior dia recebe anotação — antes eram 365
+                // anotações (vazias) sendo montadas a cada atualização.
+                if bar.id == bestBarId {
+                    barMark(bar)
+                        .annotation(position: .top, spacing: 4) {
+                            Image(systemName: "trophy.fill")
+                                .font(.caption2)
+                                .foregroundStyle(.yellow)
+                        }
+                } else {
+                    barMark(bar)
                 }
             }
 
-            if bars.count > 1, selectedPeriod != .year {
-                RuleMark(y: .value("Média", value(forMinutes: average.minutes)))
+            if snapshot.bars.count > 1, selectedPeriod != .year {
+                RuleMark(y: .value("Média", value(forMinutes: snapshot.averageMinutes)))
                     .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
                     .foregroundStyle(.white.opacity(0.7))
                     .annotation(position: .top, alignment: .trailing, spacing: 2) {
@@ -293,7 +393,7 @@ struct GameplayChartView: View {
                     }
             }
         }
-        .chartXScale(domain: bars.map(\.label))
+        .chartXScale(domain: snapshot.labels)
         .chartYScale(domain: 0 ... yUpperBound)
         .chartXAxis {
             AxisMarks { _ in
@@ -342,22 +442,33 @@ struct GameplayChartView: View {
 
     /// Folga no topo para o troféu e o rótulo da média não serem cortados.
     private var yUpperBound: Double {
-        let maxValue = bars.map { value(forMinutes: $0.minutes) }.max() ?? 0
-        return max(maxValue * 1.18, 1)
+        max(value(forMinutes: snapshot.maxMinutes) * 1.18, 1)
     }
 
-    private func barGradient(isSelected: Bool) -> LinearGradient {
-        LinearGradient(
-            colors: [.white, .white.opacity(isSelected ? 0.9 : 0.55)],
-            startPoint: .top,
-            endPoint: .bottom
+    private func barMark(_ bar: GameplayChartBar) -> some ChartContent {
+        let isSelected = bar.id == selectedBarId
+
+        return BarMark(
+            x: .value("Período", bar.label),
+            y: .value(unitName, value(forMinutes: bar.minutes)),
+            width: .ratio(0.6)
         )
+        .cornerRadius(6)
+        .foregroundStyle(isSelected ? Self.selectedBarGradient : Self.barGradient)
+        .opacity(selectedBarId == nil || isSelected ? 1 : 0.35)
     }
 
-    private func isBestDayBar(_ bar: GameplayChartBar) -> Bool {
-        guard selectedPeriod == .day, let bestDay else { return false }
-        return bar.startDate == bestDay.sortDate
-    }
+    private static let barGradient = LinearGradient(
+        colors: [.white, .white.opacity(0.55)],
+        startPoint: .top,
+        endPoint: .bottom
+    )
+
+    private static let selectedBarGradient = LinearGradient(
+        colors: [.white, .white.opacity(0.9)],
+        startPoint: .top,
+        endPoint: .bottom
+    )
 
     private func value(forMinutes minutes: Double) -> Double {
         selectedPeriod.usesHours ? minutes / 60 : minutes
@@ -376,7 +487,7 @@ struct GameplayChartView: View {
         let xPosition = location.x - plotOrigin.x
 
         guard let label: String = proxy.value(atX: xPosition),
-              let bar = bars.first(where: { $0.label == label }),
+              let bar = snapshot.bars.first(where: { $0.label == label }),
               bar.id != selectedBarId else {
             withAnimation(.easeOut(duration: 0.2)) { selectedBarId = nil }
             return
@@ -400,21 +511,21 @@ struct GameplayChartView: View {
                 statTile(
                     icon: "sum",
                     title: "Total",
-                    value: Self.formattedDuration(minutes: totalMinutes)
+                    value: Self.formattedDuration(minutes: snapshot.totalMinutes)
                 )
 
                 statTile(
                     icon: "divide",
-                    title: average.label,
-                    value: Self.formattedDuration(minutes: average.minutes)
+                    title: snapshot.averageLabel,
+                    value: Self.formattedDuration(minutes: snapshot.averageMinutes)
                 )
             }
 
             statTile(
                 icon: "trophy.fill",
                 title: "Maior dia",
-                value: bestDay.map { Self.formattedDuration(minutes: $0.count) } ?? "—",
-                subtitle: bestDay.map { Self.bestDayTitle(for: $0.sortDate) }
+                value: bestDay.map { Self.formattedDuration(minutes: $0.minutes) } ?? "—",
+                subtitle: bestDay?.title
             )
         }
     }
@@ -561,8 +672,33 @@ extension GameplayChartView {
         }
     }
 
+    static func makeSnapshot(from data: [BarShape], period: GameplayChartPeriod) -> GameplayChartSnapshot {
+        let bars = makeBars(from: data, period: period)
+        let total = bars.reduce(0) { $0 + $1.minutes }
+
+        // Na aba A (uma barra só) a média por barra não diz nada; usa a média por dia.
+        let averageLabel: String
+        let averageMinutes: Double
+        if period == .year {
+            averageLabel = "Média por dia"
+            averageMinutes = total / Double(max(data.count, 1))
+        } else {
+            averageLabel = "Média por \(period.name)"
+            averageMinutes = total / Double(max(bars.count, 1))
+        }
+
+        return GameplayChartSnapshot(
+            bars: bars,
+            labels: bars.map(\.label),
+            totalMinutes: total,
+            averageLabel: averageLabel,
+            averageMinutes: averageMinutes,
+            maxMinutes: bars.map(\.minutes).max() ?? 0
+        )
+    }
+
     /// Dia com mais minutos jogados; `nil` se nenhum dia tiver sessão.
-    static func bestDay(in data: [BarShape]) -> BarShape? {
+    static func findBestDay(in data: [BarShape]) -> BarShape? {
         guard let best = data.max(by: { $0.count < $1.count }), best.count > 0 else {
             return nil
         }

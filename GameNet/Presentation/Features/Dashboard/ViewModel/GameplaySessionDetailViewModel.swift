@@ -19,6 +19,17 @@ struct BarShape: Identifiable {
     var id = UUID()
 }
 
+// MARK: - GameplaySessionDay
+
+/// Sessões de um dia, já ordenadas — montado uma vez no init do view model em vez
+/// de agrupar/ordenar o dicionário a cada renderização da lista.
+struct GameplaySessionDay: Identifiable {
+    let date: Date
+    let sessions: [GameplaySession]
+
+    var id: Date { date }
+}
+
 // MARK: - GameplaySessionDetailViewModel
 
 @MainActor
@@ -34,7 +45,16 @@ class GameplaySessionDetailViewModel: ObservableObject {
             by: { $0!.start.dateOnly() }
         )
 
-        groupedGameplaySession = gameplaySessions
+        days = gameplaySessions
+            .map { date, sessions in
+                GameplaySessionDay(
+                    date: date,
+                    sessions: sessions
+                        .compactMap { $0 }
+                        .sorted(by: { $0.start > $1.start })
+                )
+            }
+            .sorted(by: { $0.date > $1.date })
 
         // Descobrir menor data
         guard let minDate = gameplaySessions.keys.min() else {
@@ -100,7 +120,7 @@ class GameplaySessionDetailViewModel: ObservableObject {
     // MARK: Internal
 
     @Published var title: String
-    @Published var groupedGameplaySession: [Date: [GameplaySession?]]
+    @Published var days: [GameplaySessionDay]
     @Published var chartGameplaySession: [BarShape]
     @Published var recentRegister: UUID?
 }

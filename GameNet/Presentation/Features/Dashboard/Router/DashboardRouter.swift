@@ -31,9 +31,10 @@ enum DashboardRouter {
         navigationPath: Binding<NavigationPath>,
         gameplaySession: GameplaySessionNavigation
     ) -> some View {
-        let viewModel = GameplaySessionDetailViewModel(gameplaySession: gameplaySession)
-
-        return GameplaySessionDetailView(viewModel: viewModel, navigationPath: navigationPath)
+        GameplaySessionDetailView(
+            viewModel: GameplaySessionDetailViewModel(gameplaySession: gameplaySession),
+            navigationPath: navigationPath
+        )
     }
 
     static func goBackToDashboard(navigationPath: Binding<NavigationPath>) {

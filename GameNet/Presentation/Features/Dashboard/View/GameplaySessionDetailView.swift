@@ -67,35 +67,48 @@ struct GameplaySessionCell: View {
 // MARK: - GameplaySessionDetailView
 
 struct GameplaySessionDetailView: View {
-    @ObservedObject var viewModel: GameplaySessionDetailViewModel
+    // MARK: Lifecycle
+
+    /// `@StateObject` + autoclosure: o view model (que agrupa o ano inteiro e monta
+    /// os dados do gráfico) é criado uma vez só, e não a cada vez que o Dashboard
+    /// re-renderiza e reavalia o `navigationDestination`.
+    init(
+        viewModel: @autoclosure @escaping () -> GameplaySessionDetailViewModel,
+        navigationPath: Binding<NavigationPath>
+    ) {
+        _viewModel = StateObject(wrappedValue: viewModel())
+        _navigationPath = navigationPath
+    }
+
+    // MARK: Internal
+
+    @StateObject var viewModel: GameplaySessionDetailViewModel
 
     @Binding var navigationPath: NavigationPath
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 12) {
+            // Lazy: as capas (CachedAsyncImage) só carregam quando o dia aparece na tela.
+            LazyVStack(spacing: 12) {
                 GameplayChartView(
                     data: $viewModel.chartGameplaySession,
                     recentRegister: $viewModel.recentRegister
                 )
 
-                ForEach(
-                    viewModel.groupedGameplaySession.sorted(by: { $0.key > $1.key }),
-                    id: \.key
-                ) { date, sessions in
-                    Text(date.toFormattedString(dateFormat: GameNetApp.dateFormat))
+                ForEach(viewModel.days) { day in
+                    Text(day.date.toFormattedString(dateFormat: GameNetApp.dateFormat))
                         .font(.dashboardGameTitle)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                    ForEach(sessions, id: \.?.id) { session in
+                    ForEach(day.sessions, id: \.self) { session in
                         SwiftUI.NavigationLink(value: session) {
                             GameplaySessionCell(
-                                gameName: session?.gameName,
-                                gameCover: session?.gameCover,
-                                gameId: session?.userGameId,
-                                startDate: session?.start.toFormattedString(dateFormat: GameNetApp.timeFormat),
-                                finishDate: session?.finish?.toFormattedString(dateFormat: GameNetApp.timeFormat),
-                                totalGameplayTime: session?.totalGameplayTime
+                                gameName: session.gameName,
+                                gameCover: session.gameCover,
+                                gameId: session.userGameId,
+                                startDate: session.start.toFormattedString(dateFormat: GameNetApp.timeFormat),
+                                finishDate: session.finish?.toFormattedString(dateFormat: GameNetApp.timeFormat),
+                                totalGameplayTime: session.totalGameplayTime
                             )
                             .multilineTextAlignment(.leading)
                         }
