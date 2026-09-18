@@ -6,6 +6,11 @@
 	<string>$(API_PATH)</string>
 	<key>BEARER</key>
 	<string>$(BEARER)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>instagram-stories</string>
+		<string>instagram</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -13,14 +18,5 @@
 	</dict>
 	<key>THEGAMESDB_API_KEY</key>
 	<string>$(THEGAMESDB_API_KEY)</string>
-	<key>NSSiriUsageDescription</key>
-	<string>GameNet uses Siri and Shortcuts to create games and add them to your lists.</string>
-	<key>NSSupportsLiveActivities</key>
-	<true/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>instagram-stories</string>
-		<string>instagram</string>
-	</array>
 </dict>
 </plist>
