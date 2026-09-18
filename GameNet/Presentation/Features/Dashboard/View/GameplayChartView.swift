@@ -52,6 +52,9 @@ enum GameplayChartPeriod: Int, CaseIterable, Identifiable {
 /// Uma barra já agregada para o período selecionado.
 struct GameplayChartBar: Identifiable {
     let startDate: Date
+    /// Primeiro e último dia com dados dentro do período (usados no detalhamento).
+    let firstDay: Date
+    let lastDay: Date
     let label: String
     /// Total de minutos jogados no período.
     let minutes: Double
@@ -78,9 +81,7 @@ struct GameplayChartView: View {
             }
             .pickerStyle(.segmented)
 
-            Text(caption)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+            header
 
             GeometryReader { geometry in
                 let chartWidth = max(
@@ -96,10 +97,23 @@ struct GameplayChartView: View {
                                     x: .value("Período", bar.label),
                                     y: .value(unitName, value(for: bar))
                                 )
+                                .opacity(selectedBarId == nil || selectedBarId == bar.id ? 1 : 0.35)
                             }
                         }
                         .chartXScale(domain: bars.map(\.label))
                         .foregroundColor(.main)
+#if !os(tvOS)
+                        .chartOverlay { proxy in
+                            GeometryReader { overlayGeometry in
+                                Rectangle()
+                                    .fill(.clear)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture { location in
+                                        selectBar(at: location, proxy: proxy, geometry: overlayGeometry)
+                                    }
+                            }
+                        }
+#endif
                         .frame(width: chartWidth)
                         .padding()
                         .id(Self.chartScrollId)
@@ -110,6 +124,7 @@ struct GameplayChartView: View {
                     }
                     .onChangeCompat(of: selectedPeriod) { _ in
                         // Ao trocar de aba, volta para o período mais recente.
+                        selectedBarId = nil
                         scrollPosition.scrollTo(Self.chartScrollId, anchor: .topTrailing)
                     }
                 }
@@ -123,6 +138,86 @@ struct GameplayChartView: View {
     private static let chartScrollId = 10001
 
     @State private var selectedPeriod: GameplayChartPeriod = .day
+    /// Barra tocada. Enquanto houver uma, o cabeçalho mostra o detalhamento dela.
+    @State private var selectedBarId: Date?
+
+    private var selectedBar: GameplayChartBar? {
+        guard let selectedBarId else { return nil }
+        return bars.first(where: { $0.id == selectedBarId })
+    }
+
+    private var totalMinutes: Double {
+        bars.reduce(0) { $0 + $1.minutes }
+    }
+
+    @ViewBuilder
+    private var header: some View {
+        if let selectedBar {
+            detail(for: selectedBar)
+        } else {
+            Text(caption)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private func detail(for bar: GameplayChartBar) -> some View {
+        HStack(alignment: .firstTextBaseline, spacing: 8) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(Self.detailTitle(for: bar, period: selectedPeriod))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Text(Self.formattedDuration(minutes: bar.minutes))
+                        .font(.headline)
+                        .foregroundColor(.main)
+
+                    if let share = shareOfTotal(for: bar) {
+                        Text(share)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+
+            Spacer(minLength: 0)
+
+            Button {
+                selectedBarId = nil
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("Fechar detalhamento")
+        }
+    }
+
+    /// "12% do total" — não faz sentido na aba A, que só tem uma barra.
+    private func shareOfTotal(for bar: GameplayChartBar) -> String? {
+        guard selectedPeriod != .year, totalMinutes > 0 else { return nil }
+        let percent = Int((bar.minutes / totalMinutes * 100).rounded())
+        return "\(percent)% do total"
+    }
+
+#if !os(tvOS)
+    /// Converte o toque na barra correspondente; tocar de novo na mesma (ou fora
+    /// das barras) fecha o detalhamento.
+    private func selectBar(at location: CGPoint, proxy: ChartProxy, geometry: GeometryProxy) {
+        let plotOrigin = geometry[proxy.plotAreaFrame].origin
+        let xPosition = location.x - plotOrigin.x
+
+        guard let label: String = proxy.value(atX: xPosition),
+              let bar = bars.first(where: { $0.label == label }),
+              bar.id != selectedBarId else {
+            selectedBarId = nil
+            return
+        }
+
+        selectedBarId = bar.id
+    }
+#endif
 
     private var bars: [GameplayChartBar] {
         Self.makeBars(from: data, period: selectedPeriod)
@@ -133,7 +228,7 @@ struct GameplayChartView: View {
     }
 
     private var caption: String {
-        let total = bars.reduce(0) { $0 + $1.minutes }
+        let total = totalMinutes
         let totalText = "Total: \(Self.formattedDuration(minutes: total))"
 
         guard selectedPeriod != .year, !bars.isEmpty else {
@@ -164,7 +259,13 @@ extension GameplayChartView {
 
         guard period != .day else {
             return days.map {
-                GameplayChartBar(startDate: $0.sortDate, label: $0.type, minutes: $0.count)
+                GameplayChartBar(
+                    startDate: $0.sortDate,
+                    firstDay: $0.sortDate,
+                    lastDay: $0.sortDate,
+                    label: $0.type,
+                    minutes: $0.count
+                )
             }
         }
 
@@ -178,8 +279,12 @@ extension GameplayChartView {
             .map { start, shapes in
                 let labelDate = max(start, firstDate ?? start)
 
+                let dates = shapes.map(\.sortDate)
+
                 return GameplayChartBar(
                     startDate: start,
+                    firstDay: dates.min() ?? start,
+                    lastDay: dates.max() ?? start,
                     label: label(for: labelDate, period: period, calendar: calendar),
                     minutes: shapes.reduce(0) { $0 + $1.count }
                 )
@@ -223,6 +328,32 @@ extension GameplayChartView {
             return month <= 6 ? "1º sem" : "2º sem"
         case .year:
             return String(calendar.component(.year, from: date))
+        }
+    }
+
+    /// Título do detalhamento de uma barra, por extenso ("Semana de 05/01 a 11/01").
+    static func detailTitle(
+        for bar: GameplayChartBar,
+        period: GameplayChartPeriod,
+        calendar: Calendar = .current
+    ) -> String {
+        let year = calendar.component(.year, from: bar.firstDay)
+
+        switch period {
+        case .day:
+            return bar.firstDay.toFormattedString(dateFormat: GameNetApp.dateFormat)
+        case .week:
+            let first = bar.firstDay.toFormattedString(dateFormat: GameNetApp.shortDateFormat)
+            let last = bar.lastDay.toFormattedString(dateFormat: GameNetApp.shortDateFormat)
+            return first == last ? "Semana de \(first)" : "Semana de \(first) a \(last)"
+        case .month:
+            let month = bar.firstDay.toFormattedString(dateFormat: "LLLL").capitalized
+            return "\(month) de \(year)"
+        case .semester:
+            let semester = calendar.component(.month, from: bar.firstDay) <= 6 ? 1 : 2
+            return "\(semester)º semestre de \(year)"
+        case .year:
+            return "Ano de \(year)"
         }
     }
 
