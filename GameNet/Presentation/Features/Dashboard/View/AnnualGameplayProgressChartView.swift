@@ -232,6 +232,13 @@ struct AnnualGameplayProgressChartView: View {
                 scrollPosition = initialScrollPosition
                 scrollableYDomain = paddedDomain(for: windowedPoints)
             }
+            .onChangeCompat(of: seriesSignature) { _ in
+                // Os anos chegam um a um (TaskGroup no DashboardViewModel) e todos já
+                // têm pontos até o dia de hoje, então maxVisibleDay não muda depois do
+                // primeiro. Sem isto o eixo Y ficava com a escala do primeiro ano que
+                // chegou, as demais linhas saíam do gráfico e só apareciam ao rolar.
+                scrollableYDomain = paddedDomain(for: windowedPoints)
+            }
     }
 
     @ViewBuilder
@@ -310,6 +317,13 @@ struct AnnualGameplayProgressChartView: View {
     /// deu scroll/zoom pra um trecho onde os valores acumulados ainda são baixos.
     private var windowedPoints: [AnnualGameplayProgressPoint] {
         visiblePoints.filter { visibleDayWindow.contains($0.day) }
+    }
+
+    /// Resumo dos dados recebidos — muda sempre que um ano novo chega ou é atualizado.
+    private var seriesSignature: [Double] {
+        series
+            .sorted(by: { $0.year < $1.year })
+            .flatMap { [Double($0.year), Double($0.points.count), $0.totalMinutes] }
     }
 
     /// Chave que resume tudo que afeta o domínio do eixo Y da variante com scroll — usada
