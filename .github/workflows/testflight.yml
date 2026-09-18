@@ -1,0 +1,401 @@
+name: "TestFlight"
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      build_number:
+        description: "Build number (CFBundleVersion). Vazio = próximo número livre da versão atual na App Store Connect."
+        required: false
+        type: string
+
+# Duas entregas simultâneas brigariam pelo mesmo número de build.
+concurrency:
+  group: testflight
+  cancel-in-progress: false
+
+jobs:
+  testflight:
+    name: ${{ matrix.platform }} → TestFlight
+    # Imagem com o Xcode 27 (SDK do iOS 27). Ainda em public preview no GitHub;
+    # quando o Xcode 27 entrar numa imagem macos-* estável, dá para trocar.
+    runs-on: xcode-27
+    timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # O target também declara tvOS/macOS, mas só o iOS vai para o TestFlight.
+          # Para incluir outra plataforma, adicione uma entrada aqui.
+          - platform: iOS
+            scheme: GameNet
+            target: GameNet
+            destination: generic/platform=iOS
+            sdk: iphoneos
+            package: ipa
+
+    env:
+      # Secret opcional: se existir, sobrescreve o API_PATH do
+      # GameNet/Resources/Config.xcconfig (que já vem versionado).
+      API_PATH: ${{ secrets.API_PATH }}
+      # Versão do Xcode na imagem xcode-27. Fixada de propósito: o padrão da
+      # imagem muda sozinho quando ela rotaciona. Deixe vazio para usar o
+      # Xcode padrão da imagem.
+      XCODE_VERSION: "27.0"
+      # Compila com o SDK do iOS 27, mas o app continua instalando a partir
+      # do iOS 16.5. O passo "Conferir o iOS mínimo" barra a entrega se algum
+      # target subir o deployment target sem querer.
+      MIN_IOS_VERSION: "16.5"
+
+    steps:
+      - name: Selecionar o Xcode
+        env:
+          SDK: ${{ matrix.sdk }}
+          PLATFORM: ${{ matrix.platform }}
+        run: |
+          set -euo pipefail
+          echo "Xcodes presentes na imagem:"
+          ls -d /Applications/Xcode*.app 2>/dev/null || true
+
+          if [ -n "${XCODE_VERSION:-}" ]; then
+            CANDIDATE="/Applications/Xcode_${XCODE_VERSION}.app"
+            if [ -d "$CANDIDATE" ]; then
+              sudo xcode-select -s "$CANDIDATE"
+            else
+              # A imagem rotaciona e versões antigas saem de cartaz. Melhor
+              # seguir com o padrão e avisar do que quebrar a entrega.
+              echo "::warning::Xcode $XCODE_VERSION não existe nesta imagem; usando o padrão. Atualize XCODE_VERSION no workflow."
+            fi
+          fi
+
+          echo "Xcode selecionado: $(xcode-select -p)"
+          xcodebuild -version
+
+          # As plataformas são componentes baixáveis e podem faltar na imagem.
+          # Só baixa se realmente não estiver lá — são vários GB. O app embute
+          # o app do Apple Watch, então o watchOS também precisa estar presente.
+          if ! xcodebuild -showsdks | grep -q "$SDK"; then
+            echo "SDK $SDK ausente nesta imagem; baixando a plataforma $PLATFORM."
+            sudo xcodebuild -downloadPlatform "$PLATFORM"
+          fi
+          if [ "$PLATFORM" = "iOS" ] && ! xcodebuild -showsdks | grep -q "watchos"; then
+            echo "SDK watchos ausente nesta imagem; baixando a plataforma watchOS."
+            sudo xcodebuild -downloadPlatform watchOS
+          fi
+
+          echo "SDKs disponíveis:"
+          xcodebuild -showsdks
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Gravar a chave da App Store Connect API
+        env:
+          APPSTORE_KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+          APPSTORE_PRIVATE_KEY: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          KEY_PATH="$RUNNER_TEMP/AuthKey_${APPSTORE_KEY_ID}.p8"
+          printf '%s\n' "$APPSTORE_PRIVATE_KEY" > "$KEY_PATH"
+          chmod 600 "$KEY_PATH"
+          echo "AUTH_KEY_PATH=$KEY_PATH" >> "$GITHUB_ENV"
+
+      - name: Descobrir versão, build e time
+        env:
+          INPUT_BUILD_NUMBER: ${{ inputs.build_number }}
+          APPSTORE_KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          PLATFORM: ${{ matrix.platform }}
+          SCHEME: ${{ matrix.scheme }}
+          TARGET: ${{ matrix.target }}
+          DESTINATION: ${{ matrix.destination }}
+        run: |
+          set -euo pipefail
+          PROJECT_PATH="$(find . -maxdepth 2 -name '*.xcodeproj' | head -n 1)"
+          SETTINGS_JSON="$RUNNER_TEMP/build-settings.json"
+
+          # Versão, time e bundle saem do próprio projeto — nada de duplicar
+          # valor em secret. Lidos do target do app pelo xcodebuild, porque no
+          # pbxproj os targets de widget, watch e testes têm valores próprios
+          # (o de testes, por exemplo, tem MARKETING_VERSION 1.0).
+          xcodebuild -showBuildSettings -json \
+            -project "$PROJECT_PATH" \
+            -scheme "$SCHEME" \
+            -configuration Release \
+            -destination "$DESTINATION" > "$SETTINGS_JSON"
+
+          setting() {
+            python3 - "$SETTINGS_JSON" "$TARGET" "$1" <<'PY'
+          import json, sys
+          path, target, key = sys.argv[1:]
+          text = open(path).read()
+          # A resolução de pacotes (SPM) pode escrever no stdout antes do JSON.
+          start = 0 if text.lstrip().startswith("[") else text.index("\n[") + 1
+          settings, _ = json.JSONDecoder().raw_decode(text[start:])
+          for entry in settings:
+              if entry.get("target") == target:
+                  print(entry["buildSettings"].get(key, ""))
+                  break
+          PY
+          }
+
+          VERSION="$(setting MARKETING_VERSION)"
+          TEAM_ID="$(setting DEVELOPMENT_TEAM)"
+          BUNDLE_ID="$(setting PRODUCT_BUNDLE_IDENTIFIER)"
+
+          for name in VERSION TEAM_ID BUNDLE_ID; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Não consegui ler $name do target $TARGET."
+              exit 1
+            fi
+          done
+
+          export VERSION BUNDLE_ID
+
+          BUILD_NUMBER="${INPUT_BUILD_NUMBER:-}"
+          if [ -z "$BUILD_NUMBER" ]; then
+            # O número do build só precisa ser único dentro da versão de
+            # marketing, então ele vem da App Store Connect (maior build desta
+            # versão + 1) em vez do contador de execuções do GitHub, que nunca
+            # reinicia. Assim cada versão nova recomeça do 1.
+            python3 -m venv "$RUNNER_TEMP/ascvenv"
+            "$RUNNER_TEMP/ascvenv/bin/pip" install --quiet --disable-pip-version-check "pyjwt[crypto]"
+            BUILD_NUMBER="$("$RUNNER_TEMP/ascvenv/bin/python" .github/scripts/next_build_number.py)"
+          fi
+
+          if [ -z "$BUILD_NUMBER" ]; then
+            echo "::error::Não consegui determinar o número do build. Rode o workflow manualmente informando build_number."
+            exit 1
+          fi
+
+          {
+            echo "PROJECT_PATH=$PROJECT_PATH"
+            echo "VERSION=$VERSION"
+            echo "TEAM_ID=$TEAM_ID"
+            echo "BUNDLE_ID=$BUNDLE_ID"
+            echo "BUILD_NUMBER=$BUILD_NUMBER"
+          } >> "$GITHUB_ENV"
+
+          echo "Versão $VERSION (build $BUILD_NUMBER) — time $TEAM_ID, bundle $BUNDLE_ID"
+
+      - name: Instalar certificados
+        env:
+          DIST_CERTIFICATE_BASE64: ${{ secrets.DIST_CERTIFICATE_BASE64 }}
+          DIST_CERTIFICATE_PASSWORD: ${{ secrets.DIST_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          set -euo pipefail
+          KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          CERT_PATH="$RUNNER_TEMP/distribution.p12"
+          echo -n "$DIST_CERTIFICATE_BASE64" | base64 --decode -o "$CERT_PATH"
+          security import "$CERT_PATH" -P "$DIST_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          rm -f "$CERT_PATH"
+
+          # Sem a partition list o codesign trava num prompt de senha que ninguém responde.
+          security set-key-partition-list -S apple-tool:,apple:,codesign: \
+            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH" > /dev/null
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+          echo "Identidades de assinatura de código:"
+          security find-identity -v -p codesigning "$KEYCHAIN_PATH"
+
+          # O archive usa a identidade de desenvolvimento e o export reassina
+          # com a de distribuição. Faltando qualquer uma, o build morre lá na
+          # frente com um erro bem menos claro do que este.
+          for identity in "Apple Development" "Apple Distribution"; do
+            if ! security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep -q "$identity"; then
+              echo "::error::Nenhum certificado '$identity' no .p12 de DIST_CERTIFICATE_BASE64. Exporte os dois certificados juntos num único .p12 (selecione ambos no Acesso às Chaves antes de exportar)."
+              exit 1
+            fi
+          done
+
+      - name: Criar o xcconfig com o API_PATH
+        run: |
+          set -euo pipefail
+          if [ -z "${API_PATH:-}" ]; then
+            echo "Secret API_PATH não definido; usando o API_PATH de GameNet/Resources/Config.xcconfig."
+            exit 0
+          fi
+          echo "API_PATH=${API_PATH}" > "$RUNNER_TEMP/Config.xcconfig"
+          echo "XCCONFIG_OVERRIDE=$RUNNER_TEMP/Config.xcconfig" >> "$GITHUB_ENV"
+
+      - name: Gerar o ExportOptions.plist
+        run: |
+          set -euo pipefail
+          PLIST="$RUNNER_TEMP/ExportOptions.plist"
+          cat > "$PLIST" <<PLIST_EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>app-store-connect</string>
+            <key>destination</key>
+            <string>export</string>
+            <key>teamID</key>
+            <string>${TEAM_ID}</string>
+            <key>signingStyle</key>
+            <string>automatic</string>
+            <key>uploadSymbols</key>
+            <true/>
+            <key>manageAppVersionAndBuildNumber</key>
+            <false/>
+          </dict>
+          </plist>
+          PLIST_EOF
+
+          plutil -lint "$PLIST"
+          cat "$PLIST"
+
+      - name: Arquivar
+        env:
+          APPSTORE_KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          SCHEME: ${{ matrix.scheme }}
+          DESTINATION: ${{ matrix.destination }}
+        run: |
+          set -euo pipefail
+
+          XCCONFIG_ARGS=()
+          if [ -n "${XCCONFIG_OVERRIDE:-}" ]; then
+            XCCONFIG_ARGS=(-xcconfig "$XCCONFIG_OVERRIDE")
+          fi
+
+          # Nada de sobrescrever CODE_SIGN_IDENTITY aqui: com assinatura
+          # automática o Xcode recusa o conflito ("conflicting provisioning
+          # settings"). O archive é assinado com a identidade de
+          # desenvolvimento e o -exportArchive reassina com a de distribuição,
+          # que é o mesmo caminho do Organizer — por isso o .p12 precisa
+          # carregar os dois certificados.
+          # CURRENT_PROJECT_VERSION vem daqui (o pbxproj fica intocado) porque o
+          # TestFlight recusa build repetido para a mesma versão — e vale para
+          # o app, o widget e o app do Watch, que precisam ter o mesmo número.
+          # O deployment target NÃO é sobrescrito: cada target mantém o seu
+          # (app e widget em iOS 16.5).
+          xcodebuild archive \
+            -project "$PROJECT_PATH" \
+            -scheme "$SCHEME" \
+            -configuration Release \
+            -destination "$DESTINATION" \
+            -archivePath "$RUNNER_TEMP/GameNet.xcarchive" \
+            ${XCCONFIG_ARGS[@]+"${XCCONFIG_ARGS[@]}"} \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$AUTH_KEY_PATH" \
+            -authenticationKeyID "$APPSTORE_KEY_ID" \
+            -authenticationKeyIssuerID "$APPSTORE_ISSUER_ID" \
+            CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
+            DEVELOPMENT_TEAM="$TEAM_ID" \
+            CODE_SIGN_STYLE=Automatic \
+            clean archive
+
+      - name: Conferir o iOS mínimo
+        if: matrix.platform == 'iOS'
+        run: |
+          set -euo pipefail
+          APP="$(find "$RUNNER_TEMP/GameNet.xcarchive/Products/Applications" -maxdepth 1 -name '*.app' | head -n 1)"
+          if [ -z "$APP" ]; then
+            echo "::error::Nenhum .app dentro do archive."
+            exit 1
+          fi
+
+          FAILED=0
+          check() {
+            local plist="$1" label="$2" min
+            min="$(/usr/libexec/PlistBuddy -c 'Print :MinimumOSVersion' "$plist" 2>/dev/null || true)"
+            echo "$label: iOS mínimo $min"
+            # Maior que o suportado = usuários do iOS $MIN_IOS_VERSION perdem o app/extensão.
+            if [ -z "$min" ] || [ "$(printf '%s\n%s\n' "$MIN_IOS_VERSION" "$min" | sort -V | tail -n 1)" != "$MIN_IOS_VERSION" ]; then
+              echo "::error::$label exige iOS $min, mas o GameNet precisa rodar a partir do iOS $MIN_IOS_VERSION."
+              FAILED=1
+            fi
+          }
+
+          check "$APP/Info.plist" "$(basename "$APP")"
+          for appex in "$APP"/PlugIns/*.appex; do
+            [ -e "$appex" ] || continue
+            check "$appex/Info.plist" "$(basename "$appex")"
+          done
+
+          # SDK usado na compilação, para constar no log.
+          echo "Compilado com: $(/usr/libexec/PlistBuddy -c 'Print :DTSDKName' "$APP/Info.plist" 2>/dev/null || echo '?')"
+
+          exit "$FAILED"
+
+      - name: Exportar o pacote
+        env:
+          APPSTORE_KEY_ID: ${{ secrets.APPSTORE_KEY_ID }}
+          APPSTORE_ISSUER_ID: ${{ secrets.APPSTORE_ISSUER_ID }}
+          PACKAGE_EXT: ${{ matrix.package }}
+          PLATFORM: ${{ matrix.platform }}
+        run: |
+          set -euo pipefail
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/GameNet.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/build" \
+            -allowProvisioningUpdates \
+            -authenticationKeyPath "$AUTH_KEY_PATH" \
+            -authenticationKeyID "$APPSTORE_KEY_ID" \
+            -authenticationKeyIssuerID "$APPSTORE_ISSUER_ID"
+
+          PACKAGE_PATH="$(find "$RUNNER_TEMP/build" -name "*.${PACKAGE_EXT}" | head -n 1)"
+          if [ -z "$PACKAGE_PATH" ]; then
+            echo "::error::Nenhum .${PACKAGE_EXT} foi gerado para $PLATFORM."
+            exit 1
+          fi
+
+          FINAL="$RUNNER_TEMP/build/GameNet-${PLATFORM}-${VERSION}-${BUILD_NUMBER}.${PACKAGE_EXT}"
+          mv "$PACKAGE_PATH" "$FINAL"
+          echo "PACKAGE_PATH=$FINAL" >> "$GITHUB_ENV"
+
+      - name: Enviar para o TestFlight
+        uses: apple-actions/upload-testflight-build@v5
+        with:
+          app-path: ${{ env.PACKAGE_PATH }}
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+          uses-non-exempt-encryption: "false"
+          # O job termina assim que o upload é aceito. Esperar a Apple
+          # processar só para saber o resultado custava minutos de runner
+          # macOS (10x na cota); rejeição de binário chega por email e
+          # aparece no próprio TestFlight.
+          wait-for-processing: "false"
+          backend: AppStoreAPI
+
+      - name: Guardar pacote e dSYMs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: GameNet-${{ matrix.platform }}-${{ env.VERSION }}-${{ env.BUILD_NUMBER }}
+          path: |
+            ${{ runner.temp }}/build/*.${{ matrix.package }}
+            ${{ runner.temp }}/GameNet.xcarchive/dSYMs
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Resumo
+        if: always()
+        run: |
+          {
+            echo "### TestFlight — ${{ matrix.platform }}"
+            echo ""
+            echo "- Versão: \`${VERSION:-?}\`"
+            echo "- Build: \`${BUILD_NUMBER:-?}\`"
+            echo "- iOS mínimo: \`${MIN_IOS_VERSION}\` (SDK do iOS 27)"
+            echo "- Commit: \`${GITHUB_SHA::7}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Limpar keychain e chave privada
+        if: always()
+        run: |
+          security delete-keychain "$RUNNER_TEMP/app-signing.keychain-db" || true
+          rm -f "$RUNNER_TEMP"/AuthKey_*.p8 "$RUNNER_TEMP"/*.p12 || true
