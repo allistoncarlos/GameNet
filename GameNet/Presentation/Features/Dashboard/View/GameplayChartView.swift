@@ -70,76 +70,46 @@ struct GameplayChartView: View {
 
     @Binding var data: [BarShape]
     @Binding var recentRegister: UUID?
-    let barWidth: CGFloat = 70
+    let barWidth: CGFloat = 56
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 5) {
-            Picker("Period", selection: $selectedPeriod) {
-                ForEach(GameplayChartPeriod.allCases) { period in
-                    Text(period.shortLabel).tag(period)
-                }
+        VStack(alignment: .leading, spacing: 16) {
+            periodSelector
+
+            selectionHeader
+
+            if bars.isEmpty {
+                emptyState
+            } else {
+                chart
             }
-            .pickerStyle(.segmented)
 
-            header
-
-            GeometryReader { geometry in
-                let chartWidth = max(
-                    geometry.size.width,
-                    CGFloat(bars.count) * barWidth
-                )
-
-                ScrollViewReader { scrollPosition in
-                    ScrollView(.horizontal) {
-                        Chart {
-                            ForEach(bars) { bar in
-                                BarMark(
-                                    x: .value("Período", bar.label),
-                                    y: .value(unitName, value(for: bar))
-                                )
-                                .opacity(selectedBarId == nil || selectedBarId == bar.id ? 1 : 0.35)
-                            }
-                        }
-                        .chartXScale(domain: bars.map(\.label))
-                        .foregroundColor(.main)
-#if !os(tvOS)
-                        .chartOverlay { proxy in
-                            GeometryReader { overlayGeometry in
-                                Rectangle()
-                                    .fill(.clear)
-                                    .contentShape(Rectangle())
-                                    .onTapGesture { location in
-                                        selectBar(at: location, proxy: proxy, geometry: overlayGeometry)
-                                    }
-                            }
-                        }
-#endif
-                        .frame(width: chartWidth)
-                        .padding()
-                        .id(Self.chartScrollId)
-                    }
-                    .scrollIndicators(.hidden)
-                    .onAppear {
-                        scrollPosition.scrollTo(Self.chartScrollId, anchor: .topTrailing)
-                    }
-                    .onChangeCompat(of: selectedPeriod) { _ in
-                        // Ao trocar de aba, volta para o período mais recente.
-                        selectedBarId = nil
-                        scrollPosition.scrollTo(Self.chartScrollId, anchor: .topTrailing)
-                    }
-                }
-            }
-            .frame(height: 220)
+            statistics
+        }
+        .foregroundStyle(.white)
+        .padding(16)
+        .gameNetGlassEffect(
+            .tinted(Color.secondaryCardBackground),
+            in: .rect(cornerRadius: 20)
+        )
+        .onChangeCompat(of: selectedPeriod) { _ in
+            selectedBarId = nil
         }
     }
 
     // MARK: Private
 
     private static let chartScrollId = 10001
+    private static let chartHeight: CGFloat = 220
 
     @State private var selectedPeriod: GameplayChartPeriod = .day
     /// Barra tocada. Enquanto houver uma, o cabeçalho mostra o detalhamento dela.
     @State private var selectedBarId: Date?
+    @Namespace private var periodSelection
+
+    private var bars: [GameplayChartBar] {
+        Self.makeBars(from: data, period: selectedPeriod)
+    }
 
     private var selectedBar: GameplayChartBar? {
         guard let selectedBarId else { return nil }
@@ -150,33 +120,94 @@ struct GameplayChartView: View {
         bars.reduce(0) { $0 + $1.minutes }
     }
 
-    @ViewBuilder
-    private var header: some View {
-        if let selectedBar {
-            detail(for: selectedBar)
-        } else {
-            Text(caption)
-                .font(.caption)
-                .foregroundStyle(.secondary)
+    /// Média por barra do período escolhido. Na aba A (uma barra só) cai para a
+    /// média por dia, que é o que ainda diz alguma coisa.
+    private var average: (label: String, minutes: Double) {
+        if selectedPeriod == .year {
+            let days = max(data.count, 1)
+            return ("Média por dia", totalMinutes / Double(days))
         }
+
+        return ("Média por \(selectedPeriod.name)", totalMinutes / Double(max(bars.count, 1)))
+    }
+
+    /// Maior dia do ano, independente da aba — sempre olhando os dados diários.
+    private var bestDay: BarShape? {
+        Self.bestDay(in: data)
+    }
+
+    private var unitName: String {
+        selectedPeriod.usesHours ? "Horas" : "Minutos"
+    }
+
+    // MARK: Period selector
+
+    private var periodSelector: some View {
+        HStack(spacing: 4) {
+            ForEach(GameplayChartPeriod.allCases) { period in
+                let isSelected = period == selectedPeriod
+
+                Button {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        selectedPeriod = period
+                    }
+                } label: {
+                    Text(period.shortLabel)
+                        .font(.custom("AvenirNext-DemiBold", size: 15))
+                        .foregroundStyle(isSelected ? Color.secondaryCardBackground : .white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 8)
+                        .background {
+                            if isSelected {
+                                Capsule()
+                                    .fill(.white)
+                                    .matchedGeometryEffect(id: "period", in: periodSelection)
+                            }
+                        }
+                        .contentShape(Capsule())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Por \(period.name)")
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+            }
+        }
+        .padding(4)
+        .background(Capsule().fill(.white.opacity(0.15)))
+    }
+
+    // MARK: Selection header
+
+    /// Altura fixa para o gráfico não pular quando o detalhamento aparece/some.
+    private var selectionHeader: some View {
+        Group {
+            if let selectedBar {
+                detail(for: selectedBar)
+            } else {
+                Label("Toque em uma barra para ver o detalhamento", systemImage: "hand.tap")
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.75))
+            }
+        }
+        .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
     }
 
     private func detail(for bar: GameplayChartBar) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
+        HStack(alignment: .center, spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(Self.detailTitle(for: bar, period: selectedPeriod))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .font(.dashboardGameSubtitle)
+                    .foregroundStyle(.white.opacity(0.85))
 
-                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text(Self.formattedDuration(minutes: bar.minutes))
-                        .font(.headline)
-                        .foregroundColor(.main)
+                        .font(.dashboardGameTitle)
 
                     if let share = shareOfTotal(for: bar) {
                         Text(share)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .font(.caption.weight(.semibold))
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 2)
+                            .background(Capsule().fill(.white.opacity(0.2)))
                     }
                 }
             }
@@ -187,7 +218,8 @@ struct GameplayChartView: View {
                 selectedBarId = nil
             } label: {
                 Image(systemName: "xmark.circle.fill")
-                    .foregroundStyle(.secondary)
+                    .font(.title3)
+                    .foregroundStyle(.white.opacity(0.75))
             }
             .buttonStyle(.plain)
             .accessibilityLabel("Fechar detalhamento")
@@ -201,6 +233,141 @@ struct GameplayChartView: View {
         return "\(percent)% do total"
     }
 
+    // MARK: Chart
+
+    private var chart: some View {
+        GeometryReader { geometry in
+            let chartWidth = max(
+                geometry.size.width,
+                CGFloat(bars.count) * barWidth
+            )
+
+            ScrollViewReader { scrollPosition in
+                ScrollView(.horizontal) {
+                    chartContent
+                        .frame(width: chartWidth)
+                        .padding(.top, 8)
+                        .id(Self.chartScrollId)
+                }
+                .scrollIndicators(.hidden)
+                .onAppear {
+                    scrollPosition.scrollTo(Self.chartScrollId, anchor: .topTrailing)
+                }
+                .onChangeCompat(of: selectedPeriod) { _ in
+                    // Ao trocar de aba, volta para o período mais recente.
+                    scrollPosition.scrollTo(Self.chartScrollId, anchor: .topTrailing)
+                }
+            }
+        }
+        .frame(height: Self.chartHeight)
+    }
+
+    private var chartContent: some View {
+        Chart {
+            ForEach(bars) { bar in
+                BarMark(
+                    x: .value("Período", bar.label),
+                    y: .value(unitName, value(forMinutes: bar.minutes)),
+                    width: .ratio(0.6)
+                )
+                .cornerRadius(6)
+                .foregroundStyle(barGradient(isSelected: bar.id == selectedBarId))
+                .opacity(selectedBarId == nil || selectedBarId == bar.id ? 1 : 0.35)
+                .annotation(position: .top, spacing: 4) {
+                    if isBestDayBar(bar) {
+                        Image(systemName: "trophy.fill")
+                            .font(.caption2)
+                            .foregroundStyle(.yellow)
+                    }
+                }
+            }
+
+            if bars.count > 1, selectedPeriod != .year {
+                RuleMark(y: .value("Média", value(forMinutes: average.minutes)))
+                    .lineStyle(StrokeStyle(lineWidth: 1, dash: [4, 4]))
+                    .foregroundStyle(.white.opacity(0.7))
+                    .annotation(position: .top, alignment: .trailing, spacing: 2) {
+                        Text("média")
+                            .font(.caption2)
+                            .foregroundStyle(.white.opacity(0.8))
+                    }
+            }
+        }
+        .chartXScale(domain: bars.map(\.label))
+        .chartYScale(domain: 0 ... yUpperBound)
+        .chartXAxis {
+            AxisMarks { _ in
+                AxisValueLabel()
+                    .font(.caption2)
+                    .foregroundStyle(.white.opacity(0.85))
+            }
+        }
+        .chartYAxis {
+            AxisMarks(position: .leading, values: .automatic(desiredCount: 4)) { value in
+                AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5, dash: [3, 3]))
+                    .foregroundStyle(.white.opacity(0.25))
+                AxisValueLabel {
+                    if let raw = value.as(Double.self) {
+                        Text(axisLabel(for: raw))
+                            .font(.caption2)
+                            .foregroundStyle(.white.opacity(0.75))
+                    }
+                }
+            }
+        }
+#if !os(tvOS)
+        .chartOverlay { proxy in
+            GeometryReader { overlayGeometry in
+                Rectangle()
+                    .fill(.clear)
+                    .contentShape(Rectangle())
+                    .onTapGesture { location in
+                        selectBar(at: location, proxy: proxy, geometry: overlayGeometry)
+                    }
+            }
+        }
+#endif
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: 8) {
+            Image(systemName: "chart.bar.xaxis")
+                .font(.title2)
+            Text("Nenhuma sessão registrada")
+                .font(.dashboardGameSubtitle)
+        }
+        .foregroundStyle(.white.opacity(0.8))
+        .frame(maxWidth: .infinity, minHeight: Self.chartHeight)
+    }
+
+    /// Folga no topo para o troféu e o rótulo da média não serem cortados.
+    private var yUpperBound: Double {
+        let maxValue = bars.map { value(forMinutes: $0.minutes) }.max() ?? 0
+        return max(maxValue * 1.18, 1)
+    }
+
+    private func barGradient(isSelected: Bool) -> LinearGradient {
+        LinearGradient(
+            colors: [.white, .white.opacity(isSelected ? 0.9 : 0.55)],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+
+    private func isBestDayBar(_ bar: GameplayChartBar) -> Bool {
+        guard selectedPeriod == .day, let bestDay else { return false }
+        return bar.startDate == bestDay.sortDate
+    }
+
+    private func value(forMinutes minutes: Double) -> Double {
+        selectedPeriod.usesHours ? minutes / 60 : minutes
+    }
+
+    private func axisLabel(for value: Double) -> String {
+        let rounded = Int(value.rounded())
+        return selectedPeriod.usesHours ? "\(rounded)h" : "\(rounded)m"
+    }
+
 #if !os(tvOS)
     /// Converte o toque na barra correspondente; tocar de novo na mesma (ou fora
     /// das barras) fecha o detalhamento.
@@ -211,36 +378,73 @@ struct GameplayChartView: View {
         guard let label: String = proxy.value(atX: xPosition),
               let bar = bars.first(where: { $0.label == label }),
               bar.id != selectedBarId else {
-            selectedBarId = nil
+            withAnimation(.easeOut(duration: 0.2)) { selectedBarId = nil }
             return
         }
 
-        selectedBarId = bar.id
+        withAnimation(.easeOut(duration: 0.2)) { selectedBarId = bar.id }
     }
 #endif
 
-    private var bars: [GameplayChartBar] {
-        Self.makeBars(from: data, period: selectedPeriod)
-    }
+    // MARK: Statistics
 
-    private var unitName: String {
-        selectedPeriod.usesHours ? "Horas" : "Minutos"
-    }
+    private var statistics: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Label("\(unitName) por \(selectedPeriod.name)", systemImage: "chart.bar.fill")
+                .font(.dashboardGameSubtitle)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(Capsule().fill(.white.opacity(0.18)))
 
-    private var caption: String {
-        let total = totalMinutes
-        let totalText = "Total: \(Self.formattedDuration(minutes: total))"
+            HStack(spacing: 12) {
+                statTile(
+                    icon: "sum",
+                    title: "Total",
+                    value: Self.formattedDuration(minutes: totalMinutes)
+                )
 
-        guard selectedPeriod != .year, !bars.isEmpty else {
-            return "\(unitName) por \(selectedPeriod.name) · \(totalText)"
+                statTile(
+                    icon: "divide",
+                    title: average.label,
+                    value: Self.formattedDuration(minutes: average.minutes)
+                )
+            }
+
+            statTile(
+                icon: "trophy.fill",
+                title: "Maior dia",
+                value: bestDay.map { Self.formattedDuration(minutes: $0.count) } ?? "—",
+                subtitle: bestDay.map { Self.bestDayTitle(for: $0.sortDate) }
+            )
         }
-
-        let average = total / Double(bars.count)
-        return "\(unitName) por \(selectedPeriod.name) · \(totalText) · Média: \(Self.formattedDuration(minutes: average))"
     }
 
-    private func value(for bar: GameplayChartBar) -> Double {
-        selectedPeriod.usesHours ? bar.minutes / 60 : bar.minutes
+    private func statTile(icon: String, title: String, value: String, subtitle: String? = nil) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label(title, systemImage: icon)
+                .font(.dashboardGameSubtitle)
+                .foregroundStyle(.white.opacity(0.85))
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+
+            Text(value)
+                .font(.dashboardGameTitle)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+
+            if let subtitle {
+                Text(subtitle)
+                    .font(.caption)
+                    .foregroundStyle(.white.opacity(0.85))
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 12)
+        .padding(.horizontal, 14)
+        .background(
+            RoundedRectangle(cornerRadius: 14)
+                .fill(.white.opacity(0.15))
+        )
     }
 }
 
@@ -355,6 +559,21 @@ extension GameplayChartView {
         case .year:
             return "Ano de \(year)"
         }
+    }
+
+    /// Dia com mais minutos jogados; `nil` se nenhum dia tiver sessão.
+    static func bestDay(in data: [BarShape]) -> BarShape? {
+        guard let best = data.max(by: { $0.count < $1.count }), best.count > 0 else {
+            return nil
+        }
+
+        return best
+    }
+
+    /// "Sábado, 12/03/2026".
+    static func bestDayTitle(for date: Date) -> String {
+        let weekday = date.toFormattedString(dateFormat: "EEEE").capitalized
+        return "\(weekday), \(date.toFormattedString(dateFormat: GameNetApp.dateFormat))"
     }
 
     static func formattedDuration(minutes: Double) -> String {

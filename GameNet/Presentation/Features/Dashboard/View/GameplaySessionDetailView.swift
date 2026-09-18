@@ -78,7 +78,6 @@ struct GameplaySessionDetailView: View {
                     data: $viewModel.chartGameplaySession,
                     recentRegister: $viewModel.recentRegister
                 )
-                .frame(height: 320)
 
                 ForEach(
                     viewModel.groupedGameplaySession.sorted(by: { $0.key > $1.key }),
