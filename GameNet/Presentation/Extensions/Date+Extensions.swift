@@ -7,10 +7,22 @@
 
 import Foundation
 
+extension Locale {
+    /// Nomes de dias da semana e meses sempre em português, independente do idioma do aparelho.
+    static let ptBR = Locale(identifier: "pt_BR")
+}
+
+extension String {
+    /// "segunda-feira" → "Segunda-feira" (o `capitalized` viraria "Segunda-Feira").
+    var capitalizedFirstLetter: String {
+        prefix(1).uppercased() + dropFirst()
+    }
+}
+
 extension Date {
-    func toFormattedString(dateFormat: String? = nil) -> String {
+    func toFormattedString(dateFormat: String? = nil, locale: Locale? = nil) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: Locale.current.identifier)
+        dateFormatter.locale = locale ?? Locale(identifier: Locale.current.identifier)
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
 
         if let dateFormat = dateFormat {

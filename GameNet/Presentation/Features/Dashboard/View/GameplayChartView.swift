@@ -637,7 +637,7 @@ extension GameplayChartView {
         case .day, .week:
             return date.toFormattedString(dateFormat: GameNetApp.shortDateFormat)
         case .month:
-            return date.toFormattedString(dateFormat: "MMM").capitalized
+            return date.toFormattedString(dateFormat: "MMM", locale: .ptBR).capitalizedFirstLetter
         case .semester:
             let month = calendar.component(.month, from: date)
             return month <= 6 ? "1º sem" : "2º sem"
@@ -662,7 +662,7 @@ extension GameplayChartView {
             let last = bar.lastDay.toFormattedString(dateFormat: GameNetApp.shortDateFormat)
             return first == last ? "Semana de \(first)" : "Semana de \(first) a \(last)"
         case .month:
-            let month = bar.firstDay.toFormattedString(dateFormat: "LLLL").capitalized
+            let month = bar.firstDay.toFormattedString(dateFormat: "LLLL", locale: .ptBR).capitalizedFirstLetter
             return "\(month) de \(year)"
         case .semester:
             let semester = calendar.component(.month, from: bar.firstDay) <= 6 ? 1 : 2
@@ -708,7 +708,7 @@ extension GameplayChartView {
 
     /// "Sábado, 12/03/2026".
     static func bestDayTitle(for date: Date) -> String {
-        let weekday = date.toFormattedString(dateFormat: "EEEE").capitalized
+        let weekday = date.toFormattedString(dateFormat: "EEEE", locale: .ptBR).capitalizedFirstLetter
         return "\(weekday), \(date.toFormattedString(dateFormat: GameNetApp.dateFormat))"
     }
 

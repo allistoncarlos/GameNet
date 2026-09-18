@@ -26,6 +26,17 @@ struct BarShape: Identifiable {
 struct GameplaySessionDay: Identifiable {
     let date: Date
     let sessions: [GameplaySession]
+    /// Minutos jogados no dia (só sessões encerradas).
+    let totalMinutes: Double
+
+    init(date: Date, sessions: [GameplaySession]) {
+        self.date = date
+        self.sessions = sessions
+        totalMinutes = sessions.reduce(0) { total, session in
+            guard let finish = session.finish else { return total }
+            return total + max(0, (finish - session.start) / 60)
+        }
+    }
 
     var id: Date { date }
 }

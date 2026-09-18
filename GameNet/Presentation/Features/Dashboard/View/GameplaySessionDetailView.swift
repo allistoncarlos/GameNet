@@ -8,65 +8,165 @@
 import CachedAsyncImage
 import SwiftUI
 
-// MARK: - GameplaySessionCell
+// MARK: - GameplaySessionRow
 
-struct GameplaySessionCell: View {
-    var gameName: String?
-    var gameCover: String?
-    var gameId: String?
-    var startDate: String?
-    var finishDate: String?
-    var totalGameplayTime: String?
+/// Uma sessão de gameplay dentro do card do dia.
+struct GameplaySessionRow: View {
+    let session: GameplaySession
 
     var body: some View {
-        HStack(spacing: 16) {
-            if let gameCover {
-                CachedAsyncImage(url: URL(string: gameCover)) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                } placeholder: { ProgressView().progressViewStyle(.circular) }
-                    .frame(height: 80)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                    .gameCoverTransitionSource(id: gameId)
+        HStack(spacing: 12) {
+            cover
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text(session.gameName)
+                    .font(.custom("AvenirNext-DemiBold", size: 16))
+                    .foregroundStyle(.primary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+
+                if !session.platformName.isEmpty {
+                    Text(session.platformName)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
+
+                Label(timeRange, systemImage: "clock")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
             }
 
-            VStack {
-                Text(gameName ?? "")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.dashboardGameTitle)
+            Spacer(minLength: 8)
 
-                HStack(spacing: 0) {
-                    if let startDate {
-                        Text(startDate)
-                            .font(.dashboardGameSubtitle)
+            durationBadge
 
-                        if let finishDate {
-                            Text(" até \(finishDate)")
-                                .font(.dashboardGameSubtitle)
-                        }
+            Image(systemName: "chevron.right")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.tertiary)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .contentShape(Rectangle())
+    }
 
-                        if let totalGameplayTime {
-                            Text(" (\(totalGameplayTime))")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .font(.dashboardGameSubtitle)
-                        }
+    // MARK: Private
 
-                        Spacer()
-                    }
+    private var isOngoing: Bool {
+        session.finish == nil
+    }
+
+    private var cover: some View {
+        CachedAsyncImage(url: URL(string: session.gameCover)) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+        } placeholder: {
+            RoundedRectangle(cornerRadius: 8)
+                .fill(.secondary.opacity(0.15))
+                .overlay {
+                    Image(systemName: "gamecontroller.fill")
+                        .foregroundStyle(.secondary)
                 }
+        }
+        .frame(width: 48, height: 64)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .gameCoverTransitionSource(id: session.userGameId)
+    }
+
+    private var timeRange: String {
+        let start = session.start.toFormattedString(dateFormat: GameNetApp.timeFormat)
+
+        guard let finish = session.finish else {
+            return "Desde \(start)"
+        }
+
+        return "\(start) – \(finish.toFormattedString(dateFormat: GameNetApp.timeFormat))"
+    }
+
+    @ViewBuilder
+    private var durationBadge: some View {
+        if let finish = session.finish {
+            Text(GameplayChartView.formattedDuration(minutes: max(0, (finish - session.start) / 60)))
+                .font(.custom("AvenirNext-DemiBold", size: 14))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(Capsule().fill(Color.main))
+        } else {
+            Label("Jogando", systemImage: "play.fill")
+                .font(.custom("AvenirNext-DemiBold", size: 13))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(Capsule().fill(Color.green))
+        }
+    }
+}
+
+// MARK: - GameplaySessionDayCard
+
+/// Card de um dia: cabeçalho com dia da semana, data e total do dia, e as sessões.
+struct GameplaySessionDayCard: View {
+    let day: GameplaySessionDay
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            header
+                .padding(.horizontal, 14)
+                .padding(.top, 14)
+                .padding(.bottom, 6)
+
+            ForEach(Array(day.sessions.enumerated()), id: \.offset) { index, session in
+                if index > 0 {
+                    Divider()
+                        .padding(.leading, 14 + 48 + 12)
+                }
+
+                SwiftUI.NavigationLink(value: session) {
+                    GameplaySessionRow(session: session)
+                }
+                .buttonStyle(.plain)
             }
         }
-        .padding(16)
-        .frame(height: 116)
-        .background(.tertiary)
-        .cornerRadius(8)
+        .padding(.bottom, 4)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .gameNetGlassEffect(.regular, in: .rect(cornerRadius: 20))
+    }
+
+    // MARK: Private
+
+    private var header: some View {
+        HStack(alignment: .center, spacing: 12) {
+            VStack(alignment: .leading, spacing: 1) {
+                Text(day.date.toFormattedString(dateFormat: "EEEE", locale: .ptBR).capitalizedFirstLetter)
+                    .font(.custom("AvenirNext-DemiBold", size: 18))
+
+                Text(day.date.toFormattedString(dateFormat: GameNetApp.dateFormat))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer(minLength: 8)
+
+            VStack(alignment: .trailing, spacing: 1) {
+                Label(GameplayChartView.formattedDuration(minutes: day.totalMinutes), systemImage: "clock.fill")
+                    .font(.custom("AvenirNext-DemiBold", size: 15))
+                    .foregroundStyle(Color.main)
+
+                Text(day.sessions.count == 1 ? "1 sessão" : "\(day.sessions.count) sessões")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
     }
 }
 
 // MARK: - GameplaySessionDetailView
 
 struct GameplaySessionDetailView: View {
+
     // MARK: Lifecycle
 
     /// `@StateObject` + autoclosure: o view model (que agrupa o ano inteiro e monta
@@ -88,30 +188,21 @@ struct GameplaySessionDetailView: View {
 
     var body: some View {
         ScrollView {
-            // Lazy: as capas (CachedAsyncImage) só carregam quando o dia aparece na tela.
-            LazyVStack(spacing: 12) {
+            VStack(spacing: 12) {
                 GameplayChartView(
                     data: $viewModel.chartGameplaySession,
                     recentRegister: $viewModel.recentRegister
                 )
 
-                ForEach(viewModel.days) { day in
-                    Text(day.date.toFormattedString(dateFormat: GameNetApp.dateFormat))
-                        .font(.dashboardGameTitle)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                if !viewModel.days.isEmpty {
+                    sessionsHeader
+                        .padding(.top, 12)
+                }
 
-                    ForEach(day.sessions, id: \.self) { session in
-                        SwiftUI.NavigationLink(value: session) {
-                            GameplaySessionCell(
-                                gameName: session.gameName,
-                                gameCover: session.gameCover,
-                                gameId: session.userGameId,
-                                startDate: session.start.toFormattedString(dateFormat: GameNetApp.timeFormat),
-                                finishDate: session.finish?.toFormattedString(dateFormat: GameNetApp.timeFormat),
-                                totalGameplayTime: session.totalGameplayTime
-                            )
-                            .multilineTextAlignment(.leading)
-                        }
+                // Lazy: as capas (CachedAsyncImage) só carregam quando o dia aparece na tela.
+                LazyVStack(spacing: 12) {
+                    ForEach(viewModel.days) { day in
+                        GameplaySessionDayCard(day: day)
                     }
                 }
             }
@@ -120,4 +211,27 @@ struct GameplaySessionDetailView: View {
         .navigationView(title: viewModel.title)
     }
 
+    // MARK: Private
+
+    private var sessionsHeader: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Text("Sessões")
+                .font(.dashboardGameTitle)
+
+            Spacer()
+
+            Text("\(plural(viewModel.days.count, "dia", "dias")) · \(plural(sessionCount, "sessão", "sessões"))")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+        .padding(.horizontal, 4)
+    }
+
+    private func plural(_ count: Int, _ singular: String, _ pluralForm: String) -> String {
+        "\(count) \(count == 1 ? singular : pluralForm)"
+    }
+
+    private var sessionCount: Int {
+        viewModel.days.reduce(0) { $0 + $1.sessions.count }
+    }
 }
