@@ -45,13 +45,14 @@ class GameplaySessionDetailViewModel: ObservableObject {
 
         let calendar = Calendar.current
         let today = Date().dateOnly()
-        let currentYear = calendar.component(.year, from: today)
+        let sessionsYear = calendar.component(.year, from: minDate)
 
-        // 31 de dezembro do ano atual
-        let endOfYearComponents = DateComponents(year: currentYear, month: 12, day: 31)
+        // 31 de dezembro do ano das sessões — sem isso, um ano passado ganhava
+        // dias zerados até hoje e as abas S/M/6M/A misturavam anos diferentes.
+        let endOfYearComponents = DateComponents(year: sessionsYear, month: 12, day: 31)
         let endOfYear = calendar.date(from: endOfYearComponents)!.dateOnly()
 
-        // Regra: se hoje < 31/12, usa hoje como data final
+        // Regra: no ano corrente vai até hoje; nos anteriores, até 31/12
         let maxDate = today < endOfYear ? today : endOfYear
 
         // Gerar todas as datas do intervalo
