@@ -21,10 +21,11 @@ struct PlayGameWidgetView: View {
                     background
                 }
         } else {
-            ZStack {
-                background
-                content
-            }
+            // iOS 16: sem `containerBackground` nem margens automáticas do sistema.
+            content
+                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(background)
         }
     }
 
@@ -76,17 +77,25 @@ struct PlayGameWidgetView: View {
     private func toggleButton(_ game: WidgetSharedPlayingGame) -> some View {
         if #available(iOS 17.0, *) {
             Button(intent: ToggleGameplayIntent(userGameId: game.id)) {
-                Image(systemName: game.isStarted ? "stop.fill" : "play.fill")
-                    .font(.title3.weight(.bold))
-                    .foregroundStyle(.white)
-                    .frame(width: 46, height: 46)
-                    .background(
-                        Circle().fill(game.isStarted ? Color.red : Color.green)
-                    )
-                    .shadow(radius: 6)
+                toggleLabel(game)
             }
             .buttonStyle(.plain)
+        } else {
+            // iOS 16 não suporta widgets interativos: o ícone só indica o estado
+            // e o toque no widget abre o app.
+            toggleLabel(game)
         }
+    }
+
+    private func toggleLabel(_ game: WidgetSharedPlayingGame) -> some View {
+        Image(systemName: game.isStarted ? "stop.fill" : "play.fill")
+            .font(.title3.weight(.bold))
+            .foregroundStyle(.white)
+            .frame(width: 46, height: 46)
+            .background(
+                Circle().fill(game.isStarted ? Color.red : Color.green)
+            )
+            .shadow(radius: 6)
     }
 
     private func messageView(icon: String, title: String, subtitle: String) -> some View {

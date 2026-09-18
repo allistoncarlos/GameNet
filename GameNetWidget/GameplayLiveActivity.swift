@@ -141,20 +141,24 @@ struct GameplayLiveActivity: Widget {
         coverURL: String,
         size: CGFloat
     ) -> some View {
-        Button(
-            intent: StopGameplayLiveActivityIntent(
-                userGameId: userGameId,
-                gameName: gameName,
-                platform: platform,
-                coverURL: coverURL
-            )
-        ) {
-            Image(systemName: "stop.fill")
-                .font(.body.weight(.bold))
-                .foregroundStyle(.white)
-                .frame(width: size, height: size)
-                .background(Circle().fill(GameNetLiveActivityStyle.purple))
+        // `LiveActivityIntent` exige iOS 17.2. No iOS 16 o botão não aparece:
+        // o toque na Live Activity abre o app, onde a sessão pode ser encerrada.
+        if #available(iOS 17.2, *) {
+            Button(
+                intent: StopGameplayLiveActivityIntent(
+                    userGameId: userGameId,
+                    gameName: gameName,
+                    platform: platform,
+                    coverURL: coverURL
+                )
+            ) {
+                Image(systemName: "stop.fill")
+                    .font(.body.weight(.bold))
+                    .foregroundStyle(.white)
+                    .frame(width: size, height: size)
+                    .background(Circle().fill(GameNetLiveActivityStyle.purple))
+            }
+            .buttonStyle(.plain)
         }
-        .buttonStyle(.plain)
     }
 }

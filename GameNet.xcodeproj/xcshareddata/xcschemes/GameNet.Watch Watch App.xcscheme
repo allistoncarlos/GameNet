@@ -60,7 +60,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A550C6DF2968ABF60043FE74"
             BuildableName = "GameNet.Watch Watch App.app"
-            BlueprintName = "GameNet.Watch Watch App"
             ReferencedContainer = "container:GameNet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -77,7 +76,6 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A550C6DF2968ABF60043FE74"
             BuildableName = "GameNet.Watch Watch App.app"
-            BlueprintName = "GameNet.Watch Watch App"
             ReferencedContainer = "container:GameNet.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
