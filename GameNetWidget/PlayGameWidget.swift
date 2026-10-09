@@ -14,15 +14,12 @@ struct PlayGameWidgetView: View {
     @Environment(\.widgetFamily) private var family
     var entry: PlayGameEntry
 
-    private var isExtraLargePortrait: Bool {
+    private var isExtraLarge: Bool {
+        if family == .systemExtraLarge { return true }
         if #available(iOSApplicationExtension 27.0, *) {
             return family == .systemExtraLargePortrait
         }
         return false
-    }
-
-    private var isLargeFamily: Bool {
-        family == .systemLarge || isExtraLargePortrait
     }
 
     var body: some View {
@@ -51,7 +48,11 @@ struct PlayGameWidgetView: View {
                 subtitle: "Abra o app e faça login."
             )
         } else if let game = entry.game {
-            gameView(game)
+            if isExtraLarge {
+                extraLargeGameView(game)
+            } else {
+                gameView(game)
+            }
         } else {
             messageView(
                 icon: "gamecontroller",
@@ -66,9 +67,9 @@ struct PlayGameWidgetView: View {
             VStack(alignment: .leading, spacing: gameInfoSpacing) {
                 Spacer()
 
-                if isLargeFamily, !game.platform.isEmpty {
+                if family == .systemLarge, !game.platform.isEmpty {
                     Text(game.platform)
-                        .font(platformFont)
+                        .font(.caption2.weight(.medium))
                         .foregroundStyle(.white.opacity(0.9))
                         .lineLimit(1)
                         .shadow(radius: 4)
@@ -88,15 +89,65 @@ struct PlayGameWidgetView: View {
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(isLargeFamily ? 4 : 0)
+            .padding(family == .systemLarge ? 4 : 0)
 
             toggleButton(game)
         }
     }
 
+    private func extraLargeGameView(_ game: WidgetSharedPlayingGame) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Label(
+                    game.isStarted ? "Em gameplay" : "Pronto para jogar",
+                    systemImage: game.isStarted ? "record.circle.fill" : "gamecontroller.fill"
+                )
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.white.opacity(0.95))
+                .labelStyle(.titleAndIcon)
+                .shadow(radius: 4)
+
+                Spacer()
+            }
+
+            Spacer(minLength: 0)
+
+            VStack(alignment: .leading, spacing: 10) {
+                if !game.platform.isEmpty {
+                    Text(game.platform.uppercased())
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(.white.opacity(0.85))
+                        .tracking(0.6)
+                        .lineLimit(1)
+                }
+
+                Text(game.name)
+                    .font(.title2.weight(.bold))
+                    .foregroundStyle(.white)
+                    .lineLimit(4)
+                    .minimumScaleFactor(0.85)
+                    .shadow(radius: 6)
+
+                if game.isStarted, let start = game.latestStart {
+                    Text("Desde \(start.toFormattedString(dateFormat: "HH:mm"))")
+                        .font(.body.weight(.medium))
+                        .foregroundStyle(.white.opacity(0.9))
+                        .shadow(radius: 4)
+                }
+
+                HStack {
+                    Spacer()
+                    toggleButton(game)
+                }
+                .padding(.top, 4)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .padding(20)
+    }
+
     private var gameInfoSpacing: CGFloat {
-        if isExtraLargePortrait { return 6 }
-        if isLargeFamily { return 4 }
+        if family == .systemLarge { return 4 }
         return 2
     }
 
@@ -105,24 +156,17 @@ struct PlayGameWidgetView: View {
         case .systemSmall: return 2
         case .systemMedium: return 1
         case .systemLarge: return 3
-        default: return isExtraLargePortrait ? 5 : 1
+        default: return 1
         }
     }
 
     private var gameNameFont: Font {
-        if isExtraLargePortrait { return .title3.weight(.semibold) }
         if family == .systemLarge { return .subheadline.weight(.semibold) }
         return .caption.weight(.semibold)
     }
 
-    private var platformFont: Font {
-        if isExtraLargePortrait { return .subheadline.weight(.medium) }
-        return .caption2.weight(.medium)
-    }
-
     private var sessionTimeFont: Font {
-        if isExtraLargePortrait { return .subheadline }
-        if isLargeFamily { return .caption }
+        if family == .systemLarge { return .caption }
         return .caption2
     }
 
@@ -152,31 +196,31 @@ struct PlayGameWidgetView: View {
     }
 
     private var toggleButtonSize: CGFloat {
-        if isExtraLargePortrait { return 64 }
-        if isLargeFamily { return 54 }
+        if isExtraLarge { return 72 }
+        if family == .systemLarge { return 54 }
         return 46
     }
 
     private var toggleIconFont: Font {
-        if isExtraLargePortrait { return .title }
-        if isLargeFamily { return .title2 }
+        if isExtraLarge { return .largeTitle }
+        if family == .systemLarge { return .title2 }
         return .title3
     }
 
     private func messageView(icon: String, title: String, subtitle: String) -> some View {
-        VStack(spacing: isLargeFamily ? 10 : 6) {
+        VStack(spacing: isExtraLarge ? 14 : (family == .systemLarge ? 10 : 6)) {
             Image(systemName: icon)
-                .font(isExtraLargePortrait ? .largeTitle : (isLargeFamily ? .title : .title2))
+                .font(isExtraLarge ? .system(size: 52) : (family == .systemLarge ? .title : .title2))
             Text(title)
-                .font(isExtraLargePortrait ? .headline.weight(.semibold) : .caption.weight(.semibold))
+                .font(isExtraLarge ? .title2.weight(.semibold) : .caption.weight(.semibold))
                 .multilineTextAlignment(.center)
             Text(subtitle)
-                .font(isLargeFamily ? .subheadline : .caption2)
+                .font(isExtraLarge ? .body : (family == .systemLarge ? .subheadline : .caption2))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(isLargeFamily ? 16 : 8)
+        .padding(isExtraLarge ? 28 : (family == .systemLarge ? 16 : 8))
     }
 
     // MARK: Background
@@ -193,7 +237,10 @@ struct PlayGameWidgetView: View {
                     .scaledToFill()
 
                 LinearGradient(
-                    colors: [.black.opacity(0.0), .black.opacity(0.55)],
+                    colors: [
+                        .black.opacity(isExtraLarge ? 0.15 : 0.0),
+                        .black.opacity(isExtraLarge ? 0.75 : 0.55)
+                    ],
                     startPoint: .top,
                     endPoint: .bottom
                 )
@@ -221,7 +268,12 @@ struct PlayGameWidget: Widget {
     }
 
     private static var supportedFamilies: [WidgetFamily] {
-        var families: [WidgetFamily] = [.systemSmall, .systemMedium, .systemLarge]
+        var families: [WidgetFamily] = [
+            .systemSmall,
+            .systemMedium,
+            .systemLarge,
+            .systemExtraLarge
+        ]
         if #available(iOSApplicationExtension 27.0, *) {
             families.append(.systemExtraLargePortrait)
         }
