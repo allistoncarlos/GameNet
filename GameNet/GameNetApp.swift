@@ -15,6 +15,7 @@ import UIKit
 @main
 struct GameNetApp: App {
     init() {
+        APIRoute.shared.start()
 #if canImport(WatchConnectivity) && os(iOS)
         WatchConnectivityManager.shared.activateSession()
         NotificationCenter.default.addObserver(

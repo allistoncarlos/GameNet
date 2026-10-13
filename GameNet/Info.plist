@@ -6,6 +6,10 @@
 	<false/>
 	<key>API_PATH</key>
 	<string>$(API_PATH)</string>
+	<key>API_PATH_LOCAL</key>
+	<string>$(API_PATH_LOCAL)</string>
+	<key>API_PATH_REMOTE</key>
+	<string>$(API_PATH_REMOTE)</string>
 	<key>BEARER</key>
 	<string>$(BEARER)</string>
 	<key>LSApplicationQueriesSchemes</key>

@@ -37,12 +37,16 @@ extension WidgetSharedStore {
         #endif
     }
 
-    /// Sincroniza token e baseURL a partir do Keychain/Info.plist (uso no launch e login).
+    /// Sincroniza token e baseURL a partir do Keychain/rota da API (uso no launch e login).
     static func syncFromKeychain() {
-        if let baseURL = Bundle.main.infoDictionary?["API_PATH"] as? String {
+        Task {
+            let baseURL = await APIRoute.shared.resolve().absoluteString
             saveAPIBaseURL(baseURL)
+            syncAuthFromKeychain()
         }
+    }
 
+    private static func syncAuthFromKeychain() {
         let tokenDataSource = Container.shared.tokenDataSource()
 
         guard tokenDataSource.hasValidToken(),

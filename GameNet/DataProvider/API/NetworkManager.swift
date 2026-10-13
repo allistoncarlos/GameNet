@@ -58,10 +58,12 @@ public class NetworkManager {
     public func performRequest<T: Decodable>(
         responseType: T.Type,
         endpoint: GameNetAPI,
-        retryCount: Int = 0
+        retryCount: Int = 0,
+        routeRetried: Bool = false
     ) async -> T? {
         do {
-            var urlRequest = try endpoint.asURLRequest()
+            let apiBase = await APIRoute.shared.resolve().absoluteString
+            var urlRequest = try endpoint.asURLRequest(resolvingBase: apiBase)
             urlRequest.cachePolicy = .reloadIgnoringLocalCacheData
 
             if let accessToken = tokenDataSource.accessToken {
@@ -106,6 +108,15 @@ public class NetworkManager {
             }
 
         } catch {
+            if !routeRetried, APIConnectivity.isConnectivityError(error) {
+                APIRoute.shared.invalidate()
+                return await performRequest(
+                    responseType: responseType,
+                    endpoint: endpoint,
+                    retryCount: retryCount,
+                    routeRetried: true
+                )
+            }
             print(error)
             return nil
         }
@@ -117,8 +128,9 @@ public class NetworkManager {
     public func performUploadGame(data: GameEditRequest) async -> APIResult<GameEditResponseDTO>? {
         do {
             let endpoint: GameNetAPI = .saveGame(data: data)
+            let apiBase = await APIRoute.shared.resolve().absoluteString
 
-            guard let url = try endpoint.asURLRequest().url else {
+            guard let url = try endpoint.asURLRequest(resolvingBase: apiBase).url else {
                 return nil
             }
 
