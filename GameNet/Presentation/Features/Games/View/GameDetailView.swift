@@ -50,39 +50,25 @@ struct GameDetailView: View {
     @State private var activeGameplayAction: GameDetailGameplayAction?
     @State private var macContextMenuSession: GameplaySession?
     @State private var storyContent: GameStoryContent?
+    @State private var availableWidth = PlatformScreen.width
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
     var body: some View {
         ZStack {
             blurredCoverBackground
 
             ScrollView {
-                VStack(spacing: 15) {
-                    heroCoverSection
-
-                    Text(displayName)
-                        .font(.system(.title))
-                        .bold()
-                        .multilineTextAlignment(.center)
-
-                    if !displayPlatform.isEmpty {
-                        Text(displayPlatform)
-                            .font(.system(.title2))
-                            .bold()
-                            .multilineTextAlignment(.center)
-                    }
-
-                    if viewModel.game != nil {
-                        gameInfoBar
-                            .transition(.opacity)
+                Group {
+                    if usesWideDetailLayout {
+                        wideDetailContent
                     } else {
-                        loadingDetailsPlaceholder
+                        compactDetailContent
+                            .padding(10)
                     }
-
-                    gameSessionsSection
                 }
-                .padding(10)
                 .animation(.gameNetSmooth, value: viewModel.game != nil)
             }
+            .onWidthChange { availableWidth = $0 }
         }
         .overlay(
             GameNetProgressHUD($isCopied, config: GameNetHUDConfig(
@@ -155,6 +141,72 @@ struct GameDetailView: View {
         }
     }
 
+    private var usesWideDetailLayout: Bool {
+        PlatformMetrics.usesWideDetailLayout(
+            width: availableWidth,
+            isLandscape: verticalSizeClass == .compact
+        )
+    }
+
+    private var compactDetailContent: some View {
+        VStack(spacing: 15) {
+            heroCoverSection
+
+            detailTitleBlock(centered: true)
+
+            if viewModel.game != nil {
+                gameInfoBar
+                    .transition(.opacity)
+            } else {
+                loadingDetailsPlaceholder
+            }
+
+            gameSessionsSection
+        }
+    }
+
+    private var wideDetailContent: some View {
+        HStack(alignment: .top, spacing: 28) {
+            heroCoverSection
+                .frame(width: 220)
+
+            VStack(alignment: .leading, spacing: 16) {
+                detailTitleBlock(centered: false)
+
+                if viewModel.game != nil {
+                    gameInfoBar
+                        .transition(.opacity)
+                } else {
+                    loadingDetailsPlaceholder
+                }
+
+                gameSessionsSection
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .gameNetContentWidth(for: availableWidth)
+        .padding(.horizontal, PlatformMetrics.horizontalPadding(for: availableWidth))
+        .padding(.top, 12)
+    }
+
+    private func detailTitleBlock(centered: Bool) -> some View {
+        VStack(alignment: centered ? .center : .leading, spacing: 6) {
+            Text(displayName)
+                .font(.system(.title))
+                .bold()
+                .multilineTextAlignment(centered ? .center : .leading)
+                .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
+
+            if !displayPlatform.isEmpty {
+                Text(displayPlatform)
+                    .font(.system(.title2))
+                    .bold()
+                    .multilineTextAlignment(centered ? .center : .leading)
+                    .frame(maxWidth: .infinity, alignment: centered ? .center : .leading)
+            }
+        }
+    }
+
     private var displayCoverURL: String {
         viewModel.game?.cover ?? viewModel.preview?.coverURL ?? ""
     }
@@ -215,7 +267,7 @@ struct GameDetailView: View {
                 }
             }
             .clipShape(RoundedRectangle(cornerRadius: 12))
-            .frame(height: 250)
+            .frame(height: usesWideDetailLayout ? 320 : 250)
             .shadow(color: .black.opacity(0.35), radius: 16, y: 8)
             .onTapGesture(count: 2) {
                 #if os(macOS)

@@ -17,6 +17,7 @@ struct DashboardView: View {
     @ObservedObject var viewModel: DashboardViewModel
     @State var isLoading = false
     @State private var availableWidth = PlatformScreen.width
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
 
     var body: some View {
         NavigationStack(path: $presentedViews) {
@@ -115,11 +116,23 @@ struct DashboardView: View {
     // MARK: Private
 
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dashboardCardFillsHeight) private var fillsRowHeight
     @State private var presentedViews = NavigationPath()
     @Namespace private var gameCoverTransitionNamespace
 
+    private var isLandscape: Bool {
+        verticalSizeClass == .compact
+    }
+
     private var usesCompactLayout: Bool {
-        PlatformMetrics.dashboardUsesCompactLayout(width: availableWidth)
+        PlatformMetrics.dashboardUsesCompactLayout(
+            width: availableWidth,
+            isLandscape: isLandscape
+        )
+    }
+
+    private var usesPairedCards: Bool {
+        PlatformMetrics.dashboardUsesPairedCards(width: availableWidth)
     }
 
     @ViewBuilder
@@ -130,6 +143,7 @@ struct DashboardView: View {
         } else {
             regularDashboardContent
                 .environment(\.dashboardUsesOuterPadding, false)
+                .gameNetDashboardWidth(for: availableWidth)
                 .padding(.horizontal, PlatformMetrics.horizontalPadding(for: availableWidth))
         }
     }
@@ -167,41 +181,38 @@ struct DashboardView: View {
 
     @ViewBuilder
     private var regularDashboardContent: some View {
-        let columnCount = PlatformMetrics.dashboardCardColumns(for: availableWidth)
-        let gridColumns = Array(
-            repeating: GridItem(.flexible(), spacing: 16),
-            count: columnCount
-        )
+        if usesPairedCards {
+            pairedDashboardContent
+        } else {
+            stackedDashboardContent
+        }
+    }
 
+    @ViewBuilder
+    private var stackedDashboardContent: some View {
         VStack(spacing: 16) {
             playingLibraryCards
 
-            HStack(alignment: .top, spacing: 16) {
-                if viewModel.gameplaySessions != nil {
-                    gameplaySessions
-                        .frame(maxWidth: .infinity, alignment: .top)
-                }
+            if viewModel.gameplaySessions != nil {
+                gameplaySessions
+            }
 
-                if viewModel.dashboard?.totalGames != nil {
-                    physicalDigitalCard
-                        .frame(maxWidth: .infinity, alignment: .top)
-                }
+            if viewModel.dashboard?.totalGames != nil {
+                physicalDigitalCard
             }
 
             annualGameplayProgressCard
 
-            LazyVGrid(columns: gridColumns, alignment: .leading, spacing: 16) {
-                if viewModel.dashboard?.finishedByYear != nil {
-                    finishedByYearTimelineCard
-                }
+            if viewModel.dashboard?.finishedByYear != nil {
+                finishedByYearTimelineCard
+            }
 
-                if viewModel.dashboard?.boughtByYear != nil {
-                    boughtByYearCard
-                }
+            if viewModel.dashboard?.boughtByYear != nil {
+                boughtByYearCard
+            }
 
-                if viewModel.dashboard?.gamesByPlatform != nil {
-                    gamesByPlatformCard
-                }
+            if viewModel.dashboard?.gamesByPlatform != nil {
+                gamesByPlatformCard
             }
 
             appVersionFooter
@@ -209,8 +220,70 @@ struct DashboardView: View {
         .padding(.vertical, 8)
     }
 
+    @ViewBuilder
+    private var pairedDashboardContent: some View {
+        let hasHours = viewModel.gameplaySessions != nil
+        let hasLibrary = viewModel.dashboard?.totalGames != nil
+        let hasFinished = viewModel.dashboard?.finishedByYear != nil
+        let hasBought = viewModel.dashboard?.boughtByYear != nil
+
+        Grid(alignment: .topLeading, horizontalSpacing: 16, verticalSpacing: 16) {
+            GridRow {
+                playingLibraryCards
+                    .gridCellColumns(2)
+            }
+
+            GridRow {
+                if hasHours {
+                    gameplaySessions
+                        .dashboardFillRowHeight()
+                        .gridCellColumns(hasLibrary ? 1 : 2)
+                }
+
+                if hasLibrary {
+                    physicalDigitalCard
+                        .dashboardFillRowHeight()
+                        .gridCellColumns(hasHours ? 1 : 2)
+                }
+            }
+
+            GridRow {
+                annualGameplayProgressCard
+                    .gridCellColumns(2)
+            }
+
+            GridRow {
+                if hasFinished {
+                    finishedByYearTimelineCard
+                        .dashboardFillRowHeight()
+                        .gridCellColumns(hasBought ? 1 : 2)
+                }
+
+                if hasBought {
+                    boughtByYearCard
+                        .dashboardFillRowHeight()
+                        .gridCellColumns(hasFinished ? 1 : 2)
+                }
+            }
+
+            GridRow {
+                if viewModel.dashboard?.gamesByPlatform != nil {
+                    gamesByPlatformCard
+                        .gridCellColumns(2)
+                }
+            }
+
+            GridRow {
+                appVersionFooter
+                    .gridCellColumns(2)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .padding(.vertical, 8)
+    }
+
     private var annualChartHeight: CGFloat {
-        usesCompactLayout ? 340 : 420
+        PlatformMetrics.annualChartHeight(compact: usesCompactLayout, isLandscape: isLandscape)
     }
 
     /// Jogos do carrossel: o jogo em sessão entra na frente mesmo quando não
@@ -273,8 +346,8 @@ extension DashboardView {
                     await viewModel.fetchData()
                 }
             )
-            .padding(.horizontal)
-            .padding(.bottom, 8)
+            .padding(.horizontal, usesCompactLayout ? 16 : 0)
+            .padding(.bottom, usesCompactLayout ? 8 : 0)
             .padding(.top, 0)
         }
     }
@@ -284,7 +357,8 @@ extension DashboardView {
     var annualGameplayProgressCard: some View {
         AnnualGameplayProgressChartView(
             series: viewModel.annualGameplayProgress,
-            chartHeight: annualChartHeight
+            chartHeight: annualChartHeight,
+            defaultVisibleDomainLength: PlatformMetrics.annualChartVisibleDays(for: availableWidth)
         )
     }
 }
@@ -316,9 +390,14 @@ extension DashboardView {
                     )
                 }
             }
+
+            if fillsRowHeight {
+                Spacer(minLength: 0)
+            }
         }
         .foregroundStyle(.white)
         .padding(20)
+        .dashboardCardHeight()
         .gameNetGlassEffect(
             .tinted(Color.secondaryCardBackground),
             in: .rect(cornerRadius: 20)
@@ -434,23 +513,60 @@ extension DashboardView {
                         .font(.cardTitle)
                 }
 
-                VStack(alignment: .leading, spacing: 5) {
-                    if let gamesByPlatform = viewModel.dashboard?.gamesByPlatform?.platforms {
-                        ForEach(gamesByPlatform, id: \.id) { gameByPlatform in
-                            HStack(spacing: 20) {
-                                Text(gameByPlatform.platformGamesTotal.toLeadingZerosString(decimalPlaces: 3))
-                                    .font(.dashboardGameTitle)
-                                Text(gameByPlatform.name)
-                                    .font(.dashboardGameTitle)
-                                Spacer()
-                            }
-                        }
+                if let gamesByPlatform = viewModel.dashboard?.gamesByPlatform?.platforms {
+                    if usesCompactLayout {
+                        compactGamesByPlatformList(gamesByPlatform)
+                    } else {
+                        regularGamesByPlatformGrid(gamesByPlatform)
                     }
+                }
+
+                if fillsRowHeight {
+                    Spacer(minLength: 0)
                 }
             }
             .padding()
         }
+        .dashboardCardHeight()
         .dashboardOuterPadding()
+    }
+
+    private func compactGamesByPlatformList(_ platforms: [PlatformGame]) -> some View {
+        VStack(alignment: .leading, spacing: 5) {
+            ForEach(platforms, id: \.id) { gameByPlatform in
+                gamesByPlatformRow(gameByPlatform)
+            }
+        }
+    }
+
+    private func regularGamesByPlatformGrid(_ platforms: [PlatformGame]) -> some View {
+        LazyVGrid(
+            columns: PlatformMetrics.gamesByPlatformColumns(for: availableWidth),
+            alignment: .leading,
+            spacing: 10
+        ) {
+            ForEach(platforms, id: \.id) { gameByPlatform in
+                gamesByPlatformRow(gameByPlatform)
+                    .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
+                    .padding(.horizontal, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(.white.opacity(0.08))
+                    )
+            }
+        }
+    }
+
+    private func gamesByPlatformRow(_ gameByPlatform: PlatformGame) -> some View {
+        HStack(spacing: 20) {
+            Text(gameByPlatform.platformGamesTotal.toLeadingZerosString(decimalPlaces: 3))
+                .font(.dashboardGameTitle)
+            Text(gameByPlatform.name)
+                .font(.dashboardGameTitle)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+            Spacer(minLength: 0)
+        }
     }
 }
 

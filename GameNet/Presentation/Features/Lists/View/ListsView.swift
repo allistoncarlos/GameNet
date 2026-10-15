@@ -23,7 +23,10 @@ struct ListsView: View {
             GeometryReader { geometry in
                 ScrollView {
                     if !viewModel.listCards.isEmpty {
-                        LazyVStack(spacing: 12) {
+                        LazyVGrid(
+                            columns: PlatformMetrics.listCardColumns(for: geometry.size.width),
+                            spacing: 12
+                        ) {
                             ForEach(viewModel.listCards) { card in
                                 SwiftUI.NavigationLink(value: card.list.id ?? "") {
                                     ListCardView(model: card)
@@ -31,8 +34,7 @@ struct ListsView: View {
                                 .buttonStyle(.plain)
                             }
                         }
-                        .frame(maxWidth: PlatformMetrics.contentMaxWidth(for: geometry.size.width))
-                        .frame(maxWidth: .infinity)
+                        .gameNetContentWidth(for: geometry.size.width)
                         .padding(.horizontal, PlatformMetrics.horizontalPadding(for: geometry.size.width))
                         .padding(.vertical, 8)
                     }

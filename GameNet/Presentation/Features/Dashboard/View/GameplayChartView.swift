@@ -314,7 +314,11 @@ struct GameplayChartView: View {
 
             if #available(iOS 17.0, macOS 14.0, tvOS 17.0, *) {
                 if snapshot.bars.count > visibleCount {
+                    #if os(macOS)
+                    legacyScrollingChart(width: geometry.size.width)
+                    #else
                     nativeScrollingChart(visibleCount: visibleCount)
+                    #endif
                 } else {
                     chartContent
                         .padding(.top, 8)
@@ -338,6 +342,7 @@ struct GameplayChartView: View {
             .chartScrollableAxes(.horizontal)
             .chartXVisibleDomain(length: visibleCount)
             .chartScrollPosition(initialX: initialLabel)
+            .hideScrollIndicatorsAlways()
             .padding(.top, 8)
             // Recria o gráfico ao trocar de aba para voltar ao período mais recente.
             .id(selectedPeriod)
@@ -348,13 +353,13 @@ struct GameplayChartView: View {
         let chartWidth = max(width, CGFloat(snapshot.bars.count) * barWidth)
 
         return ScrollViewReader { scrollPosition in
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 chartContent
                     .frame(width: chartWidth)
                     .padding(.top, 8)
                     .id(Self.chartScrollId)
             }
-            .scrollIndicators(.hidden)
+            .hideScrollIndicatorsAlways()
             .onAppear {
                 scrollPosition.scrollTo(Self.chartScrollId, anchor: .topTrailing)
             }

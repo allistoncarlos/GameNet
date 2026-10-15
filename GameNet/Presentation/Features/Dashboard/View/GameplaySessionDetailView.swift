@@ -187,26 +187,30 @@ struct GameplaySessionDetailView: View {
     @Binding var navigationPath: NavigationPath
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 12) {
-                GameplayChartView(
-                    data: $viewModel.chartGameplaySession,
-                    recentRegister: $viewModel.recentRegister
-                )
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: 12) {
+                    GameplayChartView(
+                        data: $viewModel.chartGameplaySession,
+                        recentRegister: $viewModel.recentRegister
+                    )
 
-                if !viewModel.days.isEmpty {
-                    sessionsHeader
-                        .padding(.top, 12)
-                }
+                    if !viewModel.days.isEmpty {
+                        sessionsHeader
+                            .padding(.top, 12)
+                    }
 
-                // Lazy: as capas (CachedAsyncImage) só carregam quando o dia aparece na tela.
-                LazyVStack(spacing: 12) {
-                    ForEach(viewModel.days) { day in
-                        GameplaySessionDayCard(day: day)
+                    // Lazy: as capas (CachedAsyncImage) só carregam quando o dia aparece na tela.
+                    LazyVStack(spacing: 12) {
+                        ForEach(viewModel.days) { day in
+                            GameplaySessionDayCard(day: day)
+                        }
                     }
                 }
+                .gameNetContentWidth(for: geometry.size.width)
+                .padding(.horizontal, PlatformMetrics.horizontalPadding(for: geometry.size.width))
+                .padding(.vertical, 10)
             }
-            .padding(10)
         }
         .navigationView(title: viewModel.title)
     }

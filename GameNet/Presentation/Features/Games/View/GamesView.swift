@@ -61,8 +61,7 @@ struct GamesView: View {
                                 .padding(.top, 24)
                         }
                     }
-                    .frame(maxWidth: PlatformMetrics.contentMaxWidth(for: geometry.size.width))
-                    .frame(maxWidth: .infinity)
+                    .gameNetContentWidth(for: geometry.size.width)
                     .padding(.horizontal, PlatformMetrics.horizontalPadding(for: geometry.size.width))
                     .padding(.top, 8)
                 }

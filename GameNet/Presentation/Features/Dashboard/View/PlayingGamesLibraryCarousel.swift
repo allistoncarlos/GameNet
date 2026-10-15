@@ -352,7 +352,7 @@ private extension PlayingGamesLibraryCarousel {
         let sideInset = vitrineSideInset
 
         if #available(iOS 17.0, macOS 14.0, tvOS 17.0, *) {
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: -20) {
                     content()
                 }
@@ -361,16 +361,16 @@ private extension PlayingGamesLibraryCarousel {
             .scrollTargetBehavior(.viewAligned(limitBehavior: .always))
             .scrollPosition(id: $selectedGameId, anchor: .center)
             .contentMargins(.horizontal, sideInset, for: .scrollContent)
-            .scrollIndicators(.hidden)
+            .hideScrollIndicatorsAlways()
         } else {
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: -20) {
                     Color.clear.frame(width: max(sideInset - 16, 0))
                     content()
                     Color.clear.frame(width: max(sideInset - 16, 0))
                 }
             }
-            .scrollIndicators(.hidden)
+            .hideScrollIndicatorsAlways()
         }
     }
 }

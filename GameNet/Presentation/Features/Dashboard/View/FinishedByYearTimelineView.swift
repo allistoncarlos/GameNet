@@ -39,9 +39,14 @@ struct FinishedByYearTimelineView: View {
             if finishedGamesByYear.count > collapsedCount {
                 expanderButton
             }
+
+            if fillsHeight {
+                Spacer(minLength: 0)
+            }
         }
         .foregroundStyle(.white)
         .padding(20)
+        .dashboardCardHeight()
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.tertiaryCardBackground)
@@ -51,6 +56,7 @@ struct FinishedByYearTimelineView: View {
 
     // MARK: Private
 
+    @Environment(\.dashboardCardFillsHeight) private var fillsHeight
     @State private var isExpanded = false
 
     private let collapsedCount = 3

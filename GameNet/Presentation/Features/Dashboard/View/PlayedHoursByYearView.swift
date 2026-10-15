@@ -29,9 +29,14 @@ struct PlayedHoursByYearView: View {
             if !sortedYears.isEmpty {
                 averageFooter
             }
+
+            if fillsHeight {
+                Spacer(minLength: 0)
+            }
         }
         .foregroundStyle(.white)
         .padding(20)
+        .dashboardCardHeight()
         .gameNetGlassEffect(
             .tinted(Color.secondaryCardBackground),
             in: .rect(cornerRadius: 20)
@@ -40,6 +45,8 @@ struct PlayedHoursByYearView: View {
     }
 
     // MARK: Private
+
+    @Environment(\.dashboardCardFillsHeight) private var fillsHeight
 
     private let columns = [GridItem(.adaptive(minimum: 150), spacing: 12)]
 

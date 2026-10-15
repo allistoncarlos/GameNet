@@ -17,10 +17,11 @@ struct AnnualGameplayProgressChartView: View {
 
     let series: [AnnualGameplayProgressSeries]
     var chartHeight: CGFloat = 340
+    var defaultVisibleDomainLength: Int = AnnualGameplayProgressChartView.fallbackVisibleDomainLength
     @State var scrollPosition = 1
     @State private var selectedPoint: AnnualGameplayProgressPoint?
     @State private var chartProxy: ChartProxy?
-    @State private var visibleDomainLength = AnnualGameplayProgressChartView.defaultVisibleDomainLength
+    @State private var visibleDomainLength = AnnualGameplayProgressChartView.fallbackVisibleDomainLength
     @State private var visibleDomainLengthAtGestureStart: Int?
     @State private var hiddenYears: Set<Int> = []
     @State private var scrollableYDomain: ClosedRange<Double> = 0 ... 100
@@ -110,7 +111,11 @@ struct AnnualGameplayProgressChartView: View {
     @ViewBuilder
     private func gameplayChart(in geometryProxy: GeometryProxy) -> some View {
         if #available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *) {
+            #if os(macOS)
+            macScrollViewChart(in: geometryProxy)
+            #else
             scrollableGameplayChart(in: geometryProxy)
+            #endif
         } else {
             staticGameplayChart
         }
@@ -166,6 +171,37 @@ struct AnnualGameplayProgressChartView: View {
             }
     }
 
+#if os(macOS)
+    /// No Mac o `chartScrollableAxes` desenha um scroller nativo que o SwiftUI
+    /// não consegue esconder. A rolagem fica num ScrollView sem indicador.
+    private func macScrollViewChart(in geometryProxy: GeometryProxy) -> some View {
+        let dayCount = max(maxVisibleDay, 1)
+        let visibleDays = max(defaultVisibleDomainLength, 1)
+        let chartWidth = max(
+            geometryProxy.size.width,
+            geometryProxy.size.width * CGFloat(dayCount) / CGFloat(visibleDays)
+        )
+
+        return ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                scaledChart(domain: paddedDomain(for: visiblePoints))
+                    .frame(width: chartWidth, height: max(geometryProxy.size.height, 1))
+                    .id(Self.macChartScrollId)
+            }
+            .hideScrollIndicatorsAlways()
+            .onAppear {
+                proxy.scrollTo(Self.macChartScrollId, anchor: .trailing)
+            }
+            .onChangeCompat(of: maxVisibleDay) { _ in
+                proxy.scrollTo(Self.macChartScrollId, anchor: .trailing)
+            }
+        }
+        .overlay(alignment: .topLeading) {
+            selectedPointHint
+        }
+    }
+#endif
+
     @available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
     private func scrollableGameplayChart(in geometryProxy: GeometryProxy) -> some View {
         // O domínio do eixo Y fica num @State separado (scrollableYDomain), recalculado com
@@ -175,7 +211,7 @@ struct AnnualGameplayProgressChartView: View {
             .chartScrollableAxes(.horizontal)
             .chartXVisibleDomain(length: visibleDomainLength)
             .chartScrollPosition(x: $scrollPosition)
-            .scrollIndicators(.hidden)
+            .scrollIndicators(.never)
             .chartBackground { proxy in
                 Color.clear
                     .allowsHitTesting(false)
@@ -254,8 +290,9 @@ struct AnnualGameplayProgressChartView: View {
 
     // MARK: Private
 
-    private static let defaultVisibleDomainLength = 15
+    private static let fallbackVisibleDomainLength = 15
     private static let minVisibleDomainLength = 5
+    private static let macChartScrollId = "annual-gameplay-chart"
 
     /// Todos os pontos de todos os anos, independente de estarem ocultos ou não.
     /// Usado para o eixo X e limites de navegação, que não devem mudar ao ocultar um ano.
@@ -397,7 +434,7 @@ struct AnnualGameplayProgressChartView: View {
         let saved: Int? = persistence.retrieve(.annualChartVisibleDomainLength, storageType: .userDefaults)
 
         guard let saved else {
-            return Self.defaultVisibleDomainLength
+            return clampedVisibleDomainLength(defaultVisibleDomainLength)
         }
 
         return clampedVisibleDomainLength(saved)
